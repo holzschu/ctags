@@ -14,6 +14,29 @@ The goal of the project is preparing and maintaining common/unified working
 space where people interested in making ctags better can work
 together.
 
+## Adaptation to iOS
+
+This fork of universal-ctags has been edited to work with [ios_system](https://github.com/holzschu/ios_system). It allows you to use universal-ctags on iOS devices, combined with ios_system. 
+
+The `ios_system` framework simulated BSD fork/exec/system inside the iOS API, and has been successfully integrated into two shells, [Blink](https://github.com/holzschu/blink) and [OpenTerm](https://github.com/louisdh/terminal) and into an editor, [iVim](https://github.com/holzschu/iVim). Each time, it provides a Unix look-and-feel (well, mostly feel). 
+
+To deal with API limitations, the command is changed into a function, integrated in a digital library. The DL is embedded with your application, and called by ios_system. 
+
+To build: 
+- type `sh ./get_frameworks.sh`. This will download the latest version of ios_system framework and headers.
+- open `ctags/ctags.xcodeproj` and build. 
+- move the product, `libctags.dylib` to the Frameworks folder of your application (Blink, OpenTerm, iVim, others) and add it to the list of Embedded binaries.
+- If needed, edit the `Resources/commandDictionary.plist` of your app to add the following entry:
+```xml
+	<key>ctags</key>
+	<array>
+		<string>libctags.dylib</string>
+		<string>ctags_main</string>
+		<string>aBeFGnNoRvVx:b:d:D:f:h:I:L:</string>
+		<string>file</string>
+	</array>
+```
+
 ## The latest build and package ##
 
 If you want to try the latest universal-ctags without building it yourself...
