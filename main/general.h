@@ -67,6 +67,10 @@ extern void *unlink (const char *);
 extern char *getenv (const char *);
 #endif
 
+extern void ctags_cleanup();
+extern void initLanguageTables();
+extern void initPromiseCount();
+extern void init_apop_count();
 /*
 *   HACK for #1610.
 */

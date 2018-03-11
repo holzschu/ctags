@@ -28,9 +28,9 @@ static tagRegexTable dosTagRegexTable [] = {
 *   FUNCTION DEFINITIONS
 */
 
+static const char *const extensions [] = { "bat", "cmd", NULL };
 extern parserDefinition* DosBatchParser (void)
 {
-	static const char *const extensions [] = { "bat", "cmd", NULL };
 	parserDefinition* const def = parserNew ("DosBatch");
 	static selectLanguage selectors[] = { selectByRexxCommentAndDosbatchLabelPrefix,
 					      NULL };

@@ -80,6 +80,7 @@
 #include <jansson.h>
 #include <errno.h>
 #endif
+#include "ios_error.h"
 
 /*
 *   MACROS
@@ -323,8 +324,8 @@ static bool createTagsFromFileInput (FILE *const fp, const bool filter)
 			if (filter)
 			{
 				if (Option.filterTerminator != NULL)
-					fputs (Option.filterTerminator, stdout);
-				fflush (stdout);
+					fputs (Option.filterTerminator, thread_stdout);
+				fflush (thread_stdout);
 			}
 			cArgForth (args);
 			parseCmdlineOptions (args);
@@ -341,7 +342,7 @@ static bool createTagsFromListFile (const char *const fileName)
 	bool resize;
 	Assert (fileName != NULL);
 	if (strcmp (fileName, "-") == 0)
-		resize = createTagsFromFileInput (stdin, false);
+		resize = createTagsFromFileInput (thread_stdin, false);
 	else
 	{
 		FILE *const fp = fopen (fileName, "r");
@@ -377,7 +378,7 @@ static void printTotals (const clock_t *const timeStamps)
 	const unsigned long totalTags = numTagsTotal();
 	const unsigned long addedTags = numTagsAdded();
 
-	fprintf (stderr, "%ld file%s, %ld line%s (%ld kB) scanned",
+	fprintf (thread_stderr, "%ld file%s, %ld line%s (%ld kB) scanned",
 			Totals.files, plural (Totals.files),
 			Totals.lines, plural (Totals.lines),
 			Totals.bytes/1024L);
@@ -386,32 +387,32 @@ static void printTotals (const clock_t *const timeStamps)
 		const double interval = ((double) (timeStamps [1] - timeStamps [0])) /
 								CLOCKS_PER_SEC;
 
-		fprintf (stderr, " in %.01f seconds", interval);
+		fprintf (thread_stderr, " in %.01f seconds", interval);
 		if (interval != (double) 0.0)
-			fprintf (stderr, " (%lu kB/s)",
+			fprintf (thread_stderr, " (%lu kB/s)",
 					(unsigned long) (Totals.bytes / interval) / 1024L);
 	}
 #endif
-	fputc ('\n', stderr);
+	fputc ('\n', thread_stderr);
 
-	fprintf (stderr, "%lu tag%s added to tag file",
+	fprintf (thread_stderr, "%lu tag%s added to tag file",
 			addedTags, plural(addedTags));
 	if (Option.append)
-		fprintf (stderr, " (now %lu tags)", totalTags);
-	fputc ('\n', stderr);
+		fprintf (thread_stderr, " (now %lu tags)", totalTags);
+	fputc ('\n', thread_stderr);
 
 	if (totalTags > 0  &&  Option.sorted != SO_UNSORTED)
 	{
-		fprintf (stderr, "%lu tag%s sorted", totalTags, plural (totalTags));
+		fprintf (thread_stderr, "%lu tag%s sorted", totalTags, plural (totalTags));
 #ifdef CLOCK_AVAILABLE
-		fprintf (stderr, " in %.02f seconds",
+		fprintf (thread_stderr, " in %.02f seconds",
 				((double) (timeStamps [2] - timeStamps [1])) / CLOCKS_PER_SEC);
 #endif
-		fputc ('\n', stderr);
+		fputc ('\n', thread_stderr);
 	}
 
 #ifdef DEBUG
-	fprintf (stderr, "longest tag line = %lu\n",
+	fprintf (thread_stderr, "longest tag line = %lu\n",
 		 (unsigned long) maxTagsLine ());
 #endif
 }
@@ -467,7 +468,7 @@ static void batchMakeTags (cookedArgs *args, void *user CTAGS_ATTR_UNUSED)
 	if (Option.filter)
 	{
 		verbose ("Reading filter input\n");
-		resize = (bool) (createTagsFromFileInput (stdin, true) || resize);
+		resize = (bool) (createTagsFromFileInput (thread_stdin, true) || resize);
 	}
 	if (! files  &&  Option.recurse)
 		resize = recurseIntoDirectory (".");
@@ -502,6 +503,7 @@ void interactiveLoop (cookedArgs *args CTAGS_ATTR_UNUSED, void *user)
 			/* The explicit exit call is needed because
 			   "error (FATAL,..." just prints a message in
 			   interactive mode. */
+            ctags_cleanup();
 			exit (1);
 		}
 	}
@@ -509,10 +511,10 @@ void interactiveLoop (cookedArgs *args CTAGS_ATTR_UNUSED, void *user)
 	char buffer[1024];
 	json_t *request;
 
-	fputs ("{\"_type\": \"program\", \"name\": \"" PROGRAM_NAME "\", \"version\": \"" PROGRAM_VERSION "\"}\n", stdout);
-	fflush (stdout);
+	fputs ("{\"_type\": \"program\", \"name\": \"" PROGRAM_NAME "\", \"version\": \"" PROGRAM_VERSION "\"}\n", thread_stdout);
+	fflush (thread_stdout);
 
-	while (fgets (buffer, sizeof(buffer), stdin))
+	while (fgets (buffer, sizeof(buffer), thread_stdin))
 	{
 		if (buffer[0] == '\n')
 			continue;
@@ -558,15 +560,15 @@ void interactiveLoop (cookedArgs *args CTAGS_ATTR_UNUSED, void *user)
 			else
 			{					/* read nbytes from stream */
 				unsigned char *data = eMalloc (size);
-				size = fread (data, 1, size, stdin);
+				size = fread (data, 1, size, thread_stdin);
 				MIO *mio = mio_new_memory (data, size, eRealloc, eFree);
 				parseFileWithMio (filename, mio);
 				mio_free (mio);
 			}
 
 			closeTagFile (false);
-			fputs ("{\"_type\": \"completed\", \"command\": \"generate-tags\"}\n", stdout);
-			fflush(stdout);
+			fputs ("{\"_type\": \"completed\", \"command\": \"generate-tags\"}\n", thread_stdout);
+			fflush(thread_stdout);
 		}
 		else
 		{
@@ -640,10 +642,10 @@ static void sanitizeEnviron (void)
 /*
  *		Start up code
  */
+static cookedArgs *args;
 
-extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
+extern int ctags_main (int argc CTAGS_ATTR_UNUSED, char **argv)
 {
-	cookedArgs *args;
 
 	initDefaultTrashBox ();
 
@@ -680,25 +682,40 @@ extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 	}
 	END_VERBOSE();
 
-	/*  Clean up.
-	 */
-	cArgDelete (args);
-	freeKeywordTable ();
-	freeRoutineResources ();
-	freeInputFileResources ();
-	freeTagFileResources ();
-	freeOptionResources ();
-	freeParserResources ();
-	freeRegexResources ();
-#ifdef HAVE_ICONV
-	freeEncodingResources ();
-#endif
-
-	finiDefaultTrashBox();
-
+    ctags_cleanup();
+	
 	if (Option.printLanguage)
 		return (Option.printLanguage == true)? 0: 1;
 
 	exit (0);
 	return 0;
+}
+
+void ctags_cleanup() {
+    /*  Clean up.
+     */
+    cArgDelete (args);
+    args = NULL;
+    freeKeywordTable ();
+    freeRoutineResources ();
+    freeInputFileResources ();
+    freeTagFileResources ();
+    freeOptionResources ();
+    freeParserResources ();
+    freeRegexResources ();
+#ifdef HAVE_ICONV
+    freeEncodingResources ();
+#endif
+    finiDefaultTrashBox();
+    cleanFieldTrashbox();
+    // Re-initialize static variables:
+    Totals.files = 0;
+    Totals.lines = 0;
+    Totals.bytes = 0;
+    mainLoop = NULL;
+    mainData = NULL;
+    // including static variables in other files:
+    initLanguageTables();
+    initPromiseCount();
+    init_apop_count();
 }

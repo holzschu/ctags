@@ -10,34 +10,34 @@ static void initializeCtagsParser (const langType language CTAGS_ATTR_UNUSED)
 {
 }
 
+static const char *const extensions [] = {
+    "ctags",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    NULL
+};
+
+static kindDefinition CtagsKindTable [] = {
+    { true, 'l', "langdef", "language definitions" },
+    { true, 'k', "kind", "kind definitions" },
+};
+static tagRegexTable CtagsTagRegexTable [] = {
+    {"^--langdef=([^ \t]+)$", "\\1",
+        "l", "{scope=set}", NULL, false},
+    {"^--regex-[^=]+=.*/.,(.+)/.*", "\\1",
+        "k", "{scope=ref}", NULL, false},
+    {"^--kinddef-[^=]+=.,([^,]+),.*", "\\1",
+        "k", "{scope=ref}", NULL, false},
+};
+
 extern parserDefinition* CtagsParser (void)
 {
-	static const char *const extensions [] = {
-		"ctags",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		NULL
-	};
-
-	static kindDefinition CtagsKindTable [] = {
-		{ true, 'l', "langdef", "language definitions" },
-		{ true, 'k', "kind", "kind definitions" },
-	};
-	static tagRegexTable CtagsTagRegexTable [] = {
-		{"^--langdef=([^ \t]+)$", "\\1",
-		"l", "{scope=set}", NULL, false},
-		{"^--regex-[^=]+=.*/.,(.+)/.*", "\\1",
-		"k", "{scope=ref}", NULL, false},
-		{"^--kinddef-[^=]+=.,([^,]+),.*", "\\1",
-		"k", "{scope=ref}", NULL, false},
-	};
-
 
 	parserDefinition* const def = parserNew ("ctags");
 

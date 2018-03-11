@@ -10,38 +10,38 @@ static void initializePodParser (const langType language CTAGS_ATTR_UNUSED)
 {
 }
 
+static const char *const extensions [] = {
+    "pod",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    NULL
+};
+
+static kindDefinition PodKindTable [] = {
+    { true, 'c', "chapter", "chapters" },
+    { true, 's', "section", "sections" },
+    { true, 'S', "subsection", "subsections" },
+    { true, 't', "subsubsection", "subsubsections" },
+};
+static tagRegexTable PodTagRegexTable [] = {
+    {"^=head1[ \t]+(.+)", "\\1",
+        "c", NULL, NULL, false},
+    {"^=head2[ \t]+(.+)", "\\1",
+        "s", NULL, NULL, false},
+    {"^=head3[ \t]+(.+)", "\\1",
+        "S", NULL, NULL, false},
+    {"^=head4[ \t]+(.+)", "\\1",
+        "t", NULL, NULL, false},
+};
+
 extern parserDefinition* PodParser (void)
 {
-	static const char *const extensions [] = {
-		"pod",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		NULL
-	};
-
-	static kindDefinition PodKindTable [] = {
-		{ true, 'c', "chapter", "chapters" },
-		{ true, 's', "section", "sections" },
-		{ true, 'S', "subsection", "subsections" },
-		{ true, 't', "subsubsection", "subsubsections" },
-	};
-	static tagRegexTable PodTagRegexTable [] = {
-		{"^=head1[ \t]+(.+)", "\\1",
-		"c", NULL, NULL, false},
-		{"^=head2[ \t]+(.+)", "\\1",
-		"s", NULL, NULL, false},
-		{"^=head3[ \t]+(.+)", "\\1",
-		"S", NULL, NULL, false},
-		{"^=head4[ \t]+(.+)", "\\1",
-		"t", NULL, NULL, false},
-	};
-
 
 	parserDefinition* const def = parserNew ("pod");
 

@@ -244,20 +244,20 @@ findMaven2Tags (void)
 	findMaven2TagsForTable (TABLE_MAIN, NULL, NULL);
 }
 
+static const char *const extensions [] = { "pom", "xml", NULL };
+static const char *const patterns [] =   { "pom.xml", NULL };
+static selectLanguage selectors[] = { selectByXpathFileSpec, NULL };
+
+static xpathFileSpec xpathFileSpecs[] = {
+    {
+        .rootElementName = "project",
+        .rootNSHref      = "http://maven.apache.org/POM/4.0.0",
+    },
+};
 extern parserDefinition*
 Maven2Parser (void)
 {
-	static const char *const extensions [] = { "pom", "xml", NULL };
-	static const char *const patterns [] =   { "pom.xml", NULL };
 	parserDefinition* const def = parserNew ("Maven2");
-	static selectLanguage selectors[] = { selectByXpathFileSpec, NULL };
-
-	static xpathFileSpec xpathFileSpecs[] = {
-		{
-			.rootElementName = "project",
-			.rootNSHref      = "http://maven.apache.org/POM/4.0.0",
-		},
-	};
 
 	def->kindTable         = Maven2Kinds;
 	def->kindCount     = ARRAY_SIZE (Maven2Kinds);

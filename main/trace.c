@@ -20,14 +20,14 @@ void traceEnter(const char * szFunction,const char * szFormat,...)
 {
 	debugIndent ();
 
-	fprintf(stderr,"[>> %s][at %lu] ",szFunction,getInputLineNumber());
+	fprintf(thread_stderr,"[>> %s][at %lu] ",szFunction,getInputLineNumber());
 
 	va_list va;
 	va_start(va,szFormat);
-	vfprintf(stderr,szFormat,va);
+	vfprintf(thread_stderr,szFormat,va);
 	va_end(va);
 
-	fprintf(stderr,"\n");
+	fprintf(thread_stderr,"\n");
 
 	debugInc();
 }
@@ -37,28 +37,28 @@ void traceLeave(const char * szFunction,const char * szFormat,...)
 	debugDec();
 	debugIndent ();
 
-	fprintf(stderr,"[<< %s][at %lu] ",szFunction,getInputLineNumber());
+	fprintf(thread_stderr,"[<< %s][at %lu] ",szFunction,getInputLineNumber());
 
 	va_list va;
 	va_start(va,szFormat);
-	vfprintf(stderr,szFormat,va);
+	vfprintf(thread_stderr,szFormat,va);
 	va_end(va);
 
-	fprintf(stderr,"\n");
+	fprintf(thread_stderr,"\n");
 }
 
 void tracePrint(const char * szFunction,const char * szFormat,...)
 {
 	debugIndent();
 
-	fprintf(stderr,"[%s][at %lu] ",szFunction,getInputLineNumber());
+	fprintf(thread_stderr,"[%s][at %lu] ",szFunction,getInputLineNumber());
 
 	va_list va;
 	va_start(va,szFormat);
-	vfprintf(stderr,szFormat,va);
+	vfprintf(thread_stderr,szFormat,va);
 	va_end(va);
 
-	fprintf(stderr,"\n");
+	fprintf(thread_stderr,"\n");
 }
 
 #endif // DO_TRACING

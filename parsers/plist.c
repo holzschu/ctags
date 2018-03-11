@@ -156,10 +156,10 @@ findPlistTags (void)
 	findXMLTags (NULL, NULL, plistXpathTableTable + TABLE_MAIN, PlistKinds, NULL);
 }
 
+static const char *const extensions [] = { "plist", NULL };
 extern parserDefinition*
 PlistXMLParser (void)
 {
-	static const char *const extensions [] = { "plist", NULL };
 	parserDefinition* const def = parserNew ("PlistXML");
 
 	def->kindTable         = PlistKinds;

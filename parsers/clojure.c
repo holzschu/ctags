@@ -129,15 +129,14 @@ static void findClojureTags (void)
 	vStringDelete (name);
 }
 
+static const char *const extensions[] = {
+    "clj", "cljs", "cljc", NULL
+};
+static const char *const aliases[] = {
+    NULL
+};
 extern parserDefinition *ClojureParser (void)
 {
-	static const char *const extensions[] = {
-		"clj", "cljs", "cljc", NULL
-	};
-	static const char *const aliases[] = {
-		NULL
-	};
-
 	parserDefinition *def = parserNew ("Clojure");
 	def->kindTable = ClojureKinds;
 	def->kindCount = ARRAY_SIZE (ClojureKinds);

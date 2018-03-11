@@ -221,9 +221,9 @@ static void findResTags(void)
 }
 
 /* parser definition */
+static const char *const extensions [] = { "rc", NULL };
 extern parserDefinition* WindResParser(void)
 {
-	static const char *const extensions [] = { "rc", NULL };
 	parserDefinition* def = parserNew("WindRes");
 	def->kindTable	= ResKinds;
 	def->kindCount	= ARRAY_SIZE(ResKinds);

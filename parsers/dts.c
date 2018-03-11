@@ -45,9 +45,9 @@ static void runCppGetc (void)
 	cppTerminate ();
 }
 
+static const char *const extensions [] = { "dts", "dtsi", NULL };
 extern parserDefinition* DTSParser (void)
 {
-	static const char *const extensions [] = { "dts", "dtsi", NULL };
 	parserDefinition* const def = parserNew ("DTS");
 	def->extensions = extensions;
 	def->parser     = runCppGetc;

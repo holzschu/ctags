@@ -26,7 +26,7 @@
 #ifdef DEBUG
 # define debug(level)      ((Option.debugLevel & (long)(level)) != 0)
 # define DebugStatement(x) x
-# define PrintStatus(x)    if (debug(DEBUG_STATUS)) printf x;
+# define PrintStatus(x)    if (debug(DEBUG_STATUS)) fprintf x;
 # ifdef NDEBUG
 #  define Assert(c) do {} while(0)
 #  define AssertNotReached() do {} while(0)

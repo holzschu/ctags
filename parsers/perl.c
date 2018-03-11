@@ -26,7 +26,7 @@
 #include "xtag.h"
 
 #define TRACE_PERL_C 0
-#define TRACE if (TRACE_PERL_C) printf("perl.c:%d: ", __LINE__), printf
+#define TRACE if (TRACE_PERL_C) fprintf(thread_stdout, "perl.c:%d: ", __LINE__), fprintf
 
 /*
 *   DATA DEFINITIONS
@@ -341,7 +341,7 @@ static void findPerlTags (void)
 
 		if (strncmp((const char*) cp, "sub", (size_t) 3) == 0)
 		{
-			TRACE("this looks like a sub\n");
+			TRACE(thread_stdout, "this looks like a sub\n");
 			cp += 3;
 			kind = K_SUBROUTINE;
 			spaceRequired = true;
@@ -441,11 +441,11 @@ static void findPerlTags (void)
 		}
 		if (kind != K_NONE)
 		{
-			TRACE("cp0: %s\n", (const char *) cp);
+			TRACE(thread_stdout, "cp0: %s\n", (const char *) cp);
 			if (spaceRequired && *cp && !isspace (*cp))
 				continue;
 
-			TRACE("cp1: %s\n", (const char *) cp);
+			TRACE(thread_stdout, "cp1: %s\n", (const char *) cp);
 			while (isspace (*cp))
 				cp++;
 
@@ -473,7 +473,7 @@ static void findPerlTags (void)
 				vStringCatS (name, "STDOUT");
 			}
 
-			TRACE("name: %s\n", name->buffer);
+			TRACE(thread_stdout, "name: %s\n", name->buffer);
 
 			if (0 == vStringLength(name)) {
 				vStringClear(name);
@@ -541,9 +541,9 @@ END_MAIN_WHILE:
 		vStringDelete (package);
 }
 
+static const char *const extensions [] = { "pl", "pm", "ph", "plx", "perl", NULL };
 extern parserDefinition* PerlParser (void)
 {
-	static const char *const extensions [] = { "pl", "pm", "ph", "plx", "perl", NULL };
 	static selectLanguage selectors [] = { selectByPickingPerlVersion,
 					       NULL };
 	parserDefinition* def = parserNew ("Perl");

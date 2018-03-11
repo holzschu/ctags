@@ -138,22 +138,22 @@ findDbusIntrospectTags (void)
 		     NULL);
 }
 
+static const char *const extensions [] = { "xml", NULL };
+static selectLanguage selectors[] = { selectByXpathFileSpec, NULL };
+
+static xpathFileSpec xpathFileSpecs[] = {
+    {
+        /* <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+         "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+         <node ... */
+        .externalID = "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN",
+        .systemID   = "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd",
+    },
+};
 extern parserDefinition*
 DbusIntrospectParser (void)
 {
-	static const char *const extensions [] = { "xml", NULL };
 	parserDefinition* const def = parserNew ("DBusIntrospect");
-	static selectLanguage selectors[] = { selectByXpathFileSpec, NULL };
-
-	static xpathFileSpec xpathFileSpecs[] = {
-		{
-			/* <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
-			   "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
-			   <node ... */
-			.externalID = "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN",
-			.systemID   = "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd",
-		},
-	};
 	def->kindTable         = DbusIntrospectKinds;
 	def->kindCount     = ARRAY_SIZE (DbusIntrospectKinds);
 	def->extensions    = extensions;

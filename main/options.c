@@ -35,6 +35,8 @@
 #include "error.h"
 #include "interactive.h"
 #include "writer.h"
+#include "ios_error.h"
+#include "field.h"
 
 #ifdef HAVE_JANSSON
 #include <jansson.h>
@@ -621,7 +623,7 @@ extern void verbose (const char *const format, ...)
 	{
 		va_list ap;
 		va_start (ap, format);
-		vfprintf (stderr, format, ap);
+		vfprintf (thread_stderr, format, ap);
 		va_end (ap);
 	}
 }
@@ -631,11 +633,11 @@ extern void notice (const char *const format, ...)
 	if (!Option.quiet)
 	{
 		va_list ap;
-		fprintf (stderr, "%s: Notice: ", getExecutableName ());
+		fprintf (thread_stderr, "%s: Notice: ", getExecutableName ());
 		va_start (ap, format);
-		vfprintf (stderr, format, ap);
+		vfprintf (thread_stderr, format, ap);
 		va_end (ap);
-		fputs ("\n", stderr);
+		fputs ("\n", thread_stderr);
 	}
 }
 
@@ -1146,14 +1148,26 @@ static void processExcmdOption (
 	}
 }
 
+static void resetXtagsToDefaultValues ()
+{
+    int i;
+    for (i = 0; i < countXtags (); i++) {
+            enableXtag (i, false);
+    }
+    enableXtag(0, true);
+    enableXtag(6, true);
+}
+
 static void resetXtags (langType lang, bool mode)
 {
 	int i;
-	for (i = 0; i < countXtags (); i++)
+    for (i = 0; i < countXtags (); i++) {
 		if ((lang == LANG_AUTO) || (lang == getXtagOwner (i)))
 			enableXtag (i, mode);
+    }
 }
 
+static vString *longNameTags;
 static void processExtraTagsOption (
 		const char *const option, const char *const parameter)
 {
@@ -1161,7 +1175,6 @@ static void processExtraTagsOption (
 	const char *p = parameter;
 	bool mode = true;
 	int c;
-	static vString *longName;
 	bool inLongName = false;
 	const char *x;
 
@@ -1176,7 +1189,7 @@ static void processExtraTagsOption (
 	else if (*p != '+'  &&  *p != '-')
 		resetXtags (LANG_IGNORE, false);
 
-	longName = vStringNewOrClearWithAutoRelease (longName);
+	longNameTags = vStringNewOrClearWithAutoRelease (longNameTags);
 
 	while ((c = *p++) != '\0')
 	{
@@ -1184,13 +1197,13 @@ static void processExtraTagsOption (
 		{
 		case '+':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameTags, c);
 			else
 				mode = true;
 			break;
 		case '-':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameTags, c);
 			else
 				mode = false;
 			break;
@@ -1206,7 +1219,7 @@ static void processExtraTagsOption (
 				error(FATAL,
 				      "unexpected character in extra specification: \'%c\'",
 				      c);
-			x = vStringValue (longName);
+			x = vStringValue (longNameTags);
 			t = getXtagTypeForNameAndLanguage (x, LANG_IGNORE);
 
 			if (t == XTAG_UNKNOWN)
@@ -1216,11 +1229,11 @@ static void processExtraTagsOption (
 				enableXtag (t, mode);
 
 			inLongName = false;
-			vStringClear (longName);
+			vStringClear (longNameTags);
 			break;
 		default:
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameTags, c);
 			else
 			{
 				t = getXtagTypeForLetter (c);
@@ -1239,11 +1252,13 @@ static void resetFieldsOption (langType lang, bool mode)
 {
 	int i;
 
-	for (i = 0; i < countFields (); ++i)
-		if ((lang == LANG_AUTO) || (lang == getFieldOwner (i)))
+    for (i = 0; i < countFields (); ++i)
+        if ((lang == LANG_AUTO) || (lang == getFieldOwner (i))) {
 			enableField (i, mode, false);
+        }
 }
 
+static vString *longNameFields;
 static void processFieldsOption (
 		const char *const option, const char *const parameter)
 {
@@ -1252,10 +1267,9 @@ static void processFieldsOption (
 	int c;
 	fieldType t;
 
-	static vString * longName;
 	bool inLongName = false;
 
-	longName = vStringNewOrClearWithAutoRelease (longName);
+	longNameFields = vStringNewOrClearWithAutoRelease (longNameFields);
 
 	if (*p == '*')
 	{
@@ -1269,13 +1283,13 @@ static void processFieldsOption (
 	{
 		case '+':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameFields, c);
 			else
 				mode = true;
 			break;
 		case '-':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameFields, c);
 			else
 				mode = false;
 			break;
@@ -1293,21 +1307,21 @@ static void processFieldsOption (
 				      c);
 
 			{
-				const char *f = vStringValue (longName);
+				const char *f = vStringValue (longNameFields);
 				t = getFieldTypeForNameAndLanguage (f, LANG_IGNORE);
 			}
 
 			if (t == FIELD_UNKNOWN)
-				error(FATAL, "no such field: \'%s\'", vStringValue (longName));
+				error(FATAL, "no such field: \'%s\'", vStringValue (longNameFields));
 
 			enableField (t, mode, true);
 
 			inLongName = false;
-			vStringClear (longName);
+			vStringClear (longNameFields);
 			break;
 		default :
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameFields, c);
 			else
 			{
 				t = getFieldTypeForOption (c);
@@ -1366,7 +1380,7 @@ static void processOutputEncodingOption(const char *const option CTAGS_ATTR_UNUS
 
 static void printInvocationDescription (void)
 {
-	printf (INVOCATION, getExecutableName ());
+	fprintf (thread_stdout, INVOCATION, getExecutableName ());
 }
 
 static void printOptionDescriptions (const optionDescription *const optDesc)
@@ -1386,12 +1400,12 @@ static void printFeatureList (void)
 	for (i = 0 ; Features [i].name != NULL ; ++i)
 	{
 		if (i == 0)
-			printf ("  Optional compiled features: ");
+			fprintf (thread_stdout, "  Optional compiled features: ");
 		if (strcmp (Features [i].name, "regex") != 0 || checkRegex ())
-			printf ("%s+%s", (i>0 ? ", " : ""), Features [i].name);
+			fprintf (thread_stdout, "%s+%s", (i>0 ? ", " : ""), Features [i].name);
 #ifdef CUSTOM_CONFIGURATION_FILE
 		if (strcmp (Features [i].name, "custom-conf") == 0)
-			printf ("=%s", CUSTOM_CONFIGURATION_FILE);
+			fprintf (thread_stdout, "=%s", CUSTOM_CONFIGURATION_FILE);
 #endif
 	}
 	if (i > 0)
@@ -1424,11 +1438,12 @@ static void processListFeaturesOption(const char *const option CTAGS_ATTR_UNUSED
 	}
 
 	colprintTableSort (table, featureCompare);
-	colprintTablePrint (table, 0, localOption.withListHeader, localOption.machinable, stdout);
+	colprintTablePrint (table, 0, localOption.withListHeader, localOption.machinable, thread_stdout);
 	colprintTableDelete (table);
 
 	if (i == 0)
 		putchar ('\n');
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1458,8 +1473,9 @@ static void processListFieldsOption(const char *const option CTAGS_ATTR_UNUSED,
 		fieldColprintAddLanguageLines (table, language);
 	}
 
-	fieldColprintTablePrint (table, localOption.withListHeader, localOption.machinable, stdout);
+	fieldColprintTablePrint (table, localOption.withListHeader, localOption.machinable, thread_stdout);
 	colprintTableDelete (table);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1467,18 +1483,18 @@ static void printProgramIdentification (void)
 {
 	if ((ctags_repoinfo == NULL)
 	    || (strcmp (ctags_repoinfo, PROGRAM_VERSION) == 0))
-		printf ("%s %s, %s %s\n",
+		fprintf (thread_stdout, "%s %s, %s %s\n",
 			PROGRAM_NAME, PROGRAM_VERSION,
 			PROGRAM_COPYRIGHT, AUTHOR_NAME);
 	else
-		printf ("%s %s(%s), %s %s\n",
+		fprintf (thread_stdout, "%s %s(%s), %s %s\n",
 			PROGRAM_NAME, PROGRAM_VERSION, ctags_repoinfo,
 			PROGRAM_COPYRIGHT, AUTHOR_NAME);
-	printf ("Universal Ctags is derived from Exuberant Ctags.\n");
-	printf ("Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\n");
+	fprintf (thread_stdout, "Universal Ctags is derived from Exuberant Ctags.\n");
+	fprintf (thread_stdout, "Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\n");
 
-	printf ("  Compiled: %s, %s\n", __DATE__, __TIME__);
-	printf ("  URL: %s\n", PROGRAM_URL);
+	fprintf (thread_stdout, "  Compiled: %s, %s\n", __DATE__, __TIME__);
+	fprintf (thread_stdout, "  URL: %s\n", PROGRAM_URL);
 
 	printFeatureList ();
 }
@@ -1492,6 +1508,7 @@ static void processHelpOption (
 	printInvocationDescription ();
 	putchar ('\n');
 	printOptionDescriptions (LongOptionDescription);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1890,6 +1907,7 @@ static void processLicenseOption (
 	puts ("");
 	puts (License1);
 	puts (License2);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1898,7 +1916,7 @@ static void processListAliasesOption (
 {
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageAliases (LANG_AUTO,
-							  localOption.withListHeader, localOption.machinable, stdout);
+							  localOption.withListHeader, localOption.machinable, thread_stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1906,8 +1924,9 @@ static void processListAliasesOption (
 			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
 		else
 			printLanguageAliases (language,
-								  localOption.withListHeader, localOption.machinable, stdout);
+								  localOption.withListHeader, localOption.machinable, thread_stdout);
 	}
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1937,8 +1956,9 @@ static void processListExtrasOption (
 		xtagColprintAddLanguageLines (table, language);
 	}
 
-	xtagColprintTablePrint (table, localOption.withListHeader, localOption.machinable, stdout);
+	xtagColprintTablePrint (table, localOption.withListHeader, localOption.machinable, thread_stdout);
 	colprintTableDelete (table);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1949,7 +1969,7 @@ static void processListKindsOption (
 
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageKinds (LANG_AUTO, print_all,
-							localOption.withListHeader, localOption.machinable, stdout);
+							localOption.withListHeader, localOption.machinable, thread_stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1957,8 +1977,9 @@ static void processListKindsOption (
 			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
 		else
 			printLanguageKinds (language, print_all,
-								localOption.withListHeader, localOption.machinable, stdout);
+								localOption.withListHeader, localOption.machinable, thread_stdout);
 	}
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1968,7 +1989,7 @@ static void processListParametersOption (const char *const option,
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageParameters (LANG_AUTO,
 								 localOption.withListHeader, localOption.machinable,
-								 stdout);
+								 thread_stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1977,8 +1998,9 @@ static void processListParametersOption (const char *const option,
 		else
 			printLanguageParameters (language,
 									 localOption.withListHeader, localOption.machinable,
-									 stdout);
+									 thread_stdout);
 	}
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -1990,7 +2012,7 @@ static void processListMapsOptionForType (const char *const option CTAGS_ATTR_UN
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageMaps (LANG_AUTO, type,
 						   localOption.withListHeader, localOption.machinable,
-						   stdout);
+						   thread_stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1999,8 +2021,9 @@ static void processListMapsOptionForType (const char *const option CTAGS_ATTR_UN
 		else
 			printLanguageMaps (language, type,
 							   localOption.withListHeader, localOption.machinable,
-							   stdout);
+							   thread_stdout);
 	}
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2028,6 +2051,7 @@ static void processListLanguagesOption (
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
 	printLanguageList ();
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2035,7 +2059,8 @@ static void processListPseudoTagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printPtags (localOption.withListHeader, localOption.machinable, stdout);
+	printPtags (localOption.withListHeader, localOption.machinable, thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2043,7 +2068,8 @@ static void processListRegexFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printRegexFlags (localOption.withListHeader, localOption.machinable, stdout);
+	printRegexFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2051,7 +2077,8 @@ static void processListMultilineRegexFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printMultilineRegexFlags (localOption.withListHeader, localOption.machinable, stdout);
+	printMultilineRegexFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2059,7 +2086,8 @@ static void processListMultitableRegexFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printMultitableRegexFlags (localOption.withListHeader, localOption.machinable, stdout);
+	printMultitableRegexFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2067,7 +2095,8 @@ static void processListLangdefFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printLangdefFlags (localOption.withListHeader, localOption.machinable, stdout);
+	printLangdefFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2085,7 +2114,8 @@ static void processListRolesOptions (const char *const option CTAGS_ATTR_UNUSED,
 		printLanguageRoles (LANG_AUTO, "*",
 							localOption.withListHeader,
 							localOption.machinable,
-							stdout);
+							thread_stdout);
+        ctags_cleanup();
 		exit (0);
 	}
 
@@ -2113,7 +2143,8 @@ static void processListRolesOptions (const char *const option CTAGS_ATTR_UNUSED,
 	printLanguageRoles (lang, kindspecs,
 						localOption.withListHeader,
 						localOption.machinable,
-						stdout);
+						thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2128,7 +2159,8 @@ static void processListSubparsersOptions (const char *const option CTAGS_ATTR_UN
 	{
 		printLanguageSubparsers(LANG_AUTO,
 								localOption.withListHeader, localOption.machinable,
-								stdout);
+								thread_stdout);
+        ctags_cleanup();
 		exit (0);
 	}
 
@@ -2138,7 +2170,8 @@ static void processListSubparsersOptions (const char *const option CTAGS_ATTR_UN
 
 	printLanguageSubparsers(lang,
 							localOption.withListHeader, localOption.machinable,
-							stdout);
+							thread_stdout);
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2428,13 +2461,14 @@ static void processAnonHashOption (const char *const option CTAGS_ATTR_UNUSED, c
 	char buf [9];
 
 	anonHashString (parameter, buf);
-	printf("%s\n", buf);
+	fprintf(thread_stdout, "%s\n", buf);
+    ctags_cleanup();
 	exit (0);
 }
 
 static void processDumpKeywordsOption (const char *const option CTAGS_ATTR_UNUSED, const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	dumpKeywordTable (stdout);
+	dumpKeywordTable (thread_stdout);
 }
 
 static void processEchoOption (const char *const option, const char *const parameter)
@@ -2457,6 +2491,7 @@ static void processForceQuitOption (const char *const option CTAGS_ATTR_UNUSED,
 	int s;
 	if (parameter == NULL || parameter[0] == '\0' || !strToInt(parameter, 0, &s))
 		s = 0;
+    ctags_cleanup();
 	exit (s);
 }
 
@@ -2465,6 +2500,7 @@ static void processVersionOption (
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
 	printProgramIdentification ();
+    ctags_cleanup();
 	exit (0);
 }
 
@@ -2752,6 +2788,7 @@ static void enableLanguageXtag (langType language, const char *xtag, bool mode)
 	}
 }
 
+static vString *longNameSpecificFields;
 static bool processLangSpecificFieldsOption (const char *const option,
 						const char *const parameter)
 {
@@ -2762,7 +2799,6 @@ static bool processLangSpecificFieldsOption (const char *const option,
 	langType language = LANG_IGNORE;
 	const char *p = parameter;
 	int c;
-	static vString * longName;
 	bool mode = true;
 	const char *f;
 	bool inLongName = false;
@@ -2802,20 +2838,20 @@ static bool processLangSpecificFieldsOption (const char *const option,
 	else if (*p != '+' && *p != '-')
 		error (WARNING, "Wrong per language field specification: %s", p);
 
-	longName = vStringNewOrClearWithAutoRelease (longName);
+	longNameSpecificFields = vStringNewOrClearWithAutoRelease (longNameSpecificFields);
 	while ((c = *p++) != '\0')
 	{
 		switch (c)
 		{
 		case '+':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameSpecificFields, c);
 			else
 				mode = true;
 			break;
 		case '-':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameSpecificFields, c);
 			else
 				mode = false;
 			break;
@@ -2832,14 +2868,14 @@ static bool processLangSpecificFieldsOption (const char *const option,
 				       "unexpected character in field specification: \'%c\'",
 				       c);
 
-			f = vStringValue (longName);
+			f = vStringValue (longNameSpecificFields);
 			enableLanguageField (language, f, mode);
 			inLongName = false;
-			vStringClear (longName);
+			vStringClear (longNameSpecificFields);
 			break;
 		default:
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameSpecificFields, c);
 			else
 				error (FATAL,
 				       "only long name can be used in per language field spec: \'%c\'",
@@ -2852,6 +2888,7 @@ static bool processLangSpecificFieldsOption (const char *const option,
 	return true;
 }
 
+static vString *longNameSpecificExtra;
 static bool processLangSpecificExtraOption (const char *const option,
 						const char *const parameter)
 {
@@ -2862,7 +2899,6 @@ static bool processLangSpecificExtraOption (const char *const option,
 	langType language = LANG_IGNORE;
 	const char *p = parameter;
 	int c;
-	static vString * longName;
 	bool mode = true;
 	const char *x;
 	bool inLongName = false;
@@ -2903,20 +2939,20 @@ static bool processLangSpecificExtraOption (const char *const option,
 	else if (*p != '+' && *p != '-')
 		error (WARNING, "Wrong per language extra specification: %s", p);
 
-	longName = vStringNewOrClearWithAutoRelease (longName);
+	longNameSpecificExtra = vStringNewOrClearWithAutoRelease (longNameSpecificExtra);
 	while ((c = *p++) != '\0')
 	{
 		switch (c)
 		{
 		case '+':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameSpecificExtra, c);
 			else
 				mode = true;
 			break;
 		case '-':
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameSpecificExtra, c);
 			else
 				mode = false;
 			break;
@@ -2933,14 +2969,14 @@ static bool processLangSpecificExtraOption (const char *const option,
 				       "unexpected character in extra specification: \'%c\'",
 				       c);
 
-			x = vStringValue (longName);
+			x = vStringValue (longNameSpecificExtra);
 			enableLanguageXtag (language, x, mode);
 			inLongName = false;
-			vStringClear (longName);
+			vStringClear (longNameSpecificExtra);
 			break;
 		default:
 			if (inLongName)
-				vStringPut (longName, c);
+				vStringPut (longNameSpecificExtra, c);
 			else
 				error (FATAL,
 				       "only long name can be used in per language extra spec: \'%c\'",
@@ -3076,6 +3112,7 @@ static void processShortOption (
 	{
 		case '?':
 			processHelpOption ("?", NULL);
+            ctags_cleanup();
 			exit (0);
 			break;
 		case 'a':
@@ -3600,15 +3637,71 @@ extern void freeOptionResources (void)
 	freeSearchPathList (&OptlibPathList);
 
 	freeList (&OptionFiles);
+    // Re-initialize variables:
+    Stage = OptionLoadingStageNone;
+    NonOptionEncountered = false;
+    FilesRequired = true;
+    SkipConfiguration = 0;
+    localOption.machinable = false;
+    localOption.withListHeader = true;
+    Option.append = false;
+    Option.backward = false;
+    Option.etags = false;
+    Option.locate =
+#ifdef MACROS_USE_PATTERNS
+        EX_PATTERN
+#else
+        EX_MIX
+#endif
+    ;
+    Option.recurse = false;
+    Option.sorted = SO_SORTED;
+    Option.verbose = false;
+    Option.xref = false;
+    Option.customXfmt = NULL;
+    Option.fileList = NULL;
+    Option.tagFileName = NULL;
+    Option.headerExt = NULL;
+    Option.etagsInclude = NULL;
+    Option.tagFileFormat = DEFAULT_FILE_FORMAT;
+#ifdef HAVE_ICONV
+    Option.inputEncoding= NULL;
+    Option.outputEncoding = NULL;
+#endif
+    Option.language = LANG_AUTO;
+    Option.followLinks = true;
+    Option.filter = false;
+    Option.filterTerminator = NULL;
+    Option.tagRelative = false;
+    Option.printTotals = false;
+    Option.lineDirectives = false;
+    Option.printLanguage =false;
+    Option.guessLanguageEagerly = false;
+    Option.quiet = false;
+    Option.fatalWarnings = false;
+    Option.patternLengthLimit = 96;
+    Option.putFieldPrefix = false;
+    Option.maxRecursionDepth = 0xffffffff;
+    Option.interactive = false;
+#ifdef DEBUG
+    Option.debugLevel = 0;
+    Option.breakLine = 0;
+#endif
+    longNameTags = NULL;
+    longNameFields = NULL;
+    longNameSpecificFields = NULL;
+    longNameSpecificExtra = NULL;
+    resetXtagsToDefaultValues();
+    resetFieldOptionsToDefaultValues();
 }
 
 static void processDumpOptionsOption (const char *const option CTAGS_ATTR_UNUSED, const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	fprintf(stdout, "# %s\n", "ParametricOptions");
+	fprintf(thread_stdout, "# %s\n", "ParametricOptions");
 	for (unsigned int i = 0; i < ARRAY_SIZE(ParametricOptions); i++)
-		fprintf(stdout, "%s\n", ParametricOptions[i].name);
+		fprintf(thread_stdout, "%s\n", ParametricOptions[i].name);
 
-	fprintf(stdout, "# %s\n", "BooleanOptions");
+	fprintf(thread_stdout, "# %s\n", "BooleanOptions");
 	for (unsigned int i = 0; i < ARRAY_SIZE(BooleanOptions); i++)
-		fprintf(stdout, "%s\n", BooleanOptions[i].name);
+		fprintf(thread_stdout, "%s\n", BooleanOptions[i].name);
 }

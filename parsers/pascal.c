@@ -249,9 +249,9 @@ static void findPascalTags (void)
 	vStringDelete (name);
 }
 
+static const char *const extensions [] = { "p", "pas", NULL };
 extern parserDefinition* PascalParser (void)
 {
-	static const char *const extensions [] = { "p", "pas", NULL };
 	parserDefinition* def = parserNew ("Pascal");
 	def->extensions = extensions;
 	def->kindTable      = PascalKinds;

@@ -18,42 +18,42 @@ static void initializeGdbinitParser (const langType language)
 	}
 }
 
+static const char *const extensions [] = {
+    "gdb",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    ".gdbinit",
+    NULL
+};
+
+static kindDefinition GdbinitKindTable [] = {
+    { true, 'd', "definition", "definitions" },
+    { true, 'D', "document", "documents" },
+    { true, 't', "toplevelVariable", "toplevel variables" },
+    { true, 'l', "localVariable", "local variables" },
+};
+static tagRegexTable GdbinitTagRegexTable [] = {
+    {"^#.*", "",
+        "", "{exclusive}", NULL, false},
+    {"^define[[:space:]]+([^[:space:]]+)$", "\\1",
+        "d", NULL, NULL, false},
+    {"^document[[:space:]]+([^[:space:]]+)$", "\\1",
+        "D", NULL, NULL, false},
+    {"^set[[:space:]]+\\$([a-zA-Z0-9_]+)[[:space:]]*=", "\\1",
+        "t", NULL, NULL, false},
+    {"^[[:space:]]+set[[:space:]]+\\$([a-zA-Z0-9_]+)[[:space:]]*=", "\\1",
+        "l", NULL, NULL, false},
+};
+
+
 extern parserDefinition* GdbinitParser (void)
 {
-	static const char *const extensions [] = {
-		"gdb",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		".gdbinit",
-		NULL
-	};
-
-	static kindDefinition GdbinitKindTable [] = {
-		{ true, 'd', "definition", "definitions" },
-		{ true, 'D', "document", "documents" },
-		{ true, 't', "toplevelVariable", "toplevel variables" },
-		{ true, 'l', "localVariable", "local variables" },
-	};
-	static tagRegexTable GdbinitTagRegexTable [] = {
-		{"^#.*", "",
-		"", "{exclusive}", NULL, false},
-		{"^define[[:space:]]+([^[:space:]]+)$", "\\1",
-		"d", NULL, NULL, false},
-		{"^document[[:space:]]+([^[:space:]]+)$", "\\1",
-		"D", NULL, NULL, false},
-		{"^set[[:space:]]+\\$([a-zA-Z0-9_]+)[[:space:]]*=", "\\1",
-		"t", NULL, NULL, false},
-		{"^[[:space:]]+set[[:space:]]+\\$([a-zA-Z0-9_]+)[[:space:]]*=", "\\1",
-		"l", NULL, NULL, false},
-	};
-
-
 	parserDefinition* const def = parserNew ("gdbinit");
 
 	def->enabled       = true;

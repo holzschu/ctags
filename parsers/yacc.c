@@ -207,9 +207,9 @@ static void runYaccParser (void)
 
 }
 
+static const char *const extensions [] = { "y", NULL };
 extern parserDefinition* YaccParser (void)
 {
-	static const char *const extensions [] = { "y", NULL };
 	parserDefinition* const def = parserNew ("YACC");
 	def->extensions = extensions;
 	def->initialize = initializeYaccParser;

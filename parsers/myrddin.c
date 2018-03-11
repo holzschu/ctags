@@ -39,9 +39,9 @@ static tagRegexTable myrddinTagRegexTable [] = {
  *   FUNCTION DEFINITIONS
  */
 
+static const char *const extensions [] = { "myr", NULL };
 extern parserDefinition *MyrddinParser (void)
 {
-	static const char *const extensions [] = { "myr", NULL };
 	parserDefinition* const def = parserNew ("Myrddin");
 	def->extensions = extensions;
 	def->tagRegexTable = myrddinTagRegexTable;

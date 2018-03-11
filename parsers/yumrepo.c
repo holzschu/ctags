@@ -52,19 +52,19 @@ static void findYumRepoTags (void)
 	scheduleRunningBaseparser (0);
 }
 
+static const char *const extensions [] = { "repo", NULL };
+static iniconfSubparser yumRepoSubparser = {
+    .subparser = {
+        .direction = SUBPARSER_SUB_RUNS_BASE,
+    },
+    .newDataNotify = newDataCallback,
+};
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "Iniconf", &yumRepoSubparser },
+};
+
 extern parserDefinition* YumRepoParser (void)
 {
-	static const char *const extensions [] = { "repo", NULL };
-	static iniconfSubparser yumRepoSubparser = {
-		.subparser = {
-			.direction = SUBPARSER_SUB_RUNS_BASE,
-		},
-		.newDataNotify = newDataCallback,
-	};
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "Iniconf", &yumRepoSubparser },
-	};
-
 	parserDefinition* const def = parserNew ("YumRepo");
 
 	def->dependencies = dependencies;

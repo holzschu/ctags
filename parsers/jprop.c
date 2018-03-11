@@ -112,10 +112,10 @@ static void findJavaPropertiesTags (void)
 	}
 }
 
+static const char *const extensions [] = { "properties", NULL };
 extern parserDefinition*
 JavaPropertiesParser (void)
 {
-	static const char *const extensions [] = { "properties", NULL };
 	parserDefinition* const def = parserNew ("JavaProperties");
 
 	def->kindTable = JavaPropertiesKinds;

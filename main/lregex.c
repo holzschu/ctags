@@ -146,6 +146,12 @@ struct lregexControlBlock {
 *   DATA DEFINITIONS
 */
 
+static int apop_count = 0;
+
+void init_apop_count() {
+    apop_count = 0;
+}
+
 /*
 *   FUNCTION DEFINITIONS
 */
@@ -1012,6 +1018,16 @@ static void fillEndLineFieldOfUpperScopes (struct lregexControlBlock *lcb, unsig
 	}
 }
 
+static TrashBox* field_trashbox;
+
+extern void cleanFieldTrashbox() {
+    // The allocated memory has been released through the standard trashbox.
+    // We just need to set the pointer to NULL for future allocation
+    if (field_trashbox != NULL) {
+        field_trashbox = NULL;
+    }
+}
+
 static void matchTagPattern (struct lregexControlBlock *lcb,
 		const char* line,
 		const regexPattern* const patbuf,
@@ -1081,7 +1097,6 @@ static void matchTagPattern (struct lregexControlBlock *lcb,
 		if (initRegexTag (&e, name, kind, scope, placeholder,
 						  ln, ln == 0? NULL: &pos, patbuf->xtagType))
 		{
-			static TrashBox* field_trashbox;
 			if (field_trashbox == NULL)
 			{
 				field_trashbox = trashBoxNew();
@@ -1859,7 +1874,6 @@ static struct regexTable * matchMultitableRegexTable (struct lregexControlBlock 
 #endif
 	if (next == NULL && ptrArrayCount (lcb->tstack) > 0)
 	{
-		static int apop_count = 0;
 		next = ptrArrayLast(lcb->tstack);
 		verbose("stack: autopop<%d> from %s to %s @ %lu\n", apop_count++, table->name, next->name,
 				getInputLineNumberForFileOffset(*offset));

@@ -595,10 +595,10 @@ static void findTexTags (void)
 	deleteToken (token);
 }
 
+static const char *const extensions [] = { "tex", NULL };
 /* Create parser definition structure */
 extern parserDefinition* TexParser (void)
 {
-	static const char *const extensions [] = { "tex", NULL };
 	parserDefinition *const def = parserNew ("Tex");
 	def->extensions = extensions;
 	/*

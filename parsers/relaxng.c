@@ -223,10 +223,10 @@ makeTagWithScope (xmlNode *node CTAGS_ATTR_UNUSED,
 	makeTagEntry (tag);
 }
 
+static const char *const extensions [] = { "rng", NULL };
 extern parserDefinition*
 RelaxNGParser (void)
 {
-	static const char *const extensions [] = { "rng", NULL };
 	parserDefinition* const def = parserNew ("RelaxNG");
 	/* static selectLanguage selectors[] = { selectByDTD, NULL }; */
 

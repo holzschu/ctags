@@ -31,6 +31,12 @@ static struct promise *promises;
 static int promise_count;
 static int promise_allocated;
 
+void initPromiseCount() {
+    promise_count = 0;
+    promise_allocated = 0;
+    promises = NULL; 
+}
+
 int  makePromise   (const char *parser,
 		    unsigned long startLine, long startCharOffset,
 		    unsigned long endLine, long endCharOffset,

@@ -25,9 +25,9 @@ static tagRegexTable rexxTagRegexTable [] = {
 *   FUNCTION DEFINITIONS
 */
 
+static const char *const extensions [] = { "cmd", "rexx", "rx", NULL };
 extern parserDefinition* RexxParser (void)
 {
-	static const char *const extensions [] = { "cmd", "rexx", "rx", NULL };
 	parserDefinition* const def = parserNew ("REXX");
 	static selectLanguage selectors[] = { selectByRexxCommentAndDosbatchLabelPrefix,
 					      NULL };

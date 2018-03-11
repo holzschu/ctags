@@ -110,6 +110,9 @@ extern void ptrArrayDelete (ptrArray *const current)
 	{
 		ptrArrayClear (current);
 		eFree (current->array);
+        current->array = NULL;
+        current->count = 0;
+        current->max = 0;
 		eFree (current);
 	}
 }

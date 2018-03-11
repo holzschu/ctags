@@ -64,7 +64,8 @@ out:
 extern void addTagXpath (const langType language CTAGS_ATTR_UNUSED, tagXpathTable *xpathTable)
 {
 	Assert (xpathTable->xpath);
-	Assert (!xpathTable->xpathCompiled);
+    // iOS: because we can re-enter the same function, can't assert this
+	// Assert (!xpathTable->xpathCompiled);
 
 	verbose ("compile a xpath expression: %s\n", (xmlChar *)xpathTable->xpath);
 	xpathTable->xpathCompiled = xmlXPathCompile ((xmlChar *)xpathTable->xpath);

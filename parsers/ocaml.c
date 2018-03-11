@@ -2080,12 +2080,12 @@ static void ocamlInitialize (const langType language)
 	initOperatorTable ();
 }
 
+static const char *const extensions[] = { "ml", "mli", "aug", NULL };
+static const char *const aliases[] = { "tuareg", /* mode name of emacs */
+    "caml",     /* mode name of emacs */
+    NULL };
 extern parserDefinition *OcamlParser (void)
 {
-	static const char *const extensions[] = { "ml", "mli", "aug", NULL };
-	static const char *const aliases[] = { "tuareg", /* mode name of emacs */
-										   "caml",	 /* mode name of emacs */
-										   NULL };
 	parserDefinition *def = parserNew ("OCaml");
 	def->kindTable = OcamlKinds;
 	def->kindCount = ARRAY_SIZE (OcamlKinds);

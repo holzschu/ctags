@@ -151,9 +151,9 @@ static void initialize (const langType language)
             "{exclusive}", tagVariables, NULL, NULL);
 }
 
+static const char *const extensions[] = { "robot", NULL };
 extern parserDefinition* RobotParser (void)
 {
-	static const char *const extensions[] = { "robot", NULL };
 	parserDefinition *def = parserNew ("Robot");
     def->kindTable      = RobotKinds;
     def->kindCount  = COUNT_KIND;

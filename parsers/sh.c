@@ -466,17 +466,17 @@ static void findShTags (void)
 		vStringDelete (hereDocDelimiter);
 }
 
+static const char *const extensions [] = {
+    "sh", "SH", "bsh", "bash", "ksh", "zsh", "ash", NULL
+};
+static const char *const aliases [] = {
+    "sh", "bash", "ksh", "zsh", "ash",
+    /* major mode name in emacs */
+    "shell-script",
+    NULL
+};
 extern parserDefinition* ShParser (void)
 {
-	static const char *const extensions [] = {
-		"sh", "SH", "bsh", "bash", "ksh", "zsh", "ash", NULL
-	};
-	static const char *const aliases [] = {
-		"sh", "bash", "ksh", "zsh", "ash",
-		/* major mode name in emacs */
-		"shell-script",
-		NULL
-	};
 	parserDefinition* def = parserNew ("Sh");
 	def->kindTable      = ShKinds;
 	def->kindCount  = ARRAY_SIZE (ShKinds);

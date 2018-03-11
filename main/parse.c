@@ -38,6 +38,7 @@
 # include "mbcs.h"
 #endif
 #include "xtag.h"
+#include "ios_error.h"
 
 /*
  * DATA TYPES
@@ -113,12 +114,18 @@ static parserDefinitionFunc* BuiltInParsers[] = {
 static parserObject* LanguageTable = NULL;
 static unsigned int LanguageCount = 0;
 static hashTable* LanguageHTable = NULL;
-static kindDefinition defaultFileKind = {
+static const kindDefinition defaultFileKind = {
 	.enabled     = false,
 	.letter      = KIND_FILE_DEFAULT,
 	.name        = KIND_FILE_DEFAULT_LONG,
 	.description = KIND_FILE_DEFAULT_LONG,
 };
+
+void initLanguageTables() {
+    LanguageHTable = NULL;
+    LanguageTable = NULL;
+    LanguageCount = 0;
+}
 
 /*
 *   FUNCTION DEFINITIONS
@@ -1703,6 +1710,7 @@ extern void initializeParsing (void)
 		linkDependenciesAtInitializeParsing (LanguageTable [i].def);
 }
 
+static vString *longName;
 extern void freeParserResources (void)
 {
 	unsigned int i;
@@ -1720,6 +1728,9 @@ extern void freeParserResources (void)
 		finalizeDependencies (parser->def, parser->slaveControlBlock);
 		freeSlaveControlBlock (parser->slaveControlBlock);
 		parser->slaveControlBlock = NULL;
+        
+        parser->def->dependencies = NULL;
+        parser->def->dependencyCount = 0;
 
 		freeList (&parser->currentPatterns);
 		freeList (&parser->currentExtensions);
@@ -1732,8 +1743,9 @@ extern void freeParserResources (void)
 	}
 	if (LanguageTable != NULL)
 		eFree (LanguageTable);
-	LanguageTable = NULL;
+    LanguageTable = NULL;
 	LanguageCount = 0;
+    longName = NULL;
 }
 
 static void doNothing (void)
@@ -1843,6 +1855,7 @@ static void optlibFreeDep (langType lang, bool initialized CTAGS_ATTR_UNUSED)
 	{
 		parserDependency *dep = pdef->dependencies;
 
+        fprintf(stderr, "Freeing %s\n", dep->upperParser);
 		eFree ((char *)dep->upperParser); /* Dirty cast */
 		dep->upperParser = NULL;
 		eFree (dep->data);
@@ -2001,7 +2014,6 @@ static void processLangKindDefinition (
 	const char *p = parameter;
 	bool mode = true;
 	int c;
-	static vString *longName;
 	bool inLongName = false;
 	const char *k;
 	bool r;
@@ -2309,7 +2321,7 @@ extern void printLanguageKinds (const langType language, bool allKindFields,
 				continue;
 
 			if (!table)
-				printf ("%s%s\n", lang->name, isLanguageEnabled (i) ? "" : " [disabled]");
+				fprintf (thread_stdout, "%s%s\n", lang->name, isLanguageEnabled (i) ? "" : " [disabled]");
 			printKinds (i, true, table);
 		}
 	}
@@ -2458,14 +2470,14 @@ static void printMaps (const langType language, langmapType type)
 	unsigned int i;
 
 	parser = LanguageTable + language;
-	printf ("%-8s", parser->def->name);
+	fprintf (thread_stdout, "%-8s", parser->def->name);
 	if (parser->currentPatterns != NULL && (type & LMAP_PATTERN))
 		for (i = 0  ;  i < stringListCount (parser->currentPatterns)  ;  ++i)
-			printf (" %s", vStringValue (
+			fprintf (thread_stdout, " %s", vStringValue (
 						stringListItem (parser->currentPatterns, i)));
 	if (parser->currentExtensions != NULL && (type & LMAP_EXTENSION))
 		for (i = 0  ;  i < stringListCount (parser->currentExtensions)  ;  ++i)
-			printf (" *.%s", vStringValue (
+			fprintf (thread_stdout, " *.%s", vStringValue (
 						stringListItem (parser->currentExtensions, i)));
 	putchar ('\n');
 }
@@ -2641,7 +2653,7 @@ static void printLanguage (const langType language, parserDefinition** ltable)
 		return;
 
 	if (lang->kindTable != NULL  ||  (lang->method & METHOD_REGEX))
-		printf ("%s%s\n", lang->name, isLanguageEnabled (lang->id) ? "" : " [disabled]");
+		fprintf (thread_stdout, "%s%s\n", lang->name, isLanguageEnabled (lang->id) ? "" : " [disabled]");
 }
 
 extern void printLanguageList (void)
@@ -3005,7 +3017,7 @@ static void printGuessedParser (const char* const fileName, langType language)
 	else
 		parserName = LanguageTable [language].def->name;
 
-	printf("%s: %s\n", fileName, parserName);
+	fprintf(thread_stdout, "%s: %s\n", fileName, parserName);
 }
 
 #ifdef HAVE_ICONV
@@ -3056,11 +3068,14 @@ extern void freeEncodingResources (void)
 				eFree (EncodingMap [i]);
 		}
 		eFree (EncodingMap);
+        EncodingMap = NULL;
 	}
 	if (Option.inputEncoding)
 		eFree (Option.inputEncoding);
+    Option.inputEncoding = NULL;
 	if (Option.outputEncoding)
 		eFree (Option.outputEncoding);
+    Option.outputEncoding = NULL; 
 }
 #endif
 
@@ -3582,6 +3597,7 @@ static void setupAnon (void)
 static void teardownAnon (void)
 {
 	ptrArrayDelete (parsersUsedInCurrentInput);
+    parsersUsedInCurrentInput = NULL; 
 }
 
 static void anonResetMaybe (parserObject *parser)

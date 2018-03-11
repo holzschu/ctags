@@ -187,6 +187,7 @@ extern void freeRoutineResources (void)
 {
 	if (CurrentDirectory != NULL)
 		eFree (CurrentDirectory);
+    CurrentDirectory = NULL;
 }
 
 extern void setExecutableName (const char *const path)
@@ -444,7 +445,8 @@ extern void setCurrentDirectory (void) /* TODO */
 extern fileStatus *eStat (const char *const fileName)
 {
 	struct stat status;
-	static fileStatus file;
+
+    static fileStatus file;
 	if (file.name == NULL  ||  strcmp (fileName, file.name) != 0)
 	{
 		eStatFree (&file);

@@ -82,4 +82,6 @@ extern void extendRegexTable (struct lregexControlBlock *lcb, const char *src, c
 
 extern void printMultitableStatistics (struct lregexControlBlock *lcb, FILE *vfp);
 
+extern void cleanFieldTrashbox(); 
+
 #endif	/* CTAGS_MAIN_LREGEX_H */

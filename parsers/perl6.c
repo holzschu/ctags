@@ -322,12 +322,12 @@ findPerl6Tags (void)
     deinitP6Ctx(&ctx);
 }
 
+static const char *const extensions[] = { "p6", "pm6", "pm", "pl6", NULL };
+static selectLanguage selectors [] = { selectByPickingPerlVersion,
+    NULL };
 parserDefinition *
 Perl6Parser (void)
 {
-    static const char *const extensions[] = { "p6", "pm6", "pm", "pl6", NULL };
-    static selectLanguage selectors [] = { selectByPickingPerlVersion,
-					   NULL };
     parserDefinition* def = parserNew("Perl6");
     def->kindTable      = perl6Kinds;
     def->kindCount  = ARRAY_SIZE(perl6Kinds);

@@ -160,9 +160,9 @@ static void findLuaTags (void)
 	vStringDelete (name);
 }
 
+static const char* const extensions [] = { "lua", NULL };
 extern parserDefinition* LuaParser (void)
 {
-	static const char* const extensions [] = { "lua", NULL };
 	parserDefinition* def = parserNew ("Lua");
 	def->kindTable      = LuaKinds;
 	def->kindCount  = ARRAY_SIZE (LuaKinds);

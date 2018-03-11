@@ -159,25 +159,26 @@ static void findAutoconfTags(void)
 	scheduleRunningBaseparser (0);
 }
 
+static const char *const patterns [] = { "configure.in", NULL };
+static const char *const extensions [] = { "ac", NULL };
+static m4Subparser autoconfSubparser = {
+    .subparser = {
+        .direction = SUBPARSER_BI_DIRECTION,
+        .exclusiveSubparserChosenNotify = exclusiveSubparserChosenCallback,
+    },
+    .probeLanguage  = probeLanguage,
+    .newMacroNotify = newMacroCallback,
+    .doesLineCommentStart = doesLineCommentStart,
+    .doesStringLiteralStart = doesStringLiteralStart,
+};
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "M4", &autoconfSubparser },
+};
+
 extern parserDefinition* AutoconfParser (void)
 {
-	static const char *const patterns [] = { "configure.in", NULL };
-	static const char *const extensions [] = { "ac", NULL };
 	parserDefinition* const def = parserNew("Autoconf");
 
-	static m4Subparser autoconfSubparser = {
-		.subparser = {
-			.direction = SUBPARSER_BI_DIRECTION,
-			.exclusiveSubparserChosenNotify = exclusiveSubparserChosenCallback,
-		},
-		.probeLanguage  = probeLanguage,
-		.newMacroNotify = newMacroCallback,
-		.doesLineCommentStart = doesLineCommentStart,
-		.doesStringLiteralStart = doesStringLiteralStart,
-	};
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "M4", &autoconfSubparser },
-	};
 
 	def->dependencies = dependencies;
 	def->dependencyCount = ARRAY_SIZE (dependencies);

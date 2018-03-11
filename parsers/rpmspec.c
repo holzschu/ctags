@@ -186,9 +186,9 @@ static void initializeRpmSpecParser (langType language)
 			  "{exclusive}", found_package_cb, &rejecting, &package_index);
 }
 
+static const char *const extensions [] = { "spec", NULL };
 extern parserDefinition* RpmSpecParser (void)
 {
-	static const char *const extensions [] = { "spec", NULL };
 	parserDefinition* const def = parserNew ("RpmSpec");
 	def->kindTable = RpmSpecKinds;
 	def->kindCount = ARRAY_SIZE (RpmSpecKinds);

@@ -711,11 +711,11 @@ static void findVimTags (void)
 	}
 }
 
+static const char *const extensions [] = { "vim", "vba", NULL };
+static const char *const patterns [] = { "vimrc", "[._]vimrc", "gvimrc",
+    "[._]gvimrc", NULL };
 extern parserDefinition *VimParser (void)
 {
-	static const char *const extensions [] = { "vim", "vba", NULL };
-	static const char *const patterns [] = { "vimrc", "[._]vimrc", "gvimrc",
-		"[._]gvimrc", NULL };
 	parserDefinition *def = parserNew ("Vim");
 	def->kindTable      = VimKinds;
 	def->kindCount  = ARRAY_SIZE (VimKinds);

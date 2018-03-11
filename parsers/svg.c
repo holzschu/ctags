@@ -50,10 +50,10 @@ findSvgTags (void)
 		     NULL);
 }
 
+static const char *const extensions [] = { "svg", NULL };
 extern parserDefinition*
 SvgParser (void)
 {
-	static const char *const extensions [] = { "svg", NULL };
 	parserDefinition* const def = parserNew ("SVG");
 
 	def->kindTable         = SvgKinds;

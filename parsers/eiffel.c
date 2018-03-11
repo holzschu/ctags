@@ -1106,9 +1106,9 @@ static void findEiffelTags (void)
 	deleteToken (token);
 }
 
+static const char *const extensions [] = { "e", NULL };
 extern parserDefinition* EiffelParser (void)
 {
-	static const char *const extensions [] = { "e", NULL };
 	parserDefinition* def = parserNew ("Eiffel");
 	def->kindTable      = EiffelKinds;
 	def->kindCount  = ARRAY_SIZE (EiffelKinds);

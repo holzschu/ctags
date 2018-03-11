@@ -95,22 +95,22 @@ static void findPythonLoggingConfigTags (void)
 	scheduleRunningBaseparser (0);
 }
 
+static struct sPythonLoggingConfigSubparser pythonLoggingConfigSubparser = {
+    .iniconf = {
+        .subparser = {
+            .direction = SUBPARSER_BI_DIRECTION,
+            .exclusiveSubparserChosenNotify = exclusiveSubparserChosenCallback,
+        },
+        .probeLanguage = probeLanguage,
+        .newDataNotify = newDataCallback,
+    },
+};
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "Iniconf", &pythonLoggingConfigSubparser },
+};
+
 extern parserDefinition* PythonLoggingConfigParser (void)
 {
-	static struct sPythonLoggingConfigSubparser pythonLoggingConfigSubparser = {
-		.iniconf = {
-			.subparser = {
-				.direction = SUBPARSER_BI_DIRECTION,
-				.exclusiveSubparserChosenNotify = exclusiveSubparserChosenCallback,
-			},
-			.probeLanguage = probeLanguage,
-			.newDataNotify = newDataCallback,
-		},
-	};
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "Iniconf", &pythonLoggingConfigSubparser },
-	};
-
 	parserDefinition* const def = parserNew ("PythonLoggingConfig");
 	def->dependencies = dependencies;
 	def->dependencyCount = ARRAY_SIZE (dependencies);

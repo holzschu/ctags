@@ -26,6 +26,7 @@
 #include "routines.h"
 #include "selectors.h"
 #include "xtag.h"
+#include "ios_error.h"
 
 /*
 *   MACROS
@@ -799,15 +800,15 @@ static const char *keywordString (const keywordId keyword)
 static void CTAGS_ATTR_UNUSED pt (tokenInfo *const token)
 {
 	if (isType (token, TOKEN_NAME))
-		printf ("type: %-12s: %-13s   line: %lu\n",
+		fprintf (thread_stdout, "type: %-12s: %-13s   line: %lu\n",
 			tokenString (token->type), vStringValue (token->name),
 			token->lineNumber);
 	else if (isType (token, TOKEN_KEYWORD))
-		printf ("type: %-12s: %-13s   line: %lu\n",
+		fprintf (thread_stdout, "type: %-12s: %-13s   line: %lu\n",
 			tokenString (token->type), keywordString (token->keyword),
 			token->lineNumber);
 	else
-		printf ("type: %-12s                  line: %lu\n",
+		fprintf (thread_stdout, "type: %-12s                  line: %lu\n",
 			tokenString (token->type), token->lineNumber);
 }
 
@@ -816,20 +817,20 @@ static void CTAGS_ATTR_UNUSED ps (statementInfo *const st)
 #define P	"[%-7u]"
 	static unsigned int id = 0;
 	unsigned int i;
-	printf (P"scope: %s   decl: %s   gotName: %s   gotParenName: %s\n", id,
+	fprintf (thread_stdout, P"scope: %s   decl: %s   gotName: %s   gotParenName: %s\n", id,
 		scopeString (st->scope), declString (st->declaration),
 		boolString (st->gotName), boolString (st->gotParenName));
-	printf (P"haveQualifyingName: %s\n", id, boolString (st->haveQualifyingName));
-	printf (P"access: %s   default: %s\n", id, accessString (st->member.access),
+	fprintf (thread_stdout, P"haveQualifyingName: %s\n", id, boolString (st->haveQualifyingName));
+	fprintf (thread_stdout, P"access: %s   default: %s\n", id, accessString (st->member.access),
 		accessString (st->member.accessDefault));
-	printf (P"token  : ", id);
+	fprintf (thread_stdout, P"token  : ", id);
 	pt (activeToken (st));
 	for (i = 1  ;  i < (unsigned int) NumTokens  ;  ++i)
 	{
-		printf (P"prev %u : ", id, i);
+		fprintf (thread_stdout, P"prev %u : ", id, i);
 		pt (prevToken (st, i));
 	}
-	printf (P"context: ", id);
+	fprintf (thread_stdout, P"context: ", id);
 	pt (st->context);
 	id++;
 #undef P
@@ -2340,7 +2341,7 @@ static void restartStatement (statementInfo *const st)
 	tokenInfo *token = activeToken (st);
 
 	copyToken (save, token);
-	DebugStatement ( if (debug (DEBUG_PARSE)) printf ("<ES>");)
+	DebugStatement ( if (debug (DEBUG_PARSE)) fprintf (thread_stdout, "<ES>");)
 	reinitStatement (st, false);
 	token = activeToken (st);
 	copyToken (token, save);
@@ -3201,7 +3202,7 @@ static void checkStatementEnd (statementInfo *const st, int corkIndex)
 		reinitStatement (st, true);
 	else if (isStatementEnd (st))
 	{
-		DebugStatement ( if (debug (DEBUG_PARSE)) printf ("<ES>"); )
+		DebugStatement ( if (debug (DEBUG_PARSE)) fprintf (thread_stdout, "<ES>"); )
 		reinitStatement (st, false);
 		cppEndStatement ();
 	}
@@ -3567,26 +3568,26 @@ static void initializeVeraParser (const langType language)
 	buildKeywordHash (language, 5);
 }
 
+static const char *const oldCxtensions [] = { "c", NULL };
 extern parserDefinition* OldCParser (void)
 {
-	static const char *const extensions [] = { "c", NULL };
 	parserDefinition* def = parserNew ("OldC");
 	def->kindTable      = CKinds;
 	def->kindCount  = ARRAY_SIZE (CKinds);
-	def->extensions = extensions;
+	def->extensions = oldCxtensions;
 	def->parser2    = findCTags;
 	def->initialize = initializeCParser;
 	def->enabled = 0;
 	return def;
 }
 
+static const char *const dExtensions [] = { "d", "di", NULL };
 extern parserDefinition* DParser (void)
 {
-	static const char *const extensions [] = { "d", "di", NULL };
 	parserDefinition* def = parserNew ("D");
 	def->kindTable      = DKinds;
 	def->kindCount  = ARRAY_SIZE (DKinds);
-	def->extensions = extensions;
+	def->extensions = dExtensions;
 	def->parser2    = findCTags;
 	def->initialize = initializeDParser;
 	// end: field is not tested.
@@ -3594,39 +3595,39 @@ extern parserDefinition* DParser (void)
 	return def;
 }
 
+static const char *const oldCppExtensions [] = {
+    "c++", "cc", "cp", "cpp", "cxx",
+    "h", "h++", "hh", "hp", "hpp", "hxx", "inl",
+#ifndef CASE_INSENSITIVE_FILENAMES
+    "C", "H",
+#endif
+    NULL
+};
+static selectLanguage oldCppSelectors[] = { selectByObjectiveCKeywords,
+    NULL };
+
 extern parserDefinition* OldCppParser (void)
 {
-	static const char *const extensions [] = {
-		"c++", "cc", "cp", "cpp", "cxx",
-		"h", "h++", "hh", "hp", "hpp", "hxx", "inl",
-#ifndef CASE_INSENSITIVE_FILENAMES
-		"C", "H",
-#endif
-		NULL
-	};
-	static selectLanguage selectors[] = { selectByObjectiveCKeywords,
-					      NULL };
-
 	parserDefinition* def = parserNew ("OldC++");
 	def->kindTable      = CKinds;
 	def->kindCount  = ARRAY_SIZE (CKinds);
-	def->extensions = extensions;
+	def->extensions = oldCppExtensions;
 	def->parser2    = findCTags;
 	def->initialize = initializeCppParser;
-	def->selectLanguage = selectors;
+	def->selectLanguage = oldCppSelectors;
 	def->enabled = 0;
 	return def;
 }
 
+static const char *const csharpExtensions [] = { "cs", NULL };
+static const char *const csharpAliases [] = { "csharp", NULL };
 extern parserDefinition* CsharpParser (void)
 {
-	static const char *const extensions [] = { "cs", NULL };
-	static const char *const aliases [] = { "csharp", NULL };
 	parserDefinition* def = parserNew ("C#");
 	def->kindTable      = CsharpKinds;
 	def->kindCount  = ARRAY_SIZE (CsharpKinds);
-	def->extensions = extensions;
-	def->aliases    = aliases;
+	def->extensions = csharpExtensions;
+	def->aliases    = csharpAliases;
 	def->parser2    = findCTags;
 	def->initialize = initializeCsharpParser;
 	// end: field is not tested.
@@ -3634,26 +3635,26 @@ extern parserDefinition* CsharpParser (void)
 	return def;
 }
 
+static const char *const javaExtensions [] = { "java", NULL };
 extern parserDefinition* JavaParser (void)
 {
-	static const char *const extensions [] = { "java", NULL };
 	parserDefinition* def = parserNew ("Java");
 	def->kindTable      = JavaKinds;
 	def->kindCount  = ARRAY_SIZE (JavaKinds);
-	def->extensions = extensions;
+	def->extensions = javaExtensions;
 	def->parser2    = findCTags;
 	def->initialize = initializeJavaParser;
 	def->useCork    = true;
 	return def;
 }
 
+static const char *const veraExtensions [] = { "vr", "vri", "vrh", NULL };
 extern parserDefinition* VeraParser (void)
 {
-	static const char *const extensions [] = { "vr", "vri", "vrh", NULL };
 	parserDefinition* def = parserNew ("Vera");
 	def->kindTable      = VeraKinds;
 	def->kindCount  = ARRAY_SIZE (VeraKinds);
-	def->extensions = extensions;
+	def->extensions = veraExtensions;
 	def->parser2    = findCTags;
 	def->initialize = initializeVeraParser;
 	// end: field is not tested.

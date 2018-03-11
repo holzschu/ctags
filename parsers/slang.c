@@ -27,9 +27,9 @@ static tagRegexTable slangTagRegexTable [] = {
  *   FUNCTION DEFINITIONS
  */
 
+static const char *const extensions [] = { "sl", NULL };
 extern parserDefinition* SlangParser (void)
 {
-	static const char *const extensions [] = { "sl", NULL };
 	parserDefinition* const def = parserNew ("SLang");
 	def->extensions = extensions;
 	def->tagRegexTable = slangTagRegexTable;

@@ -252,9 +252,9 @@ static void findCssTags (void)
 }
 
 /* parser definition */
+static const char *const extensions [] = { "css", NULL };
 extern parserDefinition* CssParser (void)
 {
-	static const char *const extensions [] = { "css", NULL };
 	parserDefinition* def = parserNew ("CSS");
 	def->kindTable      = CssKinds;
 	def->kindCount  = ARRAY_SIZE (CssKinds);

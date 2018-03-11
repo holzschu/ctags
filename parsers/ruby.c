@@ -551,9 +551,9 @@ static void findRubyTags (void)
 	nestingLevelsFree (nesting);
 }
 
+static const char *const extensions [] = { "rb", "ruby", NULL };
 extern parserDefinition* RubyParser (void)
 {
-	static const char *const extensions [] = { "rb", "ruby", NULL };
 	parserDefinition* def = parserNew ("Ruby");
 	def->kindTable      = RubyKinds;
 	def->kindCount  = ARRAY_SIZE (RubyKinds);

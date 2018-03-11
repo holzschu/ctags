@@ -28,12 +28,12 @@
 #include "routines.h"
 
 static iconv_t iconv_fd = (iconv_t) -1;
+static bool warn = false;
 
 extern bool openConverter (char* inputEncoding, char* outputEncoding)
 {
 	if (!inputEncoding || !outputEncoding)
 	{
-		static bool warn = false;
 		/* --output-encoding is specified but not --input-encoding provided */
 		if (!warn && outputEncoding)
 		{
@@ -107,6 +107,7 @@ extern void closeConverter ()
 		iconv_close(iconv_fd);
 		iconv_fd = (iconv_t) -1;
 	}
+    warn = false;
 }
 
 #endif	/* HAVE_ICONV */

@@ -17,6 +17,7 @@
 #include <sys/types.h>  /* to declare off_t */
 
 #include "readtags.h"
+#include "ios_error.h"
 
 /*
 *   MACROS
@@ -793,14 +794,14 @@ static tagResult find (tagFile *const file, tagEntry *const entry,
 		(file->sortMethod == TAG_FOLDSORTED  &&  file->search.ignorecase))
 	{
 #ifdef DEBUG
-		printf ("<performing binary search>\n");
+		fprintf (thread_stdout, "<performing binary search>\n");
 #endif
 		result = findBinary (file);
 	}
 	else
 	{
 #ifdef DEBUG
-		printf ("<performing sequential search>\n");
+		fprintf (thread_stdout, "<performing sequential search>\n");
 #endif
 		result = findSequential (file);
 	}

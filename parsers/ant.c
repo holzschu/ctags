@@ -212,39 +212,40 @@ findAntTags (void)
 }
 #endif
 
+static const char *const extensions [] = { "build.xml", "ant",
+#ifdef HAVE_LIBXML
+    /* libxml based selector is needed to select a
+     * proper concrete xml parser.*/
+    "xml",
+#endif
+    NULL };
+static const char *const patterns [] = { "build.xml", NULL };
+#ifdef HAVE_LIBXML
+static selectLanguage selectors[] = { selectByXpathFileSpec, NULL };
+static xpathFileSpec xpathFileSpecs[] = {
+    /* See http://ant.apache.org/faq.html#dtd */
+    {
+        .rootElementName = "project",
+        .nameInDTD       = "",
+        .externalID      = "",
+        .systemID        = "",
+        .rootNSPrefix    = "",
+        .rootNSHref      = "",
+    },
+    {
+        .rootElementName = "project",
+        .nameInDTD       = "project",
+        .externalID      = "",
+        .systemID        = "",
+        .rootNSPrefix    = "",
+        .rootNSHref      = "",
+    }
+};
+#endif
 extern parserDefinition* AntParser (void)
 {
-	static const char *const extensions [] = { "build.xml", "ant",
-#ifdef HAVE_LIBXML
-				/* libxml based selector is needed to select a
-				 * proper concrete xml parser.*/
-						   "xml",
-#endif
-						   NULL };
-	static const char *const patterns [] = { "build.xml", NULL };
-	parserDefinition* const def = parserNew ("Ant");
-#ifdef HAVE_LIBXML
-	static selectLanguage selectors[] = { selectByXpathFileSpec, NULL };
-	static xpathFileSpec xpathFileSpecs[] = {
-		/* See http://ant.apache.org/faq.html#dtd */
-		{
-			.rootElementName = "project",
-			.nameInDTD       = "",
-			.externalID      = "",
-			.systemID        = "",
-			.rootNSPrefix    = "",
-			.rootNSHref      = "",
-		},
-		{
-			.rootElementName = "project",
-			.nameInDTD       = "project",
-			.externalID      = "",
-			.systemID        = "",
-			.rootNSPrefix    = "",
-			.rootNSHref      = "",
-		}
-	};
-#endif
+    parserDefinition* const def = parserNew ("Ant");
+
 	def->extensions = extensions;
 	def->patterns = patterns;
 #ifdef HAVE_LIBXML

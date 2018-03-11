@@ -54,7 +54,7 @@ static void *eMalloc (const size_t size)
 
 	if (buffer == NULL)
 	{
-		fprintf(stderr, "out of memory");
+		fprintf(thread_stderr, "out of memory");
 		abort ();
 	}
 
@@ -67,7 +67,7 @@ static void *eCalloc (const size_t count, const size_t size)
 
 	if (buffer == NULL)
 	{
-		fprintf(stderr, "out of memory");
+		fprintf(thread_stderr, "out of memory");
 		abort ();
 	}
 
@@ -84,7 +84,7 @@ static void *eRealloc (void *const ptr, const size_t size)
 		buffer = realloc (ptr, size);
 		if (buffer == NULL)
 		{
-			fprintf(stderr, "out of memory");
+			fprintf(thread_stderr, "out of memory");
 			abort ();
 		}
 	}

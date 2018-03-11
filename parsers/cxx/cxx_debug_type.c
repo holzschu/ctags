@@ -11,10 +11,10 @@ static bool append(vString *buf, const char *str, bool appended)
 	return true;
 }
 
+static vString *buf;
 const char * cxxDebugTypeDecode (enum CXXTokenType eType)
 {
 	bool a = false;
-	static vString *buf;
 	buf = vStringNewOrClearWithAutoRelease (buf);
 
 	if (eType & CXXTokenTypeEOF) a = append (buf, "EOF", a);

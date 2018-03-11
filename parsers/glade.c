@@ -76,10 +76,10 @@ findGladeTags (void)
 	findXMLTags (NULL, NULL, gladeXpathTableTable + TABLE_MAIN, GladeKinds, NULL);
 }
 
+static const char *const extensions [] = { "glade", NULL };
 extern parserDefinition*
 GladeParser (void)
 {
-	static const char *const extensions [] = { "glade", NULL };
 	parserDefinition* const def = parserNew ("Glade");
 
 	def->kindTable         = GladeKinds;

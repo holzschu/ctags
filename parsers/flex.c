@@ -2375,9 +2375,9 @@ static void findFlexTags (void)
 }
 
 /* Create parser definition structure */
+static const char *const extensions [] = { "as", "mxml", NULL };
 extern parserDefinition* FlexParser (void)
 {
-	static const char *const extensions [] = { "as", "mxml", NULL };
 	parserDefinition *const def = parserNew ("Flex");
 	def->extensions = extensions;
 	/*

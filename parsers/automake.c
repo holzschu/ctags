@@ -315,26 +315,26 @@ static void findAutomakeTags (void)
 	scheduleRunningBaseparser (0);
 }
 
+static const char *const extensions [] = { "am", NULL };
+static const char *const patterns [] = { "Makefile.am", NULL };
+static struct sAutomakeSubparser automakeSubparser = {
+    .make = {
+        .subparser = {
+            .direction = SUBPARSER_SUB_RUNS_BASE,
+            .inputStart = inputStart,
+            .inputEnd = inputEnd,
+        },
+        .valueNotify = valueCallback,
+        .directiveNotify = directiveCallback,
+        .newMacroNotify = newMacroCallback,
+    },
+};
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "Make", &automakeSubparser },
+};
+
 extern parserDefinition* AutomakeParser (void)
 {
-	static const char *const extensions [] = { "am", NULL };
-	static const char *const patterns [] = { "Makefile.am", NULL };
-	static struct sAutomakeSubparser automakeSubparser = {
-		.make = {
-			.subparser = {
-				.direction = SUBPARSER_SUB_RUNS_BASE,
-				.inputStart = inputStart,
-				.inputEnd = inputEnd,
-			},
-			.valueNotify = valueCallback,
-			.directiveNotify = directiveCallback,
-			.newMacroNotify = newMacroCallback,
-		},
-	};
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "Make", &automakeSubparser },
-	};
-
 	parserDefinition* const def = parserNew ("Automake");
 
 

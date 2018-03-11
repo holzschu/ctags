@@ -10,44 +10,45 @@ static void initializeManParser (const langType language CTAGS_ATTR_UNUSED)
 {
 }
 
+static const char *const extensions [] = {
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    NULL
+};
+
+static kindDefinition ManKindTable [] = {
+    { true, 't', "title", "titles" },
+    { true, 's', "section", "sections" },
+};
+static tagRegexTable ManTagRegexTable [] = {
+    {"^\\.TH[[:space:]]{1,}\"([^\"]{1,})\".*", "\\1",
+        "t", "{exclusive}{icase}{scope=push}", NULL, false},
+    {"^\\.TH[[:space:]]{1,}([^[:space:]]{1,}).*", "\\1",
+        "t", "{exclusive}{icase}{scope=push}", NULL, false},
+    {"^\\.SH[[:space:]]{1,}\"([^\"]{1,})\".*", "\\1",
+        "s", "{exclusive}{icase}{scope=ref}", NULL, false},
+    {"^\\.SH[[:space:]]{1,}([^[:space:]]{1,}).*", "\\1",
+        "s", "{exclusive}{icase}{scope=ref}", NULL, false},
+};
+
+
 extern parserDefinition* ManParser (void)
 {
-	static const char *const extensions [] = {
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		NULL
-	};
-
-	static kindDefinition ManKindTable [] = {
-		{ true, 't', "title", "titles" },
-		{ true, 's', "section", "sections" },
-	};
-	static tagRegexTable ManTagRegexTable [] = {
-		{"^\\.TH[[:space:]]{1,}\"([^\"]{1,})\".*", "\\1",
-		"t", "{exclusive}{icase}{scope=push}", NULL, false},
-		{"^\\.TH[[:space:]]{1,}([^[:space:]]{1,}).*", "\\1",
-		"t", "{exclusive}{icase}{scope=push}", NULL, false},
-		{"^\\.SH[[:space:]]{1,}\"([^\"]{1,})\".*", "\\1",
-		"s", "{exclusive}{icase}{scope=ref}", NULL, false},
-		{"^\\.SH[[:space:]]{1,}([^[:space:]]{1,}).*", "\\1",
-		"s", "{exclusive}{icase}{scope=ref}", NULL, false},
-	};
-
 
 	parserDefinition* const def = parserNew ("man");
 

@@ -10,38 +10,38 @@ static void initializePasswdParser (const langType language CTAGS_ATTR_UNUSED)
 {
 }
 
+static const char *const extensions [] = {
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    "passwd",
+    NULL
+};
+
+static fieldDefinition PasswdFieldTable [] = {
+    {
+        .enabled     = true,
+        .name        = "home",
+        .description = "home directory",
+    },
+    {
+        .enabled     = true,
+        .name        = "shell",
+        .description = "login shell",
+    },
+};
+static tagRegexTable PasswdTagRegexTable [] = {
+    {"^([^:]+):([^:]+):([^:]+):([^:]+):([^:]*):([^:]+):([^:]+)", "\\1",
+        "u,username,user names", "{_field=home:\\6}{_field=shell:\\7}", NULL, false},
+};
+
 extern parserDefinition* PasswdParser (void)
 {
-	static const char *const extensions [] = {
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		"passwd",
-		NULL
-	};
-
-	static fieldDefinition PasswdFieldTable [] = {
-		{
-		  .enabled     = true,
-		  .name        = "home",
-		  .description = "home directory",
-		},
-		{
-		  .enabled     = true,
-		  .name        = "shell",
-		  .description = "login shell",
-		},
-	};
-	static tagRegexTable PasswdTagRegexTable [] = {
-		{"^([^:]+):([^:]+):([^:]+):([^:]+):([^:]*):([^:]+):([^:]+)", "\\1",
-		"u,username,user names", "{_field=home:\\6}{_field=shell:\\7}", NULL, false},
-	};
-
 
 	parserDefinition* const def = parserNew ("passwd");
 

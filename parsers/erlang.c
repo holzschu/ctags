@@ -177,9 +177,9 @@ static void findErlangTags (void)
 	vStringDelete (module);
 }
 
+static const char *const extensions[] = { "erl", "ERL", "hrl", "HRL", NULL };
 extern parserDefinition *ErlangParser (void)
 {
-	static const char *const extensions[] = { "erl", "ERL", "hrl", "HRL", NULL };
 	parserDefinition *def = parserNew ("Erlang");
 	def->kindTable = ErlangKinds;
 	def->kindCount = ARRAY_SIZE (ErlangKinds);

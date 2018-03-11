@@ -1524,6 +1524,7 @@ check_function_signature:
 
 // This is called when we encounter a "public", "protected" or "private" keyword
 // that is NOT in the class declaration header line.
+static ptrArray *pSubparsers;
 bool cxxParserParseAccessSpecifier(void)
 {
 	CXX_DEBUG_ENTER();
@@ -1532,7 +1533,6 @@ bool cxxParserParseAccessSpecifier(void)
 
 	enum CXXScopeType eScopeType = cxxScopeGetType();
 
-	static ptrArray *pSubparsers;
 	if (!pSubparsers)
 	{
 		pSubparsers = ptrArrayNew(NULL);
@@ -1834,4 +1834,6 @@ void cxxParserCleanup(langType language CTAGS_ATTR_UNUSED,bool initialized CTAGS
 	cxxScopeDone();
 
 	cxxTokenAPIDone();
+    pSubparsers = NULL; 
+    
 }

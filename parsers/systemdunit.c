@@ -114,23 +114,23 @@ static void findSystemdUnitTags (void)
 	scheduleRunningBaseparser (0);
 }
 
+static const char *const extensions [] = { "unit", "service", "socket", "device",
+    "mount", "automount", "swap", "target",
+    "path", "timer", "snapshot", "scope",
+    "slice", "time", /* ... */
+    NULL };
+static iniconfSubparser systemdUnitSubparser = {
+    .subparser = {
+        .direction = SUBPARSER_SUB_RUNS_BASE,
+    },
+    .newDataNotify = newDataCallback,
+};
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "Iniconf", &systemdUnitSubparser },
+};
+
 extern parserDefinition* SystemdUnitParser (void)
 {
-	static const char *const extensions [] = { "unit", "service", "socket", "device",
-											   "mount", "automount", "swap", "target",
-											   "path", "timer", "snapshot", "scope",
-											   "slice", "time", /* ... */
-											   NULL };
-	static iniconfSubparser systemdUnitSubparser = {
-		.subparser = {
-			.direction = SUBPARSER_SUB_RUNS_BASE,
-		},
-		.newDataNotify = newDataCallback,
-	};
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "Iniconf", &systemdUnitSubparser },
-	};
-
 	parserDefinition* const def = parserNew ("SystemdUnit");
 
 	def->dependencies = dependencies;

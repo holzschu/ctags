@@ -2476,9 +2476,9 @@ static void findSqlTags (void)
 	deleteToken (token);
 }
 
+static const char *const extensions [] = { "sql", NULL };
 extern parserDefinition* SqlParser (void)
 {
-	static const char *const extensions [] = { "sql", NULL };
 	parserDefinition* def = parserNew ("SQL");
 	def->kindTable	= SqlKinds;
 	def->kindCount	= ARRAY_SIZE (SqlKinds);

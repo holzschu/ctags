@@ -10,41 +10,41 @@ static void initializeQemuHXParser (const langType language CTAGS_ATTR_UNUSED)
 {
 }
 
+static const char *const extensions [] = {
+    "hx",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    NULL
+};
+
+static kindDefinition QemuHXKindTable [] = {
+    { true, 'q', "qmp", "QEMU Management Protocol dispatch table entries" },
+    { true, 'i', "infoitem", "item in texinfo doc" },
+};
+static xtagDefinition QemuHXXtagTable [] = {
+    {
+        .enabled     = true,
+        .name        = "funcmap",
+        .description = "Include mapping SQMP to C function name",
+    },
+};
+static tagRegexTable QemuHXTagRegexTable [] = {
+    {"^SQMP[[:space:]]([-a-z_0-9A-Z]+)[[:space:]]---", "\\1",
+        "q", "{mgroup=1}", NULL, true},
+    {"^SQMP[[:space:]]([-a-z_0-9A-Z]+)[[:space:]]---", "qmp_\\1",
+        "q", "{mgroup=1}{_extra=funcmap}", NULL, true},
+    {"^@item[[:space:]]{1,}([-.a-z_0-9A-Z]{1,})", "\\1",
+        "i", NULL, NULL, false},
+};
+
 extern parserDefinition* QemuHXParser (void)
 {
-	static const char *const extensions [] = {
-		"hx",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		NULL
-	};
-
-	static kindDefinition QemuHXKindTable [] = {
-		{ true, 'q', "qmp", "QEMU Management Protocol dispatch table entries" },
-		{ true, 'i', "infoitem", "item in texinfo doc" },
-	};
-	static xtagDefinition QemuHXXtagTable [] = {
-		{
-		  .enabled     = true,
-		  .name        = "funcmap",
-		  .description = "Include mapping SQMP to C function name",
-		},
-	};
-	static tagRegexTable QemuHXTagRegexTable [] = {
-		{"^SQMP[[:space:]]([-a-z_0-9A-Z]+)[[:space:]]---", "\\1",
-		"q", "{mgroup=1}", NULL, true},
-		{"^SQMP[[:space:]]([-a-z_0-9A-Z]+)[[:space:]]---", "qmp_\\1",
-		"q", "{mgroup=1}{_extra=funcmap}", NULL, true},
-		{"^@item[[:space:]]{1,}([-.a-z_0-9A-Z]{1,})", "\\1",
-		"i", NULL, NULL, false},
-	};
-
 
 	parserDefinition* const def = parserNew ("QemuHX");
 

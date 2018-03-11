@@ -257,9 +257,9 @@ static void initialize (const langType language)
 	Lang_protobuf = language;
 }
 
+static const char *const extensions [] = { "proto", NULL };
 extern parserDefinition* ProtobufParser (void)
 {
-	static const char *const extensions [] = { "proto", NULL };
 	parserDefinition* def = parserNew ("Protobuf");
 
 	def->extensions = extensions;

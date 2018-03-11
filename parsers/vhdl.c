@@ -800,9 +800,9 @@ static void findVhdlTags (void)
 	deleteToken (token);
 }
 
+static const char *const extensions[] = { "vhdl", "vhd", NULL };
 extern parserDefinition *VhdlParser (void)
 {
-	static const char *const extensions[] = { "vhdl", "vhd", NULL };
 	parserDefinition *def = parserNew ("VHDL");
 	def->kindTable = VhdlKinds;
 	def->kindCount = ARRAY_SIZE (VhdlKinds);

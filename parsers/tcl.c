@@ -620,11 +620,11 @@ static void findTclTags (void)
 	flashTokenBacklog (&tclTokenInfoClass);
 }
 
+static const char *const extensions [] = { "tcl", "tk", "wish", "exp", NULL };
+static const char *const aliases [] = {"expect", "tclsh", NULL };
+
 extern parserDefinition* TclParser (void)
 {
-	static const char *const extensions [] = { "tcl", "tk", "wish", "exp", NULL };
-	static const char *const aliases [] = {"expect", "tclsh", NULL };
-
 	parserDefinition* def = parserNew ("Tcl");
 	def->kindTable      = TclKinds;
 	def->kindCount  = ARRAY_SIZE (TclKinds);

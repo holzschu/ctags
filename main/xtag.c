@@ -281,6 +281,7 @@ const char* getXtagName (xtagType type)
 extern void initXtagObjects (void)
 {
 	xtagObject *xobj;
+    xtagObjectUsed = 0;
 
 	xtagObjectAllocated = ARRAY_SIZE (xtagDefinitions);
 	xtagObjects = xMalloc (xtagObjectAllocated, xtagObject);

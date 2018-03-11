@@ -71,88 +71,88 @@
 // - Template specialisations (another field?)
 // - Forward declarations might become tags
 
+static const char * const cExtensions [] =
+{
+    "c",
+    NULL
+};
+
+static selectLanguage cSelectors[] = { selectByObjectiveCKeywords, NULL };
+
 
 parserDefinition * CParser (void)
 {
-	static const char * const extensions [] =
-	{
-		"c",
-		NULL
-	};
-
-	static selectLanguage selectors[] = { selectByObjectiveCKeywords, NULL };
-
 	parserDefinition* def = parserNew("C");
 
 	def->kindTable = cxxTagGetCKindDefinitions();
 	def->kindCount = cxxTagGetCKindDefinitionCount();
 	def->fieldTable = cxxTagGetCFieldDefinitionifiers();
 	def->fieldCount = cxxTagGetCFieldDefinitionifierCount();
-	def->extensions = extensions;
+	def->extensions = cExtensions;
 	def->parser2 = cxxCParserMain;
 	def->initialize = cxxCParserInitialize;
 	def->finalize = cxxParserCleanup;
-	def->selectLanguage = selectors;
+	def->selectLanguage = cSelectors;
 	def->useCork = true; // We use corking to block output until the end of file
 
 	return def;
 }
 
+static const char * const cppExtensions [] =
+{
+    "c++", "cc", "cp", "cpp", "cxx",
+    "h", "h++", "hh", "hp", "hpp", "hxx", "inl",
+#ifndef CASE_INSENSITIVE_FILENAMES
+    "C", "H", "CPP", "CXX",
+#endif
+    NULL
+};
+static parserDependency cppDependencies [] = {
+    { DEPTYPE_KIND_OWNER, "C" },
+};
+
+static selectLanguage cppSelectors[] = { selectByObjectiveCKeywords, NULL };
+
 parserDefinition * CppParser (void)
 {
-	static const char * const extensions [] =
-	{
-		"c++", "cc", "cp", "cpp", "cxx",
-		"h", "h++", "hh", "hp", "hpp", "hxx", "inl",
-#ifndef CASE_INSENSITIVE_FILENAMES
-		"C", "H", "CPP", "CXX",
-#endif
-		NULL
-	};
-	static parserDependency dependencies [] = {
-		{ DEPTYPE_KIND_OWNER, "C" },
-	};
-
-	static selectLanguage selectors[] = { selectByObjectiveCKeywords, NULL };
-
 	parserDefinition* def = parserNew("C++");
 
-	def->dependencies = dependencies;
-	def->dependencyCount = ARRAY_SIZE (dependencies);
+	def->dependencies = cppDependencies;
+	def->dependencyCount = ARRAY_SIZE (cppDependencies);
 	def->kindTable = cxxTagGetCPPKindDefinitions();
 	def->kindCount = cxxTagGetCPPKindDefinitionCount();
 	def->fieldTable = cxxTagGetCPPFieldDefinitionifiers();
 	def->fieldCount = cxxTagGetCPPFieldDefinitionifierCount();
-	def->extensions = extensions;
+	def->extensions = cppExtensions;
 	def->parser2 = cxxCppParserMain;
 	def->initialize = cxxCppParserInitialize;
 	def->finalize = cxxParserCleanup;
-	def->selectLanguage = selectors;
+	def->selectLanguage = cppSelectors;
 	def->useCork = true; // We use corking to block output until the end of file
 
 	return def;
 }
 
+static const char * const cudaExtensions [] =
+{
+    "cu", "cuh",
+    NULL
+};
+static parserDependency cudaDependencies [] = {
+    { DEPTYPE_KIND_OWNER, "C" },
+};
+
 parserDefinition * CUDAParser (void)
 {
-	static const char * const extensions [] =
-	{
-		"cu", "cuh",
-		NULL
-	};
-	static parserDependency dependencies [] = {
-		{ DEPTYPE_KIND_OWNER, "C" },
-	};
-
 	parserDefinition* def = parserNew("CUDA");
 
-	def->dependencies = dependencies;
-	def->dependencyCount = ARRAY_SIZE (dependencies);
+	def->dependencies = cudaDependencies;
+	def->dependencyCount = ARRAY_SIZE (cudaDependencies);
 	def->kindTable = cxxTagGetCUDAKindDefinitions();
 	def->kindCount = cxxTagGetCUDAKindDefinitionCount();
 	def->fieldTable = cxxTagGetCUDAFieldDefinitionifiers();
 	def->fieldCount = cxxTagGetCUDAFieldDefinitionifierCount();
-	def->extensions = extensions;
+	def->extensions = cudaExtensions;
 	def->parser2 = cxxCUDAParserMain;
 	def->initialize = cxxCUDAParserInitialize;
 	def->finalize = cxxParserCleanup;

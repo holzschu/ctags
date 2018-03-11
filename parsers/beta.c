@@ -301,9 +301,9 @@ static void findBetaTags (void)
 	vStringDelete (line);
 }
 
+static const char *const extensions [] = { "bet", NULL };
 extern parserDefinition* BetaParser (void)
 {
-	static const char *const extensions [] = { "bet", NULL };
 	parserDefinition* def = parserNew ("BETA");
 	def->kindTable      = BetaKinds;
 	def->kindCount  = ARRAY_SIZE (BetaKinds);

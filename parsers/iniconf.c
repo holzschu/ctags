@@ -228,9 +228,9 @@ static void findIniconfTags (void)
 	vStringDelete (val);
 }
 
+static const char *const extensions [] = { "ini", "conf", NULL };
 extern parserDefinition* IniconfParser (void)
 {
-	static const char *const extensions [] = { "ini", "conf", NULL };
 	parserDefinition* const def = parserNew ("Iniconf");
 
 	def->kindTable      = IniconfKinds;

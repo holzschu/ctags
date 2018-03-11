@@ -118,6 +118,7 @@ extern bool doesFieldHaveValue (fieldType type, const tagEntryInfo *tag);
 extern const char* renderFieldEscaped (writerType writer, fieldType type, const tagEntryInfo *tag, int index,
 									   bool *rejected);
 
+extern void resetFieldOptionsToDefaultValues (void);
 extern void initFieldObjects (void);
 extern int countFields (void);
 

@@ -377,21 +377,20 @@ static void initialize (const langType language)
 	Lang_asm = language;
 }
 
+static const char *const extensions [] = {
+    "asm", "ASM", "s", "S", NULL
+};
+static const char *const patterns [] = {
+    "*.A51",
+    "*.29[kK]",
+    "*.[68][68][kKsSxX]",
+    "*.[xX][68][68]",
+    NULL
+};
+static selectLanguage selectors[] = { selectByArrowOfR,
+    NULL };
 extern parserDefinition* AsmParser (void)
 {
-	static const char *const extensions [] = {
-		"asm", "ASM", "s", "S", NULL
-	};
-	static const char *const patterns [] = {
-		"*.A51",
-		"*.29[kK]",
-		"*.[68][68][kKsSxX]",
-		"*.[xX][68][68]",
-		NULL
-	};
-	static selectLanguage selectors[] = { selectByArrowOfR,
-					      NULL };
-
 	parserDefinition* def = parserNew ("Asm");
 	def->kindTable      = AsmKinds;
 	def->kindCount  = ARRAY_SIZE (AsmKinds);

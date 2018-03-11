@@ -204,9 +204,9 @@ static void findSmlTags (void)
 	vStringDelete (identifier);
 }
 
+static const char *const extensions[] = { "sml", "sig", NULL };
 extern parserDefinition *SmlParser (void)
 {
-	static const char *const extensions[] = { "sml", "sig", NULL };
 	parserDefinition *def = parserNew ("SML");
 	def->kindTable = SmlKinds;
 	def->kindCount = ARRAY_SIZE (SmlKinds);

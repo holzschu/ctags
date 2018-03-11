@@ -322,10 +322,10 @@ findXsltTags (void)
 		     &scopeIndex);
 }
 
+static const char *const extensions [] = { "xsl", "xslt", NULL };
 extern parserDefinition*
 XsltParser (void)
 {
-	static const char *const extensions [] = { "xsl", "xslt", NULL };
 	parserDefinition* const def = parserNew ("XSLT");
 
 	def->kindTable         = XsltKinds;

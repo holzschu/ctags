@@ -971,9 +971,9 @@ static void parseTTCN (void)
 }
 
 /* Parser definition */
+static const char * const extensions [] = { "ttcn", "ttcn3", NULL };
 extern parserDefinition * TTCNParser (void)
 {
-	static const char * const extensions [] = { "ttcn", "ttcn3", NULL };
 	parserDefinition * def = parserNew ("TTCN");
 	def->kindTable      = ttcnKinds;
 	def->kindCount  = ARRAY_SIZE(ttcnKinds);

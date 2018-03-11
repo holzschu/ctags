@@ -720,18 +720,18 @@ static void initialize (const langType language)
 	Lang_ldscript = language;
 }
 
+/* File name patters are picked from Linux kernel. */
+static const char *const extensions [] = { "lds", "scr", "ld", NULL };
+
+/* lds.S must be here because Asm parser registers .S as an extension. */
+static const char *const patterns [] = { "*.lds.S", "ld.*", NULL };
+
+/* Emacs's mode */
+static const char *const aliases [] = { "ld-script", NULL };
+
 extern parserDefinition* LdScriptParser (void)
 {
 	parserDefinition* def = parserNew ("LdScript");
-
-	/* File name patters are picked from Linux kernel. */
-	static const char *const extensions [] = { "lds", "scr", "ld", NULL };
-
-	/* lds.S must be here because Asm parser registers .S as an extension. */
-	static const char *const patterns [] = { "*.lds.S", "ld.*", NULL };
-
-	/* Emacs's mode */
-	static const char *const aliases [] = { "ld-script", NULL };
 
 	def->initialize = initialize;
 	def->parser     = findLdScriptTags;

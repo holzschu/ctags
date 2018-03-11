@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include "ios_error.h"
 
 /*
  * Types
@@ -577,7 +578,8 @@ static EsObject* value_inherits (EsObject *args, tagEntry *entry)
 
 		if (h == NULL)
 		{
-			fprintf(stderr, "MEMORY EXHAUSTED\n");
+			fprintf(thread_stderr, "MEMORY EXHAUSTED\n");
+            ctags_cleanup();
 			exit (1);
 		}
 
@@ -679,12 +681,12 @@ enum QRESULT q_is_acceptable  (QCode *code, tagEntry *entry)
 		i = Q_REJECT;
 	else if (es_error_p (r))
 	{
-		MIO  *mioerr = mio_new_fp (stderr, NULL);;
+		MIO  *mioerr = mio_new_fp (thread_stderr, NULL);;
 
-		fprintf(stderr, "GOT ERROR in QUALIFYING: %s: ",
+		fprintf(thread_stderr, "GOT ERROR in QUALIFYING: %s: ",
 			 es_error_name (r));
 		es_print(es_error_get_object(r), mioerr);
-		putc('\n', stderr);
+		putc('\n', thread_stderr);
 		i = Q_ERROR;
 
 		mio_free(mioerr);

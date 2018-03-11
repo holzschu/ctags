@@ -226,17 +226,44 @@ static fieldDefinition fieldDefinitionsUniversal [] = {
 			   [WRITER_U_CTAGS] = renderFieldEnd),
 };
 
-
 static unsigned int       fieldObjectUsed = 0;
 static unsigned int       fieldObjectAllocated = 0;
 static fieldObject* fieldObjects = NULL;
+
+extern void  resetFieldOptionsToDefaultValues (void)
+{
+    fieldDefinitionsFixed[0].enabled = true;
+    fieldDefinitionsFixed[1].enabled = true;
+    fieldDefinitionsFixed[2].enabled = true;
+    fieldDefinitionsExuberant[0].enabled = false;
+    fieldDefinitionsExuberant[1].enabled = false;
+    fieldDefinitionsExuberant[2].enabled = true;
+    fieldDefinitionsExuberant[3].enabled = false;
+    fieldDefinitionsExuberant[4].enabled = false;
+    fieldDefinitionsExuberant[5].enabled = true;
+    fieldDefinitionsExuberant[6].enabled = false;
+    fieldDefinitionsExuberant[7].enabled = false;
+    fieldDefinitionsExuberant[8].enabled = false;
+    fieldDefinitionsExuberant[9].enabled = false;
+    fieldDefinitionsExuberant[10].enabled = true;
+    fieldDefinitionsExuberant[11].enabled = true;
+    fieldDefinitionsExuberant[12].enabled = false;
+    fieldDefinitionsUniversal[0].enabled = false;
+    fieldDefinitionsUniversal[1].enabled = false;
+    fieldDefinitionsUniversal[2].enabled = false;
+    fieldDefinitionsUniversal[3].enabled = false;
+    fieldDefinitionsUniversal[4].enabled = false;
+    fieldDefinitionsUniversal[5].enabled = false;
+    fieldDefinitionsUniversal[6].enabled = false;
+}
+
 
 extern void initFieldObjects (void)
 {
 	unsigned int i;
 	fieldObject *fobj;
 
-	Assert (fieldObjects == NULL);
+    Assert (fieldObjects == NULL);
 
 	fieldObjectAllocated
 	  = ARRAY_SIZE (fieldDefinitionsFixed)

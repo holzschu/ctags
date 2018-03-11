@@ -253,21 +253,12 @@ static void freeInputFileInfo (inputFileInfo *finfo)
 		vStringDelete (finfo->tagPath);
 		finfo->tagPath = NULL;
 	}
-}
-
-extern void freeInputFileResources (void)
-{
-	if (File.path != NULL)
-		vStringDelete (File.path);
-	if (File.line != NULL)
-		vStringDelete (File.line);
-	freeInputFileInfo (&File.input);
-	freeInputFileInfo (&File.source);
-}
-
-extern const unsigned char *getInputFileData (size_t *size)
-{
-	return mio_memory_get_data (File.mio, size);
+    finfo->lineNumber = 0;
+    finfo->lineNumberOrigin = 0;
+    finfo->isHeader = 0;
+    finfo->langInfo.stack.count = 0;
+    finfo->langInfo.stack.size = 0;
+    finfo->langInfo.stack.languages = NULL;
 }
 
 /*
@@ -275,13 +266,57 @@ extern const unsigned char *getInputFileData (size_t *size)
  */
 static void freeLineFposMap (inputLineFposMap *lineFposMap)
 {
-	if (lineFposMap->pos)
-	{
-		eFree (lineFposMap->pos);
-		lineFposMap->pos = NULL;
-		lineFposMap->count = 0;
-		lineFposMap->size = 0;
-	}
+    if (lineFposMap->pos)
+    {
+        eFree (lineFposMap->pos);
+        lineFposMap->pos = NULL;
+        lineFposMap->count = 0;
+        lineFposMap->size = 0;
+    }
+}
+
+extern void freeInputFileResources (void)
+{
+    // clear and reset all variables:
+    StartOfLine.pos.impl.file = 0;
+    StartOfLine.pos.impl.mem = 0;
+    StartOfLine.pos.type = 0;
+    StartOfLine.offset = 0;
+    StartOfLine.open = false;
+    StartOfLine.crAdjustment = 0;
+
+	if (File.path != NULL)
+		vStringDelete (File.path);
+    File.path = NULL;
+	if (File.line != NULL)
+		vStringDelete (File.line);
+    File.line = NULL;
+    File.currentLine = NULL;
+    File.mio = NULL;
+	freeInputFileInfo (&File.input);
+	freeInputFileInfo (&File.source);
+    File.filePosition = StartOfLine;
+    File.ungetchIdx = 0;
+    File.ungetchBuf[0] = 0;
+    File.ungetchBuf[1] = 0;
+    File.ungetchBuf[2] = 0;
+    File.bomFound = false;
+    File.sourceTagPathHolder = NULL;
+    File.nestedInputStreamInfo.startLine = 0;
+    File.nestedInputStreamInfo.startCharOffset = 0;
+    File.nestedInputStreamInfo.endLine = 0;
+    File.nestedInputStreamInfo.endCharOffset = 0;
+    freeLineFposMap(&(File.lineFposMap));
+    File.thinDepth = 0;
+    if (File.allLines != NULL)
+        vStringDelete (File.allLines);
+    File.allLines = NULL;
+    BackupFile = File;
+}
+
+extern const unsigned char *getInputFileData (size_t *size)
+{
+	return mio_memory_get_data (File.mio, size);
 }
 
 static void allocLineFposMap (inputLineFposMap *lineFposMap)

@@ -109,9 +109,9 @@ static void findAutoItTags (void)
 	vStringDelete (name);
 }
 
+static char const *extensions[] = { "au3", "AU3", "aU3", "Au3", NULL };
 parserDefinition *AutoItParser (void)
 {
-	static char const *extensions[] = { "au3", "AU3", "aU3", "Au3", NULL };
 	parserDefinition* def = parserNew ("AutoIt");
 	def->kindTable      = AutoItKinds;
 	def->kindCount  = ARRAY_SIZE (AutoItKinds);

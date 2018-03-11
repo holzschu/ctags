@@ -19,6 +19,7 @@
 #include "keyword.h"
 #include "options.h"
 #include "routines.h"
+#include "ios_error.h"
 
 /*
 *   DATA DECLARATIONS
@@ -39,11 +40,10 @@ static hashEntry **HashTable = NULL;
 /*
 *   FUNCTION DEFINITIONS
 */
+static bool allocated = false;
 
 static hashEntry **getHashTable (void)
 {
-	static bool allocated = false;
-
 	if (! allocated)
 	{
 		unsigned int i;
@@ -184,14 +184,16 @@ extern void freeKeywordTable (void)
 			}
 		}
 		eFree (HashTable);
+        HashTable = NULL;
 	}
+    allocated = false;
 }
 
 #ifdef DEBUG
 
 static void printEntry (const hashEntry *const entry)
 {
-	printf ("  %-15s %-7s\n", entry->string, getLanguageName (entry->language));
+	fprintf (thread_stdout, "  %-15s %-7s\n", entry->string, getLanguageName (entry->language));
 }
 
 static unsigned int printBucket (const unsigned int i)
@@ -201,16 +203,16 @@ static unsigned int printBucket (const unsigned int i)
 	unsigned int measure = 1;
 	bool first = true;
 
-	printf ("%2d:", i);
+	fprintf (thread_stdout, "%2d:", i);
 	if (entry == NULL)
-		printf ("\n");
+		fprintf (thread_stdout, "\n");
 	else while (entry != NULL)
 	{
 		if (! first)
-			printf ("    ");
+			fprintf (thread_stdout, "    ");
 		else
 		{
-			printf (" ");
+			fprintf (thread_stdout, " ");
 			first = false;
 		}
 		printEntry (entry);
@@ -235,8 +237,8 @@ extern void printKeywordTable (void)
 			++emptyBucketCount;
 	}
 
-	printf ("spread measure = %ld\n", measure);
-	printf ("%ld empty buckets\n", emptyBucketCount);
+	fprintf (thread_stdout, "spread measure = %ld\n", measure);
+	fprintf (thread_stdout, "%ld empty buckets\n", emptyBucketCount);
 }
 
 #endif

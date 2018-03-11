@@ -375,9 +375,9 @@ static void initialize (const langType language)
 }
 
 /* Create parser definition structure */
+static const char *const extensions [] = { "json", NULL };
 extern parserDefinition* JsonParser (void)
 {
-	static const char *const extensions [] = { "json", NULL };
 	parserDefinition *const def = parserNew ("JSON");
 	def->extensions = extensions;
 	def->kindTable	= JsonKinds;

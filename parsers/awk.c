@@ -65,10 +65,10 @@ static void findAwkTags (void)
 	vStringDelete (name);
 }
 
+static const char *const extensions [] = { "awk", "gawk", "mawk", NULL };
+static const char *const aliases [] = { "gawk", "mawk", NULL };
 extern parserDefinition* AwkParser (void)
 {
-	static const char *const extensions [] = { "awk", "gawk", "mawk", NULL };
-	static const char *const aliases [] = { "gawk", "mawk", NULL };
 	parserDefinition* def = parserNew ("Awk");
 	def->kindTable      = AwkKinds;
 	def->kindCount  = ARRAY_SIZE (AwkKinds);

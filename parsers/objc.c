@@ -1150,15 +1150,15 @@ static void objcInitialize (const langType language)
 	Lang_ObjectiveC = language;
 }
 
+static const char *const extensions[] = { "mm", "m", "h",
+    NULL };
+static const char *const aliases[] = { "objc", "objective-c",
+    NULL };
+static selectLanguage selectors[] = { selectByObjectiveCAndMatLabKeywords,
+    selectByObjectiveCKeywords,
+    NULL };
 extern parserDefinition *ObjcParser (void)
 {
-	static const char *const extensions[] = { "mm", "m", "h",
-						  NULL };
-	static const char *const aliases[] = { "objc", "objective-c",
-					       NULL };
-	static selectLanguage selectors[] = { selectByObjectiveCAndMatLabKeywords,
-					      selectByObjectiveCKeywords,
-					      NULL };
 	parserDefinition *def = parserNew ("ObjectiveC");
 	def->kindTable = ObjcKinds;
 	def->kindCount = ARRAY_SIZE (ObjcKinds);

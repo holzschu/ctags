@@ -199,21 +199,21 @@ findAnsiblePlaybookTags (void)
 	scheduleRunningBaseparser (0);
 }
 
+static struct sAnsiblePlaybookSubparser ansiblePlaybookSubparser = {
+    .yaml = {
+        .subparser = {
+            .direction = SUBPARSER_BI_DIRECTION,
+            .inputStart = inputStart,
+            .inputEnd = inputEnd,
+        },
+        .newTokenNotfify = newTokenCallback
+    },
+};
+static parserDependency dependencies [] = {
+    { DEPTYPE_SUBPARSER, "Yaml", &ansiblePlaybookSubparser },
+};
 extern parserDefinition* AnsiblePlaybookParser (void)
 {
-	static struct sAnsiblePlaybookSubparser ansiblePlaybookSubparser = {
-		.yaml = {
-			.subparser = {
-				.direction = SUBPARSER_BI_DIRECTION,
-				.inputStart = inputStart,
-				.inputEnd = inputEnd,
-			},
-			.newTokenNotfify = newTokenCallback
-		},
-	};
-	static parserDependency dependencies [] = {
-		{ DEPTYPE_SUBPARSER, "Yaml", &ansiblePlaybookSubparser },
-	};
 
 	parserDefinition* const def = parserNew ("AnsiblePlaybook");
 

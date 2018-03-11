@@ -55,6 +55,7 @@
 #include "trashbox.h"
 #include "writer.h"
 #include "xtag.h"
+#include "ios_error.h"
 
 /*
 *   MACROS
@@ -130,15 +131,37 @@ extern int truncate (const char *path, off_t length);
 extern int ftruncate (int fd, off_t length);
 #endif
 
+static vString *cached_pattern = NULL;
+static MIOPos   cached_location;
+
 /*
 *   FUNCTION DEFINITIONS
 */
 
 extern void freeTagFileResources (void)
 {
+    // Also re-initialize all values
+    if (TagFile.name != NULL)
+        eFree (TagFile.name);
+    TagFile.name = NULL;
 	if (TagFile.directory != NULL)
 		eFree (TagFile.directory);
+    TagFile.directory = NULL;
+    TagFile.mio = NULL;
+    TagFile.numTags.added = 0;
+    TagFile.numTags.prev = 0;
+    TagFile.max.line = 0;
+    TagFile.max.tag = 0;
 	vStringDelete (TagFile.vLine);
+    TagFile.vLine = NULL;
+    uncorkTagFile();
+    TagFile.cork = false;
+    TagFile.patternCacheValid = false;
+    TagsToStdout = false;
+    cached_pattern = NULL; // will be deleted by trashcan
+    cached_location.impl.file = 0;
+    cached_location.impl.mem = 0;
+    cached_location.type = 0;
 }
 
 extern const char *tagFileName (void)
@@ -397,7 +420,7 @@ extern void openTagFile (void)
 		{
 			/* Passing NULL for keeping stdout open.
 			   stdout can be used for debugging purpose.*/
-			TagFile.mio = mio_new_fp(stdout, NULL);
+			TagFile.mio = mio_new_fp(thread_stdout, NULL);
 			TagFile.name = eStrdup ("/dev/stdout");
 		}
 		else
@@ -591,7 +614,7 @@ static void resizeTagFile (const long newSize)
 # endif
 #endif
 	if (result == -1)
-		fprintf (stderr, "Cannot shorten tag file: errno = %d\n", errno);
+		fprintf (thread_stderr, "Cannot shorten tag file: errno = %d\n", errno);
 }
 
 static void writeEtagsIncludes (MIO *const mio)
@@ -857,8 +880,6 @@ static int   makePatternStringCommon (const tagEntryInfo *const tag,
 	int (* puts_o_func)(const char* , void *);
 	void * o_output;
 
-	static vString *cached_pattern;
-	static MIOPos   cached_location;
 	if (TagFile.patternCacheValid
 	    && (! tag->truncateLineAfterTag)
 	    && (memcmp (&tag->filePosition, &cached_location, sizeof(MIOPos)) == 0))

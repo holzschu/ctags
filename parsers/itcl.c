@@ -310,14 +310,14 @@ static void findITclTags(void)
 	scheduleRunningBaseparser (RUN_DEFAULT_SUBPARSERS);
 }
 
+static const char *const extensions [] = { "itcl", NULL };
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "Tcl", &itclSubparser },
+};
+
 extern parserDefinition* ITclParser (void)
 {
-	static const char *const extensions [] = { "itcl", NULL };
 	parserDefinition* const def = parserNew("ITcl");
-
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "Tcl", &itclSubparser },
-	};
 
 	def->dependencies = dependencies;
 	def->dependencyCount = ARRAY_SIZE (dependencies);

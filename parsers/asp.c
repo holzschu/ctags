@@ -301,9 +301,9 @@ static void findAspTags (void)
 	vStringDelete (name);
 }
 
+static const char *const extensions [] = { "asp", "asa", NULL };
 extern parserDefinition* AspParser (void)
 {
-	static const char *const extensions [] = { "asp", "asa", NULL };
 	parserDefinition* def = parserNew ("Asp");
 	def->kindTable      = AspKinds;
 	def->kindCount  = ARRAY_SIZE (AspKinds);

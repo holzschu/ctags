@@ -30,6 +30,7 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include "ios_error.h"
 
 
 static int es_debug = 0;
@@ -237,7 +238,7 @@ static MIO *mio_stdout (void)
   static MIO  *out;
 
   if (out == NULL)
-    out = mio_new_fp (stdout, NULL);
+    out = mio_new_fp (thread_stdout, NULL);
 
   return out;
 }
@@ -247,7 +248,7 @@ static MIO *mio_stdin (void)
   static MIO  *out;
 
   if (out == NULL)
-    out = mio_new_fp (stdin, NULL);
+    out = mio_new_fp (thread_stdin, NULL);
 
   return out;
 }
@@ -257,7 +258,7 @@ static MIO *mio_stderr (void)
   static MIO  *out;
 
   if (out == NULL)
-    out = mio_new_fp (stderr, NULL);
+    out = mio_new_fp (thread_stderr, NULL);
 
   return out;
 }

@@ -188,7 +188,7 @@ selectByObjectiveCKeywords (MIO * input,
 {
     /* TODO: Ideally opening input should be delayed til
        enable/disable based selection is done. */
-
+    
     static langType objc = LANG_IGNORE;
     static langType cpp = LANG_IGNORE;
 

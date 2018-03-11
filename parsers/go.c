@@ -924,9 +924,9 @@ static void findGoTags (void)
 	deleteToken (token);
 }
 
+static const char *const extensions[] = { "go", NULL };
 extern parserDefinition *GoParser (void)
 {
-	static const char *const extensions[] = { "go", NULL };
 	parserDefinition *def = parserNew ("Go");
 	def->kindTable = GoKinds;
 	def->kindCount = ARRAY_SIZE (GoKinds);

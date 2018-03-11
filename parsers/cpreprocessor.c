@@ -301,6 +301,8 @@ extern void cppInit (const bool state, const bool hasAtLiteralStrings,
 				   headerSystemRoleIndex, headerLocalRoleIndex);
 }
 
+static hashTable * defineMacroTable;
+
 extern void cppTerminate (void)
 {
 	if (Cpp.directive.name != NULL)
@@ -316,6 +318,7 @@ extern void cppTerminate (void)
 	}
 
 	Cpp.clientLang = LANG_IGNORE;
+    defineMacroTable = NULL;
 }
 
 extern void cppBeginStatement (void)
@@ -1371,8 +1374,6 @@ static void findCppTags (void)
 /*
  *  Token ignore processing
  */
-
-static hashTable * defineMacroTable;
 
 /*  Determines whether or not "name" should be ignored, per the ignore list.
  */

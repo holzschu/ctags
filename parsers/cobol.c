@@ -149,10 +149,10 @@ static void initializeCobolParser (langType language)
 					  make_tag_for_copied_in_sourcefile, NULL, NULL);
 }
 
+static const char *const extensions [] = {
+    "cbl", "cob", "CBL", "COB", NULL };
 extern parserDefinition* CobolParser (void)
 {
-	static const char *const extensions [] = {
-			"cbl", "cob", "CBL", "COB", NULL };
 	parserDefinition* def = parserNew ("Cobol");
 	def->extensions = extensions;
 	def->initialize = initializeCobolParser;

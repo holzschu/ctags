@@ -160,13 +160,13 @@ static void findTclOOTags(void)
 	scheduleRunningBaseparser (RUN_DEFAULT_SUBPARSERS);
 }
 
+static parserDependency dependencies [] = {
+    [0] = { DEPTYPE_SUBPARSER, "Tcl", &tclooSubparser },
+};
+
 extern parserDefinition* TclOOParser (void)
 {
 	parserDefinition* const def = parserNew("TclOO");
-
-	static parserDependency dependencies [] = {
-		[0] = { DEPTYPE_SUBPARSER, "Tcl", &tclooSubparser },
-	};
 
 	def->dependencies = dependencies;
 	def->dependencyCount = ARRAY_SIZE (dependencies);

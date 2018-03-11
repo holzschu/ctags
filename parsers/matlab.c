@@ -35,11 +35,11 @@ static tagRegexTable matlabTagRegexTable [] = {
 /*
 *   FUNCTION DEFINITIONS
 */
+static const char *const extensions [] = { "m", NULL };
+static selectLanguage selectors [] = { selectByObjectiveCAndMatLabKeywords,
+    NULL };
 extern parserDefinition* MatLabParser (void)
 {
-	static const char *const extensions [] = { "m", NULL };
-	static selectLanguage selectors [] = { selectByObjectiveCAndMatLabKeywords,
-					       NULL };
 	parserDefinition* const def = parserNew ("MatLab");
 	def->extensions = extensions;
 	def->tagRegexTable = matlabTagRegexTable;

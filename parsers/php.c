@@ -481,7 +481,7 @@ static const char *tokenTypeName (const tokenType type)
 
 static void printToken (const tokenInfo *const token)
 {
-	fprintf (stderr, "%p:\n\ttype:\t%s\n\tline:\t%lu\n\tscope:\t%s\n", (void *) token,
+	fprintf (thread_stderr, "%p:\n\ttype:\t%s\n\tline:\t%lu\n\tscope:\t%s\n", (void *) token,
 			 tokenTypeName (token->type),
 			 token->lineNumber,
 			 vStringValue (token->scope));
@@ -490,7 +490,7 @@ static void printToken (const tokenInfo *const token)
 		case TOKEN_IDENTIFIER:
 		case TOKEN_STRING:
 		case TOKEN_VARIABLE:
-			fprintf (stderr, "\tcontent:\t%s\n", vStringValue (token->string));
+			fprintf (thread_stderr, "\tcontent:\t%s\n", vStringValue (token->string));
 			break;
 
 		case TOKEN_KEYWORD:
@@ -498,17 +498,17 @@ static void printToken (const tokenInfo *const token)
 			size_t n = ARRAY_SIZE (PhpKeywordTable);
 			size_t i;
 
-			fprintf (stderr, "\tkeyword:\t");
+			fprintf (thread_stderr, "\tkeyword:\t");
 			for (i = 0; i < n; i++)
 			{
 				if (PhpKeywordTable[i].id == token->keyword)
 				{
-					fprintf (stderr, "%s\n", PhpKeywordTable[i].name);
+					fprintf (thread_stderr, "%s\n", PhpKeywordTable[i].name);
 					break;
 				}
 			}
 			if (i >= n)
-				fprintf (stderr, "(unknown)\n");
+				fprintf (thread_stderr, "(unknown)\n");
 		}
 
 		default: break;
@@ -1689,9 +1689,9 @@ static void finalize (langType language CTAGS_ATTR_UNUSED, bool initialized)
 	}
 }
 
+static const char *const extensions [] = { "php", "php3", "php4", "php5", "php7", "phtml", NULL };
 extern parserDefinition* PhpParser (void)
 {
-	static const char *const extensions [] = { "php", "php3", "php4", "php5", "php7", "phtml", NULL };
 	parserDefinition* def = parserNew ("PHP");
 	def->kindTable      = PhpKinds;
 	def->kindCount  = ARRAY_SIZE (PhpKinds);
@@ -1704,13 +1704,13 @@ extern parserDefinition* PhpParser (void)
 	return def;
 }
 
+static const char *const zephirExtensions [] = { "zep", NULL };
 extern parserDefinition* ZephirParser (void)
 {
-	static const char *const extensions [] = { "zep", NULL };
 	parserDefinition* def = parserNew ("Zephir");
 	def->kindTable      = PhpKinds;
 	def->kindCount  = ARRAY_SIZE (PhpKinds);
-	def->extensions = extensions;
+	def->extensions = zephirExtensions;
 	def->parser     = findZephirTags;
 	def->initialize = initializeZephirParser;
 	def->finalize   = finalize;

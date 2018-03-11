@@ -512,11 +512,11 @@ static void findM4Tags(void)
 	vStringDelete(token);
 }
 
+static const char *const extensions [] = { "m4",
+    "spt", /* used in `selinux-policy' */
+    NULL };
 extern parserDefinition* M4Parser (void)
 {
-	static const char *const extensions [] = { "m4",
-						   "spt", /* used in `selinux-policy' */
-						   NULL };
 	parserDefinition* const def = parserNew("M4");
 
 	def->kindTable = M4Kinds;

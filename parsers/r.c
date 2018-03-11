@@ -196,15 +196,15 @@ static void createRTags (void)
 	vStringDelete (vLine);
 }
 
+static const char *const extensions[] = { "r", "R", "s", "q", NULL };
+static selectLanguage selectors[] = { selectByArrowOfR,
+    NULL };
 extern parserDefinition *RParser (void)
 {
 	/* *.r;*.R: R files
 	 * *.s;*.q: S files
 	 */
-	static const char *const extensions[] = { "r", "R", "s", "q", NULL };
 	parserDefinition *const def = parserNew ("R");
-	static selectLanguage selectors[] = { selectByArrowOfR,
-					      NULL };
 	def->extensions = extensions;
 	def->kindTable = RKinds;
 	def->kindCount = KIND_COUNT;

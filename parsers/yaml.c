@@ -157,9 +157,9 @@ static void findYamlTags (void)
 	yamlFini (&yaml);
 }
 
+static const char *const extensions [] = { "yml", NULL };
 extern parserDefinition* YamlParser (void)
 {
-	static const char *const extensions [] = { "yml", NULL };
 	parserDefinition* const def = parserNew ("Yaml");
 
 	def->kindTable = YamlKinds;

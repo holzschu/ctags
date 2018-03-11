@@ -599,16 +599,16 @@ static void initialize (const langType language)
 	Lang_dtd = language;
 }
 
+/* File name patters are picked from Linux kernel. */
+static const char *const extensions [] = {
+    "dtd",
+    "mod",
+    NULL
+};
+
 extern parserDefinition* DtdParser (void)
 {
 	parserDefinition* def = parserNew ("DTD");
-
-	/* File name patters are picked from Linux kernel. */
-	static const char *const extensions [] = {
-		"dtd",
-		"mod",
-		NULL
-	};
 
 	def->initialize = initialize;
 	def->parser     = findDtdTags;

@@ -577,29 +577,29 @@ static void initializePuppetManifestParser (const langType language CTAGS_ATTR_U
 	                               "", "", "", NULL);
 }
 
+static const char *const extensions [] = {
+    "pp",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    NULL
+};
+
+static kindDefinition PuppetManifestKindTable [] = {
+    { true, 'c', "class", "classes" },
+    { true, 'd', "definition", "definitions" },
+    { true, 'n', "node", "nodes" },
+    { true, 'r', "resource", "resources" },
+    { true, 'v', "variable", "variables" },
+};
+
 extern parserDefinition* PuppetManifestParser (void)
 {
-	static const char *const extensions [] = {
-		"pp",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		NULL
-	};
-
-	static kindDefinition PuppetManifestKindTable [] = {
-		{ true, 'c', "class", "classes" },
-		{ true, 'd', "definition", "definitions" },
-		{ true, 'n', "node", "nodes" },
-		{ true, 'r', "resource", "resources" },
-		{ true, 'v', "variable", "variables" },
-	};
-
 	parserDefinition* const def = parserNew ("puppetManifest");
 
 	def->enabled       = true;

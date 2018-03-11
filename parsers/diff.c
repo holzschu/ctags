@@ -200,9 +200,9 @@ static void findDiffTags (void)
 	vStringDelete (filename);
 }
 
+static const char *const extensions [] = { "diff", "patch", NULL };
 extern parserDefinition* DiffParser (void)
 {
-	static const char *const extensions [] = { "diff", "patch", NULL };
 	parserDefinition* const def = parserNew ("Diff");
 	def->kindTable      = DiffKinds;
 	def->kindCount  = ARRAY_SIZE (DiffKinds);

@@ -10,53 +10,53 @@ static void initializeElmParser (const langType language CTAGS_ATTR_UNUSED)
 {
 }
 
+static const char *const extensions [] = {
+    "elm",
+    NULL
+};
+
+static const char *const aliases [] = {
+    NULL
+};
+
+static const char *const patterns [] = {
+    NULL
+};
+
+static kindDefinition ElmKindTable [] = {
+    { true, 'm', "module", "Module" },
+    { true, 'n', "namespace", "Renamed Imported Module" },
+    { true, 'p', "port", "Port" },
+    { true, 't', "type", "Type Definition" },
+    { true, 'c', "constructor", "Type Constructor" },
+    { true, 'a', "alias", "Type Alias" },
+    { true, 'f', "function", "Functions" },
+};
+static tagRegexTable ElmTagRegexTable [] = {
+    {"^(port[[:blank:]]+)?module[[:blank:]]+([[:upper:]][[:alnum:]_.]*)", "\\2",
+        "m", "{scope=push}{exclusive}", NULL, false},
+    {"^import[[:blank:]]+[[:alnum:]_.]+[[:blank:]]+as[[:blank:]]+([[:alnum:]]+)", "\\1",
+        "n", "{scope=clear}{exclusive}", NULL, false},
+    {"^import[[:blank:]]+([[:alnum:]_.]+)[[:blank:]]exposing", "",
+        "", "{scope=clear}{exclusive}", NULL, false},
+    {"^import[[:blank:]]+([[:alnum:]_.]+)", "",
+        "", "{scope=clear}{exclusive}", NULL, false},
+    {"^port[[:blank:]]+([[:lower:]][[:alnum:]_]*).*", "\\1",
+        "p", "{scope=clear}{exclusive}", NULL, false},
+    {"^type +([[:upper:]][[:alnum:]_]*.*)", "\\1",
+        "t", "{scope=set}{exclusive}", NULL, false},
+    {"^[[:blank:]]+[|=][[:blank:]]+([[:upper:]][[:alnum:]_]*.*)$", "\\1",
+        "c", "{scope=ref}{exclusive}", NULL, false},
+    {"^type[[:blank:]]+alias[[:blank:]]+([[:upper:]][[:alnum:]_]*[[:blank:][:alnum:]_]*)", "\\1",
+        "a", "{scope=set}{exclusive}", NULL, false},
+    {"^([[:lower:]_][[:alnum:]_]*)[^=]*=$", "\\1",
+        "f", "{scope=set}", NULL, false},
+    {"^[[:blank:]]+([[:lower:]_][[:alnum:]_]*)[^=]*=$", "\\1",
+        "f", "{scope=ref}", NULL, false},
+};
+
 extern parserDefinition* ElmParser (void)
 {
-	static const char *const extensions [] = {
-		"elm",
-		NULL
-	};
-
-	static const char *const aliases [] = {
-		NULL
-	};
-
-	static const char *const patterns [] = {
-		NULL
-	};
-
-	static kindDefinition ElmKindTable [] = {
-		{ true, 'm', "module", "Module" },
-		{ true, 'n', "namespace", "Renamed Imported Module" },
-		{ true, 'p', "port", "Port" },
-		{ true, 't', "type", "Type Definition" },
-		{ true, 'c', "constructor", "Type Constructor" },
-		{ true, 'a', "alias", "Type Alias" },
-		{ true, 'f', "function", "Functions" },
-	};
-	static tagRegexTable ElmTagRegexTable [] = {
-		{"^(port[[:blank:]]+)?module[[:blank:]]+([[:upper:]][[:alnum:]_.]*)", "\\2",
-		"m", "{scope=push}{exclusive}", NULL, false},
-		{"^import[[:blank:]]+[[:alnum:]_.]+[[:blank:]]+as[[:blank:]]+([[:alnum:]]+)", "\\1",
-		"n", "{scope=clear}{exclusive}", NULL, false},
-		{"^import[[:blank:]]+([[:alnum:]_.]+)[[:blank:]]exposing", "",
-		"", "{scope=clear}{exclusive}", NULL, false},
-		{"^import[[:blank:]]+([[:alnum:]_.]+)", "",
-		"", "{scope=clear}{exclusive}", NULL, false},
-		{"^port[[:blank:]]+([[:lower:]][[:alnum:]_]*).*", "\\1",
-		"p", "{scope=clear}{exclusive}", NULL, false},
-		{"^type +([[:upper:]][[:alnum:]_]*.*)", "\\1",
-		"t", "{scope=set}{exclusive}", NULL, false},
-		{"^[[:blank:]]+[|=][[:blank:]]+([[:upper:]][[:alnum:]_]*.*)$", "\\1",
-		"c", "{scope=ref}{exclusive}", NULL, false},
-		{"^type[[:blank:]]+alias[[:blank:]]+([[:upper:]][[:alnum:]_]*[[:blank:][:alnum:]_]*)", "\\1",
-		"a", "{scope=set}{exclusive}", NULL, false},
-		{"^([[:lower:]_][[:alnum:]_]*)[^=]*=$", "\\1",
-		"f", "{scope=set}", NULL, false},
-		{"^[[:blank:]]+([[:lower:]_][[:alnum:]_]*)[^=]*=$", "\\1",
-		"f", "{scope=ref}", NULL, false},
-	};
-
 
 	parserDefinition* const def = parserNew ("elm");
 

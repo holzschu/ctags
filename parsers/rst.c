@@ -259,9 +259,9 @@ static void findRstTags (void)
 	nestingLevelsFree(nestingLevels);
 }
 
+static const char *const extensions [] = { "rest", "reST", "rst", NULL };
 extern parserDefinition* RstParser (void)
 {
-	static const char *const extensions [] = { "rest", "reST", "rst", NULL };
 	parserDefinition* const def = parserNew ("reStructuredText");
 
 	def->kindTable = RstKinds;

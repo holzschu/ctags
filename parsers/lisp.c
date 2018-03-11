@@ -121,15 +121,14 @@ static void findLispTags (void)
 	vStringDelete (name);
 }
 
+static const char *const extensions [] = {
+    "cl", "clisp", "el", "l", "lisp", "lsp", NULL
+};
+static const char *const aliases [] = {
+    "clisp", "emacs-lisp", NULL
+};
 extern parserDefinition* LispParser (void)
 {
-	static const char *const extensions [] = {
-		"cl", "clisp", "el", "l", "lisp", "lsp", NULL
-	};
-	static const char *const aliases [] = {
-		"clisp", "emacs-lisp", NULL
-	};
-
 	parserDefinition* def = parserNew ("Lisp");
 	def->kindTable      = LispKinds;
 	def->kindCount  = ARRAY_SIZE (LispKinds);
