@@ -32,7 +32,6 @@ config.status
 config.sub
 configure
 core.*
-ctags
 ctags-universal*
 ctags.exe
 ctags.ref
