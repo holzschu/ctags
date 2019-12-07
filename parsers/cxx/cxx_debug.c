@@ -30,28 +30,28 @@ static void cxxDebugDumpChain0 (CXXTokenChain *pChain,
 	if (top_level)
 	{
 		debugIndent ();
-		fprintf (thread_stderr, "<chain ");
+		fprintf (stderr, "<chain ");
 	}
 	else if (pChain == NULL)
 	{
-		fprintf (thread_stderr, "NULL\n");
+		fprintf (stderr, "NULL\n");
 		return;
 	}
 	else
 	{
-		fprintf (thread_stderr, "<");
+		fprintf (stderr, "<");
 	}
 
 	backref = circularRefCheckerCheck (pChainChecker, pChain);
 	if (backref)
 	{
-		fprintf (thread_stderr, "*C#%d>\n", backref);
+		fprintf (stderr, "*C#%d>\n", backref);
 		return;
 	}
 
 	backref = circularRefCheckerGetCurrent (pChainChecker);
 
-	fprintf (thread_stderr, "[%d %p&C#%d]\n", pChain->iCount, pChain, backref);
+	fprintf (stderr, "[%d %p&C#%d]\n", pChain->iCount, pChain, backref);
 
 	debugInc();
 	debugIndent ();
@@ -59,7 +59,7 @@ static void cxxDebugDumpChain0 (CXXTokenChain *pChain,
 	debugDec();
 
 	debugIndent ();
-	fprintf (thread_stderr, ">\n");
+	fprintf (stderr, ">\n");
 }
 
 static void cxxDebugDumpToken0 (CXXToken *pToken,
@@ -72,51 +72,51 @@ static void cxxDebugDumpToken0 (CXXToken *pToken,
 	if (top_level)
 	{
 		debugIndent ();
-		fprintf (thread_stderr, "<token ");
+		fprintf (stderr, "<token ");
 	}
 	else if (pToken == NULL)
 	{
-		fprintf (thread_stderr, "NULL\n");
+		fprintf (stderr, "NULL\n");
 		return;
 	}
 	else
 	{
-		fprintf (thread_stderr, "<");
+		fprintf (stderr, "<");
 	}
 
 	backref = circularRefCheckerCheck (pTokenChecker, pToken);
 	if (backref)
 	{
-		fprintf (thread_stderr, "*T#%d>\n", backref);
+		fprintf (stderr, "*T#%d>\n", backref);
 		return;
 	}
 
 	backref = circularRefCheckerGetCurrent (pTokenChecker);
 
-	fprintf (thread_stderr, "\"%s\": [%s %p &T#%d]\n",
+	fprintf (stderr, "\"%s\": [%s %p &T#%d]\n",
 			 vStringValue (pToken->pszWord),
 			 cxxDebugTypeDecode (pToken->eType), pToken, backref);
 
 	debugIndent ();
-	fprintf (thread_stderr, "  chain: ");
+	fprintf (stderr, "  chain: ");
 	debugInc();
 	cxxDebugDumpChain0 (pToken->pChain, pTokenChecker, pTokenChecker, false);
 	debugDec();
 
 	debugIndent ();
-	fprintf (thread_stderr, "  next: ");
+	fprintf (stderr, "  next: ");
 	debugInc();
 	cxxDebugDumpToken0 (pToken->pNext, pTokenChecker, pTokenChecker, false);
 	debugDec();
 
 	debugIndent ();
-	fprintf (thread_stderr, "  prev: ");
+	fprintf (stderr, "  prev: ");
 	debugInc();
 	cxxDebugDumpToken0 (pToken->pPrev, pTokenChecker, pTokenChecker, false);
 	debugDec();
 
 	debugIndent ();
-	fprintf (thread_stderr, ">\n");
+	fprintf (stderr, ">\n");
 }
 
 typedef void (* cxxDebugDumpCommonFunc)(void *,

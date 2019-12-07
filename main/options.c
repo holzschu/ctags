@@ -35,7 +35,6 @@
 #include "error.h"
 #include "interactive.h"
 #include "writer.h"
-#include "ios_error.h"
 #include "field.h"
 
 #ifdef HAVE_JANSSON
@@ -623,7 +622,7 @@ extern void verbose (const char *const format, ...)
 	{
 		va_list ap;
 		va_start (ap, format);
-		vfprintf (thread_stderr, format, ap);
+		vfprintf (stderr, format, ap);
 		va_end (ap);
 	}
 }
@@ -633,11 +632,11 @@ extern void notice (const char *const format, ...)
 	if (!Option.quiet)
 	{
 		va_list ap;
-		fprintf (thread_stderr, "%s: Notice: ", getExecutableName ());
+		fprintf (stderr, "%s: Notice: ", getExecutableName ());
 		va_start (ap, format);
-		vfprintf (thread_stderr, format, ap);
+		vfprintf (stderr, format, ap);
 		va_end (ap);
-		fputs ("\n", thread_stderr);
+		fputs ("\n", stderr);
 	}
 }
 
@@ -1380,7 +1379,7 @@ static void processOutputEncodingOption(const char *const option CTAGS_ATTR_UNUS
 
 static void printInvocationDescription (void)
 {
-	fprintf (thread_stdout, INVOCATION, getExecutableName ());
+	printf(INVOCATION, getExecutableName ());
 }
 
 static void printOptionDescriptions (const optionDescription *const optDesc)
@@ -1400,12 +1399,12 @@ static void printFeatureList (void)
 	for (i = 0 ; Features [i].name != NULL ; ++i)
 	{
 		if (i == 0)
-			fprintf (thread_stdout, "  Optional compiled features: ");
+			printf("  Optional compiled features: ");
 		if (strcmp (Features [i].name, "regex") != 0 || checkRegex ())
-			fprintf (thread_stdout, "%s+%s", (i>0 ? ", " : ""), Features [i].name);
+			printf("%s+%s", (i>0 ? ", " : ""), Features [i].name);
 #ifdef CUSTOM_CONFIGURATION_FILE
 		if (strcmp (Features [i].name, "custom-conf") == 0)
-			fprintf (thread_stdout, "=%s", CUSTOM_CONFIGURATION_FILE);
+			printf("=%s", CUSTOM_CONFIGURATION_FILE);
 #endif
 	}
 	if (i > 0)
@@ -1438,7 +1437,7 @@ static void processListFeaturesOption(const char *const option CTAGS_ATTR_UNUSED
 	}
 
 	colprintTableSort (table, featureCompare);
-	colprintTablePrint (table, 0, localOption.withListHeader, localOption.machinable, thread_stdout);
+	colprintTablePrint (table, 0, localOption.withListHeader, localOption.machinable, stdout);
 	colprintTableDelete (table);
 
 	if (i == 0)
@@ -1473,7 +1472,7 @@ static void processListFieldsOption(const char *const option CTAGS_ATTR_UNUSED,
 		fieldColprintAddLanguageLines (table, language);
 	}
 
-	fieldColprintTablePrint (table, localOption.withListHeader, localOption.machinable, thread_stdout);
+	fieldColprintTablePrint (table, localOption.withListHeader, localOption.machinable, stdout);
 	colprintTableDelete (table);
     ctags_cleanup();
 	exit (0);
@@ -1483,18 +1482,18 @@ static void printProgramIdentification (void)
 {
 	if ((ctags_repoinfo == NULL)
 	    || (strcmp (ctags_repoinfo, PROGRAM_VERSION) == 0))
-		fprintf (thread_stdout, "%s %s, %s %s\n",
+		printf("%s %s, %s %s\n",
 			PROGRAM_NAME, PROGRAM_VERSION,
 			PROGRAM_COPYRIGHT, AUTHOR_NAME);
 	else
-		fprintf (thread_stdout, "%s %s(%s), %s %s\n",
+		printf("%s %s(%s), %s %s\n",
 			PROGRAM_NAME, PROGRAM_VERSION, ctags_repoinfo,
 			PROGRAM_COPYRIGHT, AUTHOR_NAME);
-	fprintf (thread_stdout, "Universal Ctags is derived from Exuberant Ctags.\n");
-	fprintf (thread_stdout, "Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\n");
+	printf("Universal Ctags is derived from Exuberant Ctags.\n");
+	printf("Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\n");
 
-	fprintf (thread_stdout, "  Compiled: %s, %s\n", __DATE__, __TIME__);
-	fprintf (thread_stdout, "  URL: %s\n", PROGRAM_URL);
+	printf("  Compiled: %s, %s\n", __DATE__, __TIME__);
+	printf("  URL: %s\n", PROGRAM_URL);
 
 	printFeatureList ();
 }
@@ -1916,7 +1915,7 @@ static void processListAliasesOption (
 {
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageAliases (LANG_AUTO,
-							  localOption.withListHeader, localOption.machinable, thread_stdout);
+							  localOption.withListHeader, localOption.machinable, stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1924,7 +1923,7 @@ static void processListAliasesOption (
 			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
 		else
 			printLanguageAliases (language,
-								  localOption.withListHeader, localOption.machinable, thread_stdout);
+								  localOption.withListHeader, localOption.machinable, stdout);
 	}
     ctags_cleanup();
 	exit (0);
@@ -1956,7 +1955,7 @@ static void processListExtrasOption (
 		xtagColprintAddLanguageLines (table, language);
 	}
 
-	xtagColprintTablePrint (table, localOption.withListHeader, localOption.machinable, thread_stdout);
+	xtagColprintTablePrint (table, localOption.withListHeader, localOption.machinable, stdout);
 	colprintTableDelete (table);
     ctags_cleanup();
 	exit (0);
@@ -1969,7 +1968,7 @@ static void processListKindsOption (
 
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageKinds (LANG_AUTO, print_all,
-							localOption.withListHeader, localOption.machinable, thread_stdout);
+							localOption.withListHeader, localOption.machinable, stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1977,7 +1976,7 @@ static void processListKindsOption (
 			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
 		else
 			printLanguageKinds (language, print_all,
-								localOption.withListHeader, localOption.machinable, thread_stdout);
+								localOption.withListHeader, localOption.machinable, stdout);
 	}
     ctags_cleanup();
 	exit (0);
@@ -1989,7 +1988,7 @@ static void processListParametersOption (const char *const option,
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageParameters (LANG_AUTO,
 								 localOption.withListHeader, localOption.machinable,
-								 thread_stdout);
+								 stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -1998,7 +1997,7 @@ static void processListParametersOption (const char *const option,
 		else
 			printLanguageParameters (language,
 									 localOption.withListHeader, localOption.machinable,
-									 thread_stdout);
+									 stdout);
 	}
     ctags_cleanup();
 	exit (0);
@@ -2012,7 +2011,7 @@ static void processListMapsOptionForType (const char *const option CTAGS_ATTR_UN
 	if (parameter [0] == '\0' || strcasecmp (parameter, RSV_LANG_ALL) == 0)
 		printLanguageMaps (LANG_AUTO, type,
 						   localOption.withListHeader, localOption.machinable,
-						   thread_stdout);
+						   stdout);
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
@@ -2021,7 +2020,7 @@ static void processListMapsOptionForType (const char *const option CTAGS_ATTR_UN
 		else
 			printLanguageMaps (language, type,
 							   localOption.withListHeader, localOption.machinable,
-							   thread_stdout);
+							   stdout);
 	}
     ctags_cleanup();
 	exit (0);
@@ -2059,7 +2058,7 @@ static void processListPseudoTagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printPtags (localOption.withListHeader, localOption.machinable, thread_stdout);
+	printPtags (localOption.withListHeader, localOption.machinable, stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2068,7 +2067,7 @@ static void processListRegexFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printRegexFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+	printRegexFlags (localOption.withListHeader, localOption.machinable, stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2077,7 +2076,7 @@ static void processListMultilineRegexFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printMultilineRegexFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+	printMultilineRegexFlags (localOption.withListHeader, localOption.machinable, stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2086,7 +2085,7 @@ static void processListMultitableRegexFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printMultitableRegexFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+	printMultitableRegexFlags (localOption.withListHeader, localOption.machinable, stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2095,7 +2094,7 @@ static void processListLangdefFlagsOptions (
 		const char *const option CTAGS_ATTR_UNUSED,
 		const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	printLangdefFlags (localOption.withListHeader, localOption.machinable, thread_stdout);
+	printLangdefFlags (localOption.withListHeader, localOption.machinable, stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2114,7 +2113,7 @@ static void processListRolesOptions (const char *const option CTAGS_ATTR_UNUSED,
 		printLanguageRoles (LANG_AUTO, "*",
 							localOption.withListHeader,
 							localOption.machinable,
-							thread_stdout);
+							stdout);
         ctags_cleanup();
 		exit (0);
 	}
@@ -2143,7 +2142,7 @@ static void processListRolesOptions (const char *const option CTAGS_ATTR_UNUSED,
 	printLanguageRoles (lang, kindspecs,
 						localOption.withListHeader,
 						localOption.machinable,
-						thread_stdout);
+						stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2159,7 +2158,7 @@ static void processListSubparsersOptions (const char *const option CTAGS_ATTR_UN
 	{
 		printLanguageSubparsers(LANG_AUTO,
 								localOption.withListHeader, localOption.machinable,
-								thread_stdout);
+								stdout);
         ctags_cleanup();
 		exit (0);
 	}
@@ -2170,7 +2169,7 @@ static void processListSubparsersOptions (const char *const option CTAGS_ATTR_UN
 
 	printLanguageSubparsers(lang,
 							localOption.withListHeader, localOption.machinable,
-							thread_stdout);
+							stdout);
     ctags_cleanup();
 	exit (0);
 }
@@ -2461,14 +2460,14 @@ static void processAnonHashOption (const char *const option CTAGS_ATTR_UNUSED, c
 	char buf [9];
 
 	anonHashString (parameter, buf);
-	fprintf(thread_stdout, "%s\n", buf);
+	fprintf(stdout, "%s\n", buf);
     ctags_cleanup();
 	exit (0);
 }
 
 static void processDumpKeywordsOption (const char *const option CTAGS_ATTR_UNUSED, const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	dumpKeywordTable (thread_stdout);
+	dumpKeywordTable (stdout);
 }
 
 static void processEchoOption (const char *const option, const char *const parameter)
@@ -3697,11 +3696,11 @@ extern void freeOptionResources (void)
 
 static void processDumpOptionsOption (const char *const option CTAGS_ATTR_UNUSED, const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	fprintf(thread_stdout, "# %s\n", "ParametricOptions");
+	fprintf(stdout, "# %s\n", "ParametricOptions");
 	for (unsigned int i = 0; i < ARRAY_SIZE(ParametricOptions); i++)
-		fprintf(thread_stdout, "%s\n", ParametricOptions[i].name);
+		fprintf(stdout, "%s\n", ParametricOptions[i].name);
 
-	fprintf(thread_stdout, "# %s\n", "BooleanOptions");
+	fprintf(stdout, "# %s\n", "BooleanOptions");
 	for (unsigned int i = 0; i < ARRAY_SIZE(BooleanOptions); i++)
-		fprintf(thread_stdout, "%s\n", BooleanOptions[i].name);
+		fprintf(stdout, "%s\n", BooleanOptions[i].name);
 }

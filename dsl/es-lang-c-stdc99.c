@@ -30,7 +30,6 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
-#include "ios_error.h"
 
 
 static int es_debug = 0;

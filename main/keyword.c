@@ -19,7 +19,6 @@
 #include "keyword.h"
 #include "options.h"
 #include "routines.h"
-#include "ios_error.h"
 
 /*
 *   DATA DECLARATIONS
@@ -193,7 +192,7 @@ extern void freeKeywordTable (void)
 
 static void printEntry (const hashEntry *const entry)
 {
-	fprintf (thread_stdout, "  %-15s %-7s\n", entry->string, getLanguageName (entry->language));
+	printf("  %-15s %-7s\n", entry->string, getLanguageName (entry->language));
 }
 
 static unsigned int printBucket (const unsigned int i)
@@ -203,16 +202,16 @@ static unsigned int printBucket (const unsigned int i)
 	unsigned int measure = 1;
 	bool first = true;
 
-	fprintf (thread_stdout, "%2d:", i);
+	printf("%2d:", i);
 	if (entry == NULL)
-		fprintf (thread_stdout, "\n");
+		printf("\n");
 	else while (entry != NULL)
 	{
 		if (! first)
-			fprintf (thread_stdout, "    ");
+			printf("    ");
 		else
 		{
-			fprintf (thread_stdout, " ");
+			printf(" ");
 			first = false;
 		}
 		printEntry (entry);
@@ -237,8 +236,8 @@ extern void printKeywordTable (void)
 			++emptyBucketCount;
 	}
 
-	fprintf (thread_stdout, "spread measure = %ld\n", measure);
-	fprintf (thread_stdout, "%ld empty buckets\n", emptyBucketCount);
+	printf("spread measure = %ld\n", measure);
+	printf("%ld empty buckets\n", emptyBucketCount);
 }
 
 #endif

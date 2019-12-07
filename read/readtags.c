@@ -17,7 +17,6 @@
 #include <sys/types.h>  /* to declare off_t */
 
 #include "readtags.h"
-#include "ios_error.h"
 
 /*
 *   MACROS

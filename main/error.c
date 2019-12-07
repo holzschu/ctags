@@ -13,7 +13,6 @@
 
 #include "error.h"
 #include "options.h"
-#include "ios_error.h"
 
 #ifdef HAVE_JANSSON
 #include <jansson.h>
@@ -34,18 +33,18 @@ extern bool stderrDefaultErrorPrinter (const errorSelection selection,
 					  const char *const format,
 					  va_list ap, void *data CTAGS_ATTR_UNUSED)
 {
-	fprintf (thread_stderr, "%s: %s", getExecutableName (),
+	fprintf (stderr, "%s: %s", getExecutableName (),
 		 selected (selection, WARNING) ? "Warning: " : "");
-	vfprintf (thread_stderr, format, ap);
+	vfprintf (stderr, format, ap);
 	if (selected (selection, PERROR))
 	{
 #ifdef HAVE_STRERROR
-		fprintf (thread_stderr, " : %s", strerror (errno));
+		fprintf (stderr, " : %s", strerror (errno));
 #else
 		perror (" ");
 #endif
 	}
-	fputs ("\n", thread_stderr);
+	fputs ("\n", stderr);
 
 	return (selected (selection, FATAL) || Option.fatalWarnings)? true: false;
 }
@@ -88,8 +87,8 @@ bool jsonErrorPrinter (const errorSelection selection, const char *const format,
 		json_object_set_new (response, "errno", json_integer (errno));
 		json_object_set_new (response, "perror", json_string (strerror (errno)));
 	}
-	json_dumpf (response, thread_stdout, JSON_PRESERVE_ORDER);
-	fprintf (thread_stdout, "\n");
+	json_dumpf (response, stdout, JSON_PRESERVE_ORDER);
+	fprintf (stdout, "\n");
 
 	json_decref (response);
 

@@ -10,7 +10,6 @@
 #include <string.h>		/* strerror */
 #include <stdlib.h>		/* exit */
 #include <stdio.h>		/* stderr */
-#include "ios_error.h"
 
 static const char *TagFileName = "tags";
 static const char *ProgramName;

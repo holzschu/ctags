@@ -19,7 +19,6 @@
 #include "routines.h"
 #include "keyword.h"
 #include "promise.h"
-#include "ios_error.h"
 
 /* The max. number of nested elements - prevents further recursion if the limit
  * is exceeded and avoids stack overflow for invalid input containing too many
@@ -144,7 +143,7 @@ static void readTag (tokenInfo *token, vString *text, int depth);
 #ifdef DEBUG
 static void dumpToken (tokenInfo *token, const char *context, const char* extra_context)
 {
-	fprintf (thread_stderr, "[%7s] %-20s@%s.%s\n",
+	fprintf (stderr, "[%7s] %-20s@%s.%s\n",
 			 tokenTypes[token->type], vStringValue(token->string),
 			 context, extra_context? extra_context: "_");
 }
