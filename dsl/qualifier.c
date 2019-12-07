@@ -578,7 +578,7 @@ static EsObject* value_inherits (EsObject *args, tagEntry *entry)
 
 		if (h == NULL)
 		{
-			fprintf(thread_stderr, "MEMORY EXHAUSTED\n");
+			fprintf(stderr, "MEMORY EXHAUSTED\n");
             ctags_cleanup();
 			exit (1);
 		}
@@ -681,12 +681,12 @@ enum QRESULT q_is_acceptable  (QCode *code, tagEntry *entry)
 		i = Q_REJECT;
 	else if (es_error_p (r))
 	{
-		MIO  *mioerr = mio_new_fp (thread_stderr, NULL);;
+		MIO  *mioerr = mio_new_fp (stderr, NULL);;
 
-		fprintf(thread_stderr, "GOT ERROR in QUALIFYING: %s: ",
+		fprintf(stderr, "GOT ERROR in QUALIFYING: %s: ",
 			 es_error_name (r));
 		es_print(es_error_get_object(r), mioerr);
-		putc('\n', thread_stderr);
+		putc('\n', stderr);
 		i = Q_ERROR;
 
 		mio_free(mioerr);

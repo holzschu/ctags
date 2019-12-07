@@ -794,14 +794,14 @@ static tagResult find (tagFile *const file, tagEntry *const entry,
 		(file->sortMethod == TAG_FOLDSORTED  &&  file->search.ignorecase))
 	{
 #ifdef DEBUG
-		fprintf (thread_stdout, "<performing binary search>\n");
+		printf ("<performing binary search>\n");
 #endif
 		result = findBinary (file);
 	}
 	else
 	{
 #ifdef DEBUG
-		fprintf (thread_stdout, "<performing sequential search>\n");
+		printf ("<performing sequential search>\n");
 #endif
 		result = findSequential (file);
 	}
