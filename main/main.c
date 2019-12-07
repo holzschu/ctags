@@ -324,8 +324,8 @@ static bool createTagsFromFileInput (FILE *const fp, const bool filter)
 			if (filter)
 			{
 				if (Option.filterTerminator != NULL)
-					fputs (Option.filterTerminator, thread_stdout);
-				fflush (thread_stdout);
+					fputs (Option.filterTerminator, stdout);
+				fflush (stdout);
 			}
 			cArgForth (args);
 			parseCmdlineOptions (args);
@@ -342,7 +342,7 @@ static bool createTagsFromListFile (const char *const fileName)
 	bool resize;
 	Assert (fileName != NULL);
 	if (strcmp (fileName, "-") == 0)
-		resize = createTagsFromFileInput (thread_stdin, false);
+		resize = createTagsFromFileInput (stdin, false);
 	else
 	{
 		FILE *const fp = fopen (fileName, "r");
@@ -378,7 +378,7 @@ static void printTotals (const clock_t *const timeStamps)
 	const unsigned long totalTags = numTagsTotal();
 	const unsigned long addedTags = numTagsAdded();
 
-	fprintf (thread_stderr, "%ld file%s, %ld line%s (%ld kB) scanned",
+	fprintf (stderr, "%ld file%s, %ld line%s (%ld kB) scanned",
 			Totals.files, plural (Totals.files),
 			Totals.lines, plural (Totals.lines),
 			Totals.bytes/1024L);
@@ -387,32 +387,32 @@ static void printTotals (const clock_t *const timeStamps)
 		const double interval = ((double) (timeStamps [1] - timeStamps [0])) /
 								CLOCKS_PER_SEC;
 
-		fprintf (thread_stderr, " in %.01f seconds", interval);
+		fprintf (stderr, " in %.01f seconds", interval);
 		if (interval != (double) 0.0)
-			fprintf (thread_stderr, " (%lu kB/s)",
+			fprintf (stderr, " (%lu kB/s)",
 					(unsigned long) (Totals.bytes / interval) / 1024L);
 	}
 #endif
-	fputc ('\n', thread_stderr);
+	fputc ('\n', stderr);
 
-	fprintf (thread_stderr, "%lu tag%s added to tag file",
+	fprintf (stderr, "%lu tag%s added to tag file",
 			addedTags, plural(addedTags));
 	if (Option.append)
-		fprintf (thread_stderr, " (now %lu tags)", totalTags);
-	fputc ('\n', thread_stderr);
+		fprintf (stderr, " (now %lu tags)", totalTags);
+	fputc ('\n', stderr);
 
 	if (totalTags > 0  &&  Option.sorted != SO_UNSORTED)
 	{
-		fprintf (thread_stderr, "%lu tag%s sorted", totalTags, plural (totalTags));
+		fprintf (stderr, "%lu tag%s sorted", totalTags, plural (totalTags));
 #ifdef CLOCK_AVAILABLE
-		fprintf (thread_stderr, " in %.02f seconds",
+		fprintf (stderr, " in %.02f seconds",
 				((double) (timeStamps [2] - timeStamps [1])) / CLOCKS_PER_SEC);
 #endif
-		fputc ('\n', thread_stderr);
+		fputc ('\n', stderr);
 	}
 
 #ifdef DEBUG
-	fprintf (thread_stderr, "longest tag line = %lu\n",
+	fprintf (stderr, "longest tag line = %lu\n",
 		 (unsigned long) maxTagsLine ());
 #endif
 }
@@ -468,7 +468,7 @@ static void batchMakeTags (cookedArgs *args, void *user CTAGS_ATTR_UNUSED)
 	if (Option.filter)
 	{
 		verbose ("Reading filter input\n");
-		resize = (bool) (createTagsFromFileInput (thread_stdin, true) || resize);
+		resize = (bool) (createTagsFromFileInput (stdin, true) || resize);
 	}
 	if (! files  &&  Option.recurse)
 		resize = recurseIntoDirectory (".");
@@ -511,10 +511,10 @@ void interactiveLoop (cookedArgs *args CTAGS_ATTR_UNUSED, void *user)
 	char buffer[1024];
 	json_t *request;
 
-	fputs ("{\"_type\": \"program\", \"name\": \"" PROGRAM_NAME "\", \"version\": \"" PROGRAM_VERSION "\"}\n", thread_stdout);
-	fflush (thread_stdout);
+	fputs ("{\"_type\": \"program\", \"name\": \"" PROGRAM_NAME "\", \"version\": \"" PROGRAM_VERSION "\"}\n", stdout);
+	fflush (stdout);
 
-	while (fgets (buffer, sizeof(buffer), thread_stdin))
+	while (fgets (buffer, sizeof(buffer), stdin))
 	{
 		if (buffer[0] == '\n')
 			continue;
@@ -560,15 +560,15 @@ void interactiveLoop (cookedArgs *args CTAGS_ATTR_UNUSED, void *user)
 			else
 			{					/* read nbytes from stream */
 				unsigned char *data = eMalloc (size);
-				size = fread (data, 1, size, thread_stdin);
+				size = fread (data, 1, size, stdin);
 				MIO *mio = mio_new_memory (data, size, eRealloc, eFree);
 				parseFileWithMio (filename, mio);
 				mio_free (mio);
 			}
 
 			closeTagFile (false);
-			fputs ("{\"_type\": \"completed\", \"command\": \"generate-tags\"}\n", thread_stdout);
-			fflush(thread_stdout);
+			fputs ("{\"_type\": \"completed\", \"command\": \"generate-tags\"}\n", stdout);
+			fflush(stdout);
 		}
 		else
 		{
@@ -644,7 +644,7 @@ static void sanitizeEnviron (void)
  */
 static cookedArgs *args;
 
-extern int ctags_main (int argc CTAGS_ATTR_UNUSED, char **argv)
+extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 {
 
 	initDefaultTrashBox ();
