@@ -26,7 +26,6 @@
 #include "routines.h"
 #include "selectors.h"
 #include "xtag.h"
-#include "ios_error.h"
 
 /*
 *   MACROS
@@ -800,15 +799,15 @@ static const char *keywordString (const keywordId keyword)
 static void CTAGS_ATTR_UNUSED pt (tokenInfo *const token)
 {
 	if (isType (token, TOKEN_NAME))
-		fprintf (thread_stdout, "type: %-12s: %-13s   line: %lu\n",
+		printf ("type: %-12s: %-13s   line: %lu\n",
 			tokenString (token->type), vStringValue (token->name),
 			token->lineNumber);
 	else if (isType (token, TOKEN_KEYWORD))
-		fprintf (thread_stdout, "type: %-12s: %-13s   line: %lu\n",
+		printf ("type: %-12s: %-13s   line: %lu\n",
 			tokenString (token->type), keywordString (token->keyword),
 			token->lineNumber);
 	else
-		fprintf (thread_stdout, "type: %-12s                  line: %lu\n",
+		printf ("type: %-12s                  line: %lu\n",
 			tokenString (token->type), token->lineNumber);
 }
 
@@ -817,20 +816,20 @@ static void CTAGS_ATTR_UNUSED ps (statementInfo *const st)
 #define P	"[%-7u]"
 	static unsigned int id = 0;
 	unsigned int i;
-	fprintf (thread_stdout, P"scope: %s   decl: %s   gotName: %s   gotParenName: %s\n", id,
+	printf (P"scope: %s   decl: %s   gotName: %s   gotParenName: %s\n", id,
 		scopeString (st->scope), declString (st->declaration),
 		boolString (st->gotName), boolString (st->gotParenName));
-	fprintf (thread_stdout, P"haveQualifyingName: %s\n", id, boolString (st->haveQualifyingName));
-	fprintf (thread_stdout, P"access: %s   default: %s\n", id, accessString (st->member.access),
+	printf (P"haveQualifyingName: %s\n", id, boolString (st->haveQualifyingName));
+	printf (P"access: %s   default: %s\n", id, accessString (st->member.access),
 		accessString (st->member.accessDefault));
-	fprintf (thread_stdout, P"token  : ", id);
+	printf (P"token  : ", id);
 	pt (activeToken (st));
 	for (i = 1  ;  i < (unsigned int) NumTokens  ;  ++i)
 	{
-		fprintf (thread_stdout, P"prev %u : ", id, i);
+		printf (P"prev %u : ", id, i);
 		pt (prevToken (st, i));
 	}
-	fprintf (thread_stdout, P"context: ", id);
+	printf (P"context: ", id);
 	pt (st->context);
 	id++;
 #undef P
@@ -2341,7 +2340,7 @@ static void restartStatement (statementInfo *const st)
 	tokenInfo *token = activeToken (st);
 
 	copyToken (save, token);
-	DebugStatement ( if (debug (DEBUG_PARSE)) fprintf (thread_stdout, "<ES>");)
+	DebugStatement ( if (debug (DEBUG_PARSE)) printf ("<ES>");)
 	reinitStatement (st, false);
 	token = activeToken (st);
 	copyToken (token, save);
@@ -3202,7 +3201,7 @@ static void checkStatementEnd (statementInfo *const st, int corkIndex)
 		reinitStatement (st, true);
 	else if (isStatementEnd (st))
 	{
-		DebugStatement ( if (debug (DEBUG_PARSE)) fprintf (thread_stdout, "<ES>"); )
+		DebugStatement ( if (debug (DEBUG_PARSE)) printf ("<ES>"); )
 		reinitStatement (st, false);
 		cppEndStatement ();
 	}

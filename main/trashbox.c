@@ -217,26 +217,26 @@ int main (void)
 	trash = trashTakeBack (trash, b, NULL);
 	eFree (b);
 
-	fputs("expects: dca\nactual: ", thread_stderr);
+	fputs("expects: dca\nactual: ", stderr);
 	for (tmp = trash; tmp; tmp = tmp->next)
-		fputs(tmp->item, thread_stderr);
-	fputc('\n', thread_stderr);
+		fputs(tmp->item, stderr);
+	fputc('\n', stderr);
 
 
 	trash = trashTakeBack (trash, d, NULL);
 	eFree (d);
 
-	fputs("expects: ca\nactual: ", thread_stderr);
+	fputs("expects: ca\nactual: ", stderr);
 	for (tmp = trash; tmp; tmp = tmp->next)
-		fputs(tmp->item, thread_stderr);
-	fputc('\n', thread_stderr);
+		fputs(tmp->item, stderr);
+	fputc('\n', stderr);
 
 	trash = trashMakeEmpty (trash);
 
-	fputs("expects: \nactual: ", thread_stderr);
+	fputs("expects: \nactual: ", stderr);
 	for (tmp = trash; tmp; tmp = tmp->next)
-		fputs(tmp->item, thread_stderr);
-	fputc('\n', thread_stderr);
+		fputs(tmp->item, stderr);
+	fputc('\n', stderr);
 	return 0;
 }
 

@@ -10,7 +10,6 @@
 #include <string.h>		/* strerror */
 #include <stdlib.h>		/* exit */
 #include <stdio.h>		/* stderr */
-#include "ios_error.h"
 
 static const char *TagFileName = "tags";
 static const char *ProgramName;
@@ -32,28 +31,28 @@ static void printTag (const tagEntry *entry)
 	const char* const empty = "";
 /* "sep" returns a value only the first time it is evaluated */
 #define sep (first ? (first = 0, separator) : empty)
-	fprintf (thread_stdout, "%s\t%s\t%s",
+	printf ("%s\t%s\t%s",
 		entry->name, entry->file, entry->address.pattern);
 	if (extensionFields)
 	{
 		if (entry->kind != NULL  &&  entry->kind [0] != '\0')
 		{
-			  fprintf (thread_stdout, "%s\tkind:%s", sep, entry->kind);
+			  printf ("%s\tkind:%s", sep, entry->kind);
 			  first = 0;
 		}
 		if (entry->fileScope)
 		{
-			fprintf (thread_stdout, "%s\tfile:", sep);
+			printf("%s\tfile:", sep);
 			first = 0;
 		}
 		if (allowPrintLineNumber && entry->address.lineNumber > 0)
 		{
-			fprintf (thread_stdout, "%s\tline:%lu", sep, entry->address.lineNumber);
+			printf ("%s\tline:%lu", sep, entry->address.lineNumber);
 			first = 0;
 		}
 		for (i = 0  ;  i < entry->fields.count  ;  ++i)
 		{
-			fprintf (thread_stdout, "%s\t%s:%s", sep, entry->fields.list [i].key,
+			printf ("%s\t%s:%s", sep, entry->fields.list [i].key,
 				entry->fields.list [i].value);
 			first = 0;
 		}
@@ -69,7 +68,7 @@ static void findTag (const char *const name, const int options)
 	tagFile *const file = tagsOpen (TagFileName, &info);
 	if (file == NULL)
 	{
-		fprintf (thread_stderr, "%s: cannot open tag file: %s: %s\n",
+		fprintf (stderr, "%s: cannot open tag file: %s: %s\n",
 				ProgramName, strerror (info.status.error_number), name);
 		exit (1);
 	}
@@ -78,7 +77,7 @@ static void findTag (const char *const name, const int options)
 		if (SortOverride)
 			tagsSetSortType (file, SortMethod);
 		if (debugMode)
-			fprintf (thread_stderr, "%s: searching for \"%s\" in \"%s\"\n",
+			fprintf (stderr, "%s: searching for \"%s\" in \"%s\"\n",
 					 ProgramName, name, TagFileName);
 		if (tagsFind (file, &entry, name, options) == TagSuccess)
 		{
@@ -111,7 +110,7 @@ static void listTags (void)
 	tagFile *const file = tagsOpen (TagFileName, &info);
 	if (file == NULL)
 	{
-		fprintf (thread_stderr, "%s: cannot open tag file: %s: %s\n",
+		fprintf (stderr, "%s: cannot open tag file: %s: %s\n",
 				ProgramName, strerror (info.status.error_number), TagFileName);
 		exit (1);
 	}
@@ -181,9 +180,9 @@ static QCode *convertToQualifier(const char* exp)
 
 	if (es_error_p (sexp))
 	{
-		fprintf (thread_stderr,
+		fprintf (stderr,
 			 "Failed to read the expression of qualifier: %s\n", exp);
-		fprintf (thread_stderr,
+		fprintf (stderr,
 			 "Reason: %s\n", es_error_name (sexp));
 		exit (1);
 	}
@@ -191,7 +190,7 @@ static QCode *convertToQualifier(const char* exp)
 	qcode = q_compile (sexp);
 	if (qcode == NULL)
 	{
-		fprintf (thread_stderr,
+		fprintf (stderr,
 			 "Failed to compile the expression of qualifier: %s\n", exp);
 		exit (1);
 	}
@@ -208,7 +207,7 @@ extern int readtags_main (int argc, char **argv)
 
 	ProgramName = argv [0];
 	if (argc == 1)
-		printUsage(thread_stderr, 1);
+		printUsage(stderr, 1);
 	for (i = 1  ;  i < argc  ;  ++i)
 	{
 		const char *const arg = argv [i];
@@ -227,7 +226,7 @@ extern int readtags_main (int argc, char **argv)
 				switch (arg [j])
 				{
 					case 'd': debugMode++; break;
-					case 'h': printUsage (thread_stdout, 0); break;
+					case 'h': printUsage (stdout, 0); break;
 					case 'e': extensionFields = 1;         break;
 					case 'i': options |= TAG_IGNORECASE;   break;
 					case 'p': options |= TAG_PARTIALMATCH; break;
@@ -242,7 +241,7 @@ extern int readtags_main (int argc, char **argv)
 						else if (i + 1 < argc)
 							TagFileName = argv [++i];
 						else
-							printUsage(thread_stderr, 1);
+							printUsage(stderr, 1);
 						break;
 					case 's':
 						SortOverride = 1;
@@ -252,17 +251,17 @@ extern int readtags_main (int argc, char **argv)
 						else if (strchr ("012", arg[j]) != NULL)
 							SortMethod = (sortType) (arg[j] - '0');
 						else
-							printUsage(thread_stderr, 1);
+							printUsage(stderr, 1);
 						break;
 #ifdef QUALIFIER
 					case 'Q':
 						if (i + 1 == argc)
-							printUsage(thread_stderr, 1);
+							printUsage(stderr, 1);
 						Qualifier = convertToQualifier (argv[++i]);
 						break;
 #endif
 					default:
-						fprintf (thread_stderr, "%s: unknown option: %c\n",
+						fprintf (stderr, "%s: unknown option: %c\n",
 									ProgramName, arg[j]);
 						exit (1);
 						break;
@@ -272,7 +271,7 @@ extern int readtags_main (int argc, char **argv)
 	}
 	if (! actionSupplied)
 	{
-		fprintf (thread_stderr,
+		fprintf (stderr,
 			"%s: no action specified: specify tag name(s) or -l option\n",
 			ProgramName);
 		exit (1);

@@ -38,7 +38,6 @@
 # include "mbcs.h"
 #endif
 #include "xtag.h"
-#include "ios_error.h"
 
 /*
  * DATA TYPES
@@ -2321,7 +2320,7 @@ extern void printLanguageKinds (const langType language, bool allKindFields,
 				continue;
 
 			if (!table)
-				fprintf (thread_stdout, "%s%s\n", lang->name, isLanguageEnabled (i) ? "" : " [disabled]");
+				printf("%s%s\n", lang->name, isLanguageEnabled (i) ? "" : " [disabled]");
 			printKinds (i, true, table);
 		}
 	}
@@ -2470,14 +2469,14 @@ static void printMaps (const langType language, langmapType type)
 	unsigned int i;
 
 	parser = LanguageTable + language;
-	fprintf (thread_stdout, "%-8s", parser->def->name);
+	printf("%-8s", parser->def->name);
 	if (parser->currentPatterns != NULL && (type & LMAP_PATTERN))
 		for (i = 0  ;  i < stringListCount (parser->currentPatterns)  ;  ++i)
-			fprintf (thread_stdout, " %s", vStringValue (
+			printf(" %s", vStringValue (
 						stringListItem (parser->currentPatterns, i)));
 	if (parser->currentExtensions != NULL && (type & LMAP_EXTENSION))
 		for (i = 0  ;  i < stringListCount (parser->currentExtensions)  ;  ++i)
-			fprintf (thread_stdout, " *.%s", vStringValue (
+			printf(" *.%s", vStringValue (
 						stringListItem (parser->currentExtensions, i)));
 	putchar ('\n');
 }
@@ -2653,7 +2652,7 @@ static void printLanguage (const langType language, parserDefinition** ltable)
 		return;
 
 	if (lang->kindTable != NULL  ||  (lang->method & METHOD_REGEX))
-		fprintf (thread_stdout, "%s%s\n", lang->name, isLanguageEnabled (lang->id) ? "" : " [disabled]");
+		printf("%s%s\n", lang->name, isLanguageEnabled (lang->id) ? "" : " [disabled]");
 }
 
 extern void printLanguageList (void)
@@ -3017,7 +3016,7 @@ static void printGuessedParser (const char* const fileName, langType language)
 	else
 		parserName = LanguageTable [language].def->name;
 
-	fprintf(thread_stdout, "%s: %s\n", fileName, parserName);
+	fprintf(stdout, "%s: %s\n", fileName, parserName);
 }
 
 #ifdef HAVE_ICONV

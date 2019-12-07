@@ -55,7 +55,6 @@
 #include "trashbox.h"
 #include "writer.h"
 #include "xtag.h"
-#include "ios_error.h"
 
 /*
 *   MACROS
@@ -420,7 +419,7 @@ extern void openTagFile (void)
 		{
 			/* Passing NULL for keeping stdout open.
 			   stdout can be used for debugging purpose.*/
-			TagFile.mio = mio_new_fp(thread_stdout, NULL);
+			TagFile.mio = mio_new_fp(stdout, NULL);
 			TagFile.name = eStrdup ("/dev/stdout");
 		}
 		else
@@ -614,7 +613,7 @@ static void resizeTagFile (const long newSize)
 # endif
 #endif
 	if (result == -1)
-		fprintf (thread_stderr, "Cannot shorten tag file: errno = %d\n", errno);
+		fprintf (stderr, "Cannot shorten tag file: errno = %d\n", errno);
 }
 
 static void writeEtagsIncludes (MIO *const mio)

@@ -35,7 +35,6 @@
 #include "error.h"
 #include "interactive.h"
 #include "writer.h"
-#include "ios_error.h"
 #include "field.h"
 
 #ifdef HAVE_JANSSON
@@ -1380,7 +1379,7 @@ static void processOutputEncodingOption(const char *const option CTAGS_ATTR_UNUS
 
 static void printInvocationDescription (void)
 {
-	fprintf (stdout, INVOCATION, getExecutableName ());
+	printf(INVOCATION, getExecutableName ());
 }
 
 static void printOptionDescriptions (const optionDescription *const optDesc)
@@ -1400,12 +1399,12 @@ static void printFeatureList (void)
 	for (i = 0 ; Features [i].name != NULL ; ++i)
 	{
 		if (i == 0)
-			fprintf (stdout, "  Optional compiled features: ");
+			printf("  Optional compiled features: ");
 		if (strcmp (Features [i].name, "regex") != 0 || checkRegex ())
-			fprintf (stdout, "%s+%s", (i>0 ? ", " : ""), Features [i].name);
+			printf("%s+%s", (i>0 ? ", " : ""), Features [i].name);
 #ifdef CUSTOM_CONFIGURATION_FILE
 		if (strcmp (Features [i].name, "custom-conf") == 0)
-			fprintf (stdout, "=%s", CUSTOM_CONFIGURATION_FILE);
+			printf("=%s", CUSTOM_CONFIGURATION_FILE);
 #endif
 	}
 	if (i > 0)
@@ -1483,18 +1482,18 @@ static void printProgramIdentification (void)
 {
 	if ((ctags_repoinfo == NULL)
 	    || (strcmp (ctags_repoinfo, PROGRAM_VERSION) == 0))
-		fprintf (stdout, "%s %s, %s %s\n",
+		printf("%s %s, %s %s\n",
 			PROGRAM_NAME, PROGRAM_VERSION,
 			PROGRAM_COPYRIGHT, AUTHOR_NAME);
 	else
-		fprintf (stdout, "%s %s(%s), %s %s\n",
+		printf("%s %s(%s), %s %s\n",
 			PROGRAM_NAME, PROGRAM_VERSION, ctags_repoinfo,
 			PROGRAM_COPYRIGHT, AUTHOR_NAME);
-	fprintf (stdout, "Universal Ctags is derived from Exuberant Ctags.\n");
-	fprintf (stdout, "Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\n");
+	printf("Universal Ctags is derived from Exuberant Ctags.\n");
+	printf("Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\n");
 
-	fprintf (stdout, "  Compiled: %s, %s\n", __DATE__, __TIME__);
-	fprintf (stdout, "  URL: %s\n", PROGRAM_URL);
+	printf("  Compiled: %s, %s\n", __DATE__, __TIME__);
+	printf("  URL: %s\n", PROGRAM_URL);
 
 	printFeatureList ();
 }

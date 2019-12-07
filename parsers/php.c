@@ -481,7 +481,7 @@ static const char *tokenTypeName (const tokenType type)
 
 static void printToken (const tokenInfo *const token)
 {
-	fprintf (thread_stderr, "%p:\n\ttype:\t%s\n\tline:\t%lu\n\tscope:\t%s\n", (void *) token,
+	fprintf (stderr, "%p:\n\ttype:\t%s\n\tline:\t%lu\n\tscope:\t%s\n", (void *) token,
 			 tokenTypeName (token->type),
 			 token->lineNumber,
 			 vStringValue (token->scope));
@@ -490,7 +490,7 @@ static void printToken (const tokenInfo *const token)
 		case TOKEN_IDENTIFIER:
 		case TOKEN_STRING:
 		case TOKEN_VARIABLE:
-			fprintf (thread_stderr, "\tcontent:\t%s\n", vStringValue (token->string));
+			fprintf (stderr, "\tcontent:\t%s\n", vStringValue (token->string));
 			break;
 
 		case TOKEN_KEYWORD:
@@ -498,17 +498,17 @@ static void printToken (const tokenInfo *const token)
 			size_t n = ARRAY_SIZE (PhpKeywordTable);
 			size_t i;
 
-			fprintf (thread_stderr, "\tkeyword:\t");
+			fprintf (stderr, "\tkeyword:\t");
 			for (i = 0; i < n; i++)
 			{
 				if (PhpKeywordTable[i].id == token->keyword)
 				{
-					fprintf (thread_stderr, "%s\n", PhpKeywordTable[i].name);
+					fprintf (stderr, "%s\n", PhpKeywordTable[i].name);
 					break;
 				}
 			}
 			if (i >= n)
-				fprintf (thread_stderr, "(unknown)\n");
+				fprintf (stderr, "(unknown)\n");
 		}
 
 		default: break;

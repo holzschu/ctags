@@ -12,4 +12,4 @@ plutil -replace CFBundleName -string ctags Frameworks/ctags.framework/Info.plist
 plutil -replace CFBundleIdentifier -string Nicolas-Holzschuch.ctags Frameworks/ctags.framework/Info.plist
 install_name_tool -id @rpath/ctags.framework/ctags   Frameworks/ctags.framework/ctags
 
-r
+

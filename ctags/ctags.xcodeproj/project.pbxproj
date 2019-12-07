@@ -938,7 +938,7 @@
 					../main/,
 					"-DINTERNAL_SORT",
 					"-DHAVE_CONFIG_H",
-					"-I/Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/libxml2/",
+					"-I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/libxml2/",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -958,6 +958,7 @@
 				DEVELOPMENT_TEAM = VG8Z23C8YL;
 				EXECUTABLE_EXTENSION = dylib;
 				MACH_O_TYPE = mh_dylib;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-I",
 					..,
@@ -965,7 +966,7 @@
 					../main/,
 					"-DINTERNAL_SORT",
 					"-DHAVE_CONFIG_H",
-					"-I/Applications/Xcode-beta.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/libxml2/",
+					"-I/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include/libxml2/",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

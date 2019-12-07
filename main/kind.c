@@ -21,7 +21,6 @@
 #include "parse.h"
 #include "options.h"
 #include "vstring.h"
-#include "ios_error.h"
 
 typedef struct sKindObject {
 	kindDefinition *def;
@@ -42,7 +41,7 @@ extern const char *renderRole (const roleDesc* const role, vString* b)
 
 extern void printKind (const kindDefinition* const kind, bool indent)
 {
-	fprintf (thread_stdout, "%s%c  %s%s\n", indent ? "    " : "", kind->letter,
+	printf("%s%c  %s%s\n", indent ? "    " : "", kind->letter,
 			kind->description != NULL ? kind->description :
 			(kind->name != NULL ? kind->name : ""),
 			kind->enabled ? "" : " [off]");

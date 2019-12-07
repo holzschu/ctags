@@ -80,7 +80,6 @@
 #include <jansson.h>
 #include <errno.h>
 #endif
-#include "ios_error.h"
 
 /*
 *   MACROS
@@ -691,6 +690,8 @@ extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 	return 0;
 }
 
+extern void mio_stdcleanup(void);
+
 void ctags_cleanup() {
     /*  Clean up.
      */
@@ -718,4 +719,6 @@ void ctags_cleanup() {
     initLanguageTables();
     initPromiseCount();
     init_apop_count();
+    // finally, cleanup std* streams:
+    mio_stdcleanup();
 }

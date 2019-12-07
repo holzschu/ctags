@@ -22,7 +22,6 @@
 #include "entry_private.h"
 #include "options.h"
 #include "read.h"
-#include "ios_error.h"
 
 /*
 *   FUNCTION DEFINITIONS
@@ -41,8 +40,8 @@ extern void debugPrintf (
 
 	va_start (ap, format);
 	if (debug (level))
-		vfprintf (thread_stdout, format, ap);
-	fflush (thread_stdout);
+		vfprintf (stdout, format, ap);
+	fflush (stdout);
 	va_end (ap);
 }
 
@@ -50,11 +49,11 @@ extern void debugPutc (const int level, const int c)
 {
 	if (debug (level)  &&  c != EOF)
 	{
-		     if (c == STRING_SYMBOL)  fprintf (thread_stdout, "\"string\"");
-		else if (c == CHAR_SYMBOL)    fprintf (thread_stdout, "'c'");
+		     if (c == STRING_SYMBOL)  printf ("\"string\"");
+		else if (c == CHAR_SYMBOL)    printf ("'c'");
 		else                          putchar (c);
 
-		fflush (thread_stdout);
+		fflush (stdout);
 	}
 }
 
@@ -84,54 +83,54 @@ extern void debugEntry (const tagEntryInfo *const tag)
 			: tag->extensionFields.scopeLangType;
 		kindDefinition *scopeKindDef = getLanguageKind(lang,
 													   tag->extensionFields.scopeKindIndex);
-		fprintf (thread_stdout, "<#%s%s:%s", scope, getTagKindName(tag), tag->name);
+		printf("<#%s%s:%s", scope, getTagKindName(tag), tag->name);
 
 		if (tag->extensionFields.scopeKindIndex != KIND_GHOST_INDEX  &&
 				tag->extensionFields.scopeName != NULL)
-			fprintf (thread_stdout, " [%s:%s]", scopeKindDef->name,
+			printf(" [%s:%s]", scopeKindDef->name,
 					tag->extensionFields.scopeName);
 
 		if (isFieldEnabled (FIELD_INHERITANCE) &&
 				tag->extensionFields.inheritance != NULL)
-			fprintf (thread_stdout, " [inherits:%s]", tag->extensionFields.inheritance);
+			printf(" [inherits:%s]", tag->extensionFields.inheritance);
 
 		if (isFieldEnabled (FIELD_FILE_SCOPE) &&
 				tag->isFileScope && ! isInputHeaderFile ())
-			fprintf (thread_stdout, " [file:]");
+			printf(" [file:]");
 
 		if (isFieldEnabled (FIELD_ACCESS) &&
 				tag->extensionFields.access != NULL)
-			fprintf (thread_stdout, " [access:%s]", tag->extensionFields.access);
+			printf(" [access:%s]", tag->extensionFields.access);
 
 		if (isFieldEnabled (FIELD_IMPLEMENTATION) &&
 				tag->extensionFields.implementation != NULL)
-			fprintf (thread_stdout, " [imp:%s]", tag->extensionFields.implementation);
+			printf(" [imp:%s]", tag->extensionFields.implementation);
 
 		if (isFieldEnabled (FIELD_TYPE_REF) &&
 				tag->extensionFields.typeRef [0] != NULL  &&
 				tag->extensionFields.typeRef [1] != NULL)
-			fprintf (thread_stdout, " [%s:%s]", tag->extensionFields.typeRef [0],
+			printf(" [%s:%s]", tag->extensionFields.typeRef [0],
 					tag->extensionFields.typeRef [1]);
 
-		fprintf (thread_stdout, "#>");
-		fflush (thread_stdout);
+		printf("#>");
+		fflush (stdout);
 	}
 }
 
 extern void debugAssert (const char *assertion, const char *file, unsigned int line, const char *function)
 {
-	fprintf(thread_stderr, "ctags: %s:%u: %s%sAssertion `%s' failed.\n",
+	fprintf(stderr, "ctags: %s:%u: %s%sAssertion `%s' failed.\n",
 	        file, line,
 	        function ? function : "", function ? ": " : "",
 	        assertion);
 	if (getInputFileName())
 	{
-		fprintf(thread_stderr, "ctags: %s:%u: parsing %s:%lu as %s\n",
+		fprintf(stderr, "ctags: %s:%u: parsing %s:%lu as %s\n",
 		        file, line,
 		        getInputFileName(), getInputLineNumber(),
 		        getInputLanguageName());
 	}
-	fflush(thread_stderr);
+	fflush(stderr);
 	abort();
 }
 
@@ -149,7 +148,7 @@ extern void debugInit (void)
 extern void debugIndent(void)
 {
 	for(int i=0;i< debugScopeDepth;i++)
-		fputs(debugPrefix, thread_stderr);
+		fputs(debugPrefix, stderr);
 }
 
 extern void debugInc(void)

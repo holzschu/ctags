@@ -30,7 +30,6 @@
 #include "read.h"
 #include "routines.h"
 #include "sort.h"
-#include "ios_error.h"
 
 /*
 *   FUNCTION DEFINITIONS
@@ -44,7 +43,7 @@ extern void catFile (MIO *mio)
 		mio_seek (mio, 0, SEEK_SET);
 		while ((c = mio_getc (mio)) != EOF)
 			putchar (c);
-		fflush (thread_stdout);
+		fflush (stdout);
 	}
 }
 
@@ -135,7 +134,7 @@ extern void externalSortTags (const bool toStdout, MIO *tagFile)
 		verbose ("system (\"%s\")\n", vStringValue (cmd));
 		if (toStdout)
 		{
-			const int fdstdin = fileno(thread_stdin);
+			const int fdstdin = fileno(stdin);
 			int fdsave;
 
 			fdsave = dup (fdstdin);
@@ -202,7 +201,7 @@ static void writeSortedTags (
 	/*  Write the sorted lines back into the tag file.
 	 */
 	if (toStdout)
-		mio = mio_new_fp (thread_stdout, NULL);
+		mio = mio_new_fp (stdout, NULL);
 	else
 	{
 		mio = mio_new_file (tagFileName (), "w");
@@ -283,7 +282,7 @@ extern void internalSortTags (const bool toStdout, MIO* mio, size_t numTags)
 
 	writeSortedTags (table, numTags, toStdout, newlineReplaced);
 
-	PrintStatus ((thread_stdout, "sort memory: %ld bytes\n", (long) mallocSize));
+	PrintStatus ((stdout, "sort memory: %ld bytes\n", (long) mallocSize));
 	for (i = 0 ; i < numTags ; ++i)
 		free (table [i]);
 	free (table);

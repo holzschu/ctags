@@ -30,7 +30,6 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
-#include "ios_error.h"
 
 
 static int es_debug = 0;
@@ -231,38 +230,56 @@ static EsObjectClass classes[] = {
   },
 };
 
-
+// iOS: no static function variables
+static MIO* out;
+static MIO* in;
+static MIO* err;
+
 
 static MIO *mio_stdout (void)
 {
-  static MIO  *out;
+  // static MIO  *out;
 
   if (out == NULL)
-    out = mio_new_fp (thread_stdout, NULL);
+    out = mio_new_fp (stdout, NULL);
 
   return out;
 }
 
 static MIO *mio_stdin (void)
 {
-  static MIO  *out;
+  // static MIO  *out;
 
-  if (out == NULL)
-    out = mio_new_fp (thread_stdin, NULL);
+  if (in == NULL)
+    in = mio_new_fp (stdin, NULL);
 
-  return out;
+  return in;
 }
 
 static MIO *mio_stderr (void)
 {
-  static MIO  *out;
+  // static MIO  *out;
 
-  if (out == NULL)
-    out = mio_new_fp (thread_stderr, NULL);
+  if (err == NULL)
+    err = mio_new_fp (stderr, NULL);
 
-  return out;
+  return err;
 }
 
+void mio_stdcleanup() {
+    if (out != NULL) {
+        mio_free (out);
+        out = NULL;
+    }
+    if (in != NULL) {
+        mio_free (in);
+        in = NULL;
+    }
+    if (err != NULL) {
+        mio_free (err);
+        err = NULL;
+    }
+}
 
 
 static EsObjectClass*
