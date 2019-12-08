@@ -653,7 +653,7 @@ while.body:                                       ; preds = %land.end28
   %43 = load i32, i32* %nth, align 4
   %inc = add i32 %43, 1
   store i32 %inc, i32* %nth, align 4
-  %call32 = call i32 (i8*, i64, i32, i64, i8*, ...) @__snprintf_chk(i8* %arraydecay, i64 32, i32 0, i64 32, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.14, i64 0, i64 0), i32 %43)
+  %call32 = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %arraydecay, i64 32, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.14, i64 0, i64 0), i32 %43)
   %44 = load %struct.tokenInfo*, %struct.tokenInfo** %name21, align 8
   %string = getelementptr inbounds %struct.tokenInfo, %struct.tokenInfo* %44, i32 0, i32 2
   %45 = load %struct.sVString*, %struct.sVString** %string, align 8
@@ -1133,7 +1133,7 @@ return:                                           ; preds = %if.end7, %if.then
   ret void
 }
 
-declare i32 @__snprintf_chk(i8*, i64, i32, i64, i8*, ...) #1
+declare i32 @snprintf(i8*, i64, i8*, ...) #1
 
 declare void @vStringCopyS(%struct.sVString*, i8*) #1
 

@@ -12,7 +12,7 @@ target triple = "arm64-apple-ios11.0.0"
 
 @errorPrinter = internal global i1 (i32, i8*, i8*, i8*)* null, align 8
 @errorPrinterData = internal global i8* null, align 8
-@thread_stderr = external thread_local global %struct.__sFILE*, align 8
+@__stderrp = external global %struct.__sFILE*, align 8
 @.str = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
 @.str.1 = private unnamed_addr constant [10 x i8] c"Warning: \00", align 1
 @.str.2 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
@@ -45,7 +45,7 @@ entry:
   store i8* %format, i8** %format.addr, align 8
   store i8* %ap, i8** %ap.addr, align 8
   store i8* %data, i8** %data.addr, align 8
-  %0 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %0 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %call = call i8* @getExecutableName()
   %1 = load i32, i32* %selection.addr, align 4
   %and = and i32 %1, 2
@@ -53,7 +53,7 @@ entry:
   %2 = zext i1 %cmp to i64
   %cond = select i1 %cmp, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i64 0, i64 0), i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0)
   %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call, i8* %cond)
-  %3 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %4 = load i8*, i8** %format.addr, align 8
   %5 = load i8*, i8** %ap.addr, align 8
   %call2 = call i32 @vfprintf(%struct.__sFILE* %3, i8* %4, i8* %5)
@@ -63,7 +63,7 @@ entry:
   br i1 %cmp4, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %7 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %call5 = call i32* @__error()
   %8 = load i32, i32* %call5, align 4
   %call6 = call i8* @"\01_strerror"(i32 %8)
@@ -71,8 +71,8 @@ if.then:                                          ; preds = %entry
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
-  %9 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
-  %call8 = call i32 @ios_fputs(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %9)
+  %9 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call8 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %9)
   %10 = load i32, i32* %selection.addr, align 4
   %and9 = and i32 %10, 1
   %cmp10 = icmp eq i32 %and9, 1
@@ -101,7 +101,7 @@ declare i8* @"\01_strerror"(i32) #1
 
 declare i32* @__error() #1
 
-declare i32 @ios_fputs(i8*, %struct.__sFILE*) #1
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @error(i32 %selection, i8* %format, ...) #0 {
@@ -130,7 +130,7 @@ entry:
 
 if.then:                                          ; preds = %entry
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 1) #4
+  call void @exit(i32 1) #4
   unreachable
 
 if.end:                                           ; preds = %entry
@@ -146,7 +146,7 @@ declare void @llvm.va_end(i8*) #2
 declare void @ctags_cleanup(...) #1
 
 ; Function Attrs: noreturn
-declare void @ios_exit(i32) #3
+declare void @exit(i32) #3
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }

@@ -77,7 +77,7 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.12 = private unnamed_addr constant [25 x i8] c"-----------------------\0A\00", align 1
 @.str.13 = private unnamed_addr constant [25 x i8] c"%10u/%-10u%-40s ref: %d\0A\00", align 1
 @Option = external constant %struct.sOptionValues, align 8
-@thread_stderr = external thread_local global %struct.__sFILE*, align 8
+@__stderrp = external global %struct.__sFILE*, align 8
 @.str.14 = private unnamed_addr constant [19 x i8] c"input : \22%s\22 L%lu\0A\00", align 1
 @.str.15 = private unnamed_addr constant [44 x i8] c"%s:%lu: null expansion of name pattern \22%s\22\00", align 1
 @.str.16 = private unnamed_addr constant [88 x i8] c"Kind letter '%c' used in regex definition \22%s\22 of %s language is reserved in ctags main\00", align 1
@@ -2471,7 +2471,7 @@ if.end:                                           ; preds = %entry
   %call3 = call i8* @getLanguageName(i32 %7)
   %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.9, i64 0, i64 0), i8* %call3)
   %8 = load %struct.__sFILE*, %struct.__sFILE** %vfp.addr, align 8
-  %call5 = call i32 @ios_fputs(i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.10, i64 0, i64 0), %struct.__sFILE* %8)
+  %call5 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.10, i64 0, i64 0), %struct.__sFILE* %8)
   store i32 0, i32* %i, align 4
   br label %for.cond
 
@@ -2498,7 +2498,7 @@ for.body:                                         ; preds = %for.cond
   %18 = load i8*, i8** %name, align 8
   %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %16, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.11, i64 0, i64 0), i8* %18)
   %19 = load %struct.__sFILE*, %struct.__sFILE** %vfp.addr, align 8
-  %call12 = call i32 @ios_fputs(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.12, i64 0, i64 0), %struct.__sFILE* %19)
+  %call12 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.12, i64 0, i64 0), %struct.__sFILE* %19)
   store i32 0, i32* %j, align 4
   br label %for.cond13
 
@@ -2550,7 +2550,7 @@ for.inc:                                          ; preds = %for.body16
 
 for.end:                                          ; preds = %for.cond13
   %39 = load %struct.__sFILE*, %struct.__sFILE** %vfp.addr, align 8
-  %call23 = call i32 @ios_fputc(i32 10, %struct.__sFILE* %39)
+  %call23 = call i32 @fputc(i32 10, %struct.__sFILE* %39)
   br label %for.inc24
 
 for.inc24:                                        ; preds = %for.end
@@ -2565,9 +2565,9 @@ for.end26:                                        ; preds = %if.then, %for.cond
 
 declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
 
-declare i32 @ios_fputs(i8*, %struct.__sFILE*) #1
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
 
-declare i32 @ios_fputc(i32, %struct.__sFILE*) #1
+declare i32 @fputc(i32, %struct.__sFILE*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define zeroext i1 @matchMultitableRegex(%struct.lregexControlBlock* %lcb, %struct.sVString* %allLines) #0 {
@@ -2617,7 +2617,7 @@ do.body:                                          ; preds = %while.body
   br i1 %tobool3, label %if.then4, label %if.end15
 
 if.then4:                                         ; preds = %do.body
-  %7 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %7, %struct.__sFILE** %vfp, align 8
   %call5 = call %struct.sVString* @vStringNew()
   store %struct.sVString* %call5, %struct.sVString** %v, align 8
@@ -2826,7 +2826,7 @@ do.body:                                          ; preds = %for.body
   br i1 %tobool, label %if.then, label %if.end49
 
 if.then:                                          ; preds = %do.body
-  %13 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %13 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %13, %struct.__sFILE** %vfp, align 8
   %14 = load i8*, i8** %current, align 8
   %15 = load i8, i8* %14, align 1
@@ -3022,7 +3022,7 @@ do.body69:                                        ; preds = %if.then64
   br i1 %tobool70, label %if.then71, label %if.end73
 
 if.then71:                                        ; preds = %do.body69
-  %62 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %62 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %62, %struct.__sFILE** %vfp72, align 8
   %63 = load %struct.__sFILE*, %struct.__sFILE** %vfp72, align 8
   %64 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
@@ -3093,7 +3093,7 @@ do.body88:                                        ; preds = %sw.bb
   br i1 %tobool89, label %if.then90, label %if.end94
 
 if.then90:                                        ; preds = %do.body88
-  %79 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %79 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %79, %struct.__sFILE** %vfp91, align 8
   %80 = load %struct.__sFILE*, %struct.__sFILE** %vfp91, align 8
   %81 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
@@ -3149,7 +3149,7 @@ do.body105:                                       ; preds = %cond.end102
   br i1 %tobool106, label %if.then107, label %if.end121
 
 if.then107:                                       ; preds = %do.body105
-  %97 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %97 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %97, %struct.__sFILE** %vfp108, align 8
   %98 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
   %continuation_table109 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %98, i32 0, i32 2
@@ -3201,7 +3201,7 @@ do.body124:                                       ; preds = %sw.bb123
   br i1 %tobool125, label %if.then126, label %if.end131
 
 if.then126:                                       ; preds = %do.body124
-  %113 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %113 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %113, %struct.__sFILE** %vfp127, align 8
   %114 = load %struct.__sFILE*, %struct.__sFILE** %vfp127, align 8
   %115 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
@@ -3257,7 +3257,7 @@ do.body144:                                       ; preds = %sw.bb142
   br i1 %tobool145, label %if.then146, label %if.end152
 
 if.then146:                                       ; preds = %do.body144
-  %130 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %130 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %130, %struct.__sFILE** %vfp147, align 8
   %131 = load %struct.__sFILE*, %struct.__sFILE** %vfp147, align 8
   %132 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
@@ -3293,7 +3293,7 @@ do.body156:                                       ; preds = %sw.bb154
   br i1 %tobool157, label %if.then158, label %if.end162
 
 if.then158:                                       ; preds = %do.body156
-  %142 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %142 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %142, %struct.__sFILE** %vfp159, align 8
   %143 = load %struct.__sFILE*, %struct.__sFILE** %vfp159, align 8
   %144 = load %struct.regexTable*, %struct.regexTable** %next, align 8
@@ -3321,7 +3321,7 @@ do.body166:                                       ; preds = %sw.bb165
   br i1 %tobool167, label %if.then168, label %if.end172
 
 if.then168:                                       ; preds = %do.body166
-  %149 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %149 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %149, %struct.__sFILE** %vfp169, align 8
   %150 = load %struct.__sFILE*, %struct.__sFILE** %vfp169, align 8
   %call170 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %150, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.97, i64 0, i64 0))

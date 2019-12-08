@@ -64,7 +64,7 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.4 = private unnamed_addr constant [8 x i8] c"unknown\00", align 1
 @kindGhost = internal global %struct.sKindDefinition { i8 0, i8 32, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.48, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.48, i32 0, i32 0), i8 0, i32 0, %struct.sRoleDesc* null, %struct.sScopeSeparator* null, i32 0, i32 0, i32 0, %struct.sKindDefinition* null, %struct.sKindDefinition* null }, align 8
 @Option = external global %struct.sOptionValues, align 8
-@thread_stderr = external thread_local global %struct.__sFILE*, align 8
+@__stderrp = external global %struct.__sFILE*, align 8
 @.str.5 = private unnamed_addr constant [9 x i8] c"    %s: \00", align 1
 @.str.6 = private unnamed_addr constant [4 x i8] c" %s\00", align 1
 @.str.7 = private unnamed_addr constant [21 x i8] c"Installing parsers: \00", align 1
@@ -84,7 +84,6 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.18 = private unnamed_addr constant [37 x i8] c"Unknown language \22%s\22 in \22%s\22 option\00", align 1
 @.str.19 = private unnamed_addr constant [7 x i8] c"kinds-\00", align 1
 @.str.20 = private unnamed_addr constant [33 x i8] c"No language given in \22%s\22 option\00", align 1
-@thread_stdout = external thread_local global %struct.__sFILE*, align 8
 @.str.21 = private unnamed_addr constant [6 x i8] c"%s%s\0A\00", align 1
 @.str.22 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
 @.str.23 = private unnamed_addr constant [12 x i8] c" [disabled]\00", align 1
@@ -213,7 +212,6 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.133 = private unnamed_addr constant [58 x i8] c"utilize the base parser both 'dedicated' and 'shared' way\00", align 1
 @.str.134 = private unnamed_addr constant [59 x i8] c"No base parser specified for \22%s\22 flag of --langdef option\00", align 1
 @.str.135 = private unnamed_addr constant [68 x i8] c"Unknown language(%s) is specified for \22%s\22 flag of --langdef option\00", align 1
-@__stderrp = external global %struct.__sFILE*, align 8
 @.str.136 = private unnamed_addr constant [12 x i8] c"Freeing %s\0A\00", align 1
 @.str.137 = private unnamed_addr constant [46 x i8] c"no kind definition specified in \22--%s\22 option\00", align 1
 @.str.138 = private unnamed_addr constant [42 x i8] c"no kind letter specified in \22--%s\22 option\00", align 1
@@ -254,6 +252,7 @@ target triple = "arm64-apple-ios11.0.0"
 @parsersUsedInCurrentInput = internal global %struct.sPtrArray* null, align 8
 @.str.173 = private unnamed_addr constant [6 x i8] c"UTF-8\00", align 1
 @.str.174 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
+@__stdoutp = external global %struct.__sFILE*, align 8
 @.str.175 = private unnamed_addr constant [8 x i8] c"%s: %s\0A\00", align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -1499,7 +1498,7 @@ do.body25:                                        ; preds = %if.end24
   br i1 %tobool, label %if.then26, label %if.end28
 
 if.then26:                                        ; preds = %do.body25
-  %27 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %27 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %27, %struct.__sFILE** %vfp, align 8
   %28 = load i32, i32* %language.addr, align 4
   %29 = load %struct.__sFILE*, %struct.__sFILE** %vfp, align 8
@@ -1741,7 +1740,7 @@ do.body10:                                        ; preds = %if.end9
   br i1 %tobool, label %if.then11, label %if.end23
 
 if.then11:                                        ; preds = %do.body10
-  %15 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %15, %struct.__sFILE** %vfp, align 8
   %16 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
   %currentAliases12 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %16, i32 0, i32 4
@@ -4233,26 +4232,25 @@ if.end7:                                          ; preds = %for.body
   br i1 %tobool8, label %if.end12, label %if.then9
 
 if.then9:                                         ; preds = %if.end7
-  %10 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %11 = load %struct.sParserDefinition*, %struct.sParserDefinition** %lang, align 8
-  %name = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %11, i32 0, i32 0
-  %12 = load i8*, i8** %name, align 8
-  %13 = load i32, i32* %i, align 4
-  %call10 = call zeroext i1 @isLanguageEnabled(i32 %13)
-  %14 = zext i1 %call10 to i64
+  %10 = load %struct.sParserDefinition*, %struct.sParserDefinition** %lang, align 8
+  %name = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %10, i32 0, i32 0
+  %11 = load i8*, i8** %name, align 8
+  %12 = load i32, i32* %i, align 4
+  %call10 = call zeroext i1 @isLanguageEnabled(i32 %12)
+  %13 = zext i1 %call10 to i64
   %cond = select i1 %call10, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.22, i64 0, i64 0), i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.23, i64 0, i64 0)
-  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.21, i64 0, i64 0), i8* %12, i8* %cond)
+  %call11 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.21, i64 0, i64 0), i8* %11, i8* %cond)
   br label %if.end12
 
 if.end12:                                         ; preds = %if.then9, %if.end7
-  %15 = load i32, i32* %i, align 4
-  %16 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
-  call void @printKinds(i32 %15, i1 zeroext true, %struct.colprintTable* %16)
+  %14 = load i32, i32* %i, align 4
+  %15 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
+  call void @printKinds(i32 %14, i1 zeroext true, %struct.colprintTable* %15)
   br label %for.inc
 
 for.inc:                                          ; preds = %if.end12, %if.then6
-  %17 = load i32, i32* %i, align 4
-  %inc = add i32 %17, 1
+  %16 = load i32, i32* %i, align 4
+  %inc = add i32 %16, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
@@ -4260,31 +4258,31 @@ for.end:                                          ; preds = %for.cond
   br label %if.end13
 
 if.else:                                          ; preds = %if.end
-  %18 = load i32, i32* %language.addr, align 4
-  %19 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
-  call void @printKinds(i32 %18, i1 zeroext false, %struct.colprintTable* %19)
+  %17 = load i32, i32* %language.addr, align 4
+  %18 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
+  call void @printKinds(i32 %17, i1 zeroext false, %struct.colprintTable* %18)
   br label %if.end13
 
 if.end13:                                         ; preds = %if.else, %for.end
-  %20 = load i8, i8* %allKindFields.addr, align 1
-  %tobool14 = trunc i8 %20 to i1
+  %19 = load i8, i8* %allKindFields.addr, align 1
+  %tobool14 = trunc i8 %19 to i1
   br i1 %tobool14, label %if.then15, label %if.end21
 
 if.then15:                                        ; preds = %if.end13
-  %21 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
-  %22 = load i32, i32* %language.addr, align 4
-  %cmp16 = icmp eq i32 %22, -1
-  %23 = zext i1 %cmp16 to i64
+  %20 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
+  %21 = load i32, i32* %language.addr, align 4
+  %cmp16 = icmp eq i32 %21, -1
+  %22 = zext i1 %cmp16 to i64
   %cond17 = select i1 %cmp16, i32 0, i32 1
   %tobool18 = icmp ne i32 %cond17, 0
-  %24 = load i8, i8* %withListHeader.addr, align 1
-  %tobool19 = trunc i8 %24 to i1
-  %25 = load i8, i8* %machinable.addr, align 1
-  %tobool20 = trunc i8 %25 to i1
-  %26 = load %struct.__sFILE*, %struct.__sFILE** %fp.addr, align 8
-  call void @kindColprintTablePrint(%struct.colprintTable* %21, i1 zeroext %tobool18, i1 zeroext %tobool19, i1 zeroext %tobool20, %struct.__sFILE* %26)
-  %27 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
-  call void @colprintTableDelete(%struct.colprintTable* %27)
+  %23 = load i8, i8* %withListHeader.addr, align 1
+  %tobool19 = trunc i8 %23 to i1
+  %24 = load i8, i8* %machinable.addr, align 1
+  %tobool20 = trunc i8 %24 to i1
+  %25 = load %struct.__sFILE*, %struct.__sFILE** %fp.addr, align 8
+  call void @kindColprintTablePrint(%struct.colprintTable* %20, i1 zeroext %tobool18, i1 zeroext %tobool19, i1 zeroext %tobool20, %struct.__sFILE* %25)
+  %26 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
+  call void @colprintTableDelete(%struct.colprintTable* %26)
   br label %if.end21
 
 if.end21:                                         ; preds = %if.then15, %if.end13
@@ -4292,6 +4290,8 @@ if.end21:                                         ; preds = %if.then15, %if.end1
 }
 
 declare %struct.colprintTable* @kindColprintTableNew() #1
+
+declare i32 @printf(i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @printKinds(i32 %language, i1 zeroext %indent, %struct.colprintTable* %table) #0 {
@@ -5151,22 +5151,21 @@ entry:
   %idx.ext = sext i32 %1 to i64
   %add.ptr = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %0, i64 %idx.ext
   store %struct.sParserObject* %add.ptr, %struct.sParserObject** %parser, align 8
-  %2 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %3 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %def = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %3, i32 0, i32 0
-  %4 = load %struct.sParserDefinition*, %struct.sParserDefinition** %def, align 8
-  %name = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %4, i32 0, i32 0
-  %5 = load i8*, i8** %name, align 8
-  %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %2, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.161, i64 0, i64 0), i8* %5)
-  %6 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %currentPatterns = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %6, i32 0, i32 2
-  %7 = load %struct.sPtrArray*, %struct.sPtrArray** %currentPatterns, align 8
-  %cmp = icmp ne %struct.sPtrArray* %7, null
+  %2 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %def = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %2, i32 0, i32 0
+  %3 = load %struct.sParserDefinition*, %struct.sParserDefinition** %def, align 8
+  %name = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %3, i32 0, i32 0
+  %4 = load i8*, i8** %name, align 8
+  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.161, i64 0, i64 0), i8* %4)
+  %5 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %currentPatterns = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %5, i32 0, i32 2
+  %6 = load %struct.sPtrArray*, %struct.sPtrArray** %currentPatterns, align 8
+  %cmp = icmp ne %struct.sPtrArray* %6, null
   br i1 %cmp, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %entry
-  %8 = load i32, i32* %type.addr, align 4
-  %and = and i32 %8, 1
+  %7 = load i32, i32* %type.addr, align 4
+  %and = and i32 %7, 1
   %tobool = icmp ne i32 %and, 0
   br i1 %tobool, label %if.then, label %if.end
 
@@ -5175,29 +5174,28 @@ if.then:                                          ; preds = %land.lhs.true
   br label %for.cond
 
 for.cond:                                         ; preds = %for.inc, %if.then
-  %9 = load i32, i32* %i, align 4
-  %10 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %currentPatterns1 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %10, i32 0, i32 2
-  %11 = load %struct.sPtrArray*, %struct.sPtrArray** %currentPatterns1, align 8
-  %call2 = call i32 @stringListCount(%struct.sPtrArray* %11)
-  %cmp3 = icmp ult i32 %9, %call2
+  %8 = load i32, i32* %i, align 4
+  %9 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %currentPatterns1 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %9, i32 0, i32 2
+  %10 = load %struct.sPtrArray*, %struct.sPtrArray** %currentPatterns1, align 8
+  %call2 = call i32 @stringListCount(%struct.sPtrArray* %10)
+  %cmp3 = icmp ult i32 %8, %call2
   br i1 %cmp3, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
-  %12 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %13 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %currentPatterns4 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %13, i32 0, i32 2
-  %14 = load %struct.sPtrArray*, %struct.sPtrArray** %currentPatterns4, align 8
-  %15 = load i32, i32* %i, align 4
-  %call5 = call %struct.sVString* @stringListItem(%struct.sPtrArray* %14, i32 %15)
+  %11 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %currentPatterns4 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %11, i32 0, i32 2
+  %12 = load %struct.sPtrArray*, %struct.sPtrArray** %currentPatterns4, align 8
+  %13 = load i32, i32* %i, align 4
+  %call5 = call %struct.sVString* @stringListItem(%struct.sPtrArray* %12, i32 %13)
   %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %call5, i32 0, i32 2
-  %16 = load i8*, i8** %buffer, align 8
-  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %12, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.6, i64 0, i64 0), i8* %16)
+  %14 = load i8*, i8** %buffer, align 8
+  %call6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.6, i64 0, i64 0), i8* %14)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body
-  %17 = load i32, i32* %i, align 4
-  %inc = add i32 %17, 1
+  %15 = load i32, i32* %i, align 4
+  %inc = add i32 %15, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
@@ -5205,15 +5203,15 @@ for.end:                                          ; preds = %for.cond
   br label %if.end
 
 if.end:                                           ; preds = %for.end, %land.lhs.true, %entry
-  %18 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %currentExtensions = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %18, i32 0, i32 3
-  %19 = load %struct.sPtrArray*, %struct.sPtrArray** %currentExtensions, align 8
-  %cmp7 = icmp ne %struct.sPtrArray* %19, null
+  %16 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %currentExtensions = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %16, i32 0, i32 3
+  %17 = load %struct.sPtrArray*, %struct.sPtrArray** %currentExtensions, align 8
+  %cmp7 = icmp ne %struct.sPtrArray* %17, null
   br i1 %cmp7, label %land.lhs.true8, label %if.end24
 
 land.lhs.true8:                                   ; preds = %if.end
-  %20 = load i32, i32* %type.addr, align 4
-  %and9 = and i32 %20, 2
+  %18 = load i32, i32* %type.addr, align 4
+  %and9 = and i32 %18, 2
   %tobool10 = icmp ne i32 %and9, 0
   br i1 %tobool10, label %if.then11, label %if.end24
 
@@ -5222,29 +5220,28 @@ if.then11:                                        ; preds = %land.lhs.true8
   br label %for.cond12
 
 for.cond12:                                       ; preds = %for.inc21, %if.then11
-  %21 = load i32, i32* %i, align 4
-  %22 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %currentExtensions13 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %22, i32 0, i32 3
-  %23 = load %struct.sPtrArray*, %struct.sPtrArray** %currentExtensions13, align 8
-  %call14 = call i32 @stringListCount(%struct.sPtrArray* %23)
-  %cmp15 = icmp ult i32 %21, %call14
+  %19 = load i32, i32* %i, align 4
+  %20 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %currentExtensions13 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %20, i32 0, i32 3
+  %21 = load %struct.sPtrArray*, %struct.sPtrArray** %currentExtensions13, align 8
+  %call14 = call i32 @stringListCount(%struct.sPtrArray* %21)
+  %cmp15 = icmp ult i32 %19, %call14
   br i1 %cmp15, label %for.body16, label %for.end23
 
 for.body16:                                       ; preds = %for.cond12
-  %24 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %25 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
-  %currentExtensions17 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %25, i32 0, i32 3
-  %26 = load %struct.sPtrArray*, %struct.sPtrArray** %currentExtensions17, align 8
-  %27 = load i32, i32* %i, align 4
-  %call18 = call %struct.sVString* @stringListItem(%struct.sPtrArray* %26, i32 %27)
+  %22 = load %struct.sParserObject*, %struct.sParserObject** %parser, align 8
+  %currentExtensions17 = getelementptr inbounds %struct.sParserObject, %struct.sParserObject* %22, i32 0, i32 3
+  %23 = load %struct.sPtrArray*, %struct.sPtrArray** %currentExtensions17, align 8
+  %24 = load i32, i32* %i, align 4
+  %call18 = call %struct.sVString* @stringListItem(%struct.sPtrArray* %23, i32 %24)
   %buffer19 = getelementptr inbounds %struct.sVString, %struct.sVString* %call18, i32 0, i32 2
-  %28 = load i8*, i8** %buffer19, align 8
-  %call20 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %24, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.162, i64 0, i64 0), i8* %28)
+  %25 = load i8*, i8** %buffer19, align 8
+  %call20 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.162, i64 0, i64 0), i8* %25)
   br label %for.inc21
 
 for.inc21:                                        ; preds = %for.body16
-  %29 = load i32, i32* %i, align 4
-  %inc22 = add i32 %29, 1
+  %26 = load i32, i32* %i, align 4
+  %inc22 = add i32 %26, 1
   store i32 %inc22, i32* %i, align 4
   br label %for.cond12
 
@@ -5252,8 +5249,7 @@ for.end23:                                        ; preds = %for.cond12
   br label %if.end24
 
 if.end24:                                         ; preds = %for.end23, %land.lhs.true8, %if.end
-  %30 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call25 = call i32 @ios_fputc(i32 10, %struct.__sFILE* %30)
+  %call25 = call i32 @putchar(i32 10)
   ret void
 }
 
@@ -5583,17 +5579,16 @@ lor.lhs.false:                                    ; preds = %if.end
   br i1 %tobool1, label %if.then2, label %if.end4
 
 if.then2:                                         ; preds = %lor.lhs.false, %if.end
-  %9 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %10 = load %struct.sParserDefinition*, %struct.sParserDefinition** %lang, align 8
-  %name = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %10, i32 0, i32 0
-  %11 = load i8*, i8** %name, align 8
-  %12 = load %struct.sParserDefinition*, %struct.sParserDefinition** %lang, align 8
-  %id = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %12, i32 0, i32 33
-  %13 = load i32, i32* %id, align 4
-  %call = call zeroext i1 @isLanguageEnabled(i32 %13)
-  %14 = zext i1 %call to i64
+  %9 = load %struct.sParserDefinition*, %struct.sParserDefinition** %lang, align 8
+  %name = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %9, i32 0, i32 0
+  %10 = load i8*, i8** %name, align 8
+  %11 = load %struct.sParserDefinition*, %struct.sParserDefinition** %lang, align 8
+  %id = getelementptr inbounds %struct.sParserDefinition, %struct.sParserDefinition* %11, i32 0, i32 33
+  %12 = load i32, i32* %id, align 4
+  %call = call zeroext i1 @isLanguageEnabled(i32 %12)
+  %13 = zext i1 %call to i64
   %cond = select i1 %call, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.22, i64 0, i64 0), i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.23, i64 0, i64 0)
-  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %9, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.21, i64 0, i64 0), i8* %11, i8* %cond)
+  %call3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.21, i64 0, i64 0), i8* %10, i8* %cond)
   br label %if.end4
 
 if.end4:                                          ; preds = %if.then, %if.then2, %lor.lhs.false
@@ -6811,7 +6806,7 @@ if.else:                                          ; preds = %entry
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %5 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
+  %5 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   %6 = load i8*, i8** %fileName.addr, align 8
   %7 = load i8*, i8** %parserName, align 8
   %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.175, i64 0, i64 0), i8* %6, i8* %7)
@@ -12911,7 +12906,7 @@ declare void @colprintLineAppendColumnCString(%struct.colprintLine*, i8*) #1
 
 declare void @colprintLineAppendColumnVString(%struct.colprintLine*, %struct.sVString*) #1
 
-declare i32 @ios_fputc(i32, %struct.__sFILE*) #1
+declare i32 @putchar(i32) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @xtagDefinitionDestroy(%struct.sXtagDefinition* %xdef) #0 {

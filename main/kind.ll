@@ -3,9 +3,6 @@ source_filename = "kind.c"
 target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "arm64-apple-ios11.0.0"
 
-%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
-%struct.__sFILEX = type opaque
-%struct.__sbuf = type { i8*, i32 }
 %struct.sRoleDesc = type { i8, i8*, i8* }
 %struct.sVString = type { i64, i64, i8* }
 %struct.sKindDefinition = type { i8, i8, i8*, i8*, i8, i32, %struct.sRoleDesc*, %struct.sScopeSeparator*, i32, i32, i32, %struct.sKindDefinition*, %struct.sKindDefinition* }
@@ -33,8 +30,10 @@ target triple = "arm64-apple-ios11.0.0"
 %struct.sXpathFileSpec = type { i8*, i8*, i8*, i8*, i8*, i8* }
 %struct.colprintTable = type opaque
 %struct.colprintLine = type opaque
+%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
+%struct.__sFILEX = type opaque
+%struct.__sbuf = type { i8*, i32 }
 
-@thread_stdout = external thread_local global %struct.__sFILE*, align 8
 @.str = private unnamed_addr constant [12 x i8] c"%s%c  %s%s\0A\00", align 1
 @.str.1 = private unnamed_addr constant [5 x i8] c"    \00", align 1
 @.str.2 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
@@ -86,60 +85,59 @@ entry:
   store %struct.sKindDefinition* %kind, %struct.sKindDefinition** %kind.addr, align 8
   %frombool = zext i1 %indent to i8
   store i8 %frombool, i8* %indent.addr, align 1
-  %0 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %1 = load i8, i8* %indent.addr, align 1
-  %tobool = trunc i8 %1 to i1
-  %2 = zext i1 %tobool to i64
+  %0 = load i8, i8* %indent.addr, align 1
+  %tobool = trunc i8 %0 to i1
+  %1 = zext i1 %tobool to i64
   %cond = select i1 %tobool, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.1, i64 0, i64 0), i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0)
-  %3 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
-  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %3, i32 0, i32 1
-  %4 = load i8, i8* %letter, align 1
-  %conv = sext i8 %4 to i32
-  %5 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
-  %description = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %5, i32 0, i32 3
-  %6 = load i8*, i8** %description, align 8
-  %cmp = icmp ne i8* %6, null
+  %2 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
+  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %2, i32 0, i32 1
+  %3 = load i8, i8* %letter, align 1
+  %conv = sext i8 %3 to i32
+  %4 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
+  %description = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %4, i32 0, i32 3
+  %5 = load i8*, i8** %description, align 8
+  %cmp = icmp ne i8* %5, null
   br i1 %cmp, label %cond.true, label %cond.false
 
 cond.true:                                        ; preds = %entry
-  %7 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
-  %description2 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %7, i32 0, i32 3
-  %8 = load i8*, i8** %description2, align 8
+  %6 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
+  %description2 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %6, i32 0, i32 3
+  %7 = load i8*, i8** %description2, align 8
   br label %cond.end9
 
 cond.false:                                       ; preds = %entry
-  %9 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
-  %name = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %9, i32 0, i32 2
-  %10 = load i8*, i8** %name, align 8
-  %cmp3 = icmp ne i8* %10, null
+  %8 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
+  %name = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %8, i32 0, i32 2
+  %9 = load i8*, i8** %name, align 8
+  %cmp3 = icmp ne i8* %9, null
   br i1 %cmp3, label %cond.true5, label %cond.false7
 
 cond.true5:                                       ; preds = %cond.false
-  %11 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
-  %name6 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %11, i32 0, i32 2
-  %12 = load i8*, i8** %name6, align 8
+  %10 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
+  %name6 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %10, i32 0, i32 2
+  %11 = load i8*, i8** %name6, align 8
   br label %cond.end
 
 cond.false7:                                      ; preds = %cond.false
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false7, %cond.true5
-  %cond8 = phi i8* [ %12, %cond.true5 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0), %cond.false7 ]
+  %cond8 = phi i8* [ %11, %cond.true5 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0), %cond.false7 ]
   br label %cond.end9
 
 cond.end9:                                        ; preds = %cond.end, %cond.true
-  %cond10 = phi i8* [ %8, %cond.true ], [ %cond8, %cond.end ]
-  %13 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
-  %enabled = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %13, i32 0, i32 0
-  %14 = load i8, i8* %enabled, align 8
-  %tobool11 = trunc i8 %14 to i1
-  %15 = zext i1 %tobool11 to i64
+  %cond10 = phi i8* [ %7, %cond.true ], [ %cond8, %cond.end ]
+  %12 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kind.addr, align 8
+  %enabled = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %12, i32 0, i32 0
+  %13 = load i8, i8* %enabled, align 8
+  %tobool11 = trunc i8 %13 to i1
+  %14 = zext i1 %tobool11 to i64
   %cond13 = select i1 %tobool11, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.3, i64 0, i64 0)
-  %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str, i64 0, i64 0), i8* %cond, i32 %conv, i8* %cond10, i8* %cond13)
+  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str, i64 0, i64 0), i8* %cond, i32 %conv, i8* %cond10, i8* %cond13)
   ret void
 }
 
-declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+declare i32 @printf(i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @scopeSeparatorFor(i32 %lang, i32 %kindIndex, i32 %parentKindIndex) #0 {

@@ -1942,7 +1942,7 @@ entry:
   br i1 %tobool, label %if.end, label %if.then
 
 if.then:                                          ; preds = %entry
-  %call1 = call i8* @ios_getenv(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.4, i64 0, i64 0))
+  %call1 = call i8* @getenv(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.4, i64 0, i64 0))
   store i8* %call1, i8** %tmpdir, align 8
   br label %if.end
 
@@ -2011,7 +2011,7 @@ do.end:                                           ; preds = %do.body
   ret %struct._MIO* %17
 }
 
-declare i8* @ios_getenv(i8*) #2
+declare i8* @getenv(i8*) #2
 
 declare i32 @mkstemp(i8*) #2
 

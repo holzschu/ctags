@@ -12,7 +12,7 @@ target triple = "arm64-apple-ios11.0.0"
 %struct._MIO = type opaque
 %struct.sVString = type { i64, i64, i8* }
 
-@thread_stdout = external thread_local global %struct.__sFILE*, align 8
+@__stdoutp = external global %struct.__sFILE*, align 8
 @.str = private unnamed_addr constant [21 x i8] c"cannot sort tag file\00", align 1
 @.str.1 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
 @.str.2 = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
@@ -45,13 +45,12 @@ while.cond:                                       ; preds = %while.body, %if.the
 
 while.body:                                       ; preds = %while.cond
   %3 = load i32, i32* %c, align 4
-  %4 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call3 = call i32 @ios_fputc(i32 %3, %struct.__sFILE* %4)
+  %call3 = call i32 @putchar(i32 %3)
   br label %while.cond
 
 while.end:                                        ; preds = %while.cond
-  %5 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call4 = call i32 @ios_fflush(%struct.__sFILE* %5)
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
+  %call4 = call i32 @fflush(%struct.__sFILE* %4)
   br label %if.end
 
 if.end:                                           ; preds = %while.end, %entry
@@ -62,9 +61,9 @@ declare i32 @mio_seek(%struct._MIO*, i64, i32) #1
 
 declare i32 @mio_getc(%struct._MIO*) #1
 
-declare i32 @ios_fputc(i32, %struct.__sFILE*) #1
+declare i32 @putchar(i32) #1
 
-declare i32 @ios_fflush(%struct.__sFILE*) #1
+declare i32 @fflush(%struct.__sFILE*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @failedSort(%struct._MIO* %mio, i8* %msg) #0 {
@@ -406,7 +405,7 @@ entry:
   br i1 %tobool, label %if.then, label %if.else
 
 if.then:                                          ; preds = %entry
-  %1 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
+  %1 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   %call = call %struct._MIO* @mio_new_fp(%struct.__sFILE* %1, i32 (%struct.__sFILE*)* null)
   store %struct._MIO* %call, %struct._MIO** %mio, align 8
   br label %if.end5

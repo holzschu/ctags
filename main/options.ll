@@ -232,11 +232,9 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.186 = private unnamed_addr constant [43 x i8] c"Unsupported parameter '%c' for \22%s\22 option\00", align 1
 @.str.187 = private unnamed_addr constant [3 x i8] c"%u\00", align 1
 @.str.188 = private unnamed_addr constant [34 x i8] c"Unsupported value for \22%s\22 option\00", align 1
-@thread_stdout = external thread_local global %struct.__sFILE*, align 8
 @LongOptionDescription = internal global [226 x %struct.sOptionDescription] [%struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.216, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.217, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.218, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.219, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.220, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.221, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([72 x i8], [72 x i8]* @.str.222, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.223, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.224, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @.str.225, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.226, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.227, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.228, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.229, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([72 x i8], [72 x i8]* @.str.230, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.231, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.232, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([67 x i8], [67 x i8]* @.str.233, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([57 x i8], [57 x i8]* @.str.234, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.235, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([38 x i8], [38 x i8]* @.str.236, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.237, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.238, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.239, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.240, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([64 x i8], [64 x i8]* @.str.241, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.242, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.243, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.244, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.245, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([65 x i8], [65 x i8]* @.str.246, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.247, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.248, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.249, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.250, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.251, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([67 x i8], [67 x i8]* @.str.252, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.253, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.254, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.255, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([78 x i8], [78 x i8]* @.str.256, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.257, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.258, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.259, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.260, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([72 x i8], [72 x i8]* @.str.261, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.262, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([51 x i8], [51 x i8]* @.str.263, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.264, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.265, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.266, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.267, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.268, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.269, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.270, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.271, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.272, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.273, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.274, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([54 x i8], [54 x i8]* @.str.275, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.276, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str.277, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.278, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([60 x i8], [60 x i8]* @.str.279, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([78 x i8], [78 x i8]* @.str.280, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([60 x i8], [60 x i8]* @.str.281, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.282, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.283, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.284, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.285, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.286, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.287, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.288, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.289, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.290, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.291, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.292, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.293, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str.294, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.295, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.296, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.297, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.298, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.299, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([67 x i8], [67 x i8]* @.str.300, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.301, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.302, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.303, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.304, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.305, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.306, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.307, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.308, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.309, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([65 x i8], [65 x i8]* @.str.310, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.311, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([38 x i8], [38 x i8]* @.str.312, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.313, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.314, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.315, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.316, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.317, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.318, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.319, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.320, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.321, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([71 x i8], [71 x i8]* @.str.322, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([72 x i8], [72 x i8]* @.str.323, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.324, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.325, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.326, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.327, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.328, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.329, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([54 x i8], [54 x i8]* @.str.330, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.331, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.332, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.333, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([71 x i8], [71 x i8]* @.str.334, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.335, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([86 x i8], [86 x i8]* @.str.336, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.337, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.338, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.339, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.340, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.341, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([76 x i8], [76 x i8]* @.str.342, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.343, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.344, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.345, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.346, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.347, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.348, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.349, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([71 x i8], [71 x i8]* @.str.350, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([78 x i8], [78 x i8]* @.str.351, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.352, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([63 x i8], [63 x i8]* @.str.353, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([38 x i8], [38 x i8]* @.str.354, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.355, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([78 x i8], [78 x i8]* @.str.356, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([55 x i8], [55 x i8]* @.str.357, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([84 x i8], [84 x i8]* @.str.358, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.359, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.360, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([58 x i8], [58 x i8]* @.str.361, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([83 x i8], [83 x i8]* @.str.362, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.363, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([82 x i8], [82 x i8]* @.str.364, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.365, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([86 x i8], [86 x i8]* @.str.366, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.367, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.368, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.369, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([83 x i8], [83 x i8]* @.str.370, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([58 x i8], [58 x i8]* @.str.371, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.372, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.373, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.374, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([93 x i8], [93 x i8]* @.str.375, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.376, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([87 x i8], [87 x i8]* @.str.377, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.378, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.379, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.380, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.381, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.382, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([54 x i8], [54 x i8]* @.str.383, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([55 x i8], [55 x i8]* @.str.384, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.385, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.386, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.387, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.388, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @.str.389, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.390, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([63 x i8], [63 x i8]* @.str.391, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.392, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.393, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.394, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([63 x i8], [63 x i8]* @.str.395, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.396, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([75 x i8], [75 x i8]* @.str.397, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([81 x i8], [81 x i8]* @.str.398, i32 0, i32 0) }, %struct.sOptionDescription { i32 0, i8* getelementptr inbounds ([81 x i8], [81 x i8]* @.str.399, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.400, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.401, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.402, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.403, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.404, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.405, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.406, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([64 x i8], [64 x i8]* @.str.407, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([78 x i8], [78 x i8]* @.str.351, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.352, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.408, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.409, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.410, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.411, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([47 x i8], [47 x i8]* @.str.412, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.413, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.414, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.415, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.416, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.417, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.418, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.419, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([38 x i8], [38 x i8]* @.str.420, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.421, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.422, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([45 x i8], [45 x i8]* @.str.423, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.424, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.425, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.417, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([29 x i8], [29 x i8]* @.str.426, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([87 x i8], [87 x i8]* @.str.427, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.428, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([62 x i8], [62 x i8]* @.str.429, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([65 x i8], [65 x i8]* @.str.430, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([84 x i8], [84 x i8]* @.str.431, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.432, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.433, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.434, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([63 x i8], [63 x i8]* @.str.435, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.436, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.437, i32 0, i32 0) }, %struct.sOptionDescription { i32 1, i8* null }], align 8
 @ctags_repoinfo = external global i8*, align 8
 @.str.189 = private unnamed_addr constant [6 x i8] c"0.0.0\00", align 1
-@__stdoutp = external global %struct.__sFILE*, align 8
 @.str.190 = private unnamed_addr constant [14 x i8] c"%s %s, %s %s\0A\00", align 1
 @.str.191 = private unnamed_addr constant [16 x i8] c"Universal Ctags\00", align 1
 @.str.192 = private unnamed_addr constant [19 x i8] c"Copyright (C) 2015\00", align 1
@@ -245,8 +243,8 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.195 = private unnamed_addr constant [50 x i8] c"Universal Ctags is derived from Exuberant Ctags.\0A\00", align 1
 @.str.196 = private unnamed_addr constant [61 x i8] c"Exuberant Ctags 5.8, Copyright (C) 1996-2009 Darren Hiebert\0A\00", align 1
 @.str.197 = private unnamed_addr constant [20 x i8] c"  Compiled: %s, %s\0A\00", align 1
-@.str.198 = private unnamed_addr constant [12 x i8] c"Dec  2 2019\00", align 1
-@.str.199 = private unnamed_addr constant [9 x i8] c"23:16:44\00", align 1
+@.str.198 = private unnamed_addr constant [12 x i8] c"Dec  8 2019\00", align 1
+@.str.199 = private unnamed_addr constant [9 x i8] c"17:50:29\00", align 1
 @.str.200 = private unnamed_addr constant [11 x i8] c"  URL: %s\0A\00", align 1
 @.str.201 = private unnamed_addr constant [18 x i8] c"https://ctags.io/\00", align 1
 @Features = internal global [7 x %struct.Feature] [%struct.Feature { i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.206, i32 0, i32 0), i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.207, i32 0, i32 0) }, %struct.Feature { i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.203, i32 0, i32 0), i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.208, i32 0, i32 0) }, %struct.Feature { i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.209, i32 0, i32 0), i8* getelementptr inbounds ([60 x i8], [60 x i8]* @.str.210, i32 0, i32 0) }, %struct.Feature { i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.211, i32 0, i32 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.212, i32 0, i32 0) }, %struct.Feature { i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.213, i32 0, i32 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.212, i32 0, i32 0) }, %struct.Feature { i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.214, i32 0, i32 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.212, i32 0, i32 0) }, %struct.Feature zeroinitializer], align 8
@@ -500,6 +498,7 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.449 = private unnamed_addr constant [31 x i8] c"    Adding to %s language map:\00", align 1
 @.str.450 = private unnamed_addr constant [241 x i8] c"This program is free software; you can redistribute it and/or\0Amodify it under the terms of the GNU General Public License\0Aas published by the Free Software Foundation; either version 2of the License, or (at your option) any later version.\0A\0A\00", align 1
 @.str.451 = private unnamed_addr constant [438 x i8] c"This program is distributed in the hope that it will be useful,\0Abut WITHOUT ANY WARRANTY; without even the implied warranty of\0AMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\0AGNU General Public License for more details.\0A\0AYou should have received a copy of the GNU General Public License\0Aalong with this program; if not, write to the Free Software\0AFoundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.\0A\00", align 1
+@__stdoutp = external global %struct.__sFILE*, align 8
 @.str.452 = private unnamed_addr constant [7 x i8] c"L:NAME\00", align 1
 @.str.453 = private unnamed_addr constant [14 x i8] c"L:DESCRIPTION\00", align 1
 @.str.454 = private unnamed_addr constant [2 x i8] c"*\00", align 1
@@ -566,7 +565,6 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.515 = private unnamed_addr constant [15 x i8] c"      adding: \00", align 1
 @.str.516 = private unnamed_addr constant [5 x i8] c"%s%s\00", align 1
 @.str.517 = private unnamed_addr constant [7 x i8] c"(NONE)\00", align 1
-@thread_stderr = external thread_local global %struct.__sFILE*, align 8
 @.str.518 = private unnamed_addr constant [13 x i8] c"\0A      now: \00", align 1
 @preload_path_list = internal global [4 x %struct.preloadPathElt] [%struct.preloadPathElt { i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.519, i32 0, i32 0), i8 1, i8* (i8*, i8*)* @prependEnvvar, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.520, i32 0, i32 0), i32 5 }, %struct.preloadPathElt { i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.519, i32 0, i32 0), i8 1, i8* (i8*, i8*)* null, i8* null, i32 6 }, %struct.preloadPathElt { i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.521, i32 0, i32 0), i8 1, i8* (i8*, i8*)* null, i8* null, i32 6 }, %struct.preloadPathElt zeroinitializer], align 8
 @.str.519 = private unnamed_addr constant [9 x i8] c".ctags.d\00", align 1
@@ -645,7 +643,7 @@ if.then:                                          ; preds = %entry
   %ap4 = bitcast i8** %ap to i8*
   call void @llvm.va_end(i8* %ap4)
   %5 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
-  %call5 = call i32 @ios_fputs(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.1, i64 0, i64 0), %struct.__sFILE* %5)
+  %call5 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.1, i64 0, i64 0), %struct.__sFILE* %5)
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
@@ -656,7 +654,7 @@ declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #2
 
 declare i8* @getExecutableName() #2
 
-declare i32 @ios_fputs(i8*, %struct.__sFILE*) #2
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #2
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @freeList(%struct.sPtrArray** %pList) #0 {
@@ -2482,7 +2480,7 @@ do.end2:                                          ; preds = %if.end
 if.then3:                                         ; preds = %do.end2
   store i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.522, i64 0, i64 0), i8** %var, align 8
   %4 = load i8*, i8** %var, align 8
-  %call = call i8* @ios_getenv(i8* %4)
+  %call = call i8* @getenv(i8* %4)
   store i8* %call, i8** %envOptions, align 8
   br label %if.end4
 
@@ -2494,7 +2492,7 @@ if.end4:                                          ; preds = %if.then3, %do.end2
 if.then6:                                         ; preds = %if.end4
   store i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.523, i64 0, i64 0), i8** %var, align 8
   %6 = load i8*, i8** %var, align 8
-  %call7 = call i8* @ios_getenv(i8* %6)
+  %call7 = call i8* @getenv(i8* %6)
   store i8* %call7, i8** %envOptions, align 8
   br label %if.end8
 
@@ -2605,7 +2603,7 @@ do.body:                                          ; preds = %entry
   br i1 %tobool, label %if.then, label %if.end
 
 if.then:                                          ; preds = %do.body
-  %1 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %1 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %1, %struct.__sFILE** %vfp, align 8
   %2 = load %struct.__sFILE*, %struct.__sFILE** %vfp, align 8
   %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %2, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.526, i64 0, i64 0))
@@ -3464,7 +3462,7 @@ if.else15:                                        ; preds = %lor.lhs.false9, %if
 sw.bb:                                            ; preds = %if.else15
   call void @processHelpOption(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.503, i64 0, i64 0), i8* null)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 
 sw.bb17:                                          ; preds = %if.else15
@@ -5565,14 +5563,12 @@ entry:
   store i8* %option, i8** %option.addr, align 8
   store i8* %parameter, i8** %parameter.addr, align 8
   call void @printProgramIdentification()
-  %0 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call = call i32 @ios_fputc(i32 10, %struct.__sFILE* %0)
+  %call = call i32 @putchar(i32 10)
   call void @printInvocationDescription()
-  %1 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call1 = call i32 @ios_fputc(i32 10, %struct.__sFILE* %1)
+  %call1 = call i32 @putchar(i32 10)
   call void @printOptionDescriptions(%struct.sOptionDescription* getelementptr inbounds ([226 x %struct.sOptionDescription], [226 x %struct.sOptionDescription]* @LongOptionDescription, i64 0, i64 0))
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -5982,11 +5978,11 @@ entry:
   store i8* %option, i8** %option.addr, align 8
   store i8* %parameter, i8** %parameter.addr, align 8
   call void @printProgramIdentification()
-  %call = call i32 @ios_puts(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.72, i64 0, i64 0))
-  %call1 = call i32 @ios_puts(i8* getelementptr inbounds ([241 x i8], [241 x i8]* @.str.450, i32 0, i32 0))
-  %call2 = call i32 @ios_puts(i8* getelementptr inbounds ([438 x i8], [438 x i8]* @.str.451, i32 0, i32 0))
+  %call = call i32 @puts(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.72, i64 0, i64 0))
+  %call1 = call i32 @puts(i8* getelementptr inbounds ([241 x i8], [241 x i8]* @.str.450, i32 0, i32 0))
+  %call2 = call i32 @puts(i8* getelementptr inbounds ([438 x i8], [438 x i8]* @.str.451, i32 0, i32 0))
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6049,7 +6045,7 @@ if.end:                                           ; preds = %if.else9, %if.then8
 
 if.end12:                                         ; preds = %if.end, %if.then
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6147,7 +6143,7 @@ if.end15:                                         ; preds = %if.end14, %for.end
   %20 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
   call void @colprintTableDelete(%struct.colprintTable* %20)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6235,13 +6231,12 @@ for.end:                                          ; preds = %for.cond
   br i1 %cmp14, label %if.then15, label %if.end17
 
 if.then15:                                        ; preds = %for.end
-  %19 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call16 = call i32 @ios_fputc(i32 10, %struct.__sFILE* %19)
+  %call16 = call i32 @putchar(i32 10)
   br label %if.end17
 
 if.end17:                                         ; preds = %if.then15, %for.end
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6339,7 +6334,7 @@ if.end15:                                         ; preds = %if.end14, %for.end
   %20 = load %struct.colprintTable*, %struct.colprintTable** %table, align 8
   call void @colprintTableDelete(%struct.colprintTable* %20)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6415,7 +6410,7 @@ if.end:                                           ; preds = %if.else13, %if.then
 
 if.end17:                                         ; preds = %if.end, %if.then
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6433,7 +6428,7 @@ entry:
   %2 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printLangdefFlags(i1 zeroext %tobool, i1 zeroext %tobool1, %struct.__sFILE* %2)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6446,7 +6441,7 @@ entry:
   store i8* %parameter, i8** %parameter.addr, align 8
   call void @printLanguageList()
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6503,7 +6498,7 @@ entry:
   %2 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printMultilineRegexFlags(i1 zeroext %tobool, i1 zeroext %tobool1, %struct.__sFILE* %2)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6566,7 +6561,7 @@ if.end:                                           ; preds = %if.else9, %if.then8
 
 if.end12:                                         ; preds = %if.end, %if.then
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6584,7 +6579,7 @@ entry:
   %2 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printPtags(i1 zeroext %tobool, i1 zeroext %tobool1, %struct.__sFILE* %2)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6602,7 +6597,7 @@ entry:
   %2 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printRegexFlags(i1 zeroext %tobool, i1 zeroext %tobool1, %struct.__sFILE* %2)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6637,7 +6632,7 @@ if.then:                                          ; preds = %lor.lhs.false, %ent
   %5 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printLanguageRoles(i32 -1, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.454, i64 0, i64 0), i1 zeroext %tobool, i1 zeroext %tobool3, %struct.__sFILE* %5)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 
 if.end:                                           ; preds = %lor.lhs.false
@@ -6730,7 +6725,7 @@ if.end32:                                         ; preds = %if.end31, %if.then2
   %31 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printLanguageRoles(i32 %27, i8* %28, i1 zeroext %tobool33, i1 zeroext %tobool34, %struct.__sFILE* %31)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -6768,7 +6763,7 @@ if.then:                                          ; preds = %lor.lhs.false3, %lo
   %6 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printLanguageSubparsers(i32 -1, i1 zeroext %tobool, i1 zeroext %tobool6, %struct.__sFILE* %6)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 
 if.end:                                           ; preds = %lor.lhs.false3
@@ -6794,7 +6789,7 @@ if.end11:                                         ; preds = %if.then10, %if.end
   %14 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printLanguageSubparsers(i32 %11, i1 zeroext %tobool12, i1 zeroext %tobool13, %struct.__sFILE* %14)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -7313,7 +7308,7 @@ entry:
   store i8* %parameter, i8** %parameter.addr, align 8
   call void @printProgramIdentification()
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -7350,7 +7345,7 @@ if.end:                                           ; preds = %if.then, %lor.lhs.f
   %arraydecay3 = getelementptr inbounds [9 x i8], [9 x i8]* %buf, i64 0, i64 0
   %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.489, i64 0, i64 0), i8* %arraydecay3)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -7508,7 +7503,7 @@ if.then:                                          ; preds = %lor.lhs.false3, %lo
 if.end:                                           ; preds = %if.then, %lor.lhs.false3
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
   %4 = load i32, i32* %s, align 4
-  call void @ios_exit(i32 %4) #5
+  call void @exit(i32 %4) #5
   unreachable
 }
 
@@ -7526,7 +7521,7 @@ entry:
   %2 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   call void @printMultitableRegexFlags(i1 zeroext %tobool, i1 zeroext %tobool1, %struct.__sFILE* %2)
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -7577,37 +7572,30 @@ lor.lhs.false:                                    ; preds = %entry
   br i1 %cmp1, label %if.then, label %if.else
 
 if.then:                                          ; preds = %lor.lhs.false, %entry
-  %2 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %2, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.190, i64 0, i64 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.191, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.189, i64 0, i64 0), i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.192, i64 0, i64 0), i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.193, i64 0, i64 0))
+  %call2 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.190, i64 0, i64 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.191, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.189, i64 0, i64 0), i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.192, i64 0, i64 0), i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.193, i64 0, i64 0))
   br label %if.end
 
 if.else:                                          ; preds = %lor.lhs.false
-  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %4 = load i8*, i8** @ctags_repoinfo, align 8
-  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.194, i64 0, i64 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.191, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.189, i64 0, i64 0), i8* %4, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.192, i64 0, i64 0), i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.193, i64 0, i64 0))
+  %2 = load i8*, i8** @ctags_repoinfo, align 8
+  %call3 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.194, i64 0, i64 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.191, i64 0, i64 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.189, i64 0, i64 0), i8* %2, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.192, i64 0, i64 0), i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.193, i64 0, i64 0))
   br label %if.end
 
 if.end:                                           ; preds = %if.else, %if.then
-  %5 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.195, i64 0, i64 0))
-  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %6, i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.196, i64 0, i64 0))
-  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %7, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.197, i64 0, i64 0), i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.198, i64 0, i64 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.199, i64 0, i64 0))
-  %8 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %8, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.200, i64 0, i64 0), i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.201, i64 0, i64 0))
+  %call4 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.195, i64 0, i64 0))
+  %call5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.196, i64 0, i64 0))
+  %call6 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.197, i64 0, i64 0), i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.198, i64 0, i64 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.199, i64 0, i64 0))
+  %call7 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.200, i64 0, i64 0), i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.201, i64 0, i64 0))
   call void @printFeatureList()
   ret void
 }
 
-declare i32 @ios_fputc(i32, %struct.__sFILE*) #2
+declare i32 @putchar(i32) #2
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @printInvocationDescription() #0 {
 entry:
-  %0 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   %call = call i8* @getExecutableName()
-  %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.215, i64 0, i64 0), i8* %call)
+  %call1 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.215, i64 0, i64 0), i8* %call)
   ret void
 }
 
@@ -7652,7 +7640,7 @@ if.then:                                          ; preds = %lor.lhs.false, %for
   %arrayidx5 = getelementptr inbounds %struct.sOptionDescription, %struct.sOptionDescription* %7, i64 %idxprom4
   %description6 = getelementptr inbounds %struct.sOptionDescription, %struct.sOptionDescription* %arrayidx5, i32 0, i32 1
   %9 = load i8*, i8** %description6, align 8
-  %call = call i32 @ios_puts(i8* %9)
+  %call = call i32 @puts(i8* %9)
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %lor.lhs.false
@@ -7671,7 +7659,9 @@ for.end:                                          ; preds = %for.cond
 declare void @ctags_cleanup(...) #2
 
 ; Function Attrs: noreturn
-declare void @ios_exit(i32) #4
+declare void @exit(i32) #4
+
+declare i32 @printf(i8*, ...) #2
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @printFeatureList() #0 {
@@ -7695,17 +7685,16 @@ for.body:                                         ; preds = %for.cond
   br i1 %cmp1, label %if.then, label %if.end
 
 if.then:                                          ; preds = %for.body
-  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.202, i64 0, i64 0))
+  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.202, i64 0, i64 0))
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %for.body
-  %4 = load i32, i32* %i, align 4
-  %idxprom2 = sext i32 %4 to i64
+  %3 = load i32, i32* %i, align 4
+  %idxprom2 = sext i32 %3 to i64
   %arrayidx3 = getelementptr inbounds [7 x %struct.Feature], [7 x %struct.Feature]* @Features, i64 0, i64 %idxprom2
   %name4 = getelementptr inbounds %struct.Feature, %struct.Feature* %arrayidx3, i32 0, i32 0
-  %5 = load i8*, i8** %name4, align 8
-  %call5 = call i32 @strcmp(i8* %5, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.203, i64 0, i64 0))
+  %4 = load i8*, i8** %name4, align 8
+  %call5 = call i32 @strcmp(i8* %4, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.203, i64 0, i64 0))
   %cmp6 = icmp ne i32 %call5, 0
   br i1 %cmp6, label %if.then8, label %lor.lhs.false
 
@@ -7714,36 +7703,34 @@ lor.lhs.false:                                    ; preds = %if.end
   br i1 %call7, label %if.then8, label %if.end14
 
 if.then8:                                         ; preds = %lor.lhs.false, %if.end
-  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
-  %7 = load i32, i32* %i, align 4
-  %cmp9 = icmp sgt i32 %7, 0
-  %8 = zext i1 %cmp9 to i64
+  %5 = load i32, i32* %i, align 4
+  %cmp9 = icmp sgt i32 %5, 0
+  %6 = zext i1 %cmp9 to i64
   %cond = select i1 %cmp9, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.205, i64 0, i64 0), i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.72, i64 0, i64 0)
-  %9 = load i32, i32* %i, align 4
-  %idxprom10 = sext i32 %9 to i64
+  %7 = load i32, i32* %i, align 4
+  %idxprom10 = sext i32 %7 to i64
   %arrayidx11 = getelementptr inbounds [7 x %struct.Feature], [7 x %struct.Feature]* @Features, i64 0, i64 %idxprom10
   %name12 = getelementptr inbounds %struct.Feature, %struct.Feature* %arrayidx11, i32 0, i32 0
-  %10 = load i8*, i8** %name12, align 8
-  %call13 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %6, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.204, i64 0, i64 0), i8* %cond, i8* %10)
+  %8 = load i8*, i8** %name12, align 8
+  %call13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.204, i64 0, i64 0), i8* %cond, i8* %8)
   br label %if.end14
 
 if.end14:                                         ; preds = %if.then8, %lor.lhs.false
   br label %for.inc
 
 for.inc:                                          ; preds = %if.end14
-  %11 = load i32, i32* %i, align 4
-  %inc = add nsw i32 %11, 1
+  %9 = load i32, i32* %i, align 4
+  %inc = add nsw i32 %9, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
 for.end:                                          ; preds = %for.cond
-  %12 = load i32, i32* %i, align 4
-  %cmp15 = icmp sgt i32 %12, 0
+  %10 = load i32, i32* %i, align 4
+  %cmp15 = icmp sgt i32 %10, 0
   br i1 %cmp15, label %if.then16, label %if.end18
 
 if.then16:                                        ; preds = %for.end
-  %13 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
-  %call17 = call i32 @ios_fputc(i32 10, %struct.__sFILE* %13)
+  %call17 = call i32 @putchar(i32 10)
   br label %if.end18
 
 if.end18:                                         ; preds = %if.then16, %for.end
@@ -7752,7 +7739,7 @@ if.end18:                                         ; preds = %if.then16, %for.end
 
 declare zeroext i1 @checkRegex() #2
 
-declare i32 @ios_puts(i8*) #2
+declare i32 @puts(i8*) #2
 
 declare void @enableLanguages(i1 zeroext) #2
 
@@ -8083,7 +8070,7 @@ if.end:                                           ; preds = %if.else9, %if.then8
 
 if.end12:                                         ; preds = %if.end, %if.then
   call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @ios_exit(i32 0) #5
+  call void @exit(i32 0) #5
   unreachable
 }
 
@@ -9171,7 +9158,7 @@ do.body:                                          ; preds = %while.end
   br i1 %tobool28, label %if.then29, label %if.end32
 
 if.then29:                                        ; preds = %do.body
-  %24 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %24 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   store %struct.__sFILE* %24, %struct.__sFILE** %vfp, align 8
   %25 = load %struct.__sFILE*, %struct.__sFILE** %vfp, align 8
   %call30 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %25, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.518, i64 0, i64 0))
@@ -9343,7 +9330,7 @@ entry:
   store i8* %envvar, i8** %envvar.addr, align 8
   store i8* null, i8** %full_path, align 8
   %0 = load i8*, i8** %envvar.addr, align 8
-  %call = call i8* @ios_getenv(i8* %0)
+  %call = call i8* @getenv(i8* %0)
   store i8* %call, i8** %envval, align 8
   %1 = load i8*, i8** %envval, align 8
   %tobool = icmp ne i8* %1, null
@@ -9361,7 +9348,7 @@ if.end:                                           ; preds = %if.then, %entry
   ret i8* %4
 }
 
-declare i8* @ios_getenv(i8*) #2
+declare i8* @getenv(i8*) #2
 
 declare %struct.sPtrArray* @stringListNewFromArgv(i8**) #2
 

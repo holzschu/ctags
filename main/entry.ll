@@ -32,7 +32,7 @@ target triple = "arm64-apple-ios11.0.0"
 @cached_location = internal global %struct._MIOPos zeroinitializer, align 8
 @.str = private unnamed_addr constant [22 x i8] c"cannot write tag file\00", align 1
 @Option = external constant %struct.sOptionValues, align 8
-@thread_stdout = external thread_local global %struct.__sFILE*, align 8
+@__stdoutp = external global %struct.__sFILE*, align 8
 @.str.1 = private unnamed_addr constant [12 x i8] c"/dev/stdout\00", align 1
 @.str.2 = private unnamed_addr constant [3 x i8] c"w+\00", align 1
 @.str.3 = private unnamed_addr constant [61 x i8] c"\22%s\22 doesn't look like a tag file; I refuse to overwrite it.\00", align 1
@@ -58,7 +58,7 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.21 = private unnamed_addr constant [8 x i8] c"_SORTED\00", align 1
 @.str.22 = private unnamed_addr constant [37 x i8] c"Failed to update 'sorted' pseudo-tag\00", align 1
 @.str.23 = private unnamed_addr constant [14 x i8] c"\0C\0A%s,include\0A\00", align 1
-@thread_stderr = external thread_local global %struct.__sFILE*, align 8
+@__stderrp = external global %struct.__sFILE*, align 8
 @.str.24 = private unnamed_addr constant [37 x i8] c"Cannot shorten tag file: errno = %d\0A\00", align 1
 @.str.25 = private unnamed_addr constant [18 x i8] c"sorting tag file\0A\00", align 1
 @.str.26 = private unnamed_addr constant [2 x i8] c"r\00", align 1
@@ -672,7 +672,7 @@ if.then2:                                         ; preds = %if.end
   br i1 %cmp3, label %if.then4, label %if.else
 
 if.then4:                                         ; preds = %if.then2
-  %3 = load %struct.__sFILE*, %struct.__sFILE** @thread_stdout, align 8
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   %call5 = call %struct._MIO* @mio_new_fp(%struct.__sFILE* %3, i32 (%struct.__sFILE*)* null)
   store %struct._MIO* %call5, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
   %call6 = call i8* @eStrdup(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.1, i64 0, i64 0))
@@ -1286,7 +1286,7 @@ entry:
   br i1 %cmp, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %3 = load %struct.__sFILE*, %struct.__sFILE** @thread_stderr, align 8
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %call1 = call i32* @__error()
   %4 = load i32, i32* %call1, align 4
   %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.24, i64 0, i64 0), i32 %4)

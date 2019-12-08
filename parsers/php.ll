@@ -447,7 +447,7 @@ if.else:                                          ; preds = %sw.bb7
   %30 = load i32, i32* @AnonymousID, align 4
   %inc = add i32 %30, 1
   store i32 %inc, i32* @AnonymousID, align 4
-  %call12 = call i32 (i8*, i64, i32, i64, i8*, ...) @__snprintf_chk(i8* %arraydecay, i64 32, i32 0, i64 32, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.28, i64 0, i64 0), i32 %inc)
+  %call12 = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %arraydecay, i64 32, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.28, i64 0, i64 0), i32 %inc)
   %31 = load %struct.tokenInfo*, %struct.tokenInfo** %name, align 8
   %string = getelementptr inbounds %struct.tokenInfo, %struct.tokenInfo* %31, i32 0, i32 2
   %32 = load %struct.sVString*, %struct.sVString** %string, align 8
@@ -1328,7 +1328,7 @@ if.end193:                                        ; preds = %if.then192, %lor.lh
   ret void
 }
 
-declare i32 @__snprintf_chk(i8*, i64, i32, i64, i8*, ...) #1
+declare i32 @snprintf(i8*, i64, i8*, ...) #1
 
 declare void @vStringCopyS(%struct.sVString*, i8*) #1
 

@@ -728,14 +728,14 @@ entry:
   store i32 %column, i32* %column.addr, align 4
   %arraydecay = getelementptr inbounds [12 x i8], [12 x i8]* %buf, i64 0, i64 0
   %0 = load i32, i32* %column.addr, align 4
-  %call = call i32 (i8*, i64, i32, i64, i8*, ...) @__snprintf_chk(i8* %arraydecay, i64 12, i32 0, i64 12, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), i32 %0)
+  %call = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %arraydecay, i64 12, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.1, i64 0, i64 0), i32 %0)
   %1 = load %struct.colprintLine*, %struct.colprintLine** %line.addr, align 8
   %arraydecay1 = getelementptr inbounds [12 x i8], [12 x i8]* %buf, i64 0, i64 0
   call void @colprintLineAppendColumnCString(%struct.colprintLine* %1, i8* %arraydecay1)
   ret void
 }
 
-declare i32 @__snprintf_chk(i8*, i64, i32, i64, i8*, ...) #1
+declare i32 @snprintf(i8*, i64, i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @colprintLineAppendColumnBool(%struct.colprintLine* %line, i1 zeroext %column) #0 {
