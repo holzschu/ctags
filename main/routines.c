@@ -194,6 +194,7 @@ extern void setExecutableName (const char *const path)
 {
 	ExecutableProgram = path;
 	ExecutableName = baseFilename (path);
+    fprintf(stderr, "Set executablename to %s\n", ExecutableName);
 }
 
 extern const char *getExecutableName (void)

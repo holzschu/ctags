@@ -655,7 +655,9 @@ extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 	setTagWriter (WRITER_U_CTAGS);
 
 	setCurrentDirectory ();
-	setExecutableName (*argv++);
+	// setExecutableName (*argv++);
+    setExecutableName (argv[0]);
+    argv += 1;
 	sanitizeEnviron ();
 	checkRegex ();
 	initFieldObjects ();
