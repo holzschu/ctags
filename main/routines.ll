@@ -3,30 +3,33 @@ source_filename = "routines.c"
 target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "arm64-apple-ios11.0.0"
 
+%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
+%struct.__sFILEX = type opaque
+%struct.__sbuf = type { i8*, i32 }
 %struct.fileStatus = type { i8*, i8, i8, i8, i8, i8, i8, i8, i64 }
 %struct.stat = type { i32, i16, i16, i64, i32, i32, i32, %struct.timespec, %struct.timespec, %struct.timespec, %struct.timespec, i64, i64, i32, i32, i32, i32, [2 x i64] }
 %struct.timespec = type { i64, i64 }
 %struct.sVString = type { i64, i64, i8* }
 %struct._MIO = type opaque
-%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
-%struct.__sFILEX = type opaque
-%struct.__sbuf = type { i8*, i32 }
 
 @CurrentDirectory = common global i8* null, align 8
 @ExecutableProgram = internal global i8* null, align 8
 @ExecutableName = internal global i8* null, align 8
-@.str = private unnamed_addr constant [14 x i8] c"out of memory\00", align 1
-@.str.1 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
-@.str.2 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
+@__stderrp = external global %struct.__sFILE*, align 8
+@.str = private unnamed_addr constant [26 x i8] c"Set executablename to %s\0A\00", align 1
+@.str.1 = private unnamed_addr constant [43 x i8] c"requested executablename. It is set to %s\0A\00", align 1
+@.str.2 = private unnamed_addr constant [14 x i8] c"out of memory\00", align 1
+@.str.3 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str.4 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
 @eStat.file = internal global %struct.fileStatus zeroinitializer, align 8
 @__const.absoluteFilename.root = private unnamed_addr constant [2 x i8] c"/\00", align 1
 @__const.relativeFilename.parent = private unnamed_addr constant [4 x i8] c"../\00", align 1
-@.str.3 = private unnamed_addr constant [12 x i8] c"tags.XXXXXX\00", align 1
-@.str.4 = private unnamed_addr constant [7 x i8] c"TMPDIR\00", align 1
-@.str.5 = private unnamed_addr constant [50 x i8] c"/var/folders/dc/nlppmksc8xjgz5001s645sr80000gn/T/\00", align 1
-@.str.6 = private unnamed_addr constant [7 x i8] c"%s%c%s\00", align 1
-@.str.7 = private unnamed_addr constant [31 x i8] c"cannot open temporary file: %s\00", align 1
-@.str.8 = private unnamed_addr constant [27 x i8] c"cannot open temporary file\00", align 1
+@.str.5 = private unnamed_addr constant [12 x i8] c"tags.XXXXXX\00", align 1
+@.str.6 = private unnamed_addr constant [7 x i8] c"TMPDIR\00", align 1
+@.str.7 = private unnamed_addr constant [50 x i8] c"/var/folders/dc/nlppmksc8xjgz5001s645sr80000gn/T/\00", align 1
+@.str.8 = private unnamed_addr constant [7 x i8] c"%s%c%s\00", align 1
+@.str.9 = private unnamed_addr constant [31 x i8] c"cannot open temporary file: %s\00", align 1
+@.str.10 = private unnamed_addr constant [27 x i8] c"cannot open temporary file\00", align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @freeRoutineResources() #0 {
@@ -71,6 +74,9 @@ entry:
   %1 = load i8*, i8** %path.addr, align 8
   %call = call i8* @baseFilename(i8* %1)
   store i8* %call, i8** @ExecutableName, align 8
+  %2 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %3 = load i8*, i8** @ExecutableName, align 8
+  %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %2, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str, i64 0, i64 0), i8* %3)
   ret void
 }
 
@@ -103,11 +109,16 @@ if.end:                                           ; preds = %if.else, %if.then
   ret i8* %4
 }
 
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @getExecutableName() #0 {
 entry:
-  %0 = load i8*, i8** @ExecutableName, align 8
-  ret i8* %0
+  %0 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %1 = load i8*, i8** @ExecutableName, align 8
+  %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.1, i64 0, i64 0), i8* %1)
+  %2 = load i8*, i8** @ExecutableName, align 8
+  ret i8* %2
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -131,7 +142,7 @@ entry:
   br i1 %cmp, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str, i64 0, i64 0))
+  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.2, i64 0, i64 0))
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
@@ -140,9 +151,9 @@ if.end:                                           ; preds = %if.then, %entry
 }
 
 ; Function Attrs: allocsize(0)
-declare i8* @malloc(i64) #1
+declare i8* @malloc(i64) #2
 
-declare void @error(i32, i8*, ...) #2
+declare void @error(i32, i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @eCalloc(i64 %count, i64 %size) #0 {
@@ -161,7 +172,7 @@ entry:
   br i1 %cmp, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str, i64 0, i64 0))
+  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.2, i64 0, i64 0))
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
@@ -200,7 +211,7 @@ if.else:                                          ; preds = %entry
   br i1 %cmp2, label %if.then3, label %if.end
 
 if.then3:                                         ; preds = %if.else
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str, i64 0, i64 0))
+  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.2, i64 0, i64 0))
   br label %if.end
 
 if.end:                                           ; preds = %if.then3, %if.else
@@ -214,7 +225,7 @@ if.end4:                                          ; preds = %if.end, %if.then
 ; Function Attrs: allocsize(1)
 declare i8* @realloc(i8*, i64) #4
 
-declare void @free(i8*) #2
+declare void @free(i8*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @eFreeIndirect(i8** %ptr) #0 {
@@ -425,9 +436,9 @@ return:                                           ; preds = %for.end, %if.then
   ret i8* %11
 }
 
-declare i64 @strlen(i8*) #2
+declare i64 @strlen(i8*) #1
 
-declare i32 @strncmp(i8*, i8*, i64) #2
+declare i32 @strncmp(i8*, i8*, i64) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @eStrdup(i8* %str) #0 {
@@ -448,7 +459,7 @@ entry:
   ret i8* %3
 }
 
-declare i8* @strcpy(i8*, i8*) #2
+declare i8* @strcpy(i8*, i8*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @eStrndup(i8* %str, i64 %len) #0 {
@@ -475,7 +486,7 @@ entry:
   ret i8* %6
 }
 
-declare i8* @strncpy(i8*, i8*, i64) #2
+declare i8* @strncpy(i8*, i8*, i64) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @toLowerString(i8* %str) #0 {
@@ -680,9 +691,9 @@ land.end:                                         ; preds = %land.rhs, %land.lhs
   ret i1 %8
 }
 
-declare i32* @__error() #2
+declare i32* @__error() #1
 
-declare i64 @strtoul(i8*, i8**, i32) #2
+declare i64 @strtoul(i8*, i8**, i32) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define zeroext i1 @strToLong(i8* %str, i32 %base, i64* %value) #0 {
@@ -724,7 +735,7 @@ land.end:                                         ; preds = %land.rhs, %land.lhs
   ret i1 %8
 }
 
-declare i64 @strtol(i8*, i8**, i32) #2
+declare i64 @strtol(i8*, i8**, i32) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define zeroext i1 @strToUInt(i8* %str, i32 %base, i32* %value) #0 {
@@ -829,7 +840,7 @@ if.end:                                           ; preds = %if.then, %entry
   br i1 %cmp2, label %if.then3, label %if.end4
 
 if.then3:                                         ; preds = %if.end
-  call void @perror(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0)) #12
+  call void @perror(i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.3, i64 0, i64 0)) #12
   br label %if.end4
 
 if.end4:                                          ; preds = %if.then3, %if.end
@@ -848,7 +859,7 @@ if.then7:                                         ; preds = %if.end4
   %7 = load i8*, i8** @CurrentDirectory, align 8
   %call8 = call i64 @strlen(i8* %7)
   %add.ptr = getelementptr inbounds i8, i8* %6, i64 %call8
-  %call9 = call i32 (i8*, i8*, ...) @sprintf(i8* %add.ptr, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.2, i64 0, i64 0), i32 47)
+  %call9 = call i32 (i8*, i8*, ...) @sprintf(i8* %add.ptr, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.4, i64 0, i64 0), i32 47)
   br label %if.end10
 
 if.end10:                                         ; preds = %if.then7, %if.end4
@@ -857,7 +868,7 @@ if.end10:                                         ; preds = %if.then7, %if.end4
   ret void
 }
 
-declare i8* @getcwd(i8*, i64) #2
+declare i8* @getcwd(i8*, i64) #1
 
 ; Function Attrs: cold
 declare void @perror(i8*) #6
@@ -877,7 +888,7 @@ entry:
   ret i1 %tobool
 }
 
-declare i32 @sprintf(i8*, i8*, ...) #2
+declare i32 @sprintf(i8*, i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @canonicalizePath(i8* %path) #0 {
@@ -992,7 +1003,7 @@ if.end45:                                         ; preds = %if.end44, %lor.lhs.
   ret %struct.fileStatus* @eStat.file
 }
 
-declare i32 @strcmp(i8*, i8*) #2
+declare i32 @strcmp(i8*, i8*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @eStatFree(%struct.fileStatus* %status) #0 {
@@ -1019,9 +1030,9 @@ if.end:                                           ; preds = %if.then, %entry
   ret void
 }
 
-declare i32 @"\01_lstat"(i8*, %struct.stat*) #2
+declare i32 @"\01_lstat"(i8*, %struct.stat*) #1
 
-declare i32 @"\01_stat"(i8*, %struct.stat*) #2
+declare i32 @"\01_stat"(i8*, %struct.stat*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define zeroext i1 @doesFileExist(i8* %fileName) #0 {
@@ -1202,7 +1213,7 @@ if.then:                                          ; preds = %entry
 if.else:                                          ; preds = %entry
   %2 = load i8*, i8** @CurrentDirectory, align 8
   %3 = load i8*, i8** %file.addr, align 8
-  %call2 = call i8* @concat(i8* %2, i8* %3, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %call2 = call i8* @concat(i8* %2, i8* %3, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.3, i64 0, i64 0))
   store i8* %call2, i8** %res, align 8
   br label %if.end
 
@@ -1447,7 +1458,7 @@ entry:
   br i1 %cmp, label %if.then, label %if.else
 
 if.then:                                          ; preds = %entry
-  store i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0), i8** %extension, align 8
+  store i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.3, i64 0, i64 0), i8** %extension, align 8
   br label %if.end
 
 if.else:                                          ; preds = %entry
@@ -1461,7 +1472,7 @@ if.end:                                           ; preds = %if.else, %if.then
   ret i8* %4
 }
 
-declare i8* @strrchr(i8*, i32) #2
+declare i8* @strrchr(i8*, i32) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @baseFilenameSansExtensionNew(i8* %fileName, i8* %templateExt) #0 {
@@ -1580,9 +1591,9 @@ if.end:                                           ; preds = %if.then, %entry
   ret i8* %call3
 }
 
-declare %struct.sVString* @vStringNew() #2
+declare %struct.sVString* @vStringNew() #1
 
-declare void @vStringCopyS(%struct.sVString*, i8*) #2
+declare void @vStringCopyS(%struct.sVString*, i8*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @vStringPut(%struct.sVString* %string, i32 %c) #0 {
@@ -1642,9 +1653,9 @@ if.end9:                                          ; preds = %if.then5, %if.end
   ret void
 }
 
-declare void @vStringCatS(%struct.sVString*, i8*) #2
+declare void @vStringCatS(%struct.sVString*, i8*) #1
 
-declare i8* @vStringDeleteUnwrap(%struct.sVString*) #2
+declare i8* @vStringDeleteUnwrap(%struct.sVString*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal i8* @concat(i8* %s1, i8* %s2, i8* %s3) #0 {
@@ -1914,7 +1925,7 @@ return:                                           ; preds = %while.end30, %if.th
   ret i8* %28
 }
 
-declare i8* @strcat(i8*, i8*) #2
+declare i8* @strcat(i8*, i8*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define %struct._MIO* @tempFile(i8* %mode, i8** %pName) #0 {
@@ -1930,7 +1941,7 @@ entry:
   %file = alloca %struct.fileStatus*, align 8
   store i8* %mode, i8** %mode.addr, align 8
   store i8** %pName, i8*** %pName.addr, align 8
-  store i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.3, i64 0, i64 0), i8** %pattern, align 8
+  store i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.5, i64 0, i64 0), i8** %pattern, align 8
   store i8* null, i8** %tmpdir, align 8
   %0 = load i8*, i8** @ExecutableProgram, align 8
   %call = call %struct.fileStatus* @eStat(i8* %0)
@@ -1942,7 +1953,7 @@ entry:
   br i1 %tobool, label %if.end, label %if.then
 
 if.then:                                          ; preds = %entry
-  %call1 = call i8* @getenv(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.4, i64 0, i64 0))
+  %call1 = call i8* @getenv(i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.6, i64 0, i64 0))
   store i8* %call1, i8** %tmpdir, align 8
   br label %if.end
 
@@ -1952,7 +1963,7 @@ if.end:                                           ; preds = %if.then, %entry
   br i1 %cmp, label %if.then2, label %if.end3
 
 if.then2:                                         ; preds = %if.end
-  store i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.5, i64 0, i64 0), i8** %tmpdir, align 8
+  store i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.7, i64 0, i64 0), i8** %tmpdir, align 8
   br label %if.end3
 
 if.end3:                                          ; preds = %if.then2, %if.end
@@ -1966,7 +1977,7 @@ if.end3:                                          ; preds = %if.then2, %if.end
   store i8* %call7, i8** %name, align 8
   %5 = load i8*, i8** %name, align 8
   %6 = load i8*, i8** %tmpdir, align 8
-  %call8 = call i32 (i8*, i8*, ...) @sprintf(i8* %5, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.6, i64 0, i64 0), i8* %6, i32 47, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.3, i32 0, i32 0))
+  %call8 = call i32 (i8*, i8*, ...) @sprintf(i8* %5, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.8, i64 0, i64 0), i8* %6, i32 47, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.5, i32 0, i32 0))
   %7 = load i8*, i8** %name, align 8
   %call9 = call i32 @mkstemp(i8* %7)
   store i32 %call9, i32* %fd, align 4
@@ -1978,7 +1989,7 @@ if.end3:                                          ; preds = %if.then2, %if.end
 
 if.then11:                                        ; preds = %if.end3
   %10 = load i8*, i8** %name, align 8
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.7, i64 0, i64 0), i8* %10)
+  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.9, i64 0, i64 0), i8* %10)
   br label %if.end12
 
 if.end12:                                         ; preds = %if.then11, %if.end3
@@ -1991,7 +2002,7 @@ if.end12:                                         ; preds = %if.then11, %if.end3
   br i1 %cmp14, label %if.then15, label %if.end16
 
 if.then15:                                        ; preds = %if.end12
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.8, i64 0, i64 0))
+  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.10, i64 0, i64 0))
   br label %if.end16
 
 if.end16:                                         ; preds = %if.then15, %if.end12
@@ -2011,23 +2022,23 @@ do.end:                                           ; preds = %do.body
   ret %struct._MIO* %17
 }
 
-declare i8* @getenv(i8*) #2
+declare i8* @getenv(i8*) #1
 
-declare i32 @mkstemp(i8*) #2
+declare i32 @mkstemp(i8*) #1
 
-declare %struct.__sFILE* @"\01_fdopen"(i32, i8*) #2
+declare %struct.__sFILE* @"\01_fdopen"(i32, i8*) #1
 
-declare %struct._MIO* @mio_new_fp(%struct.__sFILE*, i32 (%struct.__sFILE*)*) #2
+declare %struct._MIO* @mio_new_fp(%struct.__sFILE*, i32 (%struct.__sFILE*)*) #1
 
-declare i32 @fclose(%struct.__sFILE*) #2
+declare i32 @fclose(%struct.__sFILE*) #1
 
-declare void @vStringResize(%struct.sVString*, i64) #2
+declare void @vStringResize(%struct.sVString*, i64) #1
 
-declare i8* @strchr(i8*, i32) #2
+declare i8* @strchr(i8*, i32) #1
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #1 = { allocsize(0) "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { allocsize(0) "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #3 = { allocsize(0,1) "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #4 = { allocsize(1) "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #5 = { nounwind readonly "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }

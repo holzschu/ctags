@@ -441,9 +441,8 @@ static void batchMakeTags (cookedArgs *args, void *user CTAGS_ATTR_UNUSED)
 
 	if (! files)
 	{
-		if (filesRequired ())
-			error (FATAL, "No files specified. Try \"%s --help\".",
-				getExecutableName ());
+		if (filesRequired ()) 
+			error (FATAL, "No files specified. Try \"%s --help\".", getExecutableName ());
 		else if (! Option.recurse && ! etagsInclude ())
 			return;
 	}
@@ -655,9 +654,7 @@ extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 	setTagWriter (WRITER_U_CTAGS);
 
 	setCurrentDirectory ();
-	// setExecutableName (*argv++);
-    setExecutableName (argv[0]);
-    argv += 1;
+	setExecutableName (*argv++);
 	sanitizeEnviron ();
 	checkRegex ();
 	initFieldObjects ();
