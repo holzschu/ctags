@@ -97,8 +97,8 @@
 /* #undef HAVE_JANSSON */
 
 /* Define this value if libxml is available. */
-/* #undef HAVE_LIBXML */
-#define HAVE_LIBXML
+#undef HAVE_LIBXML 
+/* #define HAVE_LIBXML */
 
 /* Define this value if libyaml is available. */
 /* #undef HAVE_LIBYAML */
@@ -128,7 +128,8 @@
 #define HAVE_REMOVE 1
 
 /* Define to 1 if you have the `scandir' function. */
-#define HAVE_SCANDIR 1
+#undef HAVE_SCANDIR
+// #define HAVE_SCANDIR 1
 
 /* Define this value if libseccomp is available. */
 /* #undef HAVE_SECCOMP */

@@ -643,7 +643,7 @@ static void sanitizeEnviron (void)
  */
 static cookedArgs *args;
 
-extern int ctags_main (int argc CTAGS_ATTR_UNUSED, char **argv)
+extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 {
 
 	initDefaultTrashBox ();
