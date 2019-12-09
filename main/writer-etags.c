@@ -60,7 +60,8 @@ static bool endEtagsFile (tagWriter *writer,
 	const char *line;
 	struct sEtags *etags = writer->private;
 
-	mio_printf (mainfp, "\f\n%s,%ld\n", filename, (long) etags->byteCount);
+	// mio_printf (mainfp, "\f\n%s,%ld\n", filename, (long) etags->byteCount);
+    fprintf(mio_file_get_fp(mainfp), "\f\n%s,%ld\n", filename, (long) etags->byteCount);
 	abort_if_ferror (mainfp);
 
 	if (etags->mio != NULL)
@@ -90,8 +91,10 @@ static int writeEtagsEntry (tagWriter *writer,
 	mio = etags->mio;
 
 	if (tag->isFileEntry)
-		length = mio_printf (mio, "\177%s\001%lu,0\n",
-				tag->name, tag->lineNumber);
+        length = fprintf(mio_file_get_fp(mio), "\177%s\001%lu,0\n",
+                         tag->name, tag->lineNumber);
+		// length = mio_printf (mio, "\177%s\001%lu,0\n",
+		// 		tag->name, tag->lineNumber);
 	else
 	{
 		size_t len;
@@ -111,8 +114,11 @@ static int writeEtagsEntry (tagWriter *writer,
 		if (Option.patternLengthLimit < len)
 			line [Option.patternLengthLimit - 1] = '\0';
 
-		length = mio_printf (mio, "%s\177%s\001%lu,%ld\n", line,
-				tag->name, tag->lineNumber, seekValue);
+		// length = mio_printf (mio, "%s\177%s\001%lu,%ld\n", line,
+		//		tag->name, tag->lineNumber, seekValue);
+        length = fprintf(mio_file_get_fp(mio), "%s\177%s\001%lu,%ld\n", line,
+                         tag->name, tag->lineNumber, seekValue);
+
 	}
 	etags->byteCount += length;
 

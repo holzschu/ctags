@@ -49,6 +49,8 @@ extern bool stderrDefaultErrorPrinter (const errorSelection selection,
 	return (selected (selection, FATAL) || Option.fatalWarnings)? true: false;
 }
 
+#if 0
+// iOS: let's make sure this function is never called
 extern void error (const errorSelection selection,
 		   const char *const format, ...)
 {
@@ -58,12 +60,13 @@ extern void error (const errorSelection selection,
 	va_start (ap, format);
 	shouldExit = (* errorPrinter) (selection, format, ap, errorPrinterData);
 	va_end (ap);
-
+    
     if (shouldExit) {
         ctags_cleanup();
 		exit (1);
     }
 }
+#endif
 
 #ifdef HAVE_JANSSON
 bool jsonErrorPrinter (const errorSelection selection, const char *const format, va_list ap,

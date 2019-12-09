@@ -208,7 +208,7 @@ static void aspell_dictfile_handler (const langType language CTAGS_ATTR_UNUSED,
 
 	if (Option.interactive == INTERACTIVE_SANDBOX)
 	{
-		verbose ("UCtagsAspell: loading a user dictionary is disallowed in sandbox: %s\n", arg);
+		iOS_verbose ("UCtagsAspell: loading a user dictionary is disallowed in sandbox: %s\n", arg);
 		return;
 	}
 
@@ -216,11 +216,18 @@ static void aspell_dictfile_handler (const langType language CTAGS_ATTR_UNUSED,
 
 	if (!mio)
 	{
-		error(WARNING, "Failed to open file \"%s\" as a dictionary", arg);
+		// error(WARNING, "Failed to open file \"%s\" as a dictionary", arg);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Failed to open file \"%s\" as a dictionary", arg);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
-	verbose ("UCtagsAspell: loading a user dictionary: %s\n", arg);
+	iOS_verbose ("UCtagsAspell: loading a user dictionary: %s\n", arg);
 
 	if (!userDict)
 		userDict = makeDict();
@@ -244,7 +251,7 @@ static void aspell_dictfile_handler (const langType language CTAGS_ATTR_UNUSED,
 
 	}
 
-	verbose ("UCtagsAspell: load %d word(s)\n", count);
+	iOS_verbose ("UCtagsAspell: load %d word(s)\n", count);
 
 	vStringDelete (line);
 
@@ -263,7 +270,7 @@ static void aspell_dictword_handler (const langType language CTAGS_ATTR_UNUSED,
 	if (arg && arg[0] != '\0')
 		count += add_word_to_dict(arg, userDict, splittingIntoSubwords);
 
-	verbose ("UCtagsAspell: add %d word(s)\n", count);
+	iOS_verbose ("UCtagsAspell: add %d word(s)\n", count);
 }
 
 #ifdef HAVE_ASPELL
@@ -274,7 +281,7 @@ static void initialize (const langType language CTAGS_ATTR_UNUSED)
 {
 	if (Option.interactive == INTERACTIVE_SANDBOX)
 	{
-		verbose ("UCtagsAspell: initializing aspell is disallowed in sandbox\n");
+		iOS_verbose ("UCtagsAspell: initializing aspell is disallowed in sandbox\n");
 		return;
 	}
 

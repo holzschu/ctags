@@ -896,7 +896,7 @@ static void parseString (vString *const string, const int delimiter)
 	}
 	if (c == '\n'  ||  c == EOF)
 	{
-		verbose ("%s: unterminated character string at line %lu\n",
+		iOS_verbose ("%s: unterminated character string at line %lu\n",
 				getInputFileName (), inputLineNumber);
 		if (c != EOF && ! FreeSourceForm)
 			FreeSourceFormFound = true;
@@ -2625,7 +2625,7 @@ static rescanReason findFortranTags (const unsigned int passCount)
 	parseProgramUnit (token);
 	if (FreeSourceFormFound  &&  ! FreeSourceForm)
 	{
-		verbose ("%s: not fixed source form; retry as free source form\n",
+		iOS_verbose ("%s: not fixed source form; retry as free source form\n",
 				getInputFileName ());
 		rescan = RESCAN_FAILED;
 	}

@@ -147,7 +147,7 @@ static void findYamlTags (void)
 			leaveSubparser ();
 		}
 
-		verbose("yaml token:%s<%d>@Line:%"PRIuPTR"\n", tokenTypeName[token.type], token.type,
+		iOS_verbose("yaml token:%s<%d>@Line:%"PRIuPTR"\n", tokenTypeName[token.type], token.type,
 				token.start_mark.line + 1);
 		if (token.type == YAML_STREAM_END_TOKEN)
 			done = true;

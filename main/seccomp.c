@@ -49,7 +49,7 @@ int installSyscallFilter (void)
 	// libxml2 uses pthread_once, which in turn uses a futex
 	seccomp_rule_add (ctx, SCMP_ACT_ALLOW, SCMP_SYS (futex), 0);
 
-	verbose ("Entering sandbox\n");
+	iOS_verbose ("Entering sandbox\n");
 	int err = seccomp_load (ctx);
 	if (err < 0)
 	{

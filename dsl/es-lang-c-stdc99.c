@@ -299,7 +299,8 @@ es_object_new(EsType type)
   r->ref_count = 1;
 
   if (es_debug)
-    mio_printf(mio_stderr(), ";; new{%s}: 0x%p\n",
+    // mio_printf(mio_stderr(), ";; new{%s}: 0x%p\n",
+    fprintf(stderr, ";; new{%s}: 0x%p\n",
 	    (&classes[type])->name,
 	    r);
 
@@ -334,7 +335,8 @@ es_object_ref           (EsObject*       object)
 	return object;
 
       if (es_debug)
-	mio_printf(mio_stderr(), ";; ref{%s}: [%d]0x%p\n",
+	// mio_printf(mio_stderr(), ";; ref{%s}: [%d]0x%p\n",
+          fprintf(stderr, ";; ref{%s}: [%d]0x%p\n",
 		class_of(object)->name,
 		object->ref_count,
 		object);
@@ -355,20 +357,24 @@ es_object_unref         (EsObject*       object)
       if (object->ref_count == 0)
 	if ((1 || es_debug))
 	  {
-	    mio_printf(mio_stderr(), "*** ref_count < 0: 0x%p ***\n", object);
-	    mio_printf(mio_stderr(), "*** BOOSTING while(1). ***\n");
+	    // mio_printf(mio_stderr(), "*** ref_count < 0: 0x%p ***\n", object);
+        fprintf(stderr, "*** ref_count < 0: 0x%p ***\n", object);
+	    // mio_printf(mio_stderr(), "*** BOOSTING while(1). ***\n");
+        fprintf(stderr, "*** BOOSTING while(1). ***\n");
 	    while (1);
 	  }
 
       object->ref_count--;
       if (es_debug)
-	mio_printf(mio_stderr(), ";; unref{%s}: [%d]0x%p\n",
+	// mio_printf(mio_stderr(), ";; unref{%s}: [%d]0x%p\n",
+    fprintf(stderr, ";; unref{%s}: [%d]0x%p\n",
 		class_of(object)->name,
 		object->ref_count, object);
       if (object->ref_count == 0)
 	{
 	  if (es_debug)
-	    mio_printf(mio_stderr(), ";; free{%s}: 0x%p\n",
+	    // mio_printf(mio_stderr(), ";; free{%s}: 0x%p\n",
+        fprintf(stderr, ";; free{%s}: 0x%p\n",
 		    class_of(object)->name,
 		    object);
 	  class_of(object)->free(object);
@@ -460,7 +466,8 @@ es_integer_get (const EsObject*   object)
     return ((EsInteger *)object)->value;
   else
     {
-      mio_printf(mio_stderr(), ";; es_integer_get, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_integer_get, Wrong type argument: ");
+      fprintf(stderr, ";; es_integer_get, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return -1;
@@ -483,7 +490,8 @@ es_integer_equal(const EsObject* self, const EsObject* other)
 static void
 es_integer_print(const EsObject* object, MIO* fp)
 {
-  mio_printf(fp, "%d", es_integer_get(object));
+  // mio_printf(fp, "%d", es_integer_get(object));
+  fprintf(mio_file_get_fp(fp), "%d", es_integer_get(object));
 }
 
 
@@ -513,7 +521,8 @@ es_real_get (const EsObject*   object)
     return ((EsReal *)object)->value;
   else
     {
-      mio_printf(mio_stderr(), ";; es_real_get, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_real_get, Wrong type argument: ");
+      fprintf(stderr, ";; es_real_get, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return -1;
@@ -537,7 +546,8 @@ es_real_equal(const EsObject* self, const EsObject* other)
 static void
 es_real_print(const EsObject* object, MIO* fp)
 {
-  mio_printf(fp, "%f", es_real_get(object));
+  // mio_printf(fp, "%f", es_real_get(object));
+  fprintf(mio_file_get_fp(fp), "%f", es_real_get(object));
 }
 
 /*
@@ -563,7 +573,8 @@ es_number_get  (const EsObject*   object)
       r = es_real_get(object);
       break;
     default:
-      mio_printf(mio_stderr(), ";; es_number_get, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_number_get, Wrong type argument: ");
+      fprintf(stderr, ";; es_number_get, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       r = -1.0;
@@ -609,7 +620,8 @@ es_boolean_get (const EsObject*   object)
     return ((EsBoolean *)object)->value;
   else
     {
-      mio_printf(mio_stderr(), ";; es_boolean_get, Wrong type argument: ");
+      fprintf(stderr, ";; es_boolean_get, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_boolean_get, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return -1;
@@ -631,7 +643,8 @@ es_boolean_equal(const EsObject* self, const EsObject* other)
 static void
 es_boolean_print(const EsObject* object, MIO* fp)
 {
-  mio_printf(fp, "#%c", (es_boolean_get(object)? 't': 'f'));
+  // mio_printf(fp, "#%c", (es_boolean_get(object)? 't': 'f'));
+  fprintf(mio_file_get_fp(fp), "#%c", (es_boolean_get(object)? 't': 'f'));
 }
 
 /*
@@ -713,7 +726,8 @@ es_symbol_get  (const EsObject*   object)
     return es_singleton_get((EsSingleton*)object);
   else
     {
-      mio_printf(mio_stderr(), ";; es_symbol_get, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_symbol_get, Wrong type argument: ");
+      fprintf(stderr, ";; es_symbol_get, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return NULL;
@@ -732,7 +746,8 @@ void*        es_symbol_set_data (const EsObject*   object, void *data)
     }
   else
     {
-      mio_printf(mio_stderr(), ";; es_symbol_set_data, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_symbol_set_data, Wrong type argument: ");
+      fprintf(stderr, ";; es_symbol_set_data, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return NULL;
@@ -745,7 +760,8 @@ void*        es_symbol_get_data (const EsObject*   object)
       return ((EsSymbol*)object)->data;
   else
     {
-      mio_printf(mio_stderr(), ";; es_symbol_get_data, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_symbol_get_data, Wrong type argument: ");
+      fprintf(stderr, ";; es_symbol_get_data, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return NULL;
@@ -803,18 +819,22 @@ es_symbol_print(const EsObject* object, MIO* fp)
     }
 
   if (needs_bar)
-    mio_printf(fp, "|");
+    // mio_printf(fp, "|");
+    fprintf(mio_file_get_fp(fp), "|");
 
   for (i = 0; i < len; i++)
     {
-      c = string[i];
-      if (c == '\\' || c == '|')
-	mio_printf(fp, "\\");
-      mio_printf(fp, "%c", c);
+        c = string[i];
+        if (c == '\\' || c == '|')
+            fprintf(mio_file_get_fp(fp), "\\");
+            // mio_printf(fp, "\\");
+        // mio_printf(fp, "%c", c);
+        fprintf(mio_file_get_fp(fp), "%c", c);
     }
 
   if (needs_bar)
-    mio_printf(fp, "|");
+    // mio_printf(fp, "|");
+    fprintf(mio_file_get_fp(fp), "|");
 }
 
 
@@ -914,7 +934,8 @@ es_string_get  (const EsObject*   object)
     return ((EsString *)object)->value;
   else
     {
-      mio_printf(mio_stderr(), ";; es_string_get, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_string_get, Wrong type argument: ");
+      fprintf(stderr, ";; es_string_get, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return NULL;
@@ -932,8 +953,10 @@ es_string_free(EsObject* object)
     }
   else
     {
-      mio_printf(mio_stderr(), ";; Internal error: \n");
-      mio_printf(mio_stderr(), ";;es_string_free, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; Internal error: \n");
+      fprintf(stderr, ";; Internal error: \n");
+      // mio_printf(mio_stderr(), ";;es_string_free, Wrong type argument: ");
+      fprintf(stderr, ";;es_string_free, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
     }
@@ -963,7 +986,8 @@ es_string_print(const EsObject* object, MIO* fp)
   string = es_string_get(object);
   len    = strlen(string);
 
-  mio_printf(fp, "\"");
+  // mio_printf(fp, "\"");
+  fprintf(mio_file_get_fp(fp), "\"");
 
   for (i = 0; i < len; i++)
     {
@@ -990,17 +1014,22 @@ es_string_print(const EsObject* object, MIO* fp)
 	}
       if (cc)
 	{
-	  mio_printf(fp, "\\");
-	  mio_printf(fp, "%c", cc);
+	  // mio_printf(fp, "\\");
+      fprintf(mio_file_get_fp(fp), "\\");
+	  // mio_printf(fp, "%c", cc);
+      fprintf(mio_file_get_fp(fp), "%c", cc);
 	  continue;
 	}
 
-      if (c == '\\' || c == '"')
-	mio_printf(fp, "\\");
-      mio_printf(fp, "%c", c);
+        if (c == '\\' || c == '"')
+            // mio_printf(fp, "\\");
+            fprintf(mio_file_get_fp(fp), "\\");
+        // mio_printf(fp, "%c", c);
+        fprintf(mio_file_get_fp(fp), "%c", c);
     }
-
-  mio_printf(fp, "\"");
+    
+    // mio_printf(fp, "\"");
+    fprintf(mio_file_get_fp(fp), "\"");
 }
 
 /*
@@ -1021,7 +1050,8 @@ es_cons        (EsObject* car, EsObject* cdr)
   r = es_object_new(ES_TYPE_CONS);
   if (es_debug)
     {
-      mio_printf(mio_stderr(), ";; cons[0x%p] = (0x%p . 0x%p)\n", r, car, cdr);
+      // mio_printf(mio_stderr(), ";; cons[0x%p] = (0x%p . 0x%p)\n", r, car, cdr);
+      fprintf(stderr, ";; cons[0x%p] = (0x%p . 0x%p)\n", r, car, cdr);
       /* es_print(car, mio_stderr());
 	 mio_putc('\n', mio_stderr());
 	 es_print(cdr, mio_stderr());
@@ -1057,7 +1087,8 @@ es_car         (const EsObject* object)
     return es_nil;
   else
     {
-      mio_printf(mio_stderr(), ";; es_car, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_car, Wrong type argument: ");
+      fprintf(stderr, ";; es_car, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return es_nil;
@@ -1073,7 +1104,8 @@ es_cdr         (const EsObject* object)
     return es_nil;
   else
     {
-      mio_printf(mio_stderr(), ";; es_cdr, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_cdr, Wrong type argument: ");
+      fprintf(stderr, ";; es_cdr, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return es_nil;
@@ -1100,8 +1132,10 @@ es_cons_free(EsObject* object)
     ;				/* DO NOTHING */
   else
     {
-      mio_printf(mio_stderr(), ";; Internal error: \n");
-      mio_printf(mio_stderr(), ";; es_cons_free, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; Internal error: \n");
+      fprintf(stderr, ";; Internal error: \n");
+      // mio_printf(mio_stderr(), ";; es_cons_free, Wrong type argument: ");
+      fprintf(stderr, ";; es_cons_free, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
     }
@@ -1124,7 +1158,8 @@ es_cons_print(const EsObject* object, MIO* fp)
   EsObject* car;
   EsObject* cdr;
 
-  mio_printf(fp, "(");
+  // mio_printf(fp, "(");
+  fprintf(mio_file_get_fp(fp), "(");
   while(!es_null(object))
     {
       car = es_car(object);
@@ -1135,12 +1170,14 @@ es_cons_print(const EsObject* object, MIO* fp)
 	mio_putc(fp, ' ');
       else if (!es_null(cdr))
 	{
-	  mio_printf(mio_stderr(), ";; es_cons_print, dotted list given: ");
+	  // mio_printf(mio_stderr(), ";; es_cons_print, dotted list given: ");
+      fprintf(stderr, ";; es_cons_print, dotted list given: ");
 	  mio_putc(mio_stderr(), '\n');
 	}
       object = cdr;
     }
-  mio_printf(fp, ")");
+  // mio_printf(fp, ")");
+  fprintf(mio_file_get_fp(fp), ")");
 }
 
 static EsObject* es_cons_reverse_rec(EsObject* cdr,
@@ -1211,7 +1248,8 @@ es_error_name  (const EsObject*   object)
     return es_singleton_get((EsSingleton *)object);
   else
     {
-      mio_printf(mio_stderr(), ";; es_error_name, Wrong type argument: ");
+      fprintf(stderr, ";; es_error_name, Wrong type argument: ");
+      // mio_printf(mio_stderr(), ";; es_error_name, Wrong type argument: ");
       es_print(object, mio_stderr());
       mio_putc(mio_stderr(), '\n');
       return NULL;
@@ -1255,7 +1293,8 @@ es_error_print(const EsObject* object, MIO* fp)
   EsError *e = (EsError *)object;
 
   string = es_error_name(object);
-  mio_printf(fp, "#%s:", string);
+  // mio_printf(fp, "#%s:", string);
+  fprintf(mio_file_get_fp(fp), "#%s:", string);
   es_print (e->object, fp);
 }
 
@@ -1668,15 +1707,17 @@ dump_token (MIO* stream, const char* prefix, Token* seed)
 
 
   buf = seed->buffer;
-  mio_printf(stream, "%s", prefix);
+  // mio_printf(stream, "%s", prefix);
+  fprintf(mio_file_get_fp(stream), "%s", prefix);
   for (i = 0; i < ( seed->filled - 1 ); i++)
     {
       c = buf[i];
       mio_putc(stream, c);
       if (buf[i] == '\n')
-	mio_printf(stream, "%s", prefix);
+	// mio_printf(stream, "%s", prefix);
+          fprintf(mio_file_get_fp(stream), "%s", prefix);
     }
-  mio_putc(mio_stderr(), '\n');
+  mio_putc(mio_stderr(), '\n'); // This line looks strange. Why not stream?
 }
 
 static Token*
@@ -1699,7 +1740,8 @@ get_sequence       (MIO* fp,
 	      /*
 		throw ReadError("no character after escape character: " + seed);
 	      */
-	      mio_printf(mio_stderr(), ";; no character after escape character:\n");
+	      // mio_printf(mio_stderr(), ";; no character after escape character:\n");
+          fprintf(stderr, ";; no character after escape character:\n");
 	      {
 		seed = token_append(seed, '\\');
 		dump_token(mio_stderr(), "; ", seed);
@@ -1714,7 +1756,8 @@ get_sequence       (MIO* fp,
 	      /*
 		throw ReadError("got EOF during reading a sequence: " + seed);
 	      */
-	      mio_printf(mio_stderr(), ";; got EOF during reading a sequence: \n");
+	      fprintf(stderr, ";; got EOF during reading a sequence: \n");
+          // mio_printf(mio_stderr(), ";; got EOF during reading a sequence: \n");
 	      dump_token(mio_stderr(), "; ", seed);
 	      token_free(seed);
 	      return NULL;
@@ -2008,7 +2051,8 @@ is_integer   (const char* cstr,
       /*
       throw ReadError("Too large integer for `int': " + r);
       */
-      mio_printf(mio_stderr(), ";; is_integer, Integer out of range: %s\n", cstr);
+      // mio_printf(mio_stderr(), ";; is_integer, Integer out of range: %s\n", cstr);
+      fprintf(stderr, ";; is_integer, Integer out of range: %s\n", cstr);
       return 0;
     }
 
@@ -2176,6 +2220,10 @@ es_chain_free(EsChain *chain)
 #include <stdarg.h>
 static EsObject* es_list_va(EsObject* object, va_list *ap);
 
+// iOS:
+// Remove functions that are not used.
+// Trying to get rid of variable argument lists for LLVM interpretation
+#if 0
 EsObject*
 es_list(EsObject* object,...)
 {
@@ -2282,6 +2330,7 @@ es_append1(EsObject* tail, EsObject* body0)
       return r;
     }
 }
+#endif
 
 
 
@@ -2327,6 +2376,7 @@ pattern_init(void)
   if (!pattern_i_unquote) (pattern_i_unquote = es_symbol_intern("%_,"));
 }
 
+#if 0
 static EsObject*
 es_vrealize_atom(EsObject* fmt_object, va_list *ap)
 {
@@ -2439,7 +2489,6 @@ es_srealize  (const char* fmt,...)
 
   return object;
 }
-
 
 static EsObject*
 es_vmatch_atom_input(EsObject* input, EsObject* fmt_object, va_list *ap)
@@ -2708,6 +2757,7 @@ es_smatch   (EsObject* input, const char* fmt,...)
 
   return r;
 }
+#endif
 
 EsObject*
 es_pget (EsObject* plist, EsObject* key, EsObject* default_value)

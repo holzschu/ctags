@@ -1499,7 +1499,7 @@ static void saveIgnoreToken(const char * ignoreToken)
 
 	hashTablePutItem(defineMacroTable,eStrndup(tokenBegin,tokenEnd - tokenBegin),info);
 
-	verbose ("    ignore token: %s\n", ignoreToken);
+	iOS_verbose ("    ignore token: %s\n", ignoreToken);
 }
 
 static void saveMacro(const char * macro)
@@ -1838,7 +1838,7 @@ static void CpreProInstallIgnoreToken (const langType language CTAGS_ATTR_UNUSED
 		defineMacroTable = makeMacroTable ();
 		DEFAULT_TRASH_BOX(defineMacroTable,hashTableDelete);
 
-		verbose ("    clearing list\n");
+		iOS_verbose ("    clearing list\n");
 	} else {
 		saveIgnoreToken(arg);
 	}
@@ -1850,7 +1850,7 @@ static void CpreProInstallMacroToken (const langType language CTAGS_ATTR_UNUSED,
 	{
 		hashTableDelete(defineMacroTable);
 		defineMacroTable = makeMacroTable ();
-		verbose ("    clearing list\n");
+		iOS_verbose ("    clearing list\n");
 	} else {
 		saveMacro(arg);
 	}

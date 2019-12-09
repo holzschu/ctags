@@ -1747,7 +1747,7 @@ static void skipToMatch (const char *const pair)
 	}
 	if (c == EOF)
 	{
-		verbose ("%s: failed to find match for '%c' at line %lu\n",
+		iOS_verbose ("%s: failed to find match for '%c' at line %lu\n",
 				getInputFileName (), begin, inputLineNumber);
 		if (braceMatching)
 			longjmp (Exception, (int) ExceptionBraceFormattingError);
@@ -1812,7 +1812,7 @@ static void skipCppTemplateParameterList (void)
 
 	if (c == EOF)
 	{
-		verbose ("%s: failed to find match for '%c' at line %lu\n",
+		iOS_verbose ("%s: failed to find match for '%c' at line %lu\n",
 				getInputFileName (), '<', inputLineNumber);
 		longjmp (Exception, (int) ExceptionFormattingError);
 	}
@@ -2575,7 +2575,7 @@ static void analyzePostParens (statementInfo *const st, parenInfo *const info)
 	} else {
 		if (! skipPostArgumentStuff (st, info))
 		{
-			verbose (
+			iOS_verbose (
 				"%s: confusing argument declarations beginning at line %lu\n",
 				getInputFileName (), inputLineNumber);
 			longjmp (Exception, (int) ExceptionFormattingError);
@@ -3004,7 +3004,7 @@ static int skipInitializer (statementInfo *const st)
 					done = true;
 				else if (! cppIsBraceFormat ())
 				{
-					verbose ("%s: unexpected closing brace at line %lu\n",
+					iOS_verbose ("%s: unexpected closing brace at line %lu\n",
 							getInputFileName (), getInputLineNumber ());
 					longjmp (Exception, (int) ExceptionBraceFormattingError);
 				}
@@ -3440,7 +3440,7 @@ static void createTags (const unsigned int nestLevel,
 				break;
 			else
 			{
-				verbose ("%s: unexpected closing brace at line %lu\n",
+				iOS_verbose ("%s: unexpected closing brace at line %lu\n",
 						getInputFileName (), getInputLineNumber ());
 				longjmp (Exception, (int) ExceptionBraceFormattingError);
 			}
@@ -3510,7 +3510,7 @@ static rescanReason findCTags (const unsigned int passCount)
 		if (exception == ExceptionBraceFormattingError  &&  passCount == 1)
 		{
 			rescan = RESCAN_FAILED;
-			verbose ("%s: retrying file with fallback brace matching algorithm\n",
+			iOS_verbose ("%s: retrying file with fallback brace matching algorithm\n",
 					getInputFileName ());
 		}
 	}

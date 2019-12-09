@@ -37,7 +37,14 @@ extern bool openConverter (char* inputEncoding, char* outputEncoding)
 		/* --output-encoding is specified but not --input-encoding provided */
 		if (!warn && outputEncoding)
 		{
-			error (WARNING, "--input-encoding is not specified");
+			// error (WARNING, "--input-encoding is not specified");
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "--input-encoding is not specified");
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
 			warn = true;
 		}
 		return false;
@@ -45,8 +52,13 @@ extern bool openConverter (char* inputEncoding, char* outputEncoding)
 	iconv_fd = iconv_open(outputEncoding, inputEncoding);
 	if (iconv_fd == (iconv_t) -1)
 	{
-		error (FATAL,
-					"failed opening encoding from '%s' to '%s'", inputEncoding, outputEncoding);
+		// error (FATAL,
+		//			"failed opening encoding from '%s' to '%s'", inputEncoding, outputEncoding);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "failed opening encoding from '%s' to '%s'", inputEncoding, outputEncoding);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
 		return false;
 	}
 	return true;
@@ -79,7 +91,7 @@ retry:
 			dest_len--;
 			src++;
 			src_len--;
-			verbose ("  Encoding: %s\n", strerror(errno));
+			iOS_verbose ("  Encoding: %s\n", strerror(errno));
 			goto retry;
 		}
 		eFree (dest);

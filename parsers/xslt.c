@@ -228,16 +228,16 @@ static void verifyVersion (xmlNode *node,
 	{
 		if (strcmp (version, "1.0") == 0)
 		{
-			verbose ("xslt: accept version: %s\n", version);
+			iOS_verbose ("xslt: accept version: %s\n", version);
 			*acceptable = true;
 		}
 		else
-			verbose ("xslt: unsupported version: %s\n", version);
+			iOS_verbose ("xslt: unsupported version: %s\n", version);
 
 		eFree (version);
 	}
 	else
-		verbose ("xslt: version unknown\n");
+		iOS_verbose ("xslt: version unknown\n");
 }
 
 static tagXpathTable xsltXpathVersionVerifyTable [] = {

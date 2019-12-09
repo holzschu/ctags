@@ -84,9 +84,13 @@ static int renderExtensionFieldMaybe (tagWriter *writer, int xftype, const tagEn
 	if (isFieldEnabled (xftype) && doesFieldHaveValue (xftype, tag))
 	{
 		int len;
-		len = mio_printf (mio, "%s\t%s:%s", sep,
-				  getFieldName (xftype),
-				  escapeFieldValue (writer, tag, xftype));
+		// len = mio_printf (mio, "%s\t%s:%s", sep,
+		//		  getFieldName (xftype),
+		//		  escapeFieldValue (writer, tag, xftype));
+        len = fprintf(mio_file_get_fp(mio), "%s\t%s:%s", sep,
+                      getFieldName (xftype),
+                      escapeFieldValue (writer, tag, xftype));
+
 		sep[0] = '\0';
 		return len;
 	}
@@ -112,10 +116,14 @@ static int addParserFields (tagWriter *writer, MIO * mio, const tagEntryInfo *co
 		if (! isFieldEnabled (f->ftype))
 			continue;
 
-		length += mio_printf(mio, "\t%s:%s",
-							 getFieldName (f->ftype),
-							 renderFieldEscaped (writer->type,
-												 f->ftype, tag, i, reject));
+		// length += mio_printf(mio, "\t%s:%s",
+		//					 getFieldName (f->ftype),
+		//					 renderFieldEscaped (writer->type,
+		//										 f->ftype, tag, i, reject));
+        length += fprintf(mio_file_get_fp(mio), "\t%s:%s",
+                       getFieldName (f->ftype),
+                       renderFieldEscaped (writer->type,
+                                           f->ftype, tag, i, reject));
 	}
 	return length;
 }
@@ -123,9 +131,11 @@ static int addParserFields (tagWriter *writer, MIO * mio, const tagEntryInfo *co
 static int writeLineNumberEntry (tagWriter *writer, MIO * mio, const tagEntryInfo *const tag)
 {
 	if (Option.lineDirectives)
-		return mio_printf (mio, "%s", escapeFieldValue (writer, tag, FIELD_LINE_NUMBER));
+		return  fprintf(mio_file_get_fp(mio), "%s", escapeFieldValue (writer, tag, FIELD_LINE_NUMBER));
+        // mio_printf (mio, "%s", escapeFieldValue (writer, tag, FIELD_LINE_NUMBER));
 	else
-		return mio_printf (mio, "%lu", tag->lineNumber);
+		return fprintf(mio_file_get_fp(mio), "%lu", tag->lineNumber);
+    // mio_printf (mio, "%lu", tag->lineNumber);
 }
 
 static int addExtensionFields (tagWriter *writer, MIO *mio, const tagEntryInfo *const tag)
@@ -168,15 +178,19 @@ static int addExtensionFields (tagWriter *writer, MIO *mio, const tagEntryInfo *
 
 	if (str)
 	{
-		length += mio_printf (mio, kindFmt, sep, kindKey, str);
+		// length += mio_printf (mio, kindFmt, sep, kindKey, str);
+        length += fprintf(mio_file_get_fp(mio), kindFmt, sep, kindKey, str);
 		sep [0] = '\0';
 	}
 
 	if (isFieldEnabled (FIELD_LINE_NUMBER) &&  doesFieldHaveValue (FIELD_LINE_NUMBER, tag))
 	{
-		length += mio_printf (mio, "%s\t%s:%ld", sep,
-				   getFieldName (FIELD_LINE_NUMBER),
-				   tag->lineNumber);
+		// length += mio_printf (mio, "%s\t%s:%ld", sep,
+		//		   getFieldName (FIELD_LINE_NUMBER),
+		//		   tag->lineNumber);
+        length += fprintf(mio_file_get_fp(mio), "%s\t%s:%ld", sep,
+                          getFieldName (FIELD_LINE_NUMBER),
+                          tag->lineNumber);
 		sep [0] = '\0';
 	}
 
@@ -190,24 +204,32 @@ static int addExtensionFields (tagWriter *writer, MIO *mio, const tagEntryInfo *
 		v = escapeFieldValue (writer, tag, FIELD_SCOPE);
 		if (k && v)
 		{
-			length += mio_printf (mio, scopeFmt, sep, scopeKey, k, v);
+			// length += mio_printf (mio, scopeFmt, sep, scopeKey, k, v);
+            length += fprintf(mio_file_get_fp(mio), scopeFmt, sep, scopeKey, k, v);
+
 			sep [0] = '\0';
 		}
 	}
 
 	if (isFieldEnabled (FIELD_TYPE_REF) && doesFieldHaveValue (FIELD_TYPE_REF, tag))
 	{
-		length += mio_printf (mio, "%s\t%s:%s:%s", sep,
-				      getFieldName (FIELD_TYPE_REF),
-				      tag->extensionFields.typeRef [0],
-				      escapeFieldValue (writer, tag, FIELD_TYPE_REF));
+		// length += mio_printf (mio, "%s\t%s:%s:%s", sep,
+		//		      getFieldName (FIELD_TYPE_REF),
+		//		      tag->extensionFields.typeRef [0],
+		//		      escapeFieldValue (writer, tag, FIELD_TYPE_REF));
+        length += fprintf(mio_file_get_fp(mio), "%s\t%s:%s:%s", sep,
+                          getFieldName (FIELD_TYPE_REF),
+                          tag->extensionFields.typeRef [0],
+                          escapeFieldValue (writer, tag, FIELD_TYPE_REF));
 		sep [0] = '\0';
 	}
 
 	if (isFieldEnabled (FIELD_FILE_SCOPE) &&  doesFieldHaveValue (FIELD_FILE_SCOPE, tag))
 	{
-		length += mio_printf (mio, "%s\t%s:", sep,
-				      getFieldName (FIELD_FILE_SCOPE));
+		// length += mio_printf (mio, "%s\t%s:", sep,
+		//		      getFieldName (FIELD_FILE_SCOPE));
+        length += fprintf(mio_file_get_fp(mio), "%s\t%s:", sep,
+                          getFieldName (FIELD_FILE_SCOPE));
 		sep [0] = '\0';
 	}
 
@@ -237,9 +259,12 @@ static int writeCtagsEntry (tagWriter *writer,
 
 	}
 
-	int length = mio_printf (mio, "%s\t%s\t",
-			      escapeFieldValue (writer, tag, FIELD_NAME),
-			      escapeFieldValue (writer, tag, FIELD_INPUT_FILE));
+	// int length = mio_printf (mio, "%s\t%s\t",
+	//		      escapeFieldValue (writer, tag, FIELD_NAME),
+	//		      escapeFieldValue (writer, tag, FIELD_INPUT_FILE));
+    int length = fprintf(mio_file_get_fp(mio), "%s\t%s\t",
+                          escapeFieldValue (writer, tag, FIELD_NAME),
+                          escapeFieldValue (writer, tag, FIELD_INPUT_FILE));
 
 	if (tag->lineNumberEntry)
 		length += writeLineNumberEntry (writer, mio, tag);
@@ -252,7 +277,8 @@ static int writeCtagsEntry (tagWriter *writer,
 		length += addParserFields (writer, mio, tag);
 	}
 
-	length += mio_printf (mio, "\n");
+	// length += mio_printf (mio, "\n");
+    length += fprintf(mio_file_get_fp(mio), "\n");
 
 	if (writer->private
 		&& ((struct rejection *)(writer->private))->rejectedInThisRendering)
@@ -276,10 +302,12 @@ static int writeCtagsPtagEntry (tagWriter *writer CTAGS_ATTR_UNUSED,
 	return parserName
 
 #define OPT(X) ((X)?(X):"")
-		? mio_printf (mio, "%s%s%s%s\t%s\t%s\n",
+		// ? mio_printf (mio, "%s%s%s%s\t%s\t%s\n",
+        ? fprintf(mio_file_get_fp(mio), "%s%s%s%s\t%s\t%s\n",
 			      PSEUDO_TAG_PREFIX, desc->name, PSEUDO_TAG_SEPARATOR, parserName,
 			      OPT(fileName), OPT(pattern))
-		: mio_printf (mio, "%s%s\t%s\t/%s/\n",
+		// : mio_printf (mio, "%s%s\t%s\t/%s/\n",
+        : fprintf(mio_file_get_fp(mio), "%s%s\t%s\t/%s/\n",
 			      PSEUDO_TAG_PREFIX, desc->name,
 			      OPT(fileName), OPT(pattern));
 #undef OPT

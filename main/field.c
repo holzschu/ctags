@@ -442,10 +442,10 @@ static const char *renderEscapedName (const bool isTagName,
 	if (unexpected_byte)
 	{
 		const kindDefinition *kdef = getTagKind (tag);
-		verbose ("Unexpected character %#04x included in a tagEntryInfo: %s\n", unexpected_byte, s);
-		verbose ("File: %s, Line: %lu, Lang: %s, Kind: %c\n",
+		iOS_verbose ("Unexpected character %#04x included in a tagEntryInfo: %s\n", unexpected_byte, s);
+		iOS_verbose ("File: %s, Line: %lu, Lang: %s, Kind: %c\n",
 			 tag->inputFileName, tag->lineNumber, getLanguageName(tag->langType), kdef->letter);
-		verbose ("Escape the character\n");
+		iOS_verbose ("Escape the character\n");
 	}
 
 	return renderEscapedString (s, tag, b);
@@ -933,16 +933,43 @@ extern bool enableField (fieldType type, bool state, bool warnIfFixedField)
 	{
 		if ((!state) && warnIfFixedField)
 		{
-			if (def->name && def->letter != NUL_FIELD_LETTER)
-				error(WARNING, "Cannot disable fixed field: '%c'{%s}",
-				      def->letter, def->name);
-			else if (def->name)
-				error(WARNING, "Cannot disable fixed field: {%s}",
-				      def->name);
-			else if (def->letter != NUL_FIELD_LETTER)
-				error(WARNING, "Cannot disable fixed field: '%c'",
-				      getFieldObject(type)->def->letter);
-			else
+            if (def->name && def->letter != NUL_FIELD_LETTER) {
+                // error(WARNING, "Cannot disable fixed field: '%c'{%s}",
+                //      def->letter, def->name);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Cannot disable fixed field: '%c'{%s}",
+                         def->letter, def->name);
+                fputs ("\n", stderr);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
+            else if (def->name) {
+                // error(WARNING, "Cannot disable fixed field: {%s}",
+                //     def->name);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Cannot disable fixed field: {%s}",
+                         def->name);
+                fputs ("\n", stderr);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
+            else if (def->letter != NUL_FIELD_LETTER) {
+                // error(WARNING, "Cannot disable fixed field: '%c'",
+                //   getFieldObject(type)->def->letter);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Cannot disable fixed field: '%c'",
+                         getFieldObject(type)->def->letter);
+                fputs ("\n", stderr);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
+            else
 				AssertNotReached();
 		}
 	}
@@ -951,11 +978,11 @@ extern bool enableField (fieldType type, bool state, bool warnIfFixedField)
 		getFieldObject(type)->def->enabled = state;
 
 		if (isCommonField (type))
-			verbose ("enable field \"%s\": %s\n",
+			iOS_verbose ("enable field \"%s\": %s\n",
 				 getFieldObject(type)->def->name,
 				 (state? "yes": "no"));
 		else
-			verbose ("enable field \"%s\"<%s>: %s\n",
+			iOS_verbose ("enable field \"%s\"<%s>: %s\n",
 				 getFieldObject(type)->def->name,
 				 getLanguageName (getFieldOwner(type)),
 				 (state? "yes": "no"));

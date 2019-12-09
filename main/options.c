@@ -41,6 +41,9 @@
 #include <jansson.h>
 #endif
 
+// iOS: 
+#include <errno.h>
+
 /*
 *   MACROS
 */
@@ -75,7 +78,7 @@
 		if (Stage != OptionLoadingStage##STAGE)							\
 		{																\
 			Stage = OptionLoadingStage##STAGE;							\
-			verbose ("Entering configuration stage: loading %s\n", StageDescription[Stage]); \
+			iOS_verbose ("Entering configuration stage: loading %s\n", StageDescription[Stage]); \
 		}																\
 	} while (0)
 #define ACCEPT(STAGE) (1UL << OptionLoadingStage##STAGE)
@@ -616,6 +619,9 @@ int asprintf(char **strp, const char *fmt, ...)
 }
 #endif
 
+// iOS:
+// Getting rid of functions with variable argument list for LLVM interpretation
+#if 0
 extern void verbose (const char *const format, ...)
 {
 	if (Option.verbose)
@@ -631,14 +637,15 @@ extern void notice (const char *const format, ...)
 {
 	if (!Option.quiet)
 	{
+        fprintf (stderr, "%s: Notice: ", getExecutableName ());
 		va_list ap;
-		fprintf (stderr, "%s: Notice: ", getExecutableName ());
 		va_start (ap, format);
 		vfprintf (stderr, format, ap);
 		va_end (ap);
 		fputs ("\n", stderr);
 	}
 }
+#endif
 
 
 static char *stringCopy (const char *const string)
@@ -700,26 +707,54 @@ extern void checkOptions (void)
 		notice = "xref output";
 		if (isXtagEnabled(XTAG_FILE_NAMES))
 		{
-			error (WARNING, "%s disables file name tags", notice);
+			// error (WARNING, "%s disables file name tags", notice);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "%s disables file name tags", notice);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
 			enableXtag (XTAG_FILE_NAMES, false);
 		}
 	}
 	if (Option.append)
 	{
 		notice = "append mode is not compatible with";
-		if (isDestinationStdout ())
-			error (FATAL, "%s tags to stdout", notice);
+        if (isDestinationStdout ()) {
+			// error (FATAL, "%s tags to stdout", notice);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "%s tags to stdout", notice);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 	if (Option.filter)
 	{
 		notice = "filter mode";
 		if (Option.printTotals)
 		{
-			error (WARNING, "%s disables totals", notice);
+			// error (WARNING, "%s disables totals", notice);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "%s disables totals", notice);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
 			Option.printTotals = false;
 		}
-		if (Option.tagFileName != NULL)
-			error (WARNING, "%s ignores output tag file name", notice);
+        if (Option.tagFileName != NULL) {
+            // error (WARNING, "%s ignores output tag file name", notice);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "%s ignores output tag file name", notice);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 	}
 }
 
@@ -750,8 +785,14 @@ extern langType getLanguageComponentInOption (const char *const option,
 	if (colon)
 		lang_len = colon - lang;
 	language = getNamedLanguage (lang, lang_len);
-	if (language == LANG_IGNORE)
-		error (FATAL, "Unknown language \"%s\" in \"%s\" option", lang, option);
+    if (language == LANG_IGNORE) {
+		// error (FATAL, "Unknown language \"%s\" in \"%s\" option", lang, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", lang, option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	return language;
 }
@@ -775,7 +816,7 @@ extern void testEtagsInvocation (void)
 #endif
 	if (strstr (execName, etags) != NULL)
 	{
-		verbose ("Running in etags mode\n");
+		iOS_verbose ("Running in etags mode\n");
 		setEtagsMode ();
 	}
 	eFree (execName);
@@ -988,10 +1029,10 @@ static void addExtensionList (
 
 	if (clear)
 	{
-		verbose ("      clearing\n");
+		iOS_verbose ("      clearing\n");
 		stringListClear (slist);
 	}
-	verbose ("      adding: ");
+	iOS_verbose ("      adding: ");
 	if (elist != NULL  &&  *elist != '\0')
 	{
 		extension = extensionList;
@@ -1003,7 +1044,7 @@ static void addExtensionList (
 		char *separator = strchr (extension, EXTENSION_SEPARATOR);
 		if (separator != NULL)
 			*separator = '\0';
-		verbose ("%s%s", first ? "" : ", ",
+		iOS_verbose ("%s%s", first ? "" : ", ",
 				*extension == '\0' ? "(NONE)" : extension);
 		stringListAdd (slist, vStringNewInit (extension));
 		first = false;
@@ -1013,11 +1054,14 @@ static void addExtensionList (
 			extension = separator + 1;
 	}
 	BEGIN_VERBOSE(vfp);
-	{
-		fprintf (vfp, "\n      now: ");
-		stringListPrint (slist, vfp);
-		putc ('\n', vfp);
-	}
+    if (Option.verbose) {
+        FILE* vfp = stderr;
+        {
+            fprintf (vfp, "\n      now: ");
+            stringListPrint (slist, vfp);
+            putc ('\n', vfp);
+        }
+    }
 	END_VERBOSE();
 }
 
@@ -1052,8 +1096,14 @@ extern bool paramParserBool (const char *value, bool fallback,
 		r = false;
 	else if (isTrue (value))
 		r = true;
-	else
-		error (FATAL, "Invalid value for \"%s\" %s", errWhat, errCategory);
+    else {
+		// error (FATAL, "Invalid value for \"%s\" %s", errWhat, errCategory);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Invalid value for \"%s\" %s", errWhat, errCategory);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	return r;
 }
@@ -1078,8 +1128,14 @@ extern bool isIncludeFile (const char *const fileName)
 static void processEtagsInclude (
 		const char *const option, const char *const parameter)
 {
-	if (! Option.etags)
-		error (FATAL, "Etags must be enabled to use \"%s\" option", option);
+    if (! Option.etags) {
+		// error (FATAL, "Etags must be enabled to use \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Etags must be enabled to use \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else
 	{
 		vString *const file = vStringNewInit (parameter);
@@ -1099,13 +1155,20 @@ static void processExcludeOption (
 	else if (parameter [0] == '@')
 	{
 		stringList* const sl = stringListNewFromFile (fileName);
-		if (sl == NULL)
-			error (FATAL | PERROR, "cannot open \"%s\"", fileName);
+        if (sl == NULL) {
+			// error (FATAL | PERROR, "cannot open \"%s\"", fileName);
+            fprintf (stderr, "%s: %s", getExecutableName (), "");
+            fprintf (stderr, "cannot open \"%s\"", fileName);
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		if (Excluded == NULL)
 			Excluded = sl;
 		else
 			stringListCombine (Excluded, sl);
-		verbose ("    adding exclude patterns from %s\n", fileName);
+		iOS_verbose ("    adding exclude patterns from %s\n", fileName);
 	}
 	else
 	{
@@ -1116,7 +1179,7 @@ static void processExcludeOption (
 		if (Excluded == NULL)
 			Excluded = stringListNew ();
 		stringListAdd (Excluded, item);
-		verbose ("    adding exclude pattern: %s\n", parameter);
+		iOS_verbose ("    adding exclude pattern: %s\n", parameter);
 	}
 }
 
@@ -1142,7 +1205,12 @@ static void processExcmdOption (
 		case 'n': Option.locate = EX_LINENUM; break;
 		case 'p': Option.locate = EX_PATTERN; break;
 		default:
-			error (FATAL, "Invalid value for \"%s\" option", option);
+			// error (FATAL, "Invalid value for \"%s\" option", option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Invalid value for \"%s\" option", option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
 			break;
 	}
 }
@@ -1177,8 +1245,16 @@ static void processExtraTagsOption (
 	bool inLongName = false;
 	const char *x;
 
-	if (strcmp (option, "extra") == 0)
-		error(WARNING, "--extra option is obsolete; use --extras instead");
+    if (strcmp (option, "extra") == 0) {
+		// error(WARNING, "--extra option is obsolete; use --extras instead");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "--extra option is obsolete; use --extras instead");
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 
 	if (*p == '*')
 	{
@@ -1207,23 +1283,48 @@ static void processExtraTagsOption (
 				mode = false;
 			break;
 		case '{':
-			if (inLongName)
-				error(FATAL,
-				      "unexpected character in extra specification: \'%c\'",
-				      c);
+                if (inLongName) {
+				// error(FATAL,
+				//       "unexpected character in extra specification: \'%c\'",
+				//       c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in extra specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 			inLongName = true;
 			break;
 		case '}':
-			if (!inLongName)
-				error(FATAL,
-				      "unexpected character in extra specification: \'%c\'",
-				      c);
+                if (!inLongName) {
+                   // error(FATAL,
+                   //       "unexpected character in extra specification: \'%c\'",
+                   //       c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in extra specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
+
 			x = vStringValue (longNameTags);
 			t = getXtagTypeForNameAndLanguage (x, LANG_IGNORE);
 
-			if (t == XTAG_UNKNOWN)
-				error(WARNING, "Unsupported parameter '{%s}' for \"%s\" option",
-				      x, option);
+                if (t == XTAG_UNKNOWN) {
+                    // error(WARNING, "Unsupported parameter '{%s}' for \"%s\" option",
+                    //     x, option);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                    fprintf (stderr, "Unsupported parameter '{%s}' for \"%s\" option",
+                             x, option);
+                    if (Option.fatalWarnings) {
+                        ctags_cleanup();
+                        exit (1);
+                    }
+                }
 			else
 				enableXtag (t, mode);
 
@@ -1236,9 +1337,17 @@ static void processExtraTagsOption (
 			else
 			{
 				t = getXtagTypeForLetter (c);
-				if (t == XTAG_UNKNOWN)
-					error(WARNING, "Unsupported parameter '%c' for \"%s\" option",
-					      c, option);
+                if (t == XTAG_UNKNOWN) {
+					// error(WARNING, "Unsupported parameter '%c' for \"%s\" option",
+					//      c, option);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                    fprintf (stderr, "Unsupported parameter '%c' for \"%s\" option",
+                             c, option);
+                    if (Option.fatalWarnings) {
+                        ctags_cleanup();
+                        exit (1);
+                    }
+                }
 				else
 					enableXtag (t, mode);
 			}
@@ -1293,25 +1402,47 @@ static void processFieldsOption (
 				mode = false;
 			break;
 		case '{':
-			if (inLongName)
-				error(FATAL,
-				      "unexpected character in field specification: \'%c\'",
-				      c);
+            if (inLongName) {
+				// error(FATAL,
+				//      "unexpected character in field specification: \'%c\'",
+				//      c);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr,
+                         "unexpected character in field specification: \'%c\'",
+                         c);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			inLongName = true;
 			break;
 		case '}':
-			if (!inLongName)
-				error(FATAL,
-				      "unexpected character in field specification: \'%c\'",
-				      c);
+            if (!inLongName) {
+                    // error(FATAL,
+                    //      "unexpected character in field specification: \'%c\'",
+                    //      c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in field specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 
 			{
 				const char *f = vStringValue (longNameFields);
 				t = getFieldTypeForNameAndLanguage (f, LANG_IGNORE);
 			}
 
-			if (t == FIELD_UNKNOWN)
-				error(FATAL, "no such field: \'%s\'", vStringValue (longNameFields));
+            if (t == FIELD_UNKNOWN) {
+				// error(FATAL, "no such field: \'%s\'", vStringValue (longNameFields));
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "no such field: \'%s\'", vStringValue (longNameFields));
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 
 			enableField (t, mode, true);
 
@@ -1324,9 +1455,17 @@ static void processFieldsOption (
 			else
 			{
 				t = getFieldTypeForOption (c);
-				if (t == FIELD_UNKNOWN)
-					error(WARNING, "Unsupported parameter '%c' for \"%s\" option",
-					      c, option);
+                if (t == FIELD_UNKNOWN) {
+					// error(WARNING, "Unsupported parameter '%c' for \"%s\" option",
+					//      c, option);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                    fprintf (stderr, "Unsupported parameter '%c' for \"%s\" option",
+                             c, option);
+                    if (Option.fatalWarnings) {
+                        ctags_cleanup();
+                        exit (1);
+                    }
+                }
 				else
 					enableField (t, mode, true);
 			}
@@ -1346,12 +1485,24 @@ static void processFormatOption (
 {
 	unsigned int format;
 
-	if (sscanf (parameter, "%u", &format) < 1)
-		error (FATAL, "Invalid value for \"%s\" option",option);
+    if (sscanf (parameter, "%u", &format) < 1) {
+		// error (FATAL, "Invalid value for \"%s\" option",option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Invalid value for \"%s\" option",option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else if (format <= (unsigned int) MaxSupportedTagFormat)
 		Option.tagFileFormat = format;
-	else
-		error (FATAL, "Unsupported value for \"%s\" option", option);
+    else {
+		// error (FATAL, "Unsupported value for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unsupported value for \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 #ifdef HAVE_ICONV
@@ -1465,9 +1616,14 @@ static void processListFieldsOption(const char *const option CTAGS_ATTR_UNUSED,
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
-		if (language == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
-
+        if (language == LANG_IGNORE) {
+			// error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		initializeParser (language);
 		fieldColprintAddLanguageLines (table, language);
 	}
@@ -1577,12 +1733,27 @@ static void processLanguageForceOption (
 	else
 		language = getNamedLanguage (parameter, 0);
 
-	if (strcmp (option, "lang") == 0  ||  strcmp (option, "language") == 0)
-		error (WARNING,
-			   "\"--%s\" option is obsolete; use \"--language-force\" instead",
-			   option);
-	if (language == LANG_IGNORE)
-		error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+    if (strcmp (option, "lang") == 0  ||  strcmp (option, "language") == 0) {
+		// error (WARNING,
+		//	   "\"--%s\" option is obsolete; use \"--language-force\" instead",
+		//	   option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr,
+                 "\"--%s\" option is obsolete; use \"--language-force\" instead",
+                 option);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
+    if (language == LANG_IGNORE) {
+		// error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else
 		Option.language = language;
 }
@@ -1640,9 +1811,16 @@ static char* extractMapFromParameter (const langType language,
 			if (*p == '\\'  &&  *(p + 1) == PATTERN_STOP)
 				++p;
 		}
-		if (*p == '\0')
-			error (FATAL, "Unterminated file name pattern for %s language",
-			   getLanguageName (language));
+        if (*p == '\0') {
+			// error (FATAL, "Unterminated file name pattern for %s language",
+			//   getLanguageName (language));
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unterminated file name pattern for %s language",
+                     getLanguageName (language));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		else
 		{
 			tmp = *p;
@@ -1669,10 +1847,16 @@ static char* addLanguageMap (const langType language, char* map_parameter,
 		addLanguageExtensionMap (language, map, exclusiveInAllLanguages);
 	else if (map && pattern_p == true)
 		addLanguagePatternMap (language, map, exclusiveInAllLanguages);
-	else
-		error (FATAL, "Badly formed language map for %s language",
-				getLanguageName (language));
-
+    else {
+		// error (FATAL, "Badly formed language map for %s language",
+		// 		getLanguageName (language));
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Badly formed language map for %s language",
+                 getLanguageName (language));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	if (map)
 		eFree (map);
 	return p;
@@ -1689,10 +1873,16 @@ static char* removeLanguageMap (const langType language, char* map_parameter)
 		removeLanguageExtensionMap (language, map);
 	else if (map && pattern_p == true)
 		removeLanguagePatternMap (language, map);
-	else
-		error (FATAL, "Badly formed language map for %s language",
-		       getLanguageName (language));
-
+    else {
+		// error (FATAL, "Badly formed language map for %s language",
+		//        getLanguageName (language));
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Badly formed language map for %s language",
+                 getLanguageName (language));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	if (map)
 		eFree (map);
 	return p;
@@ -1721,7 +1911,7 @@ static char* processLanguageMap (char* map)
 			if ((size_t) (p - list) == strlen (deflt) &&
 				strncasecmp (list, deflt, p - list) == 0)
 			{
-				verbose ("    Restoring default %s language map: ", getLanguageName (language));
+				iOS_verbose ("    Restoring default %s language map: ", getLanguageName (language));
 				installLanguageMapDefault (language);
 				list = p;
 			}
@@ -1729,14 +1919,14 @@ static char* processLanguageMap (char* map)
 			{
 				if (clear)
 				{
-					verbose ("    Setting %s language map:", getLanguageName (language));
+					iOS_verbose ("    Setting %s language map:", getLanguageName (language));
 					clearLanguageMap (language);
 				}
 				else
-					verbose ("    Adding to %s language map:", getLanguageName (language));
+					iOS_verbose ("    Adding to %s language map:", getLanguageName (language));
 				while (list != NULL  &&  *list != '\0'  &&  *list != ',')
 					list = addLanguageMap (language, list, true);
-				verbose ("\n");
+				iOS_verbose ("\n");
 			}
 			if (list != NULL  &&  *list == ',')
 				++list;
@@ -1754,14 +1944,21 @@ static void processLanguageMapOption (
 
 	if (strcmp (parameter, RSV_LANGMAP_DEFAULT) == 0)
 	{
-		verbose ("    Restoring default language maps:\n");
+		iOS_verbose ("    Restoring default language maps:\n");
 		installLanguageMapDefaults ();
 	}
 	else while (map != NULL  &&  *map != '\0')
 	{
 		char* const next = processLanguageMap (map);
-		if (next == NULL)
-			error (WARNING, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        if (next == NULL) {
+			// error (WARNING, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 		map = next;
 	}
 	eFree (maps);
@@ -1775,7 +1972,7 @@ static void processLanguagesOption (
 	bool first = true;
 	char *lang = langs;
 	const char* prefix = "";
-	verbose ("    Enabled languages: ");
+	iOS_verbose ("    Enabled languages: ");
 	while (lang != NULL)
 	{
 		char *const end = strchr (lang, ',');
@@ -1802,12 +1999,19 @@ static void processLanguagesOption (
 			else
 			{
 				const langType language = getNamedLanguage (lang, 0);
-				if (language == LANG_IGNORE)
-					error (WARNING, "Unknown language \"%s\" in \"%s\" option", lang, option);
+                if (language == LANG_IGNORE) {
+					// error (WARNING, "Unknown language \"%s\" in \"%s\" option", lang, option);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                    fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", lang, option);
+                    if (Option.fatalWarnings) {
+                        ctags_cleanup();
+                        exit (1);
+                    }
+                }
 				else
 					enableLanguage (language, (bool) (mode != Remove));
 			}
-			verbose ("%s%s%s", (first ? "" : ", "), prefix, lang);
+			iOS_verbose ("%s%s%s", (first ? "" : ", "), prefix, lang);
 			prefix = "";
 			first = false;
 			if (mode == Replace)
@@ -1815,7 +2019,7 @@ static void processLanguagesOption (
 		}
 		lang = (end != NULL ? end + 1 : NULL);
 	}
-	verbose ("\n");
+	iOS_verbose ("\n");
 	eFree (langs);
 }
 
@@ -1832,8 +2036,14 @@ extern bool processMapOption (
 	if (language == LANG_IGNORE)
 		return false;
 
-	if (parameter == NULL || parameter [0] == '\0')
-		error (FATAL, "no parameter is given for %s", option);
+    if (parameter == NULL || parameter [0] == '\0') {
+		// error (FATAL, "no parameter is given for %s", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no parameter is given for %s", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	spec = parameter;
 	if (*spec == '+' || *spec == '-')
@@ -1849,12 +2059,12 @@ extern bool processMapOption (
 
 	if (clear)
 	{
-		verbose ("    Setting %s language map:", getLanguageName (language));
+		iOS_verbose ("    Setting %s language map:", getLanguageName (language));
 		clearLanguageMap (language);
 		op = '+';
 	}
 	else
-		verbose ("    %s %s %s %s language map:",
+		iOS_verbose ("    %s %s %s %s language map:",
 			 op == '+'? "Adding": "Removing",
 			 spec,
 			 op == '+'? "to": "from",
@@ -1869,7 +2079,7 @@ extern bool processMapOption (
 		Assert ("Should not reach here" == NULL);
 
 	eFree (map_parameter);
-	verbose ("\n");
+	iOS_verbose ("\n");
 
 	return true;
 }
@@ -1886,12 +2096,25 @@ extern bool processParamOption (
 		return false;
 
 	sep = option + strlen ("param-") + strlen (getLanguageName (language));
-	if (*sep != ':')
-		error (FATAL, "no separator(:) is given for %s=%s", option, value);
+    if (*sep != ':') {
+		// error (FATAL, "no separator(:) is given for %s=%s", option, value);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no separator(:) is given for %s=%s", option, value);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+
 	name = sep + 1;
 
-	if (value == NULL || value [0] == '\0')
-		error (FATAL, "no parameter is given for %s", option);
+    if (value == NULL || value [0] == '\0') {
+        // error (FATAL, "no parameter is given for %s", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no parameter is given for %s", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	applyParameter (language, name, value);
 
@@ -1919,8 +2142,14 @@ static void processListAliasesOption (
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
-		if (language == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        if (language == LANG_IGNORE) {
+			// error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		else
 			printLanguageAliases (language,
 								  localOption.withListHeader, localOption.machinable, stdout);
@@ -1948,8 +2177,14 @@ static void processListExtrasOption (
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
-		if (language == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        if (language == LANG_IGNORE) {
+            // error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 
 		initializeParser (language);
 		xtagColprintAddLanguageLines (table, language);
@@ -1972,8 +2207,14 @@ static void processListKindsOption (
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
-		if (language == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        if (language == LANG_IGNORE) {
+			// error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		else
 			printLanguageKinds (language, print_all,
 								localOption.withListHeader, localOption.machinable, stdout);
@@ -1992,9 +2233,15 @@ static void processListParametersOption (const char *const option,
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
-		if (language == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
-		else
+        if (language == LANG_IGNORE) {
+            // error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
+        else
 			printLanguageParameters (language,
 									 localOption.withListHeader, localOption.machinable,
 									 stdout);
@@ -2015,9 +2262,15 @@ static void processListMapsOptionForType (const char *const option CTAGS_ATTR_UN
 	else
 	{
 		langType language = getNamedLanguage (parameter, 0);
-		if (language == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
-		else
+		if (language == LANG_IGNORE) {
+            // error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
+        else
 			printLanguageMaps (language, type,
 							   localOption.withListHeader, localOption.machinable,
 							   stdout);
@@ -2136,8 +2389,14 @@ static void processListRolesOptions (const char *const option CTAGS_ATTR_UNUSED,
 	else
 	{
 		lang = getNamedLanguage (parameter, sep - parameter);
-		if (lang == LANG_IGNORE)
-			error (FATAL, "Unknown language \"%s\" in \"%s\"", parameter, option);
+		if (lang == LANG_IGNORE) {
+            // error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 	printLanguageRoles (lang, kindspecs,
 						localOption.withListHeader,
@@ -2164,8 +2423,14 @@ static void processListSubparsersOptions (const char *const option CTAGS_ATTR_UN
 	}
 
 	lang = getNamedLanguage (parameter, 0);
-	if (lang == LANG_IGNORE)
-		error (FATAL, "Unknown language \"%s\" in \"%s\"", parameter, option);
+	if (lang == LANG_IGNORE) {
+        // error (FATAL, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", parameter, option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	printLanguageSubparsers(lang,
 							localOption.withListHeader, localOption.machinable,
@@ -2217,8 +2482,14 @@ static void processOptionFileCommon (
 	vString* vpath = NULL;
 	fileStatus *status;
 
-	if (parameter [0] == '\0')
-		error (FATAL, "no option file supplied for \"%s\"", option);
+	if (parameter [0] == '\0') {
+        // error (FATAL, "no option file supplied for \"%s\"", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no option file supplied for \"%s\"", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	if (parameter [0] != '/' && parameter [0] != '.')
 	{
@@ -2231,18 +2502,39 @@ static void processOptionFileCommon (
 	status = eStat (path);
 	if (!status->exists)
 	{
-		if (!allowNonExistingFile)
-			error (FATAL | PERROR, "cannot stat \"%s\"", path);
+        if (!allowNonExistingFile) {
+			// error (FATAL | PERROR, "cannot stat \"%s\"", path);
+            fprintf (stderr, "%s: %s", getExecutableName (), "");
+            fprintf (stderr, "cannot stat \"%s\"", path);
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 	else if (status->isDirectory)
 	{
-		if (!parseAllConfigurationFilesOptionsInDirectory (path, NULL))
-			error (FATAL | PERROR, "cannot open option directory \"%s\"", path);
+        if (!parseAllConfigurationFilesOptionsInDirectory (path, NULL)) {
+			// error (FATAL | PERROR, "cannot open option directory \"%s\"", path);
+            fprintf (stderr, "%s: %s", getExecutableName (), "");
+            fprintf (stderr, "cannot open option directory \"%s\"", path);
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 	else
 	{
-		if (!parseFileOptions (path))
-			error (FATAL | PERROR, "cannot open option file \"%s\"", path);
+        if (!parseFileOptions (path)) {
+			// error (FATAL | PERROR, "cannot open option file \"%s\"", path);
+            fprintf (stderr, "%s: %s", getExecutableName (), "");
+            fprintf (stderr, "cannot open option file \"%s\"", path);
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 
 	eStatFree (status);
@@ -2265,8 +2557,14 @@ static void processOptionFileMaybe (
 static void processOutputFormat (const char *const option CTAGS_ATTR_UNUSED,
 				 const char *const parameter)
 {
-	if (parameter [0] == '\0')
-		error (FATAL, "no output format name supplied for \"%s\"", option);
+    if (parameter [0] == '\0') {
+        // error (FATAL, "no output format name supplied for \"%s\"", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no output format name supplied for \"%s\"", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	if (strcmp (parameter, "u-ctags") == 0)
 		;
@@ -2280,8 +2578,14 @@ static void processOutputFormat (const char *const option CTAGS_ATTR_UNUSED,
 	else if (strcmp (parameter, "json") == 0)
 		setJsonMode ();
 #endif
-	else
-		error (FATAL, "unknown output format name supplied for \"%s=%s\"", option, parameter);
+    else {
+		// error (FATAL, "unknown output format name supplied for \"%s=%s\"", option, parameter);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "unknown output format name supplied for \"%s=%s\"", option, parameter);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static void processPseudoTags (const char *const option CTAGS_ATTR_UNUSED,
@@ -2321,8 +2625,14 @@ static void processPseudoTags (const char *const option CTAGS_ATTR_UNUSED,
 	}
 
 	t = getPtagTypeForName (p);
-	if (t == PTAG_UNKNOWN)
-		error (FATAL, "Unknown pseudo tag name: %s", p);
+    if (t == PTAG_UNKNOWN) {
+		// error (FATAL, "Unknown pseudo tag name: %s", p);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unknown pseudo tag name: %s", p);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	enablePtag (t, s);
 }
@@ -2338,8 +2648,14 @@ static void processSortOption (
 			strcasecmp (parameter, "fold") == 0 ||
 			strcasecmp (parameter, "foldcase") == 0)
 		Option.sorted = SO_FOLDSORTED;
-	else
-		error (FATAL, "Invalid value for \"%s\" option", option);
+    else {
+		// error (FATAL, "Invalid value for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Invalid value for \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static void processTagRelative (
@@ -2353,8 +2669,14 @@ static void processTagRelative (
 		Option.tagRelative = TREL_ALWAYS;
 	else if (strcasecmp (parameter, "never") == 0)
 		Option.tagRelative = TREL_NEVER;
-	else
-		error (FATAL, "Invalid value for \"%s\" option", option);
+    else {
+		// error (FATAL, "Invalid value for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Invalid value for \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static void installHeaderListDefaults (void)
@@ -2375,8 +2697,14 @@ static void processHeaderListOption (const int option, const char *parameter)
 	/*  Check to make sure that the user did not enter "ctags -h *.c"
 	 *  by testing to see if the list is a filename that exists.
 	 */
-	if (doesFileExist (parameter))
-		error (FATAL, "-%c: Invalid list", option);
+    if (doesFileExist (parameter)) {
+		// error (FATAL, "-%c: Invalid list", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "-%c: Invalid list", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	if (strcmp (parameter, "default") == 0)
 		installHeaderListDefaults ();
 	else
@@ -2390,7 +2718,7 @@ static void processHeaderListOption (const int option, const char *parameter)
 		}
 		if (Option.headerExt == NULL)
 			Option.headerExt = stringListNew ();
-		verbose ("    Header Extensions:\n");
+		iOS_verbose ("    Header Extensions:\n");
 		addExtensionList (Option.headerExt, parameter, clear);
 	}
 }
@@ -2417,8 +2745,15 @@ static void addIgnoreListFromFile (const char *const fileName)
 	langType lang = getNamedLanguage ("CPreProcessor", 0);
 
 	stringList* tokens = stringListNewFromFile (fileName);
-	if (tokens == NULL)
-		error (FATAL | PERROR, "cannot open \"%s\"", fileName);
+    if (tokens == NULL) {
+		// error (FATAL | PERROR, "cannot open \"%s\"", fileName);
+        fprintf (stderr, "%s: %s", getExecutableName (), "");
+        fprintf (stderr, "cannot open \"%s\"", fileName);
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	int c = stringListCount(tokens);
 	int i;
@@ -2455,8 +2790,14 @@ static void processIgnoreOption (const char *const list, int IgnoreOrDefine)
 
 static void processAnonHashOption (const char *const option CTAGS_ATTR_UNUSED, const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	if (parameter == NULL || parameter[0] == '\0')
-		error (FATAL, "Something string is needed for \"%s\" option", option);
+    if (parameter == NULL || parameter[0] == '\0') {
+		// error (FATAL, "Something string is needed for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Something string is needed for \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	char buf [9];
 
 	anonHashString (parameter, buf);
@@ -2472,15 +2813,27 @@ static void processDumpKeywordsOption (const char *const option CTAGS_ATTR_UNUSE
 
 static void processEchoOption (const char *const option, const char *const parameter)
 {
-	if (parameter == NULL || parameter[0] == '\0')
-		error (FATAL, "Something message is needed for \"%s\" option", option);
-	notice ("%s", parameter);
+    if (parameter == NULL || parameter[0] == '\0') {
+        // error (FATAL, "Something message is needed for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Something message is needed for \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+	// notice ("%s", parameter);
+    if (!Option.quiet)
+    {
+        fprintf (stderr, "%s: Notice: ", getExecutableName ());
+        fprintf (stderr, "%s\n", parameter);
+    }
+
 }
 
 static void processForceInitOption (const char *const option CTAGS_ATTR_UNUSED,
 				    const char *const parameter CTAGS_ATTR_UNUSED)
 {
-	verbose ("force initializing all built-in parsers\n");
+	iOS_verbose ("force initializing all built-in parsers\n");
 	initializeParser (LANG_AUTO);
 }
 
@@ -2517,7 +2870,7 @@ static void prependToOptlibPathList (const char *const dir, bool report_in_verbo
 	vString *elt = vStringNewInit (dir);
 
 	if (report_in_verbose)
-		verbose ("Prepend %s to %s\n",
+		iOS_verbose ("Prepend %s to %s\n",
 				 dir, "OptlibPathList");
 
 	stringListAdd (OptlibPathList, elt);
@@ -2527,7 +2880,7 @@ static void resetOptlibPathList (bool report_in_verbose)
 {
 	freeSearchPathList (&OptlibPathList);
 	if (report_in_verbose)
-		verbose ("Reset OptlibPathList\n");
+		iOS_verbose ("Reset OptlibPathList\n");
 	OptlibPathList = stringListNew ();
 }
 
@@ -2558,22 +2911,45 @@ static void processOptlibDir (
 
 static void processMaxRecursionDepthOption (const char *const option, const char *const parameter)
 {
-	if (parameter == NULL || parameter[0] == '\0')
-		error (FATAL, "A parameter is needed after \"%s\" option", option);
-
-	if (atol (parameter) < 1)
-		error (FATAL, "-%s: Invalid maximum recursion depth", option);
+    if (parameter == NULL || parameter[0] == '\0') {
+		// error (FATAL, "A parameter is needed after \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "A parameter is needed after \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+    if (atol (parameter) < 1) {
+		// error (FATAL, "-%s: Invalid maximum recursion depth", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "-%s: Invalid maximum recursion depth", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	Option.maxRecursionDepth = atol(parameter);
 }
 
 static void processPatternLengthLimit(const char *const option, const char *const parameter)
 {
-	if (parameter == NULL || parameter[0] == '\0')
-		error (FATAL, "A parameter is needed after \"%s\" option", option);
+    if (parameter == NULL || parameter[0] == '\0') {
+		// error (FATAL, "A parameter is needed after \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "A parameter is needed after \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
-	if (!strToUInt(parameter, 0, &Option.patternLengthLimit))
-		error (FATAL, "-%s: Invalid pattern length limit", option);
+    if (!strToUInt(parameter, 0, &Option.patternLengthLimit)) {
+        // error (FATAL, "-%s: Invalid pattern length limit", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "-%s: Invalid pattern length limit", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static bool* redirectToXtag(booleanOption *const option)
@@ -2682,8 +3058,14 @@ static booleanOption BooleanOptions [] = {
 
 static void checkOptionOrder (const char* const option, bool longOption)
 {
-	if (NonOptionEncountered)
-		error (FATAL, "-%s%s option may not follow a file name", longOption? "-": "", option);
+    if (NonOptionEncountered) {
+		// error (FATAL, "-%s%s option may not follow a file name", longOption? "-": "", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "-%s%s option may not follow a file name", longOption? "-": "", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static bool processParametricOption (
@@ -2701,8 +3083,15 @@ static bool processParametricOption (
 			found = true;
 			if (!(entry->acceptableStages & (1UL << Stage)))
 			{
-				error (WARNING, "Cannot use --%s option in %s",
-				       option, StageDescription[Stage]);
+				// error (WARNING, "Cannot use --%s option in %s",
+				//       option, StageDescription[Stage]);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Cannot use --%s option in %s",
+                option, StageDescription[Stage]);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
 				break;
 			}
 			if (entry->initOnly)
@@ -2735,8 +3124,15 @@ static bool processBooleanOption (
 			found = true;
 			if (!(entry->acceptableStages & (1UL << Stage)))
 			{
-				error (WARNING, "Cannot use --%s option in %s",
-				       option, StageDescription[Stage]);
+				// error (WARNING, "Cannot use --%s option in %s",
+				//       option, StageDescription[Stage]);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Cannot use --%s option in %s",
+                option, StageDescription[Stage]);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
 				break;
 			}
 			if (entry->initOnly)
@@ -2757,8 +3153,14 @@ static void enableLanguageField (langType language, const char *field, bool mode
 	fieldType t;
 
 	t = getFieldTypeForNameAndLanguage (field, language);
-	if (t == FIELD_UNKNOWN)
-		error(FATAL, "no such field: \'%s\'", field);
+    if (t == FIELD_UNKNOWN) {
+		// error(FATAL, "no such field: \'%s\'", field);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no such field: \'%s\'", field);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	enableField (t, mode, (language != LANG_AUTO));
 	if (language == LANG_AUTO)
 	{
@@ -2775,8 +3177,14 @@ static void enableLanguageXtag (langType language, const char *xtag, bool mode)
 	xtagType x;
 
 	x = getXtagTypeForNameAndLanguage (xtag, language);
-	if (x == XTAG_UNKNOWN)
-		error(FATAL, "no such extra: \'%s\'", xtag);
+    if (x == XTAG_UNKNOWN) {
+		// error(FATAL, "no such extra: \'%s\'", xtag);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no such extra: \'%s\'", xtag);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	enableXtag (x, mode);
 	if (language == LANG_AUTO)
 	{
@@ -2807,8 +3215,14 @@ static bool processLangSpecificFieldsOption (const char *const option,
 
 	lang = option + PREFIX_LEN;
 	len = strlen (lang);
-	if (len == 0)
-		error (FATAL, "No language given in \"%s\" option", option);
+    if (len == 0) {
+		// error (FATAL, "No language given in \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "No language given in \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else if (len == strlen(RSV_LANG_ALL) && (strncmp(lang, RSV_LANG_ALL, len) == 0))
 		language = LANG_AUTO;
 	else
@@ -2816,7 +3230,13 @@ static bool processLangSpecificFieldsOption (const char *const option,
 
 	if (language == LANG_IGNORE)
 	{
-		error (WARNING, "Unknown language: %s (ignoring \"--%s\")", lang, option);
+		// error (WARNING, "Unknown language: %s (ignoring \"--%s\")", lang, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Unknown language: %s (ignoring \"--%s\")", lang, option);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		/* The option is consumed in this function. */
 		return true;
 	}
@@ -2834,8 +3254,15 @@ static bool processLangSpecificFieldsOption (const char *const option,
 		if (*p == '\0')
 			return true;
 	}
-	else if (*p != '+' && *p != '-')
-		error (WARNING, "Wrong per language field specification: %s", p);
+    else if (*p != '+' && *p != '-') {
+		// error (WARNING, "Wrong per language field specification: %s", p);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Wrong per language field specification: %s", p);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 
 	longNameSpecificFields = vStringNewOrClearWithAutoRelease (longNameSpecificFields);
 	while ((c = *p++) != '\0')
@@ -2855,17 +3282,33 @@ static bool processLangSpecificFieldsOption (const char *const option,
 				mode = false;
 			break;
 		case '{':
-			if (inLongName)
-				error (FATAL,
-				       "unexpected character in field specification: \'%c\'",
-				       c);
+                if (inLongName) {
+				// error (FATAL,
+				//       "unexpected character in field specification: \'%c\'",
+				//       c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in field specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 			inLongName = true;
 			break;
 		case '}':
-			if (!inLongName)
-				error (FATAL,
-				       "unexpected character in field specification: \'%c\'",
-				       c);
+                if (!inLongName) {
+                // error (FATAL,
+                //       "unexpected character in field specification: \'%c\'",
+                //       c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in field specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 
 			f = vStringValue (longNameSpecificFields);
 			enableLanguageField (language, f, mode);
@@ -2875,10 +3318,19 @@ static bool processLangSpecificFieldsOption (const char *const option,
 		default:
 			if (inLongName)
 				vStringPut (longNameSpecificFields, c);
-			else
-				error (FATAL,
-				       "only long name can be used in per language field spec: \'%c\'",
-				       c);
+            else {
+                // error (FATAL,
+                //       "only long name can be used in per language field spec: \'%c\'",
+                //       c);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr,
+                         "only long name can be used in per language field spec: \'%c\'",
+                         c);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
+
 			break;
 		}
 	}
@@ -2908,8 +3360,14 @@ static bool processLangSpecificExtraOption (const char *const option,
 	lang = option + PREFIX_LEN;
 	len = strlen (lang);
 
-	if (len == 0)
-		error (FATAL, "No language given in \"%s\" option", option);
+    if (len == 0) {
+		// error (FATAL, "No language given in \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "No language given in \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else if (len == strlen(RSV_LANG_ALL) && (strncmp(lang, RSV_LANG_ALL, len) == 0))
 		language = LANG_AUTO;
 	else
@@ -2917,7 +3375,13 @@ static bool processLangSpecificExtraOption (const char *const option,
 
 	if (language == LANG_IGNORE)
 	{
-		error (WARNING, "Unknown language: %s (ignoring \"--%s\")", lang, option);
+		// error (WARNING, "Unknown language: %s (ignoring \"--%s\")", lang, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Unknown language: %s (ignoring \"--%s\")", lang, option);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		/* The option is consumed in this function. */
 		return true;
 	}
@@ -2935,8 +3399,15 @@ static bool processLangSpecificExtraOption (const char *const option,
 		if (*p == '\0')
 			return true;
 	}
-	else if (*p != '+' && *p != '-')
-		error (WARNING, "Wrong per language extra specification: %s", p);
+    else if (*p != '+' && *p != '-') {
+		// error (WARNING, "Wrong per language extra specification: %s", p);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Wrong per language extra specification: %s", p);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 
 	longNameSpecificExtra = vStringNewOrClearWithAutoRelease (longNameSpecificExtra);
 	while ((c = *p++) != '\0')
@@ -2956,17 +3427,35 @@ static bool processLangSpecificExtraOption (const char *const option,
 				mode = false;
 			break;
 		case '{':
-			if (inLongName)
-				error (FATAL,
-				       "unexpected character in extra specification: \'%c\'",
-				       c);
+                if (inLongName) {
+				// error (FATAL,
+				//       "unexpected character in extra specification: \'%c\'",
+				//       c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in extra specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
+
 			inLongName = true;
 			break;
 		case '}':
-			if (!inLongName)
-				error (FATAL,
-				       "unexpected character in extra specification: \'%c\'",
-				       c);
+                if (!inLongName) {
+				// error (FATAL,
+				//       "unexpected character in extra specification: \'%c\'",
+				//       c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in extra specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
+
 
 			x = vStringValue (longNameSpecificExtra);
 			enableLanguageXtag (language, x, mode);
@@ -2976,10 +3465,18 @@ static bool processLangSpecificExtraOption (const char *const option,
 		default:
 			if (inLongName)
 				vStringPut (longNameSpecificExtra, c);
-			else
-				error (FATAL,
-				       "only long name can be used in per language extra spec: \'%c\'",
-				       c);
+            else {
+				// error (FATAL,
+				//       "only long name can be used in per language extra spec: \'%c\'",
+				//       c);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr,
+                         "only long name can be used in per language extra spec: \'%c\'",
+                         c);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			break;
 		}
 	}
@@ -3048,10 +3545,12 @@ static void processLongOption (
 	Assert (parameter != NULL);
 	Assert (option != NULL);
 
-	if (parameter [0] == '\0')
-		verbose ("  Option: --%s\n", option);
-	else
-		verbose ("  Option: --%s=%s\n", option, parameter);
+	if (parameter [0] == '\0') {
+        iOS_verbose ("  Option: --%s\n", option);
+    }
+	else {
+        iOS_verbose ("  Option: --%s=%s\n", option, parameter);
+    }
 
 	if (processBooleanOption (option, parameter))
 		;
@@ -3093,20 +3592,33 @@ static void processLongOption (
 	else if (strcmp (option, "recurse") == 0)
 		error (WARNING, "%s option not supported on this host", option);
 #endif
-	else
-		error (FATAL, "Unknown option: --%s", option);
+    else {
+		// error (FATAL, "Unknown option: --%s", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unknown option: --%s", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static void processShortOption (
 		const char *const option, const char *const parameter)
 {
-	if (parameter == NULL  ||  parameter [0] == '\0')
-		verbose ("  Option: -%s\n", option);
-	else
-		verbose ("  Option: -%s %s\n", option, parameter);
+    if (parameter == NULL  ||  parameter [0] == '\0') {
+		iOS_verbose ("  Option: -%s\n", option);
+    } else {
+		iOS_verbose ("  Option: -%s %s\n", option, parameter);
+    }
 
-	if (isCompoundOption (*option) && (parameter == NULL  ||  parameter [0] == '\0'))
-		error (FATAL, "Missing parameter for \"%s\" option", option);
+    if (isCompoundOption (*option) && (parameter == NULL  ||  parameter [0] == '\0')) {
+		// error (FATAL, "Missing parameter for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Missing parameter for \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else switch (*option)
 	{
 		case '?':
@@ -3120,14 +3632,25 @@ static void processShortOption (
 			break;
 #ifdef DEBUG
 		case 'b':
-			if (atol (parameter) < 0)
-				error (FATAL, "-%s: Invalid line number", option);
+            if (atol (parameter) < 0) {
+				// error (FATAL, "-%s: Invalid line number", option);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "-%s: Invalid line number", option);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			Option.breakLine = atol (parameter);
 			break;
 		case 'd':
-			if (!strToLong(parameter, 0, &Option.debugLevel))
-				error (FATAL, "-%s: Invalid debug level", option);
-
+            if (!strToLong(parameter, 0, &Option.debugLevel)) {
+				// error (FATAL, "-%s: Invalid debug level", option);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "-%s: Invalid debug level", option);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			if (debug (DEBUG_STATUS))
 				Option.verbose = true;
 			break;
@@ -3147,13 +3670,27 @@ static void processShortOption (
 			checkOptionOrder (option, false);
 			if (Option.tagFileName != NULL)
 			{
-				error (WARNING,
-					"-%s option specified more than once, last value used",
-					option);
+				// error (WARNING,
+				//	"-%s option specified more than once, last value used",
+				//	option);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr,
+                         "-%s option specified more than once, last value used",
+                         option);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
 				freeString (&Option.tagFileName);
 			}
-			else if (parameter [0] == '-'  &&  parameter [1] != '\0')
-				error (FATAL, "output file name may not begin with a '-'");
+            else if (parameter [0] == '-'  &&  parameter [1] != '\0') {
+                // error (FATAL, "output file name may not begin with a '-'");
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "output file name may not begin with a '-'");
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			Option.tagFileName = stringCopy (parameter);
 			break;
 		case 'F':
@@ -3171,9 +3708,17 @@ static void processShortOption (
 		case 'L':
 			if (Option.fileList != NULL)
 			{
-				error (WARNING,
-					"-%s option specified more than once, last value used",
-					option);
+				// error (WARNING,
+				//	"-%s option specified more than once, last value used",
+				//	option);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr,
+                         "-%s option specified more than once, last value used",
+                         option);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
 				freeString (&Option.fileList);
 			}
 			Option.fileList = stringCopy (parameter);
@@ -3205,9 +3750,15 @@ static void processShortOption (
 			checkOptionOrder (option, false);
 			setXrefMode ();
 			break;
-		default:
-			error (FATAL, "Unknown option: -%s", option);
+        default: {
+			// error (FATAL, "Unknown option: -%s", option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "Unknown option: -%s", option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
 			break;
+        }
 	}
 }
 
@@ -3254,23 +3805,30 @@ static bool parseFileOptions (const char* const fileName)
 	const char* const format = "Considering option file %s: %s\n";
 	if (stringListHasTest (OptionFiles, checkSameFile, (void *) fileName))
 	{
-		verbose (format, fileName, "already considered");
+		iOS_verbose (format, fileName, "already considered");
 		fileFound = true;
 	}
 	else
 	{
 		FILE* const fp = fopen (fileName, "r");
 		if (fp == NULL)
-			verbose (format, fileName, "not found");
+			iOS_verbose (format, fileName, "not found");
 		else
 		{
 			cookedArgs* const args = cArgNewFromLineFile (fp);
 			vString* file = vStringNewInit (fileName);
 			stringListAdd (OptionFiles, file);
-			verbose (format, fileName, "reading...");
+			iOS_verbose (format, fileName, "reading...");
 			parseOptions (args);
-			if (NonOptionEncountered)
-				error (WARNING, "Ignoring non-option in %s\n", fileName);
+            if (NonOptionEncountered) {
+				// error (WARNING, "Ignoring non-option in %s\n", fileName);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Ignoring non-option in %s\n", fileName);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
 			cArgDelete (args);
 			fclose (fp);
 			fileFound = true;
@@ -3291,7 +3849,12 @@ extern void previewFirstOption (cookedArgs* const args)
 		else if (strcmp (args->item, "options") == 0  &&
 				strcmp (args->parameter, RSV_NONE) == 0)
 		{
-			notice ("No options will be read from files or environment");
+			// notice ("No options will be read from files or environment");
+            if (!Option.quiet)
+            {
+                fprintf (stderr, "%s: Notice: ", getExecutableName ());
+                fprintf (stderr, "No options will be read from files or environment\n");
+            }
 			SkipConfiguration = true;
 			cArgForth (args);
 		}
@@ -3448,7 +4011,7 @@ static void preload (struct preloadPathElt *pathList)
 		if (Stage != elt->stage)
 		{
 			Stage = elt->stage;
-			verbose ("Entering configuration stage: loading %s\n", StageDescription[Stage]);
+			iOS_verbose ("Entering configuration stage: loading %s\n", StageDescription[Stage]);
 		}
 
 		if (elt->isDirectory)
@@ -3527,11 +4090,18 @@ static void parseEnvironmentOptions (void)
 	if (envOptions != NULL  &&  envOptions [0] != '\0')
 	{
 		cookedArgs* const args = cArgNewFromString (envOptions);
-		verbose ("Reading options from $CTAGS\n");
+		iOS_verbose ("Reading options from $CTAGS\n");
 		parseOptions (args);
 		cArgDelete (args);
-		if (NonOptionEncountered)
-			error (WARNING, "Ignoring non-option in %s variable", var);
+        if (NonOptionEncountered) {
+			// error (WARNING, "Ignoring non-option in %s variable", var);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "Ignoring non-option in %s variable", var);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 	}
 }
 
@@ -3553,15 +4123,15 @@ extern void initOptions (void)
 	OptionFiles = stringListNew ();
 	OptlibPathList = stringListNew ();
 
-	verbose ("Setting option defaults\n");
+	iOS_verbose ("Setting option defaults\n");
 	installHeaderListDefaults ();
-	verbose ("  Installing default language mappings:\n");
+	iOS_verbose ("  Installing default language mappings:\n");
 	installLanguageMapDefaults ();
-	verbose ("  Installing default language aliases:\n");
+	iOS_verbose ("  Installing default language aliases:\n");
 	installLanguageAliasesDefaults ();
 
 	/* always excluded by default */
-	verbose ("  Installing default exclude patterns:\n");
+	iOS_verbose ("  Installing default exclude patterns:\n");
 	processExcludeOption (NULL, "{arch}");
 	processExcludeOption (NULL, ".arch-ids");
 	processExcludeOption (NULL, ".arch-inventory");
