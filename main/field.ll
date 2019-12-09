@@ -996,12 +996,12 @@ if.else54:                                        ; preds = %entry
   store i8 %frombool59, i8* %enabled58, align 8
   %39 = load i32, i32* %type.addr, align 4
   %call60 = call zeroext i1 @isCommonField(i32 %39)
-  br i1 %call60, label %if.then61, label %if.end84
+  br i1 %call60, label %if.then61, label %if.else71
 
 if.then61:                                        ; preds = %if.else54
   %40 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
   %tobool62 = trunc i8 %40 to i1
-  br i1 %tobool62, label %if.then63, label %if.else70
+  br i1 %tobool62, label %if.then63, label %if.end70
 
 if.then63:                                        ; preds = %if.then61
   %41 = load i32, i32* %type.addr, align 4
@@ -1015,37 +1015,37 @@ if.then63:                                        ; preds = %if.then61
   %45 = zext i1 %tobool67 to i64
   %cond = select i1 %tobool67, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i64 0, i64 0)
   %call69 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.7, i64 0, i64 0), i8* %43, i8* %cond)
-  br label %if.end83
+  br label %if.end70
 
-if.else70:                                        ; preds = %if.then61
-  %46 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
-  %tobool71 = trunc i8 %46 to i1
-  br i1 %tobool71, label %if.then72, label %if.end82
-
-if.then72:                                        ; preds = %if.else70
-  %47 = load i32, i32* %type.addr, align 4
-  %call73 = call %struct.sFieldObject* @getFieldObject(i32 %47)
-  %def74 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call73, i32 0, i32 0
-  %48 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def74, align 8
-  %name75 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %48, i32 0, i32 1
-  %49 = load i8*, i8** %name75, align 8
-  %50 = load i32, i32* %type.addr, align 4
-  %call76 = call i32 @getFieldOwner(i32 %50)
-  %call77 = call i8* @getLanguageName(i32 %call76)
-  %51 = load i8, i8* %state.addr, align 1
-  %tobool78 = trunc i8 %51 to i1
-  %52 = zext i1 %tobool78 to i64
-  %cond80 = select i1 %tobool78, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i64 0, i64 0)
-  %call81 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.10, i64 0, i64 0), i8* %49, i8* %call77, i8* %cond80)
-  br label %if.end82
-
-if.end82:                                         ; preds = %if.then72, %if.else70
-  br label %if.end83
-
-if.end83:                                         ; preds = %if.end82, %if.then63
+if.end70:                                         ; preds = %if.then63, %if.then61
   br label %if.end84
 
-if.end84:                                         ; preds = %if.end83, %if.else54
+if.else71:                                        ; preds = %if.else54
+  %46 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool72 = trunc i8 %46 to i1
+  br i1 %tobool72, label %if.then73, label %if.end83
+
+if.then73:                                        ; preds = %if.else71
+  %47 = load i32, i32* %type.addr, align 4
+  %call74 = call %struct.sFieldObject* @getFieldObject(i32 %47)
+  %def75 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call74, i32 0, i32 0
+  %48 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def75, align 8
+  %name76 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %48, i32 0, i32 1
+  %49 = load i8*, i8** %name76, align 8
+  %50 = load i32, i32* %type.addr, align 4
+  %call77 = call i32 @getFieldOwner(i32 %50)
+  %call78 = call i8* @getLanguageName(i32 %call77)
+  %51 = load i8, i8* %state.addr, align 1
+  %tobool79 = trunc i8 %51 to i1
+  %52 = zext i1 %tobool79 to i64
+  %cond81 = select i1 %tobool79, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i64 0, i64 0)
+  %call82 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.10, i64 0, i64 0), i8* %49, i8* %call78, i8* %cond81)
+  br label %if.end83
+
+if.end83:                                         ; preds = %if.then73, %if.else71
+  br label %if.end84
+
+if.end84:                                         ; preds = %if.end83, %if.end70
   br label %if.end85
 
 if.end85:                                         ; preds = %if.end84, %if.end53

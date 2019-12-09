@@ -3,6 +3,12 @@ source_filename = "kind.c"
 target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "arm64-apple-ios11.0.0"
 
+%struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
+%struct.sFmtElement = type opaque
+%struct.sPtrArray = type opaque
+%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
+%struct.__sFILEX = type opaque
+%struct.__sbuf = type { i8*, i32 }
 %struct.sRoleDesc = type { i8, i8*, i8* }
 %struct.sVString = type { i64, i64, i8* }
 %struct.sKindDefinition = type { i8, i8, i8*, i8*, i8, i32, %struct.sRoleDesc*, %struct.sScopeSeparator*, i32, i32, i32, %struct.sKindDefinition*, %struct.sKindDefinition* }
@@ -22,7 +28,6 @@ target triple = "arm64-apple-ios11.0.0"
 %union.anon.0 = type { i64 }
 %struct.anon = type { i8*, i8*, i8*, i8*, i32, i32, i8*, i32, i8*, [2 x i8*], i32, i64 }
 %struct.sTagField = type { i32, i8*, i8 }
-%struct.sPtrArray = type opaque
 %struct.sFieldDefinition = type { i8, i8*, i8*, i8, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*], i1 (%struct.sTagEntryInfo*)*, i32, i32 }
 %struct.sXtagDefinition = type { i8, i8, i8*, i8*, i1 (%struct.sXtagDefinition*)*, i1 (%struct.sXtagDefinition*)*, i32 }
 %struct.sParserDependency = type { i32, i8*, i8* }
@@ -30,15 +35,13 @@ target triple = "arm64-apple-ios11.0.0"
 %struct.sXpathFileSpec = type { i8*, i8*, i8*, i8*, i8*, i8* }
 %struct.colprintTable = type opaque
 %struct.colprintLine = type opaque
-%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
-%struct.__sFILEX = type opaque
-%struct.__sbuf = type { i8*, i32 }
 
 @.str = private unnamed_addr constant [12 x i8] c"%s%c  %s%s\0A\00", align 1
 @.str.1 = private unnamed_addr constant [5 x i8] c"    \00", align 1
 @.str.2 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
 @.str.3 = private unnamed_addr constant [7 x i8] c" [off]\00", align 1
 @.str.4 = private unnamed_addr constant [2 x i8] c".\00", align 1
+@Option = external constant %struct.sOptionValues, align 8
 @.str.5 = private unnamed_addr constant [31 x i8] c"Add kind[%d] \22%c,%s,%s\22 to %s\0A\00", align 1
 @.str.6 = private unnamed_addr constant [11 x i8] c"L:LANGUAGE\00", align 1
 @.str.7 = private unnamed_addr constant [9 x i8] c"L:LETTER\00", align 1
@@ -49,13 +52,16 @@ target triple = "arm64-apple-ios11.0.0"
 @.str.12 = private unnamed_addr constant [9 x i8] c"L:MASTER\00", align 1
 @.str.13 = private unnamed_addr constant [14 x i8] c"L:DESCRIPTION\00", align 1
 @.str.14 = private unnamed_addr constant [12 x i8] c"L:KIND(L/N)\00", align 1
-@.str.15 = private unnamed_addr constant [35 x i8] c"'{' is not closed with '}' in \22%s\22\00", align 1
-@.str.16 = private unnamed_addr constant [33 x i8] c"empty kind name is given in \22%s\22\00", align 1
-@.str.17 = private unnamed_addr constant [3 x i8] c"on\00", align 1
-@.str.18 = private unnamed_addr constant [4 x i8] c"off\00", align 1
-@.str.19 = private unnamed_addr constant [42 x i8] c"ThisShouldNotBePrintedKindNameMustBeGiven\00", align 1
-@.str.20 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
-@.str.21 = private unnamed_addr constant [21 x i8] c"NO DESCRIPTION GIVEN\00", align 1
+@__stderrp = external global %struct.__sFILE*, align 8
+@.str.15 = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
+@.str.16 = private unnamed_addr constant [35 x i8] c"'{' is not closed with '}' in \22%s\22\00", align 1
+@.str.17 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+@.str.18 = private unnamed_addr constant [33 x i8] c"empty kind name is given in \22%s\22\00", align 1
+@.str.19 = private unnamed_addr constant [3 x i8] c"on\00", align 1
+@.str.20 = private unnamed_addr constant [4 x i8] c"off\00", align 1
+@.str.21 = private unnamed_addr constant [42 x i8] c"ThisShouldNotBePrintedKindNameMustBeGiven\00", align 1
+@.str.22 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
+@.str.23 = private unnamed_addr constant [21 x i8] c"NO DESCRIPTION GIVEN\00", align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define i8* @renderRole(%struct.sRoleDesc* %role, %struct.sVString* %b) #0 {
@@ -530,33 +536,39 @@ entry:
   %arrayidx9 = getelementptr inbounds %struct.sKindObject, %struct.sKindObject* %17, i64 %idxprom8
   %free = getelementptr inbounds %struct.sKindObject, %struct.sKindObject* %arrayidx9, i32 0, i32 1
   store void (%struct.sKindDefinition*)* %15, void (%struct.sKindDefinition*)** %free, align 8
-  %20 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
-  %id10 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %20, i32 0, i32 9
-  %21 = load i32, i32* %id10, align 4
-  %22 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
-  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %22, i32 0, i32 1
-  %23 = load i8, i8* %letter, align 1
-  %conv11 = sext i8 %23 to i32
-  %24 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
-  %name = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %24, i32 0, i32 2
-  %25 = load i8*, i8** %name, align 8
-  %26 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
-  %description = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %26, i32 0, i32 3
-  %27 = load i8*, i8** %description, align 8
-  %28 = load %struct.kindControlBlock*, %struct.kindControlBlock** %kcb.addr, align 8
-  %owner = getelementptr inbounds %struct.kindControlBlock, %struct.kindControlBlock* %28, i32 0, i32 2
-  %29 = load i32, i32* %owner, align 4
-  %call12 = call i8* @getLanguageName(i32 %29)
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.5, i64 0, i64 0), i32 %21, i32 %conv11, i8* %25, i8* %27, i8* %call12)
-  %30 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
-  %id13 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %30, i32 0, i32 9
-  %31 = load i32, i32* %id13, align 4
-  ret i32 %31
+  %20 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool = trunc i8 %20 to i1
+  br i1 %tobool, label %if.then, label %if.end
+
+if.then:                                          ; preds = %entry
+  %21 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
+  %id10 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %21, i32 0, i32 9
+  %22 = load i32, i32* %id10, align 4
+  %23 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
+  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %23, i32 0, i32 1
+  %24 = load i8, i8* %letter, align 1
+  %conv11 = sext i8 %24 to i32
+  %25 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
+  %name = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %25, i32 0, i32 2
+  %26 = load i8*, i8** %name, align 8
+  %27 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
+  %description = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %27, i32 0, i32 3
+  %28 = load i8*, i8** %description, align 8
+  %29 = load %struct.kindControlBlock*, %struct.kindControlBlock** %kcb.addr, align 8
+  %owner = getelementptr inbounds %struct.kindControlBlock, %struct.kindControlBlock* %29, i32 0, i32 2
+  %30 = load i32, i32* %owner, align 4
+  %call12 = call i8* @getLanguageName(i32 %30)
+  %call13 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.5, i64 0, i64 0), i32 %22, i32 %conv11, i8* %26, i8* %28, i8* %call12)
+  br label %if.end
+
+if.end:                                           ; preds = %if.then, %entry
+  %31 = load %struct.sKindDefinition*, %struct.sKindDefinition** %def.addr, align 8
+  %id14 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %31, i32 0, i32 9
+  %32 = load i32, i32* %id14, align 4
+  ret i32 %32
 }
 
 declare i8* @eRealloc(i8*, i64) #1
-
-declare void @verbose(i8*, ...) #1
 
 declare i8* @getLanguageName(i32) #1
 
@@ -1046,7 +1058,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %9, %cond.true ], [ getelementptr inbounds ([42 x i8], [42 x i8]* @.str.19, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %9, %cond.true ], [ getelementptr inbounds ([42 x i8], [42 x i8]* @.str.21, i64 0, i64 0), %cond.false ]
   call void @colprintLineAppendColumnCString(%struct.colprintLine* %5, i8* %cond)
   %10 = load %struct.colprintLine*, %struct.colprintLine** %line.addr, align 8
   %11 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef.addr, align 8
@@ -1090,7 +1102,7 @@ cond.false7:                                      ; preds = %lor.lhs.false
   br label %cond.end8
 
 cond.end8:                                        ; preds = %cond.false7, %cond.true6
-  %cond9 = phi i8* [ %call, %cond.true6 ], [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i64 0, i64 0), %cond.false7 ]
+  %cond9 = phi i8* [ %call, %cond.true6 ], [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.22, i64 0, i64 0), %cond.false7 ]
   call void @colprintLineAppendColumnCString(%struct.colprintLine* %19, i8* %cond9)
   %26 = load %struct.colprintLine*, %struct.colprintLine** %line.addr, align 8
   %27 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef.addr, align 8
@@ -1109,7 +1121,7 @@ cond.false13:                                     ; preds = %cond.end8
   br label %cond.end14
 
 cond.end14:                                       ; preds = %cond.false13, %cond.true11
-  %cond15 = phi i8* [ %30, %cond.true11 ], [ getelementptr inbounds ([21 x i8], [21 x i8]* @.str.21, i64 0, i64 0), %cond.false13 ]
+  %cond15 = phi i8* [ %30, %cond.true11 ], [ getelementptr inbounds ([21 x i8], [21 x i8]* @.str.23, i64 0, i64 0), %cond.false13 ]
   call void @colprintLineAppendColumnCString(%struct.colprintLine* %26, i8* %cond15)
   ret void
 }
@@ -1251,12 +1263,12 @@ entry:
   store i8* %2, i8** %c, align 8
   br label %for.cond
 
-for.cond:                                         ; preds = %for.inc64, %entry
+for.cond:                                         ; preds = %for.inc72, %entry
   %3 = load i8*, i8** %c, align 8
   %4 = load i8, i8* %3, align 1
   %conv = sext i8 %4 to i32
   %cmp = icmp ne i32 %conv, 0
-  br i1 %cmp, label %for.body, label %for.end65
+  br i1 %cmp, label %for.body, label %for.end73
 
 for.body:                                         ; preds = %for.cond
   store i8* null, i8** %kname, align 8
@@ -1264,7 +1276,7 @@ for.body:                                         ; preds = %for.cond
   %6 = load i8, i8* %5, align 1
   %conv3 = sext i8 %6 to i32
   %cmp4 = icmp eq i32 %conv3, 123
-  br i1 %cmp4, label %if.then, label %if.end12
+  br i1 %cmp4, label %if.then, label %if.end20
 
 if.then:                                          ; preds = %for.body
   %7 = load i8*, i8** %c, align 8
@@ -1278,224 +1290,240 @@ if.then:                                          ; preds = %for.body
   br i1 %tobool, label %if.end, label %if.then7
 
 if.then7:                                         ; preds = %if.then
-  %10 = load i8*, i8** %c, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.15, i64 0, i64 0), i8* %10)
-  br label %if.end
+  %10 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call8 = call i8* @getExecutableName()
+  %call9 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.15, i64 0, i64 0), i8* %call8, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0))
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %12 = load i8*, i8** %c, align 8
+  %call10 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %11, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.16, i64 0, i64 0), i8* %12)
+  %13 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call11 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.17, i64 0, i64 0), %struct.__sFILE* %13)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #3
+  unreachable
 
-if.end:                                           ; preds = %if.then7, %if.then
-  %11 = load i8*, i8** %start, align 8
-  %12 = load i8*, i8** %end, align 8
-  %cmp8 = icmp eq i8* %11, %12
-  br i1 %cmp8, label %if.then10, label %if.end11
-
-if.then10:                                        ; preds = %if.end
-  %13 = load i8*, i8** %c, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.16, i64 0, i64 0), i8* %13)
-  br label %if.end11
-
-if.end11:                                         ; preds = %if.then10, %if.end
+if.end:                                           ; preds = %if.then
   %14 = load i8*, i8** %start, align 8
-  store i8* %14, i8** %kname, align 8
   %15 = load i8*, i8** %end, align 8
-  %16 = load i8*, i8** %start, align 8
-  %sub.ptr.lhs.cast = ptrtoint i8* %15 to i64
-  %sub.ptr.rhs.cast = ptrtoint i8* %16 to i64
+  %cmp12 = icmp eq i8* %14, %15
+  br i1 %cmp12, label %if.then14, label %if.end19
+
+if.then14:                                        ; preds = %if.end
+  %16 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call15 = call i8* @getExecutableName()
+  %call16 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %16, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.15, i64 0, i64 0), i8* %call15, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.2, i64 0, i64 0))
+  %17 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %18 = load i8*, i8** %c, align 8
+  %call17 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %17, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.18, i64 0, i64 0), i8* %18)
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call18 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.17, i64 0, i64 0), %struct.__sFILE* %19)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #3
+  unreachable
+
+if.end19:                                         ; preds = %if.end
+  %20 = load i8*, i8** %start, align 8
+  store i8* %20, i8** %kname, align 8
+  %21 = load i8*, i8** %end, align 8
+  %22 = load i8*, i8** %start, align 8
+  %sub.ptr.lhs.cast = ptrtoint i8* %21 to i64
+  %sub.ptr.rhs.cast = ptrtoint i8* %22 to i64
   %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
   store i64 %sub.ptr.sub, i64* %kname_len, align 8
-  %17 = load i8*, i8** %end, align 8
-  store i8* %17, i8** %c, align 8
-  br label %if.end12
+  %23 = load i8*, i8** %end, align 8
+  store i8* %23, i8** %c, align 8
+  br label %if.end20
 
-if.end12:                                         ; preds = %if.end11, %for.body
+if.end20:                                         ; preds = %if.end19, %for.body
   store i32 0, i32* %i, align 4
-  br label %for.cond13
+  br label %for.cond21
 
-for.cond13:                                       ; preds = %for.inc61, %if.end12
-  %18 = load i32, i32* %i, align 4
-  %19 = load %struct.kindControlBlock*, %struct.kindControlBlock** %kcb.addr, align 8
-  %call14 = call i32 @countKinds(%struct.kindControlBlock* %19)
-  %cmp15 = icmp ult i32 %18, %call14
-  br i1 %cmp15, label %for.body17, label %for.end63
+for.cond21:                                       ; preds = %for.inc69, %if.end20
+  %24 = load i32, i32* %i, align 4
+  %25 = load %struct.kindControlBlock*, %struct.kindControlBlock** %kcb.addr, align 8
+  %call22 = call i32 @countKinds(%struct.kindControlBlock* %25)
+  %cmp23 = icmp ult i32 %24, %call22
+  br i1 %cmp23, label %for.body25, label %for.end71
 
-for.body17:                                       ; preds = %for.cond13
-  %20 = load %struct.kindControlBlock*, %struct.kindControlBlock** %kcb.addr, align 8
-  %21 = load i32, i32* %i, align 4
-  %call18 = call %struct.sKindDefinition* @getKind(%struct.kindControlBlock* %20, i32 %21)
-  store %struct.sKindDefinition* %call18, %struct.sKindDefinition** %k, align 8
-  %22 = load i8*, i8** %kname, align 8
-  %tobool19 = icmp ne i8* %22, null
-  br i1 %tobool19, label %land.lhs.true, label %lor.lhs.false
-
-land.lhs.true:                                    ; preds = %for.body17
-  %23 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %name = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %23, i32 0, i32 2
-  %24 = load i8*, i8** %name, align 8
-  %call20 = call i64 @strlen(i8* %24)
-  %25 = load i64, i64* %kname_len, align 8
-  %cmp21 = icmp eq i64 %call20, %25
-  br i1 %cmp21, label %land.lhs.true23, label %lor.lhs.false
-
-land.lhs.true23:                                  ; preds = %land.lhs.true
-  %26 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %name24 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %26, i32 0, i32 2
-  %27 = load i8*, i8** %name24, align 8
+for.body25:                                       ; preds = %for.cond21
+  %26 = load %struct.kindControlBlock*, %struct.kindControlBlock** %kcb.addr, align 8
+  %27 = load i32, i32* %i, align 4
+  %call26 = call %struct.sKindDefinition* @getKind(%struct.kindControlBlock* %26, i32 %27)
+  store %struct.sKindDefinition* %call26, %struct.sKindDefinition** %k, align 8
   %28 = load i8*, i8** %kname, align 8
-  %29 = load i64, i64* %kname_len, align 8
-  %call25 = call i32 @strncmp(i8* %27, i8* %28, i64 %29)
-  %cmp26 = icmp eq i32 %call25, 0
-  br i1 %cmp26, label %if.then40, label %lor.lhs.false
+  %tobool27 = icmp ne i8* %28, null
+  br i1 %tobool27, label %land.lhs.true, label %lor.lhs.false
 
-lor.lhs.false:                                    ; preds = %land.lhs.true23, %land.lhs.true, %for.body17
-  %30 = load i8*, i8** %kname, align 8
-  %tobool28 = icmp ne i8* %30, null
-  br i1 %tobool28, label %lor.lhs.false34, label %land.lhs.true29
+land.lhs.true:                                    ; preds = %for.body25
+  %29 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
+  %name = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %29, i32 0, i32 2
+  %30 = load i8*, i8** %name, align 8
+  %call28 = call i64 @strlen(i8* %30)
+  %31 = load i64, i64* %kname_len, align 8
+  %cmp29 = icmp eq i64 %call28, %31
+  br i1 %cmp29, label %land.lhs.true31, label %lor.lhs.false
 
-land.lhs.true29:                                  ; preds = %lor.lhs.false
-  %31 = load i8*, i8** %c, align 8
-  %32 = load i8, i8* %31, align 1
-  %conv30 = sext i8 %32 to i32
-  %33 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %33, i32 0, i32 1
-  %34 = load i8, i8* %letter, align 1
-  %conv31 = sext i8 %34 to i32
-  %cmp32 = icmp eq i32 %conv30, %conv31
-  br i1 %cmp32, label %if.then40, label %lor.lhs.false34
+land.lhs.true31:                                  ; preds = %land.lhs.true
+  %32 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
+  %name32 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %32, i32 0, i32 2
+  %33 = load i8*, i8** %name32, align 8
+  %34 = load i8*, i8** %kname, align 8
+  %35 = load i64, i64* %kname_len, align 8
+  %call33 = call i32 @strncmp(i8* %33, i8* %34, i64 %35)
+  %cmp34 = icmp eq i32 %call33, 0
+  br i1 %cmp34, label %if.then48, label %lor.lhs.false
 
-lor.lhs.false34:                                  ; preds = %land.lhs.true29, %lor.lhs.false
-  %35 = load i8*, i8** %kname, align 8
-  %tobool35 = icmp ne i8* %35, null
-  br i1 %tobool35, label %if.end60, label %land.lhs.true36
+lor.lhs.false:                                    ; preds = %land.lhs.true31, %land.lhs.true, %for.body25
+  %36 = load i8*, i8** %kname, align 8
+  %tobool36 = icmp ne i8* %36, null
+  br i1 %tobool36, label %lor.lhs.false42, label %land.lhs.true37
 
-land.lhs.true36:                                  ; preds = %lor.lhs.false34
-  %36 = load i8*, i8** %c, align 8
-  %37 = load i8, i8* %36, align 1
-  %conv37 = sext i8 %37 to i32
-  %cmp38 = icmp eq i32 %conv37, 42
-  br i1 %cmp38, label %if.then40, label %if.end60
-
-if.then40:                                        ; preds = %land.lhs.true36, %land.lhs.true29, %land.lhs.true23
-  store i32 0, i32* %j, align 4
-  br label %for.cond41
-
-for.cond41:                                       ; preds = %for.inc, %if.then40
-  %38 = load i32, i32* %j, align 4
+land.lhs.true37:                                  ; preds = %lor.lhs.false
+  %37 = load i8*, i8** %c, align 8
+  %38 = load i8, i8* %37, align 1
+  %conv38 = sext i8 %38 to i32
   %39 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %nRoles = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %39, i32 0, i32 5
-  %40 = load i32, i32* %nRoles, align 4
-  %cmp42 = icmp slt i32 %38, %40
-  br i1 %cmp42, label %for.body44, label %for.end
+  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %39, i32 0, i32 1
+  %40 = load i8, i8* %letter, align 1
+  %conv39 = sext i8 %40 to i32
+  %cmp40 = icmp eq i32 %conv38, %conv39
+  br i1 %cmp40, label %if.then48, label %lor.lhs.false42
 
-for.body44:                                       ; preds = %for.cond41
-  %41 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %roles = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %41, i32 0, i32 6
-  %42 = load %struct.sRoleDesc*, %struct.sRoleDesc** %roles, align 8
-  %43 = load i32, i32* %j, align 4
-  %idx.ext = sext i32 %43 to i64
-  %add.ptr45 = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %42, i64 %idx.ext
-  store %struct.sRoleDesc* %add.ptr45, %struct.sRoleDesc** %r, align 8
-  %44 = load %struct.colprintTable*, %struct.colprintTable** %table.addr, align 8
-  %call46 = call %struct.colprintLine* @colprintTableGetNewLine(%struct.colprintTable* %44)
-  store %struct.colprintLine* %call46, %struct.colprintLine** %line, align 8
-  %45 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
-  %46 = load i8*, i8** %lang, align 8
-  call void @colprintLineAppendColumnCString(%struct.colprintLine* %45, i8* %46)
-  %47 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
-  %48 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %letter47 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %48, i32 0, i32 1
-  %49 = load i8, i8* %letter47, align 1
-  %conv48 = sext i8 %49 to i32
-  call void @vStringPut(%struct.sVString* %47, i32 %conv48)
-  %50 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
-  call void @vStringPut(%struct.sVString* %50, i32 47)
-  %51 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
-  %52 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
-  %name49 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %52, i32 0, i32 2
-  %53 = load i8*, i8** %name49, align 8
-  call void @vStringCatS(%struct.sVString* %51, i8* %53)
-  %54 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
-  %55 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
-  call void @colprintLineAppendColumnVString(%struct.colprintLine* %54, %struct.sVString* %55)
+lor.lhs.false42:                                  ; preds = %land.lhs.true37, %lor.lhs.false
+  %41 = load i8*, i8** %kname, align 8
+  %tobool43 = icmp ne i8* %41, null
+  br i1 %tobool43, label %if.end68, label %land.lhs.true44
+
+land.lhs.true44:                                  ; preds = %lor.lhs.false42
+  %42 = load i8*, i8** %c, align 8
+  %43 = load i8, i8* %42, align 1
+  %conv45 = sext i8 %43 to i32
+  %cmp46 = icmp eq i32 %conv45, 42
+  br i1 %cmp46, label %if.then48, label %if.end68
+
+if.then48:                                        ; preds = %land.lhs.true44, %land.lhs.true37, %land.lhs.true31
+  store i32 0, i32* %j, align 4
+  br label %for.cond49
+
+for.cond49:                                       ; preds = %for.inc, %if.then48
+  %44 = load i32, i32* %j, align 4
+  %45 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
+  %nRoles = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %45, i32 0, i32 5
+  %46 = load i32, i32* %nRoles, align 4
+  %cmp50 = icmp slt i32 %44, %46
+  br i1 %cmp50, label %for.body52, label %for.end
+
+for.body52:                                       ; preds = %for.cond49
+  %47 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
+  %roles = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %47, i32 0, i32 6
+  %48 = load %struct.sRoleDesc*, %struct.sRoleDesc** %roles, align 8
+  %49 = load i32, i32* %j, align 4
+  %idx.ext = sext i32 %49 to i64
+  %add.ptr53 = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %48, i64 %idx.ext
+  store %struct.sRoleDesc* %add.ptr53, %struct.sRoleDesc** %r, align 8
+  %50 = load %struct.colprintTable*, %struct.colprintTable** %table.addr, align 8
+  %call54 = call %struct.colprintLine* @colprintTableGetNewLine(%struct.colprintTable* %50)
+  store %struct.colprintLine* %call54, %struct.colprintLine** %line, align 8
+  %51 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
+  %52 = load i8*, i8** %lang, align 8
+  call void @colprintLineAppendColumnCString(%struct.colprintLine* %51, i8* %52)
+  %53 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
+  %54 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
+  %letter55 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %54, i32 0, i32 1
+  %55 = load i8, i8* %letter55, align 1
+  %conv56 = sext i8 %55 to i32
+  call void @vStringPut(%struct.sVString* %53, i32 %conv56)
+  %56 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
+  call void @vStringPut(%struct.sVString* %56, i32 47)
+  %57 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
+  %58 = load %struct.sKindDefinition*, %struct.sKindDefinition** %k, align 8
+  %name57 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %58, i32 0, i32 2
+  %59 = load i8*, i8** %name57, align 8
+  call void @vStringCatS(%struct.sVString* %57, i8* %59)
+  %60 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
+  %61 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
+  call void @colprintLineAppendColumnVString(%struct.colprintLine* %60, %struct.sVString* %61)
   br label %do.body
 
-do.body:                                          ; preds = %for.body44
-  %56 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
-  store %struct.sVString* %56, %struct.sVString** %vStringClear_s, align 8
-  %57 = load %struct.sVString*, %struct.sVString** %vStringClear_s, align 8
-  %length = getelementptr inbounds %struct.sVString, %struct.sVString* %57, i32 0, i32 0
+do.body:                                          ; preds = %for.body52
+  %62 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
+  store %struct.sVString* %62, %struct.sVString** %vStringClear_s, align 8
+  %63 = load %struct.sVString*, %struct.sVString** %vStringClear_s, align 8
+  %length = getelementptr inbounds %struct.sVString, %struct.sVString* %63, i32 0, i32 0
   store i64 0, i64* %length, align 8
-  %58 = load %struct.sVString*, %struct.sVString** %vStringClear_s, align 8
-  %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %58, i32 0, i32 2
-  %59 = load i8*, i8** %buffer, align 8
-  %arrayidx = getelementptr inbounds i8, i8* %59, i64 0
+  %64 = load %struct.sVString*, %struct.sVString** %vStringClear_s, align 8
+  %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %64, i32 0, i32 2
+  %65 = load i8*, i8** %buffer, align 8
+  %arrayidx = getelementptr inbounds i8, i8* %65, i64 0
   store i8 0, i8* %arrayidx, align 1
   br label %do.end
 
 do.end:                                           ; preds = %do.body
-  %60 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
-  %61 = load %struct.sRoleDesc*, %struct.sRoleDesc** %r, align 8
-  %name50 = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %61, i32 0, i32 1
-  %62 = load i8*, i8** %name50, align 8
-  call void @colprintLineAppendColumnCString(%struct.colprintLine* %60, i8* %62)
-  %63 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
-  %64 = load %struct.sRoleDesc*, %struct.sRoleDesc** %r, align 8
-  %enabled = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %64, i32 0, i32 0
-  %65 = load i8, i8* %enabled, align 8
-  %tobool51 = trunc i8 %65 to i1
-  %66 = zext i1 %tobool51 to i64
-  %cond = select i1 %tobool51, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.17, i64 0, i64 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.18, i64 0, i64 0)
-  call void @colprintLineAppendColumnCString(%struct.colprintLine* %63, i8* %cond)
-  %67 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
-  %68 = load %struct.sRoleDesc*, %struct.sRoleDesc** %r, align 8
-  %description = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %68, i32 0, i32 2
-  %69 = load i8*, i8** %description, align 8
-  call void @colprintLineAppendColumnCString(%struct.colprintLine* %67, i8* %69)
+  %66 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
+  %67 = load %struct.sRoleDesc*, %struct.sRoleDesc** %r, align 8
+  %name58 = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %67, i32 0, i32 1
+  %68 = load i8*, i8** %name58, align 8
+  call void @colprintLineAppendColumnCString(%struct.colprintLine* %66, i8* %68)
+  %69 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
+  %70 = load %struct.sRoleDesc*, %struct.sRoleDesc** %r, align 8
+  %enabled = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %70, i32 0, i32 0
+  %71 = load i8, i8* %enabled, align 8
+  %tobool59 = trunc i8 %71 to i1
+  %72 = zext i1 %tobool59 to i64
+  %cond = select i1 %tobool59, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.19, i64 0, i64 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.20, i64 0, i64 0)
+  call void @colprintLineAppendColumnCString(%struct.colprintLine* %69, i8* %cond)
+  %73 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
+  %74 = load %struct.sRoleDesc*, %struct.sRoleDesc** %r, align 8
+  %description = getelementptr inbounds %struct.sRoleDesc, %struct.sRoleDesc* %74, i32 0, i32 2
+  %75 = load i8*, i8** %description, align 8
+  call void @colprintLineAppendColumnCString(%struct.colprintLine* %73, i8* %75)
   br label %for.inc
 
 for.inc:                                          ; preds = %do.end
-  %70 = load i32, i32* %j, align 4
-  %inc = add nsw i32 %70, 1
+  %76 = load i32, i32* %j, align 4
+  %inc = add nsw i32 %76, 1
   store i32 %inc, i32* %j, align 4
-  br label %for.cond41
+  br label %for.cond49
 
-for.end:                                          ; preds = %for.cond41
-  %71 = load i8*, i8** %kname, align 8
-  %tobool53 = icmp ne i8* %71, null
-  br i1 %tobool53, label %if.then58, label %land.lhs.true54
+for.end:                                          ; preds = %for.cond49
+  %77 = load i8*, i8** %kname, align 8
+  %tobool61 = icmp ne i8* %77, null
+  br i1 %tobool61, label %if.then66, label %land.lhs.true62
 
-land.lhs.true54:                                  ; preds = %for.end
-  %72 = load i8*, i8** %c, align 8
-  %73 = load i8, i8* %72, align 1
-  %conv55 = sext i8 %73 to i32
-  %cmp56 = icmp eq i32 %conv55, 42
-  br i1 %cmp56, label %if.end59, label %if.then58
+land.lhs.true62:                                  ; preds = %for.end
+  %78 = load i8*, i8** %c, align 8
+  %79 = load i8, i8* %78, align 1
+  %conv63 = sext i8 %79 to i32
+  %cmp64 = icmp eq i32 %conv63, 42
+  br i1 %cmp64, label %if.end67, label %if.then66
 
-if.then58:                                        ; preds = %land.lhs.true54, %for.end
-  br label %for.end63
+if.then66:                                        ; preds = %land.lhs.true62, %for.end
+  br label %for.end71
 
-if.end59:                                         ; preds = %land.lhs.true54
-  br label %if.end60
+if.end67:                                         ; preds = %land.lhs.true62
+  br label %if.end68
 
-if.end60:                                         ; preds = %if.end59, %land.lhs.true36, %lor.lhs.false34
-  br label %for.inc61
+if.end68:                                         ; preds = %if.end67, %land.lhs.true44, %lor.lhs.false42
+  br label %for.inc69
 
-for.inc61:                                        ; preds = %if.end60
-  %74 = load i32, i32* %i, align 4
-  %inc62 = add i32 %74, 1
-  store i32 %inc62, i32* %i, align 4
-  br label %for.cond13
+for.inc69:                                        ; preds = %if.end68
+  %80 = load i32, i32* %i, align 4
+  %inc70 = add i32 %80, 1
+  store i32 %inc70, i32* %i, align 4
+  br label %for.cond21
 
-for.end63:                                        ; preds = %if.then58, %for.cond13
-  br label %for.inc64
+for.end71:                                        ; preds = %if.then66, %for.cond21
+  br label %for.inc72
 
-for.inc64:                                        ; preds = %for.end63
-  %75 = load i8*, i8** %c, align 8
-  %incdec.ptr = getelementptr inbounds i8, i8* %75, i32 1
+for.inc72:                                        ; preds = %for.end71
+  %81 = load i8*, i8** %c, align 8
+  %incdec.ptr = getelementptr inbounds i8, i8* %81, i32 1
   store i8* %incdec.ptr, i8** %c, align 8
   br label %for.cond
 
-for.end65:                                        ; preds = %for.cond
-  %76 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
-  call void @vStringDelete(%struct.sVString* %76)
+for.end73:                                        ; preds = %for.cond
+  %82 = load %struct.sVString*, %struct.sVString** %kind_l_and_n, align 8
+  call void @vStringDelete(%struct.sVString* %82)
   ret void
 }
 
@@ -1503,7 +1531,16 @@ declare %struct.sVString* @vStringNew() #1
 
 declare i8* @strchr(i8*, i32) #1
 
-declare void @error(i32, i8*, ...) #1
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+
+declare i8* @getExecutableName() #1
+
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
+
+declare void @ctags_cleanup(...) #1
+
+; Function Attrs: noreturn
+declare void @exit(i32) #2
 
 declare i64 @strlen(i8*) #1
 
@@ -1689,6 +1726,8 @@ declare void @vStringResize(%struct.sVString*, i64) #1
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { noreturn "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { noreturn }
 
 !llvm.module.flags = !{!0, !1}
 !llvm.ident = !{!2}

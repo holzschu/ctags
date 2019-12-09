@@ -3,20 +3,24 @@ source_filename = "flags.c"
 target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "arm64-apple-ios11.0.0"
 
+%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
+%struct.__sFILEX = type opaque
+%struct.__sbuf = type { i8*, i32 }
 %struct.sFlagDefinition = type { i8, i8*, void (i8, i8*)*, void (i8*, i8*, i8*)*, i8*, i8* }
 %struct.colprintTable = type opaque
 %struct.sVString = type { i64, i64, i8* }
 %struct.colprintLine = type opaque
-%struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
-%struct.__sFILEX = type opaque
-%struct.__sbuf = type { i8*, i32 }
 
-@.str = private unnamed_addr constant [57 x i8] c"long flags specifier opened with `%c' is not closed `%c'\00", align 1
-@.str.1 = private unnamed_addr constant [9 x i8] c"L:LETTER\00", align 1
-@.str.2 = private unnamed_addr constant [7 x i8] c"L:NAME\00", align 1
-@.str.3 = private unnamed_addr constant [14 x i8] c"L:DESCRIPTION\00", align 1
-@.str.4 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
-@.str.5 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@__stderrp = external global %struct.__sFILE*, align 8
+@.str = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
+@.str.1 = private unnamed_addr constant [10 x i8] c"Warning: \00", align 1
+@.str.2 = private unnamed_addr constant [57 x i8] c"long flags specifier opened with `%c' is not closed `%c'\00", align 1
+@.str.3 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+@.str.4 = private unnamed_addr constant [9 x i8] c"L:LETTER\00", align 1
+@.str.5 = private unnamed_addr constant [7 x i8] c"L:NAME\00", align 1
+@.str.6 = private unnamed_addr constant [14 x i8] c"L:DESCRIPTION\00", align 1
+@.str.7 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
+@.str.8 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @flagsEval(i8* %flags_original, %struct.sFlagDefinition* %defs, i32 %ndefs, i8* %data) #0 {
@@ -58,7 +62,7 @@ if.end3:                                          ; preds = %if.end
   store i32 0, i32* %i, align 4
   br label %for.cond
 
-for.cond:                                         ; preds = %for.inc69, %if.end3
+for.cond:                                         ; preds = %for.inc73, %if.end3
   %3 = load i8*, i8** %flags, align 8
   %4 = load i32, i32* %i, align 4
   %idxprom = zext i32 %4 to i64
@@ -66,7 +70,7 @@ for.cond:                                         ; preds = %for.inc69, %if.end3
   %5 = load i8, i8* %arrayidx, align 1
   %conv = sext i8 %5 to i32
   %cmp = icmp ne i32 %conv, 0
-  br i1 %cmp, label %for.body, label %for.end71
+  br i1 %cmp, label %for.body, label %for.end75
 
 for.body:                                         ; preds = %for.cond
   %6 = load i8*, i8** %flags, align 8
@@ -76,7 +80,7 @@ for.body:                                         ; preds = %for.cond
   %8 = load i8, i8* %arrayidx6, align 1
   %conv7 = sext i8 %8 to i32
   %cmp8 = icmp eq i32 %conv7, 123
-  br i1 %cmp8, label %if.then10, label %if.else46
+  br i1 %cmp8, label %if.then10, label %if.else50
 
 if.then10:                                        ; preds = %for.body
   %9 = load i8*, i8** %flags, align 8
@@ -90,187 +94,193 @@ if.then10:                                        ; preds = %for.body
   store i8* %call12, i8** %needle_close_paren, align 8
   %12 = load i8*, i8** %needle_close_paren, align 8
   %cmp13 = icmp eq i8* %12, null
-  br i1 %cmp13, label %if.then15, label %if.end16
+  br i1 %cmp13, label %if.then15, label %if.end20
 
 if.then15:                                        ; preds = %if.then10
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([57 x i8], [57 x i8]* @.str, i64 0, i64 0), i32 123, i32 125)
-  br label %for.end71
+  %13 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call16 = call i8* @getExecutableName()
+  %call17 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %13, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call16, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i64 0, i64 0))
+  %14 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call18 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %14, i8* getelementptr inbounds ([57 x i8], [57 x i8]* @.str.2, i64 0, i64 0), i32 123, i32 125)
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call19 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %15)
+  br label %for.end75
 
-if.end16:                                         ; preds = %if.then10
-  %13 = load i8*, i8** %needle_close_paren, align 8
-  store i8 0, i8* %13, align 1
-  %14 = load i8*, i8** %aflag, align 8
-  %call17 = call i8* @strchr(i8* %14, i32 61)
-  store i8* %call17, i8** %needle_eqaul, align 8
-  %15 = load i8*, i8** %needle_eqaul, align 8
-  %cmp18 = icmp eq i8* %15, null
-  br i1 %cmp18, label %if.then22, label %lor.lhs.false
+if.end20:                                         ; preds = %if.then10
+  %16 = load i8*, i8** %needle_close_paren, align 8
+  store i8 0, i8* %16, align 1
+  %17 = load i8*, i8** %aflag, align 8
+  %call21 = call i8* @strchr(i8* %17, i32 61)
+  store i8* %call21, i8** %needle_eqaul, align 8
+  %18 = load i8*, i8** %needle_eqaul, align 8
+  %cmp22 = icmp eq i8* %18, null
+  br i1 %cmp22, label %if.then26, label %lor.lhs.false
 
-lor.lhs.false:                                    ; preds = %if.end16
-  %16 = load i8*, i8** %needle_eqaul, align 8
-  %17 = load i8*, i8** %needle_close_paren, align 8
-  %cmp20 = icmp uge i8* %16, %17
-  br i1 %cmp20, label %if.then22, label %if.else
+lor.lhs.false:                                    ; preds = %if.end20
+  %19 = load i8*, i8** %needle_eqaul, align 8
+  %20 = load i8*, i8** %needle_close_paren, align 8
+  %cmp24 = icmp uge i8* %19, %20
+  br i1 %cmp24, label %if.then26, label %if.else
 
-if.then22:                                        ; preds = %lor.lhs.false, %if.end16
+if.then26:                                        ; preds = %lor.lhs.false, %if.end20
   store i8* null, i8** %needle_eqaul, align 8
   store i8* null, i8** %param, align 8
-  br label %if.end24
+  br label %if.end28
 
 if.else:                                          ; preds = %lor.lhs.false
-  %18 = load i8*, i8** %needle_eqaul, align 8
-  %add.ptr23 = getelementptr inbounds i8, i8* %18, i64 1
-  store i8* %add.ptr23, i8** %param, align 8
-  %19 = load i8*, i8** %needle_eqaul, align 8
-  store i8 0, i8* %19, align 1
-  br label %if.end24
+  %21 = load i8*, i8** %needle_eqaul, align 8
+  %add.ptr27 = getelementptr inbounds i8, i8* %21, i64 1
+  store i8* %add.ptr27, i8** %param, align 8
+  %22 = load i8*, i8** %needle_eqaul, align 8
+  store i8 0, i8* %22, align 1
+  br label %if.end28
 
-if.end24:                                         ; preds = %if.else, %if.then22
+if.end28:                                         ; preds = %if.else, %if.then26
   store i32 0, i32* %j, align 4
-  br label %for.cond25
+  br label %for.cond29
 
-for.cond25:                                       ; preds = %for.inc, %if.end24
-  %20 = load i32, i32* %j, align 4
-  %21 = load i32, i32* %ndefs.addr, align 4
-  %cmp26 = icmp ult i32 %20, %21
-  br i1 %cmp26, label %for.body28, label %for.end
-
-for.body28:                                       ; preds = %for.cond25
-  %22 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
+for.cond29:                                       ; preds = %for.inc, %if.end28
   %23 = load i32, i32* %j, align 4
-  %idxprom29 = zext i32 %23 to i64
-  %arrayidx30 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %22, i64 %idxprom29
-  %longStr = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx30, i32 0, i32 1
-  %24 = load i8*, i8** %longStr, align 8
-  %tobool31 = icmp ne i8* %24, null
-  br i1 %tobool31, label %land.lhs.true, label %if.end41
+  %24 = load i32, i32* %ndefs.addr, align 4
+  %cmp30 = icmp ult i32 %23, %24
+  br i1 %cmp30, label %for.body32, label %for.end
 
-land.lhs.true:                                    ; preds = %for.body28
-  %25 = load i8*, i8** %aflag, align 8
-  %26 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
-  %27 = load i32, i32* %j, align 4
-  %idxprom32 = zext i32 %27 to i64
-  %arrayidx33 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %26, i64 %idxprom32
-  %longStr34 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx33, i32 0, i32 1
-  %28 = load i8*, i8** %longStr34, align 8
-  %call35 = call i32 @strcmp(i8* %25, i8* %28)
-  %cmp36 = icmp eq i32 %call35, 0
-  br i1 %cmp36, label %if.then38, label %if.end41
+for.body32:                                       ; preds = %for.cond29
+  %25 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
+  %26 = load i32, i32* %j, align 4
+  %idxprom33 = zext i32 %26 to i64
+  %arrayidx34 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %25, i64 %idxprom33
+  %longStr = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx34, i32 0, i32 1
+  %27 = load i8*, i8** %longStr, align 8
+  %tobool35 = icmp ne i8* %27, null
+  br i1 %tobool35, label %land.lhs.true, label %if.end45
 
-if.then38:                                        ; preds = %land.lhs.true
+land.lhs.true:                                    ; preds = %for.body32
+  %28 = load i8*, i8** %aflag, align 8
   %29 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
   %30 = load i32, i32* %j, align 4
-  %idxprom39 = zext i32 %30 to i64
-  %arrayidx40 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %29, i64 %idxprom39
-  %longProc = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx40, i32 0, i32 3
-  %31 = load void (i8*, i8*, i8*)*, void (i8*, i8*, i8*)** %longProc, align 8
-  %32 = load i8*, i8** %aflag, align 8
-  %33 = load i8*, i8** %param, align 8
-  %34 = load i8*, i8** %data.addr, align 8
-  call void %31(i8* %32, i8* %33, i8* %34)
-  br label %if.end41
+  %idxprom36 = zext i32 %30 to i64
+  %arrayidx37 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %29, i64 %idxprom36
+  %longStr38 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx37, i32 0, i32 1
+  %31 = load i8*, i8** %longStr38, align 8
+  %call39 = call i32 @strcmp(i8* %28, i8* %31)
+  %cmp40 = icmp eq i32 %call39, 0
+  br i1 %cmp40, label %if.then42, label %if.end45
 
-if.end41:                                         ; preds = %if.then38, %land.lhs.true, %for.body28
+if.then42:                                        ; preds = %land.lhs.true
+  %32 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
+  %33 = load i32, i32* %j, align 4
+  %idxprom43 = zext i32 %33 to i64
+  %arrayidx44 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %32, i64 %idxprom43
+  %longProc = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx44, i32 0, i32 3
+  %34 = load void (i8*, i8*, i8*)*, void (i8*, i8*, i8*)** %longProc, align 8
+  %35 = load i8*, i8** %aflag, align 8
+  %36 = load i8*, i8** %param, align 8
+  %37 = load i8*, i8** %data.addr, align 8
+  call void %34(i8* %35, i8* %36, i8* %37)
+  br label %if.end45
+
+if.end45:                                         ; preds = %if.then42, %land.lhs.true, %for.body32
   br label %for.inc
 
-for.inc:                                          ; preds = %if.end41
-  %35 = load i32, i32* %j, align 4
-  %inc = add i32 %35, 1
+for.inc:                                          ; preds = %if.end45
+  %38 = load i32, i32* %j, align 4
+  %inc = add i32 %38, 1
   store i32 %inc, i32* %j, align 4
-  br label %for.cond25
+  br label %for.cond29
 
-for.end:                                          ; preds = %for.cond25
-  %36 = load i8*, i8** %needle_eqaul, align 8
-  %tobool42 = icmp ne i8* %36, null
-  br i1 %tobool42, label %if.then43, label %if.end44
+for.end:                                          ; preds = %for.cond29
+  %39 = load i8*, i8** %needle_eqaul, align 8
+  %tobool46 = icmp ne i8* %39, null
+  br i1 %tobool46, label %if.then47, label %if.end48
 
-if.then43:                                        ; preds = %for.end
-  %37 = load i8*, i8** %needle_eqaul, align 8
-  store i8 61, i8* %37, align 1
-  br label %if.end44
+if.then47:                                        ; preds = %for.end
+  %40 = load i8*, i8** %needle_eqaul, align 8
+  store i8 61, i8* %40, align 1
+  br label %if.end48
 
-if.end44:                                         ; preds = %if.then43, %for.end
-  %38 = load i8*, i8** %needle_close_paren, align 8
-  store i8 125, i8* %38, align 1
-  %39 = load i8*, i8** %needle_close_paren, align 8
-  %40 = load i8*, i8** %flags, align 8
-  %sub.ptr.lhs.cast = ptrtoint i8* %39 to i64
-  %sub.ptr.rhs.cast = ptrtoint i8* %40 to i64
-  %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
-  %conv45 = trunc i64 %sub.ptr.sub to i32
-  store i32 %conv45, i32* %i, align 4
-  br label %if.end68
-
-if.else46:                                        ; preds = %for.body
-  store i32 0, i32* %j, align 4
-  br label %for.cond47
-
-for.cond47:                                       ; preds = %for.inc65, %if.else46
-  %41 = load i32, i32* %j, align 4
-  %42 = load i32, i32* %ndefs.addr, align 4
-  %cmp48 = icmp ult i32 %41, %42
-  br i1 %cmp48, label %for.body50, label %for.end67
-
-for.body50:                                       ; preds = %for.cond47
+if.end48:                                         ; preds = %if.then47, %for.end
+  %41 = load i8*, i8** %needle_close_paren, align 8
+  store i8 125, i8* %41, align 1
+  %42 = load i8*, i8** %needle_close_paren, align 8
   %43 = load i8*, i8** %flags, align 8
-  %44 = load i32, i32* %i, align 4
-  %idxprom51 = zext i32 %44 to i64
-  %arrayidx52 = getelementptr inbounds i8, i8* %43, i64 %idxprom51
-  %45 = load i8, i8* %arrayidx52, align 1
-  %conv53 = sext i8 %45 to i32
-  %46 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
-  %47 = load i32, i32* %j, align 4
-  %idxprom54 = zext i32 %47 to i64
-  %arrayidx55 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %46, i64 %idxprom54
-  %shortChar = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx55, i32 0, i32 0
-  %48 = load i8, i8* %shortChar, align 8
-  %conv56 = sext i8 %48 to i32
-  %cmp57 = icmp eq i32 %conv53, %conv56
-  br i1 %cmp57, label %if.then59, label %if.end64
+  %sub.ptr.lhs.cast = ptrtoint i8* %42 to i64
+  %sub.ptr.rhs.cast = ptrtoint i8* %43 to i64
+  %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
+  %conv49 = trunc i64 %sub.ptr.sub to i32
+  store i32 %conv49, i32* %i, align 4
+  br label %if.end72
 
-if.then59:                                        ; preds = %for.body50
+if.else50:                                        ; preds = %for.body
+  store i32 0, i32* %j, align 4
+  br label %for.cond51
+
+for.cond51:                                       ; preds = %for.inc69, %if.else50
+  %44 = load i32, i32* %j, align 4
+  %45 = load i32, i32* %ndefs.addr, align 4
+  %cmp52 = icmp ult i32 %44, %45
+  br i1 %cmp52, label %for.body54, label %for.end71
+
+for.body54:                                       ; preds = %for.cond51
+  %46 = load i8*, i8** %flags, align 8
+  %47 = load i32, i32* %i, align 4
+  %idxprom55 = zext i32 %47 to i64
+  %arrayidx56 = getelementptr inbounds i8, i8* %46, i64 %idxprom55
+  %48 = load i8, i8* %arrayidx56, align 1
+  %conv57 = sext i8 %48 to i32
   %49 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
   %50 = load i32, i32* %j, align 4
-  %idxprom60 = zext i32 %50 to i64
-  %arrayidx61 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %49, i64 %idxprom60
-  %shortProc = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx61, i32 0, i32 2
-  %51 = load void (i8, i8*)*, void (i8, i8*)** %shortProc, align 8
-  %52 = load i8*, i8** %flags, align 8
-  %53 = load i32, i32* %i, align 4
-  %idxprom62 = zext i32 %53 to i64
-  %arrayidx63 = getelementptr inbounds i8, i8* %52, i64 %idxprom62
-  %54 = load i8, i8* %arrayidx63, align 1
-  %55 = load i8*, i8** %data.addr, align 8
-  call void %51(i8 signext %54, i8* %55)
-  br label %if.end64
+  %idxprom58 = zext i32 %50 to i64
+  %arrayidx59 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %49, i64 %idxprom58
+  %shortChar = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx59, i32 0, i32 0
+  %51 = load i8, i8* %shortChar, align 8
+  %conv60 = sext i8 %51 to i32
+  %cmp61 = icmp eq i32 %conv57, %conv60
+  br i1 %cmp61, label %if.then63, label %if.end68
 
-if.end64:                                         ; preds = %if.then59, %for.body50
-  br label %for.inc65
-
-for.inc65:                                        ; preds = %if.end64
-  %56 = load i32, i32* %j, align 4
-  %inc66 = add i32 %56, 1
-  store i32 %inc66, i32* %j, align 4
-  br label %for.cond47
-
-for.end67:                                        ; preds = %for.cond47
+if.then63:                                        ; preds = %for.body54
+  %52 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %defs.addr, align 8
+  %53 = load i32, i32* %j, align 4
+  %idxprom64 = zext i32 %53 to i64
+  %arrayidx65 = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %52, i64 %idxprom64
+  %shortProc = getelementptr inbounds %struct.sFlagDefinition, %struct.sFlagDefinition* %arrayidx65, i32 0, i32 2
+  %54 = load void (i8, i8*)*, void (i8, i8*)** %shortProc, align 8
+  %55 = load i8*, i8** %flags, align 8
+  %56 = load i32, i32* %i, align 4
+  %idxprom66 = zext i32 %56 to i64
+  %arrayidx67 = getelementptr inbounds i8, i8* %55, i64 %idxprom66
+  %57 = load i8, i8* %arrayidx67, align 1
+  %58 = load i8*, i8** %data.addr, align 8
+  call void %54(i8 signext %57, i8* %58)
   br label %if.end68
 
-if.end68:                                         ; preds = %for.end67, %if.end44
+if.end68:                                         ; preds = %if.then63, %for.body54
   br label %for.inc69
 
 for.inc69:                                        ; preds = %if.end68
-  %57 = load i32, i32* %i, align 4
-  %inc70 = add i32 %57, 1
-  store i32 %inc70, i32* %i, align 4
+  %59 = load i32, i32* %j, align 4
+  %inc70 = add i32 %59, 1
+  store i32 %inc70, i32* %j, align 4
+  br label %for.cond51
+
+for.end71:                                        ; preds = %for.cond51
+  br label %if.end72
+
+if.end72:                                         ; preds = %for.end71, %if.end48
+  br label %for.inc73
+
+for.inc73:                                        ; preds = %if.end72
+  %60 = load i32, i32* %i, align 4
+  %inc74 = add i32 %60, 1
+  store i32 %inc74, i32* %i, align 4
   br label %for.cond
 
-for.end71:                                        ; preds = %if.then15, %for.cond
-  %58 = load i8*, i8** %flags, align 8
-  call void @eFree(i8* %58)
+for.end75:                                        ; preds = %if.then15, %for.cond
+  %61 = load i8*, i8** %flags, align 8
+  call void @eFree(i8* %61)
   br label %return
 
-return:                                           ; preds = %for.end71, %if.then2, %if.then
+return:                                           ; preds = %for.end75, %if.then2, %if.then
   ret void
 }
 
@@ -278,7 +288,11 @@ declare i8* @eStrdup(i8*) #1
 
 declare i8* @strchr(i8*, i32) #1
 
-declare void @error(i32, i8*, ...) #1
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+
+declare i8* @getExecutableName() #1
+
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
 
 declare i32 @strcmp(i8*, i8*) #1
 
@@ -287,7 +301,7 @@ declare void @eFree(i8*) #1
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define %struct.colprintTable* @flagsColprintTableNew() #0 {
 entry:
-  %call = call %struct.colprintTable* (i8*, ...) @colprintTableNew(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.1, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.2, i64 0, i64 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.3, i64 0, i64 0), i8* null)
+  %call = call %struct.colprintTable* (i8*, ...) @colprintTableNew(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.4, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.5, i64 0, i64 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.6, i64 0, i64 0), i8* null)
   ret %struct.colprintTable* %call
 }
 
@@ -367,7 +381,7 @@ cond.false:                                       ; preds = %if.end
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %15, %cond.true ], [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.4, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %15, %cond.true ], [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.7, i64 0, i64 0), %cond.false ]
   call void @vStringCopyS(%struct.sVString* %9, i8* %cond)
   %16 = load %struct.sFlagDefinition*, %struct.sFlagDefinition** %def.addr, align 8
   %17 = load i32, i32* %i, align 4
@@ -430,7 +444,7 @@ cond.false25:                                     ; preds = %do.end
   br label %cond.end26
 
 cond.end26:                                       ; preds = %cond.false25, %cond.true21
-  %cond27 = phi i8* [ %34, %cond.true21 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.5, i64 0, i64 0), %cond.false25 ]
+  %cond27 = phi i8* [ %34, %cond.true21 ], [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i64 0, i64 0), %cond.false25 ]
   store i8* %cond27, i8** %description, align 8
   %35 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
   %36 = load i8*, i8** %description, align 8

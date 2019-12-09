@@ -4,13 +4,13 @@ target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "arm64-apple-ios11.0.0"
 
 %struct.sTrashBox = type opaque
-%struct.sFlagDefinition = type { i8, i8*, void (i8, i8*)*, void (i8*, i8*, i8*)*, i8*, i8* }
-%struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
-%struct.sFmtElement = type opaque
-%struct.sPtrArray = type opaque
 %struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
 %struct.__sFILEX = type opaque
 %struct.__sbuf = type { i8*, i32 }
+%struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
+%struct.sFmtElement = type opaque
+%struct.sPtrArray = type opaque
+%struct.sFlagDefinition = type { i8, i8*, void (i8, i8*)*, void (i8*, i8*, i8*)*, i8*, i8* }
 %struct.lregexControlBlock = type { i64, [2 x %struct.sPtrArray*], %struct.sPtrArray*, %struct.sPtrArray*, i32 }
 %struct.sParserDefinition = type { i8*, %struct.sKindDefinition*, i32, i8**, i8**, i8**, void (i32)*, void (i32, i1)*, void ()*, i32 (i32)*, i8* (%struct._MIO*, i32*, i32)**, i32, i8, i8, i8, i8, %struct.tagRegexTable*, i32, %struct.keywordTable*, i32, %struct.sTagXpathTableTable*, i32, i8, %struct.sFieldDefinition*, i32, %struct.sXtagDefinition*, i32, %struct.sParserDependency*, i32, %struct.sParameterHandlerTable*, i32, %struct.sXpathFileSpec*, i32, i32, i8 }
 %struct.sKindDefinition = type { i8, i8, i8*, i8*, i8, i32, %struct.sRoleDesc*, %struct.sScopeSeparator*, i32, i32, i32, %struct.sKindDefinition*, %struct.sKindDefinition* }
@@ -54,119 +54,123 @@ target triple = "arm64-apple-ios11.0.0"
 
 @apop_count = internal global i32 0, align 4
 @field_trashbox = internal global %struct.sTrashBox* null, align 8
-@.str = private unnamed_addr constant [23 x i8] c"unknown table name: %s\00", align 1
-@regexAvailable = internal global i8 0, align 1
-@.str.1 = private unnamed_addr constant [23 x i8] c"cannot open regex file\00", align 1
-@.str.2 = private unnamed_addr constant [23 x i8] c"open a regex file: %s\0A\00", align 1
-@.str.3 = private unnamed_addr constant [2 x i8] c"r\00", align 1
-@.str.4 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
-@regexFlagDefs = internal global [3 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 98, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.30, i32 0, i32 0), void (i8, i8*)* @regex_flag_basic_short, void (i8*, i8*, i8*)* @regex_flag_basic_long, i8* null, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str.31, i32 0, i32 0) }, %struct.sFlagDefinition { i8 101, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.32, i32 0, i32 0), void (i8, i8*)* @regex_flag_extend_short, void (i8*, i8*, i8*)* @regex_flag_extend_long, i8* null, i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.33, i32 0, i32 0) }, %struct.sFlagDefinition { i8 105, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.34, i32 0, i32 0), void (i8, i8*)* @regex_flag_icase_short, void (i8*, i8*, i8*)* @regex_flag_icase_long, i8* null, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.35, i32 0, i32 0) }], align 8
-@prePtrnFlagDef = internal global [1 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 120, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.36, i32 0, i32 0), void (i8, i8*)* @pre_ptrn_flag_exclusive_short, void (i8*, i8*, i8*)* @pre_ptrn_flag_exclusive_long, i8* null, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.37, i32 0, i32 0) }], align 8
-@scopePtrnFlagDef = internal global [2 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.38, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @scope_ptrn_flag_eval, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.39, i32 0, i32 0), i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str.40, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.41, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @placeholder_ptrn_flag_eval, i8* null, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.42, i32 0, i32 0) }], align 8
-@extraSpecFlagDef = internal global [1 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.49, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_extra_long, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.50, i32 0, i32 0), i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.51, i32 0, i32 0) }], align 8
-@fieldSpecFlagDef = internal global [1 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.54, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_field_long, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.55, i32 0, i32 0), i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str.56, i32 0, i32 0) }], align 8
-@multilinePtrnFlagDef = internal global [2 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.60, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mgroup_long, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.61, i32 0, i32 0), i8* getelementptr inbounds ([54 x i8], [54 x i8]* @.str.62, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.63, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_advanceTo_long, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.64, i32 0, i32 0), i8* getelementptr inbounds ([58 x i8], [58 x i8]* @.str.65, i32 0, i32 0) }], align 8
-@multitablePtrnFlagDef = internal global [5 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.70, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.71, i32 0, i32 0), i8* getelementptr inbounds ([59 x i8], [59 x i8]* @.str.72, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.73, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* null, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.74, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.75, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.76, i32 0, i32 0), i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.77, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.78, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.76, i32 0, i32 0), i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.79, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.80, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* null, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.81, i32 0, i32 0) }], align 8
-@.str.5 = private unnamed_addr constant [53 x i8] c"`%c' in \22%s\22 is not acceptable as part of table name\00", align 1
-@.str.6 = private unnamed_addr constant [36 x i8] c"regex table \22%s\22 is already defined\00", align 1
-@.str.7 = private unnamed_addr constant [36 x i8] c"extend regex table  \22%s\22 with \22%s\22\0A\00", align 1
-@.str.8 = private unnamed_addr constant [30 x i8] c"no such regex table in %s: %s\00", align 1
-@.str.9 = private unnamed_addr constant [31 x i8] c"MTABLE REGEX STATISTICS of %s\0A\00", align 1
-@.str.10 = private unnamed_addr constant [48 x i8] c"==============================================\0A\00", align 1
-@.str.11 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
-@.str.12 = private unnamed_addr constant [25 x i8] c"-----------------------\0A\00", align 1
-@.str.13 = private unnamed_addr constant [25 x i8] c"%10u/%-10u%-40s ref: %d\0A\00", align 1
-@Option = external constant %struct.sOptionValues, align 8
 @__stderrp = external global %struct.__sFILE*, align 8
-@.str.14 = private unnamed_addr constant [19 x i8] c"input : \22%s\22 L%lu\0A\00", align 1
-@.str.15 = private unnamed_addr constant [44 x i8] c"%s:%lu: null expansion of name pattern \22%s\22\00", align 1
-@.str.16 = private unnamed_addr constant [88 x i8] c"Kind letter '%c' used in regex definition \22%s\22 of %s language is reserved in ctags main\00", align 1
-@.str.17 = private unnamed_addr constant [32 x i8] c"%s: regexp missing name pattern\00", align 1
-@.str.18 = private unnamed_addr constant [6 x i8] c"regex\00", align 1
-@.str.19 = private unnamed_addr constant [73 x i8] c"Don't reuse the kind letter `%c' in a language %s (old: \22%s\22, new: \22%s\22)\00", align 1
-@.str.20 = private unnamed_addr constant [15 x i8] c"regcomp %s: %s\00", align 1
-@.str.21 = private unnamed_addr constant [3 x i8] c"\\n\00", align 1
-@.str.22 = private unnamed_addr constant [3 x i8] c"\\t\00", align 1
-@.str.23 = private unnamed_addr constant [3 x i8] c"\\\\\00", align 1
-@.str.24 = private unnamed_addr constant [39 x i8] c"wrong mtable pattern specification: %s\00", align 1
-@.str.25 = private unnamed_addr constant [31 x i8] c"unknown table name: %s (in %s)\00", align 1
-@.str.26 = private unnamed_addr constant [13 x i8] c"empty regexp\00", align 1
-@.str.27 = private unnamed_addr constant [22 x i8] c"%s: incomplete regexp\00", align 1
-@.str.28 = private unnamed_addr constant [28 x i8] c"error in name pattern: \22%s\22\00", align 1
-@.str.29 = private unnamed_addr constant [35 x i8] c"%s: regexp missing final separator\00", align 1
-@.str.30 = private unnamed_addr constant [6 x i8] c"basic\00", align 1
-@.str.31 = private unnamed_addr constant [49 x i8] c"interpreted as a Posix basic regular expression.\00", align 1
-@.str.32 = private unnamed_addr constant [7 x i8] c"extend\00", align 1
-@.str.33 = private unnamed_addr constant [61 x i8] c"interpreted as a Posix extended regular expression (default)\00", align 1
-@.str.34 = private unnamed_addr constant [6 x i8] c"icase\00", align 1
-@.str.35 = private unnamed_addr constant [37 x i8] c"applied in a case-insensitive manner\00", align 1
-@.str.36 = private unnamed_addr constant [10 x i8] c"exclusive\00", align 1
-@.str.37 = private unnamed_addr constant [69 x i8] c"skip testing the other patterns if a line is matched to this pattern\00", align 1
-@.str.38 = private unnamed_addr constant [6 x i8] c"scope\00", align 1
-@.str.39 = private unnamed_addr constant [7 x i8] c"ACTION\00", align 1
-@.str.40 = private unnamed_addr constant [49 x i8] c"use scope stack: ACTION = ref|push|pop|clear|set\00", align 1
-@.str.41 = private unnamed_addr constant [12 x i8] c"placeholder\00", align 1
-@.str.42 = private unnamed_addr constant [33 x i8] c"don't put this tag to tags file.\00", align 1
-@.str.43 = private unnamed_addr constant [4 x i8] c"ref\00", align 1
-@.str.44 = private unnamed_addr constant [5 x i8] c"push\00", align 1
-@.str.45 = private unnamed_addr constant [4 x i8] c"pop\00", align 1
-@.str.46 = private unnamed_addr constant [6 x i8] c"clear\00", align 1
-@.str.47 = private unnamed_addr constant [4 x i8] c"set\00", align 1
-@.str.48 = private unnamed_addr constant [62 x i8] c"Unexpected value for scope flag in regex definition: scope=%s\00", align 1
-@.str.49 = private unnamed_addr constant [7 x i8] c"_extra\00", align 1
-@.str.50 = private unnamed_addr constant [6 x i8] c"EXTRA\00", align 1
-@.str.51 = private unnamed_addr constant [46 x i8] c"record the tag only when the extra is enabled\00", align 1
-@.str.52 = private unnamed_addr constant [26 x i8] c"no value is given for: %s\00", align 1
-@.str.53 = private unnamed_addr constant [25 x i8] c"no such extra \22%s\22 in %s\00", align 1
-@.str.54 = private unnamed_addr constant [7 x i8] c"_field\00", align 1
-@.str.55 = private unnamed_addr constant [12 x i8] c"FIELD:VALUE\00", align 1
-@.str.56 = private unnamed_addr constant [53 x i8] c"record the matched string(VALUE) to FIELD of the tag\00", align 1
-@.str.57 = private unnamed_addr constant [31 x i8] c"no field name is given for: %s\00", align 1
-@.str.58 = private unnamed_addr constant [25 x i8] c"no such field \22%s\22 in %s\00", align 1
-@.str.59 = private unnamed_addr constant [42 x i8] c"duplicated field specification \22%s\22 in %s\00", align 1
-@.str.60 = private unnamed_addr constant [7 x i8] c"mgroup\00", align 1
-@.str.61 = private unnamed_addr constant [2 x i8] c"N\00", align 1
-@.str.62 = private unnamed_addr constant [54 x i8] c"a group in pattern determining the line number of tag\00", align 1
-@.str.63 = private unnamed_addr constant [11 x i8] c"_advanceTo\00", align 1
-@.str.64 = private unnamed_addr constant [13 x i8] c"N[start|end]\00", align 1
-@.str.65 = private unnamed_addr constant [58 x i8] c"a group in pattern from where the next scan starts [0end]\00", align 1
-@.str.66 = private unnamed_addr constant [27 x i8] c"wrong %s specification: %s\00", align 1
-@.str.67 = private unnamed_addr constant [42 x i8] c"out of range(0 ~ %d) %s specification: %s\00", align 1
-@.str.68 = private unnamed_addr constant [6 x i8] c"start\00", align 1
-@.str.69 = private unnamed_addr constant [4 x i8] c"end\00", align 1
-@.str.70 = private unnamed_addr constant [7 x i8] c"tenter\00", align 1
-@.str.71 = private unnamed_addr constant [13 x i8] c"TABLE[,CONT]\00", align 1
-@.str.72 = private unnamed_addr constant [59 x i8] c"enter to given regext table (with specifying continuation)\00", align 1
-@.str.73 = private unnamed_addr constant [7 x i8] c"tleave\00", align 1
-@.str.74 = private unnamed_addr constant [36 x i8] c"leave from the current regext table\00", align 1
-@.str.75 = private unnamed_addr constant [6 x i8] c"tjump\00", align 1
-@.str.76 = private unnamed_addr constant [6 x i8] c"TABLE\00", align 1
-@.str.77 = private unnamed_addr constant [74 x i8] c"jump to another regext table(don't push the current table to state stack)\00", align 1
-@.str.78 = private unnamed_addr constant [7 x i8] c"treset\00", align 1
-@.str.79 = private unnamed_addr constant [52 x i8] c"clear the state stack and jump to given regex table\00", align 1
-@.str.80 = private unnamed_addr constant [6 x i8] c"tquit\00", align 1
-@.str.81 = private unnamed_addr constant [34 x i8] c"stop the parsing with this parser\00", align 1
-@.str.82 = private unnamed_addr constant [39 x i8] c"no table is given for table action: %s\00", align 1
-@.str.83 = private unnamed_addr constant [25 x i8] c"table is not defined: %s\00", align 1
-@.str.84 = private unnamed_addr constant [39 x i8] c"no continuation table is given for: %s\00", align 1
-@.str.85 = private unnamed_addr constant [42 x i8] c"table for continuation is not defined: %s\00", align 1
-@.str.86 = private unnamed_addr constant [25 x i8] c"match : '%s' %15s[%2u] /\00", align 1
-@.str.87 = private unnamed_addr constant [24 x i8] c"match :  '' %15s[%2u] /\00", align 1
-@.str.88 = private unnamed_addr constant [25 x i8] c"match :'%s' %15s[%2u] / \00", align 1
-@.str.89 = private unnamed_addr constant [5 x i8] c"%s/\0A\00", align 1
-@.str.90 = private unnamed_addr constant [30 x i8] c"action: NOP in {%s}, stack: /\00", align 1
-@.str.91 = private unnamed_addr constant [46 x i8] c"action: [enter] to {%s}, cont: {%s}, stack: /\00", align 1
-@.str.92 = private unnamed_addr constant [34 x i8] c"action: [enter] to {%s}, stack: /\00", align 1
-@.str.93 = private unnamed_addr constant [36 x i8] c"action: [leave] from {%s}, stack: /\00", align 1
-@.str.94 = private unnamed_addr constant [70 x i8] c"leave is specified as regex table action but the table stack is empty\00", align 1
-@.str.95 = private unnamed_addr constant [43 x i8] c"action: [jump] from {%s} to {%s}, stack: /\00", align 1
-@.str.96 = private unnamed_addr constant [34 x i8] c"action: [reset] to {%s}, stack: /\00", align 1
-@.str.97 = private unnamed_addr constant [25 x i8] c"action: [quit], stack: /\00", align 1
-@.str.98 = private unnamed_addr constant [40 x i8] c"stack: autopop<%d> from %s to %s @ %lu\0A\00", align 1
-@.str.99 = private unnamed_addr constant [8 x i8] c"scope: \00", align 1
-@.str.100 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
-@.str.101 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
-@.str.102 = private unnamed_addr constant [5 x i8] c"%s%s\00", align 1
+@.str = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
+@.str.1 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str.2 = private unnamed_addr constant [23 x i8] c"unknown table name: %s\00", align 1
+@.str.3 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+@regexAvailable = internal global i8 0, align 1
+@.str.4 = private unnamed_addr constant [10 x i8] c"Warning: \00", align 1
+@.str.5 = private unnamed_addr constant [23 x i8] c"cannot open regex file\00", align 1
+@Option = external constant %struct.sOptionValues, align 8
+@.str.6 = private unnamed_addr constant [23 x i8] c"open a regex file: %s\0A\00", align 1
+@.str.7 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.8 = private unnamed_addr constant [3 x i8] c"%s\00", align 1
+@.str.9 = private unnamed_addr constant [6 x i8] c" : %s\00", align 1
+@regexFlagDefs = internal global [3 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 98, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.35, i32 0, i32 0), void (i8, i8*)* @regex_flag_basic_short, void (i8*, i8*, i8*)* @regex_flag_basic_long, i8* null, i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str.36, i32 0, i32 0) }, %struct.sFlagDefinition { i8 101, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.37, i32 0, i32 0), void (i8, i8*)* @regex_flag_extend_short, void (i8*, i8*, i8*)* @regex_flag_extend_long, i8* null, i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.38, i32 0, i32 0) }, %struct.sFlagDefinition { i8 105, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.39, i32 0, i32 0), void (i8, i8*)* @regex_flag_icase_short, void (i8*, i8*, i8*)* @regex_flag_icase_long, i8* null, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.40, i32 0, i32 0) }], align 8
+@prePtrnFlagDef = internal global [1 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 120, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.41, i32 0, i32 0), void (i8, i8*)* @pre_ptrn_flag_exclusive_short, void (i8*, i8*, i8*)* @pre_ptrn_flag_exclusive_long, i8* null, i8* getelementptr inbounds ([69 x i8], [69 x i8]* @.str.42, i32 0, i32 0) }], align 8
+@scopePtrnFlagDef = internal global [2 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.43, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @scope_ptrn_flag_eval, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.44, i32 0, i32 0), i8* getelementptr inbounds ([49 x i8], [49 x i8]* @.str.45, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.46, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @placeholder_ptrn_flag_eval, i8* null, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.47, i32 0, i32 0) }], align 8
+@extraSpecFlagDef = internal global [1 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.54, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_extra_long, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.55, i32 0, i32 0), i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.56, i32 0, i32 0) }], align 8
+@fieldSpecFlagDef = internal global [1 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.59, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_field_long, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.60, i32 0, i32 0), i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str.61, i32 0, i32 0) }], align 8
+@multilinePtrnFlagDef = internal global [2 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.65, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mgroup_long, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.66, i32 0, i32 0), i8* getelementptr inbounds ([54 x i8], [54 x i8]* @.str.67, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.68, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_advanceTo_long, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.69, i32 0, i32 0), i8* getelementptr inbounds ([58 x i8], [58 x i8]* @.str.70, i32 0, i32 0) }], align 8
+@multitablePtrnFlagDef = internal global [5 x %struct.sFlagDefinition] [%struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.75, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.76, i32 0, i32 0), i8* getelementptr inbounds ([59 x i8], [59 x i8]* @.str.77, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.78, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* null, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.79, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.80, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.81, i32 0, i32 0), i8* getelementptr inbounds ([74 x i8], [74 x i8]* @.str.82, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.83, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.81, i32 0, i32 0), i8* getelementptr inbounds ([52 x i8], [52 x i8]* @.str.84, i32 0, i32 0) }, %struct.sFlagDefinition { i8 0, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.85, i32 0, i32 0), void (i8, i8*)* null, void (i8*, i8*, i8*)* @pre_ptrn_flag_mtable_long, i8* null, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.86, i32 0, i32 0) }], align 8
+@.str.10 = private unnamed_addr constant [53 x i8] c"`%c' in \22%s\22 is not acceptable as part of table name\00", align 1
+@.str.11 = private unnamed_addr constant [36 x i8] c"regex table \22%s\22 is already defined\00", align 1
+@.str.12 = private unnamed_addr constant [36 x i8] c"extend regex table  \22%s\22 with \22%s\22\0A\00", align 1
+@.str.13 = private unnamed_addr constant [30 x i8] c"no such regex table in %s: %s\00", align 1
+@.str.14 = private unnamed_addr constant [31 x i8] c"MTABLE REGEX STATISTICS of %s\0A\00", align 1
+@.str.15 = private unnamed_addr constant [48 x i8] c"==============================================\0A\00", align 1
+@.str.16 = private unnamed_addr constant [4 x i8] c"%s\0A\00", align 1
+@.str.17 = private unnamed_addr constant [25 x i8] c"-----------------------\0A\00", align 1
+@.str.18 = private unnamed_addr constant [25 x i8] c"%10u/%-10u%-40s ref: %d\0A\00", align 1
+@.str.19 = private unnamed_addr constant [19 x i8] c"input : \22%s\22 L%lu\0A\00", align 1
+@.str.20 = private unnamed_addr constant [44 x i8] c"%s:%lu: null expansion of name pattern \22%s\22\00", align 1
+@.str.21 = private unnamed_addr constant [88 x i8] c"Kind letter '%c' used in regex definition \22%s\22 of %s language is reserved in ctags main\00", align 1
+@.str.22 = private unnamed_addr constant [32 x i8] c"%s: regexp missing name pattern\00", align 1
+@.str.23 = private unnamed_addr constant [6 x i8] c"regex\00", align 1
+@.str.24 = private unnamed_addr constant [73 x i8] c"Don't reuse the kind letter `%c' in a language %s (old: \22%s\22, new: \22%s\22)\00", align 1
+@.str.25 = private unnamed_addr constant [15 x i8] c"regcomp %s: %s\00", align 1
+@.str.26 = private unnamed_addr constant [3 x i8] c"\\n\00", align 1
+@.str.27 = private unnamed_addr constant [3 x i8] c"\\t\00", align 1
+@.str.28 = private unnamed_addr constant [3 x i8] c"\\\\\00", align 1
+@.str.29 = private unnamed_addr constant [39 x i8] c"wrong mtable pattern specification: %s\00", align 1
+@.str.30 = private unnamed_addr constant [31 x i8] c"unknown table name: %s (in %s)\00", align 1
+@.str.31 = private unnamed_addr constant [13 x i8] c"empty regexp\00", align 1
+@.str.32 = private unnamed_addr constant [22 x i8] c"%s: incomplete regexp\00", align 1
+@.str.33 = private unnamed_addr constant [28 x i8] c"error in name pattern: \22%s\22\00", align 1
+@.str.34 = private unnamed_addr constant [35 x i8] c"%s: regexp missing final separator\00", align 1
+@.str.35 = private unnamed_addr constant [6 x i8] c"basic\00", align 1
+@.str.36 = private unnamed_addr constant [49 x i8] c"interpreted as a Posix basic regular expression.\00", align 1
+@.str.37 = private unnamed_addr constant [7 x i8] c"extend\00", align 1
+@.str.38 = private unnamed_addr constant [61 x i8] c"interpreted as a Posix extended regular expression (default)\00", align 1
+@.str.39 = private unnamed_addr constant [6 x i8] c"icase\00", align 1
+@.str.40 = private unnamed_addr constant [37 x i8] c"applied in a case-insensitive manner\00", align 1
+@.str.41 = private unnamed_addr constant [10 x i8] c"exclusive\00", align 1
+@.str.42 = private unnamed_addr constant [69 x i8] c"skip testing the other patterns if a line is matched to this pattern\00", align 1
+@.str.43 = private unnamed_addr constant [6 x i8] c"scope\00", align 1
+@.str.44 = private unnamed_addr constant [7 x i8] c"ACTION\00", align 1
+@.str.45 = private unnamed_addr constant [49 x i8] c"use scope stack: ACTION = ref|push|pop|clear|set\00", align 1
+@.str.46 = private unnamed_addr constant [12 x i8] c"placeholder\00", align 1
+@.str.47 = private unnamed_addr constant [33 x i8] c"don't put this tag to tags file.\00", align 1
+@.str.48 = private unnamed_addr constant [4 x i8] c"ref\00", align 1
+@.str.49 = private unnamed_addr constant [5 x i8] c"push\00", align 1
+@.str.50 = private unnamed_addr constant [4 x i8] c"pop\00", align 1
+@.str.51 = private unnamed_addr constant [6 x i8] c"clear\00", align 1
+@.str.52 = private unnamed_addr constant [4 x i8] c"set\00", align 1
+@.str.53 = private unnamed_addr constant [62 x i8] c"Unexpected value for scope flag in regex definition: scope=%s\00", align 1
+@.str.54 = private unnamed_addr constant [7 x i8] c"_extra\00", align 1
+@.str.55 = private unnamed_addr constant [6 x i8] c"EXTRA\00", align 1
+@.str.56 = private unnamed_addr constant [46 x i8] c"record the tag only when the extra is enabled\00", align 1
+@.str.57 = private unnamed_addr constant [26 x i8] c"no value is given for: %s\00", align 1
+@.str.58 = private unnamed_addr constant [25 x i8] c"no such extra \22%s\22 in %s\00", align 1
+@.str.59 = private unnamed_addr constant [7 x i8] c"_field\00", align 1
+@.str.60 = private unnamed_addr constant [12 x i8] c"FIELD:VALUE\00", align 1
+@.str.61 = private unnamed_addr constant [53 x i8] c"record the matched string(VALUE) to FIELD of the tag\00", align 1
+@.str.62 = private unnamed_addr constant [31 x i8] c"no field name is given for: %s\00", align 1
+@.str.63 = private unnamed_addr constant [25 x i8] c"no such field \22%s\22 in %s\00", align 1
+@.str.64 = private unnamed_addr constant [42 x i8] c"duplicated field specification \22%s\22 in %s\00", align 1
+@.str.65 = private unnamed_addr constant [7 x i8] c"mgroup\00", align 1
+@.str.66 = private unnamed_addr constant [2 x i8] c"N\00", align 1
+@.str.67 = private unnamed_addr constant [54 x i8] c"a group in pattern determining the line number of tag\00", align 1
+@.str.68 = private unnamed_addr constant [11 x i8] c"_advanceTo\00", align 1
+@.str.69 = private unnamed_addr constant [13 x i8] c"N[start|end]\00", align 1
+@.str.70 = private unnamed_addr constant [58 x i8] c"a group in pattern from where the next scan starts [0end]\00", align 1
+@.str.71 = private unnamed_addr constant [27 x i8] c"wrong %s specification: %s\00", align 1
+@.str.72 = private unnamed_addr constant [42 x i8] c"out of range(0 ~ %d) %s specification: %s\00", align 1
+@.str.73 = private unnamed_addr constant [6 x i8] c"start\00", align 1
+@.str.74 = private unnamed_addr constant [4 x i8] c"end\00", align 1
+@.str.75 = private unnamed_addr constant [7 x i8] c"tenter\00", align 1
+@.str.76 = private unnamed_addr constant [13 x i8] c"TABLE[,CONT]\00", align 1
+@.str.77 = private unnamed_addr constant [59 x i8] c"enter to given regext table (with specifying continuation)\00", align 1
+@.str.78 = private unnamed_addr constant [7 x i8] c"tleave\00", align 1
+@.str.79 = private unnamed_addr constant [36 x i8] c"leave from the current regext table\00", align 1
+@.str.80 = private unnamed_addr constant [6 x i8] c"tjump\00", align 1
+@.str.81 = private unnamed_addr constant [6 x i8] c"TABLE\00", align 1
+@.str.82 = private unnamed_addr constant [74 x i8] c"jump to another regext table(don't push the current table to state stack)\00", align 1
+@.str.83 = private unnamed_addr constant [7 x i8] c"treset\00", align 1
+@.str.84 = private unnamed_addr constant [52 x i8] c"clear the state stack and jump to given regex table\00", align 1
+@.str.85 = private unnamed_addr constant [6 x i8] c"tquit\00", align 1
+@.str.86 = private unnamed_addr constant [34 x i8] c"stop the parsing with this parser\00", align 1
+@.str.87 = private unnamed_addr constant [39 x i8] c"no table is given for table action: %s\00", align 1
+@.str.88 = private unnamed_addr constant [25 x i8] c"table is not defined: %s\00", align 1
+@.str.89 = private unnamed_addr constant [39 x i8] c"no continuation table is given for: %s\00", align 1
+@.str.90 = private unnamed_addr constant [42 x i8] c"table for continuation is not defined: %s\00", align 1
+@.str.91 = private unnamed_addr constant [25 x i8] c"match : '%s' %15s[%2u] /\00", align 1
+@.str.92 = private unnamed_addr constant [24 x i8] c"match :  '' %15s[%2u] /\00", align 1
+@.str.93 = private unnamed_addr constant [25 x i8] c"match :'%s' %15s[%2u] / \00", align 1
+@.str.94 = private unnamed_addr constant [5 x i8] c"%s/\0A\00", align 1
+@.str.95 = private unnamed_addr constant [30 x i8] c"action: NOP in {%s}, stack: /\00", align 1
+@.str.96 = private unnamed_addr constant [46 x i8] c"action: [enter] to {%s}, cont: {%s}, stack: /\00", align 1
+@.str.97 = private unnamed_addr constant [34 x i8] c"action: [enter] to {%s}, stack: /\00", align 1
+@.str.98 = private unnamed_addr constant [36 x i8] c"action: [leave] from {%s}, stack: /\00", align 1
+@.str.99 = private unnamed_addr constant [70 x i8] c"leave is specified as regex table action but the table stack is empty\00", align 1
+@.str.100 = private unnamed_addr constant [43 x i8] c"action: [jump] from {%s} to {%s}, stack: /\00", align 1
+@.str.101 = private unnamed_addr constant [34 x i8] c"action: [reset] to {%s}, stack: /\00", align 1
+@.str.102 = private unnamed_addr constant [25 x i8] c"action: [quit], stack: /\00", align 1
+@.str.103 = private unnamed_addr constant [40 x i8] c"stack: autopop<%d> from %s to %s @ %lu\0A\00", align 1
+@.str.104 = private unnamed_addr constant [8 x i8] c"scope: \00", align 1
+@.str.105 = private unnamed_addr constant [3 x i8] c"%c\00", align 1
+@.str.106 = private unnamed_addr constant [5 x i8] c"%s%s\00", align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @init_apop_count() #0 {
@@ -948,7 +952,7 @@ if.end:                                           ; preds = %do.end2
   store %struct.regex_t* %call, %struct.regex_t** %cp, align 8
   %4 = load %struct.regex_t*, %struct.regex_t** %cp, align 8
   %cmp = icmp ne %struct.regex_t* %4, null
-  br i1 %cmp, label %if.then3, label %if.end34
+  br i1 %cmp, label %if.then3, label %if.end45
 
 if.then3:                                         ; preds = %if.end
   %5 = load i8*, i8** %kinds.addr, align 8
@@ -963,108 +967,132 @@ if.then3:                                         ; preds = %if.end
   %9 = load i8, i8* %letter, align 1
   %conv5 = sext i8 %9 to i32
   %cmp6 = icmp eq i32 %conv, %conv5
-  br i1 %cmp6, label %if.then8, label %if.end12
+  br i1 %cmp6, label %if.then8, label %if.end16
 
 if.then8:                                         ; preds = %if.then3
-  %10 = load i8, i8* %kind, align 1
-  %conv9 = sext i8 %10 to i32
-  %11 = load i8*, i8** %regex.addr, align 8
-  %12 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %owner10 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %12, i32 0, i32 4
-  %13 = load i32, i32* %owner10, align 8
-  %call11 = call i8* @getLanguageName(i32 %13)
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([88 x i8], [88 x i8]* @.str.16, i64 0, i64 0), i32 %conv9, i8* %11, i8* %call11)
-  br label %if.end12
-
-if.end12:                                         ; preds = %if.then8, %if.then3
+  %10 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call9 = call i8* @getExecutableName()
+  %call10 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call9, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %12 = load i8, i8* %kind, align 1
+  %conv11 = sext i8 %12 to i32
+  %13 = load i8*, i8** %regex.addr, align 8
   %14 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %15 = load i32, i32* %table_index.addr, align 4
-  %16 = load i32, i32* %regptype.addr, align 4
-  %17 = load %struct.regex_t*, %struct.regex_t** %cp, align 8
-  %18 = load i8*, i8** %name.addr, align 8
-  %19 = load i8, i8* %kind, align 1
-  %20 = load i8*, i8** %kindName, align 8
-  %21 = load i8*, i8** %description, align 8
-  %22 = load i8*, i8** %flags.addr, align 8
-  %23 = load i8*, i8** %disabled.addr, align 8
-  %call13 = call %struct.regexPattern* @addCompiledTagPattern(%struct.lregexControlBlock* %14, i32 %15, i32 %16, %struct.regex_t* %17, i8* %18, i8 signext %19, i8* %20, i8* %21, i8* %22, i8* %23)
-  store %struct.regexPattern* %call13, %struct.regexPattern** %rptr, align 8
-  %24 = load i8*, i8** %regex.addr, align 8
-  %call14 = call i8* @escapeRegexPattern(i8* %24)
-  %25 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
-  %pattern_string = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %25, i32 0, i32 12
-  store i8* %call14, i8** %pattern_string, align 8
-  %26 = load i8*, i8** %kindName, align 8
-  %tobool15 = icmp ne i8* %26, null
-  br i1 %tobool15, label %if.then16, label %if.end17
+  %owner12 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %14, i32 0, i32 4
+  %15 = load i32, i32* %owner12, align 8
+  %call13 = call i8* @getLanguageName(i32 %15)
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %11, i8* getelementptr inbounds ([88 x i8], [88 x i8]* @.str.21, i64 0, i64 0), i32 %conv11, i8* %13, i8* %call13)
+  %16 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call15 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %16)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.then16:                                        ; preds = %if.end12
-  %27 = load i8*, i8** %kindName, align 8
-  call void @eFree(i8* %27)
-  br label %if.end17
+if.end16:                                         ; preds = %if.then3
+  %17 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %18 = load i32, i32* %table_index.addr, align 4
+  %19 = load i32, i32* %regptype.addr, align 4
+  %20 = load %struct.regex_t*, %struct.regex_t** %cp, align 8
+  %21 = load i8*, i8** %name.addr, align 8
+  %22 = load i8, i8* %kind, align 1
+  %23 = load i8*, i8** %kindName, align 8
+  %24 = load i8*, i8** %description, align 8
+  %25 = load i8*, i8** %flags.addr, align 8
+  %26 = load i8*, i8** %disabled.addr, align 8
+  %call17 = call %struct.regexPattern* @addCompiledTagPattern(%struct.lregexControlBlock* %17, i32 %18, i32 %19, %struct.regex_t* %20, i8* %21, i8 signext %22, i8* %23, i8* %24, i8* %25, i8* %26)
+  store %struct.regexPattern* %call17, %struct.regexPattern** %rptr, align 8
+  %27 = load i8*, i8** %regex.addr, align 8
+  %call18 = call i8* @escapeRegexPattern(i8* %27)
+  %28 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
+  %pattern_string = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %28, i32 0, i32 12
+  store i8* %call18, i8** %pattern_string, align 8
+  %29 = load i8*, i8** %kindName, align 8
+  %tobool19 = icmp ne i8* %29, null
+  br i1 %tobool19, label %if.then20, label %if.end21
 
-if.end17:                                         ; preds = %if.then16, %if.end12
-  %28 = load i8*, i8** %description, align 8
-  %tobool18 = icmp ne i8* %28, null
-  br i1 %tobool18, label %if.then19, label %if.end20
+if.then20:                                        ; preds = %if.end16
+  %30 = load i8*, i8** %kindName, align 8
+  call void @eFree(i8* %30)
+  br label %if.end21
 
-if.then19:                                        ; preds = %if.end17
-  %29 = load i8*, i8** %description, align 8
-  call void @eFree(i8* %29)
-  br label %if.end20
+if.end21:                                         ; preds = %if.then20, %if.end16
+  %31 = load i8*, i8** %description, align 8
+  %tobool22 = icmp ne i8* %31, null
+  br i1 %tobool22, label %if.then23, label %if.end24
 
-if.end20:                                         ; preds = %if.then19, %if.end17
-  %30 = load i8*, i8** %name.addr, align 8
-  %31 = load i8, i8* %30, align 1
-  %conv21 = sext i8 %31 to i32
-  %cmp22 = icmp eq i32 %conv21, 0
-  br i1 %cmp22, label %if.then24, label %if.end33
+if.then23:                                        ; preds = %if.end21
+  %32 = load i8*, i8** %description, align 8
+  call void @eFree(i8* %32)
+  br label %if.end24
 
-if.then24:                                        ; preds = %if.end20
-  %32 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
-  %exclusive = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %32, i32 0, i32 2
-  %33 = load i8, i8* %exclusive, align 4
-  %tobool25 = trunc i8 %33 to i1
-  br i1 %tobool25, label %if.then31, label %lor.lhs.false
+if.end24:                                         ; preds = %if.then23, %if.end21
+  %33 = load i8*, i8** %name.addr, align 8
+  %34 = load i8, i8* %33, align 1
+  %conv25 = sext i8 %34 to i32
+  %cmp26 = icmp eq i32 %conv25, 0
+  br i1 %cmp26, label %if.then28, label %if.end44
 
-lor.lhs.false:                                    ; preds = %if.then24
-  %34 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
-  %scopeActions = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %34, i32 0, i32 5
-  %35 = load i32, i32* %scopeActions, align 8
-  %and = and i32 %35, 16
-  %tobool27 = icmp ne i32 %and, 0
-  br i1 %tobool27, label %if.then31, label %lor.lhs.false28
+if.then28:                                        ; preds = %if.end24
+  %35 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
+  %exclusive = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %35, i32 0, i32 2
+  %36 = load i8, i8* %exclusive, align 4
+  %tobool29 = trunc i8 %36 to i1
+  br i1 %tobool29, label %if.then35, label %lor.lhs.false
 
-lor.lhs.false28:                                  ; preds = %lor.lhs.false
-  %36 = load i32, i32* %regptype.addr, align 4
-  %cmp29 = icmp eq i32 %36, 2
-  br i1 %cmp29, label %if.then31, label %if.else
-
-if.then31:                                        ; preds = %lor.lhs.false28, %lor.lhs.false, %if.then24
+lor.lhs.false:                                    ; preds = %if.then28
   %37 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
-  %accept_empty_name = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %37, i32 0, i32 3
+  %scopeActions = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %37, i32 0, i32 5
+  %38 = load i32, i32* %scopeActions, align 8
+  %and = and i32 %38, 16
+  %tobool31 = icmp ne i32 %and, 0
+  br i1 %tobool31, label %if.then35, label %lor.lhs.false32
+
+lor.lhs.false32:                                  ; preds = %lor.lhs.false
+  %39 = load i32, i32* %regptype.addr, align 4
+  %cmp33 = icmp eq i32 %39, 2
+  br i1 %cmp33, label %if.then35, label %if.else
+
+if.then35:                                        ; preds = %lor.lhs.false32, %lor.lhs.false, %if.then28
+  %40 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
+  %accept_empty_name = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %40, i32 0, i32 3
   store i8 1, i8* %accept_empty_name, align 1
-  br label %if.end32
+  br label %if.end43
 
-if.else:                                          ; preds = %lor.lhs.false28
-  %38 = load i8*, i8** %regex.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.17, i64 0, i64 0), i8* %38)
-  br label %if.end32
+if.else:                                          ; preds = %lor.lhs.false32
+  %41 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call36 = call i8* @getExecutableName()
+  %call37 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %41, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call36, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %42 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %43 = load i8*, i8** %regex.addr, align 8
+  %call38 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %42, i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.22, i64 0, i64 0), i8* %43)
+  %44 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call39 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %44)
+  %45 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool40 = trunc i8 %45 to i1
+  br i1 %tobool40, label %if.then41, label %if.end42
 
-if.end32:                                         ; preds = %if.else, %if.then31
-  br label %if.end33
+if.then41:                                        ; preds = %if.else
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end33:                                         ; preds = %if.end32, %if.end20
-  br label %if.end34
+if.end42:                                         ; preds = %if.else
+  br label %if.end43
 
-if.end34:                                         ; preds = %if.end33, %if.end
-  %39 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
-  store %struct.regexPattern* %39, %struct.regexPattern** %retval, align 8
+if.end43:                                         ; preds = %if.end42, %if.then35
+  br label %if.end44
+
+if.end44:                                         ; preds = %if.end43, %if.end24
+  br label %if.end45
+
+if.end45:                                         ; preds = %if.end44, %if.end
+  %46 = load %struct.regexPattern*, %struct.regexPattern** %rptr, align 8
+  store %struct.regexPattern* %46, %struct.regexPattern** %retval, align 8
   br label %return
 
-return:                                           ; preds = %if.end34, %if.then
-  %40 = load %struct.regexPattern*, %struct.regexPattern** %retval, align 8
-  ret %struct.regexPattern* %40
+return:                                           ; preds = %if.end45, %if.then
+  %47 = load %struct.regexPattern*, %struct.regexPattern** %retval, align 8
+  ret %struct.regexPattern* %47
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -1119,19 +1147,27 @@ entry:
   br i1 %cmp, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %3 = load i8*, i8** %table_name.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str, i64 0, i64 0), i8* %3)
-  br label %if.end
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call1 = call i8* @getExecutableName()
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call1, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %5 = load i8*, i8** %table_name.addr, align 8
+  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %4, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.2, i64 0, i64 0), i8* %5)
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call4 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %6)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end:                                           ; preds = %if.then, %entry
-  %4 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %5 = load i32, i32* %table_index, align 4
-  %6 = load i8*, i8** %regex.addr, align 8
-  %7 = load i8*, i8** %name.addr, align 8
-  %8 = load i8*, i8** %kinds.addr, align 8
-  %9 = load i8*, i8** %flags.addr, align 8
-  %10 = load i8*, i8** %disabled.addr, align 8
-  %call1 = call %struct.regexPattern* @addTagRegexInternal(%struct.lregexControlBlock* %4, i32 %5, i32 2, i8* %6, i8* %7, i8* %8, i8* %9, i8* %10)
+if.end:                                           ; preds = %entry
+  %7 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %8 = load i32, i32* %table_index, align 4
+  %9 = load i8*, i8** %regex.addr, align 8
+  %10 = load i8*, i8** %name.addr, align 8
+  %11 = load i8*, i8** %kinds.addr, align 8
+  %12 = load i8*, i8** %flags.addr, align 8
+  %13 = load i8*, i8** %disabled.addr, align 8
+  %call5 = call %struct.regexPattern* @addTagRegexInternal(%struct.lregexControlBlock* %7, i32 %8, i32 2, i8* %9, i8* %10, i8* %11, i8* %12, i8* %13)
   ret void
 }
 
@@ -1196,7 +1232,16 @@ return:                                           ; preds = %for.end, %if.then
   ret i32 %12
 }
 
-declare void @error(i32, i8*, ...) #1
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+
+declare i8* @getExecutableName() #1
+
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
+
+declare void @ctags_cleanup(...) #1
+
+; Function Attrs: noreturn
+declare void @exit(i32) #2
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @addCallbackRegex(%struct.lregexControlBlock* %lcb, i8* %regex, i8* %flags, i1 (i8*, %struct.regexMatch*, i32, i8*)* %callback, i8* %disabled, i8* %userData) #0 {
@@ -1295,27 +1340,43 @@ if.end:                                           ; preds = %if.then, %entry
   store i32 %call1, i32* %errcode, align 4
   %8 = load i32, i32* %errcode, align 4
   %cmp2 = icmp ne i32 %8, 0
-  br i1 %cmp2, label %if.then3, label %if.end6
+  br i1 %cmp2, label %if.then3, label %if.end12
 
 if.then3:                                         ; preds = %if.end
   %9 = load i32, i32* %errcode, align 4
   %10 = load %struct.regex_t*, %struct.regex_t** %result, align 8
   %arraydecay = getelementptr inbounds [256 x i8], [256 x i8]* %errmsg, i64 0, i64 0
-  %call4 = call i64 @regerror(i32 %9, %struct.regex_t* %10, i8* %arraydecay, i64 256) #5
-  %11 = load i8*, i8** %regexp.addr, align 8
-  %arraydecay5 = getelementptr inbounds [256 x i8], [256 x i8]* %errmsg, i64 0, i64 0
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.20, i64 0, i64 0), i8* %11, i8* %arraydecay5)
-  %12 = load %struct.regex_t*, %struct.regex_t** %result, align 8
-  call void @regfree(%struct.regex_t* %12)
-  %13 = load %struct.regex_t*, %struct.regex_t** %result, align 8
-  %14 = bitcast %struct.regex_t* %13 to i8*
-  call void @eFree(i8* %14)
-  store %struct.regex_t* null, %struct.regex_t** %result, align 8
-  br label %if.end6
-
-if.end6:                                          ; preds = %if.then3, %if.end
+  %call4 = call i64 @regerror(i32 %9, %struct.regex_t* %10, i8* %arraydecay, i64 256) #7
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call5 = call i8* @getExecutableName()
+  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %11, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call5, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %12 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %13 = load i8*, i8** %regexp.addr, align 8
+  %arraydecay7 = getelementptr inbounds [256 x i8], [256 x i8]* %errmsg, i64 0, i64 0
+  %call8 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %12, i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.25, i64 0, i64 0), i8* %13, i8* %arraydecay7)
+  %14 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call9 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %14)
   %15 = load %struct.regex_t*, %struct.regex_t** %result, align 8
-  ret %struct.regex_t* %15
+  call void @regfree(%struct.regex_t* %15)
+  %16 = load %struct.regex_t*, %struct.regex_t** %result, align 8
+  %17 = bitcast %struct.regex_t* %16 to i8*
+  call void @eFree(i8* %17)
+  %18 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool = trunc i8 %18 to i1
+  br i1 %tobool, label %if.then10, label %if.end11
+
+if.then10:                                        ; preds = %if.then3
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end11:                                         ; preds = %if.then3
+  store %struct.regex_t* null, %struct.regex_t** %result, align 8
+  br label %if.end12
+
+if.end12:                                         ; preds = %if.end11, %if.end
+  %19 = load %struct.regex_t*, %struct.regex_t** %result, align 8
+  ret %struct.regex_t* %19
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -1400,7 +1461,7 @@ while.body:                                       ; preds = %while.cond
 
 if.then:                                          ; preds = %while.body
   %5 = load %struct.sVString*, %struct.sVString** %p, align 8
-  call void @vStringCatS(%struct.sVString* %5, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.21, i64 0, i64 0))
+  call void @vStringCatS(%struct.sVString* %5, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.26, i64 0, i64 0))
   br label %if.end17
 
 if.else:                                          ; preds = %while.body
@@ -1411,7 +1472,7 @@ if.else:                                          ; preds = %while.body
 
 if.then8:                                         ; preds = %if.else
   %7 = load %struct.sVString*, %struct.sVString** %p, align 8
-  call void @vStringCatS(%struct.sVString* %7, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.22, i64 0, i64 0))
+  call void @vStringCatS(%struct.sVString* %7, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.27, i64 0, i64 0))
   br label %if.end16
 
 if.else9:                                         ; preds = %if.else
@@ -1422,7 +1483,7 @@ if.else9:                                         ; preds = %if.else
 
 if.then13:                                        ; preds = %if.else9
   %9 = load %struct.sVString*, %struct.sVString** %p, align 8
-  call void @vStringCatS(%struct.sVString* %9, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.23, i64 0, i64 0))
+  call void @vStringCatS(%struct.sVString* %9, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.28, i64 0, i64 0))
   br label %if.end
 
 if.else14:                                        ; preds = %if.else9
@@ -1477,7 +1538,7 @@ lor.lhs.false:                                    ; preds = %entry
 if.then:                                          ; preds = %lor.lhs.false, %entry
   %3 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
   call void @clearPatternSet(%struct.lregexControlBlock* %3)
-  br label %if.end31
+  br label %if.end52
 
 if.else:                                          ; preds = %lor.lhs.false
   %4 = load i8*, i8** %parameter.addr, align 8
@@ -1492,94 +1553,139 @@ if.then7:                                         ; preds = %if.else
   %7 = load i32, i32* %regptype.addr, align 4
   %8 = load i8*, i8** %parameter.addr, align 8
   call void @addTagRegexOption(%struct.lregexControlBlock* %6, i32 %7, i8* %8)
-  br label %if.end30
+  br label %if.end51
 
 if.else8:                                         ; preds = %if.else
   %9 = load i8*, i8** %parameter.addr, align 8
   %add.ptr = getelementptr inbounds i8, i8* %9, i64 1
   %call = call zeroext i1 @doesFileExist(i8* %add.ptr)
-  br i1 %call, label %if.else10, label %if.then9
+  br i1 %call, label %if.else15, label %if.then9
 
 if.then9:                                         ; preds = %if.else8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.1, i64 0, i64 0))
-  br label %if.end29
+  %10 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call10 = call i8* @getExecutableName()
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call10, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call12 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %11, i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.5, i64 0, i64 0))
+  %12 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call13 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %12)
+  %13 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool = trunc i8 %13 to i1
+  br i1 %tobool, label %if.then14, label %if.end
 
-if.else10:                                        ; preds = %if.else8
-  %10 = load i8*, i8** %parameter.addr, align 8
-  %add.ptr11 = getelementptr inbounds i8, i8* %10, i64 1
-  store i8* %add.ptr11, i8** %regexfile, align 8
-  %11 = load i8*, i8** %regexfile, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.2, i64 0, i64 0), i8* %11)
-  %12 = load i8*, i8** %regexfile, align 8
-  %call12 = call %struct._MIO* @mio_new_file(i8* %12, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0))
-  store %struct._MIO* %call12, %struct._MIO** %mio, align 8
-  %13 = load %struct._MIO*, %struct._MIO** %mio, align 8
-  %cmp13 = icmp eq %struct._MIO* %13, null
-  br i1 %cmp13, label %if.then15, label %if.else16
+if.then14:                                        ; preds = %if.then9
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.then15:                                        ; preds = %if.else10
-  %14 = load i8*, i8** %regexfile, align 8
-  call void (i32, i8*, ...) @error(i32 6, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.4, i64 0, i64 0), i8* %14)
-  br label %if.end28
+if.end:                                           ; preds = %if.then9
+  br label %if.end50
 
-if.else16:                                        ; preds = %if.else10
-  %call17 = call %struct.sVString* @vStringNew()
-  store %struct.sVString* %call17, %struct.sVString** %regex, align 8
+if.else15:                                        ; preds = %if.else8
+  %14 = load i8*, i8** %parameter.addr, align 8
+  %add.ptr16 = getelementptr inbounds i8, i8* %14, i64 1
+  store i8* %add.ptr16, i8** %regexfile, align 8
+  %15 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool17 = trunc i8 %15 to i1
+  br i1 %tobool17, label %if.then18, label %if.end20
+
+if.then18:                                        ; preds = %if.else15
+  %16 = load i8*, i8** %regexfile, align 8
+  %call19 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.6, i64 0, i64 0), i8* %16)
+  br label %if.end20
+
+if.end20:                                         ; preds = %if.then18, %if.else15
+  %17 = load i8*, i8** %regexfile, align 8
+  %call21 = call %struct._MIO* @mio_new_file(i8* %17, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.7, i64 0, i64 0))
+  store %struct._MIO* %call21, %struct._MIO** %mio, align 8
+  %18 = load %struct._MIO*, %struct._MIO** %mio, align 8
+  %cmp22 = icmp eq %struct._MIO* %18, null
+  br i1 %cmp22, label %if.then24, label %if.else35
+
+if.then24:                                        ; preds = %if.end20
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call25 = call i8* @getExecutableName()
+  %call26 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %19, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call25, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %20 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %21 = load i8*, i8** %regexfile, align 8
+  %call27 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %20, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.8, i64 0, i64 0), i8* %21)
+  %22 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call28 = call i32* @__error()
+  %23 = load i32, i32* %call28, align 4
+  %call29 = call i8* @"\01_strerror"(i32 %23)
+  %call30 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %22, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.9, i64 0, i64 0), i8* %call29)
+  %24 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call31 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %24)
+  %25 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool32 = trunc i8 %25 to i1
+  br i1 %tobool32, label %if.then33, label %if.end34
+
+if.then33:                                        ; preds = %if.then24
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end34:                                         ; preds = %if.then24
+  br label %if.end49
+
+if.else35:                                        ; preds = %if.end20
+  %call36 = call %struct.sVString* @vStringNew()
+  store %struct.sVString* %call36, %struct.sVString** %regex, align 8
   br label %while.cond
 
-while.cond:                                       ; preds = %if.end, %if.else16
-  %15 = load %struct.sVString*, %struct.sVString** %regex, align 8
-  %16 = load %struct._MIO*, %struct._MIO** %mio, align 8
-  %call18 = call i8* @readLineRaw(%struct.sVString* %15, %struct._MIO* %16)
-  %tobool = icmp ne i8* %call18, null
-  br i1 %tobool, label %while.body, label %while.end
+while.cond:                                       ; preds = %if.end47, %if.else35
+  %26 = load %struct.sVString*, %struct.sVString** %regex, align 8
+  %27 = load %struct._MIO*, %struct._MIO** %mio, align 8
+  %call37 = call i8* @readLineRaw(%struct.sVString* %26, %struct._MIO* %27)
+  %tobool38 = icmp ne i8* %call37, null
+  br i1 %tobool38, label %while.body, label %while.end
 
 while.body:                                       ; preds = %while.cond
-  %17 = load %struct.sVString*, %struct.sVString** %regex, align 8
-  %length = getelementptr inbounds %struct.sVString, %struct.sVString* %17, i32 0, i32 0
-  %18 = load i64, i64* %length, align 8
-  %cmp19 = icmp ugt i64 %18, 1
-  br i1 %cmp19, label %land.lhs.true, label %if.end
+  %28 = load %struct.sVString*, %struct.sVString** %regex, align 8
+  %length = getelementptr inbounds %struct.sVString, %struct.sVString* %28, i32 0, i32 0
+  %29 = load i64, i64* %length, align 8
+  %cmp39 = icmp ugt i64 %29, 1
+  br i1 %cmp39, label %land.lhs.true, label %if.end47
 
 land.lhs.true:                                    ; preds = %while.body
-  %19 = load %struct.sVString*, %struct.sVString** %regex, align 8
-  %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %19, i32 0, i32 2
-  %20 = load i8*, i8** %buffer, align 8
-  %arrayidx21 = getelementptr inbounds i8, i8* %20, i64 0
-  %21 = load i8, i8* %arrayidx21, align 1
-  %conv22 = sext i8 %21 to i32
-  %cmp23 = icmp ne i32 %conv22, 10
-  br i1 %cmp23, label %if.then25, label %if.end
+  %30 = load %struct.sVString*, %struct.sVString** %regex, align 8
+  %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %30, i32 0, i32 2
+  %31 = load i8*, i8** %buffer, align 8
+  %arrayidx41 = getelementptr inbounds i8, i8* %31, i64 0
+  %32 = load i8, i8* %arrayidx41, align 1
+  %conv42 = sext i8 %32 to i32
+  %cmp43 = icmp ne i32 %conv42, 10
+  br i1 %cmp43, label %if.then45, label %if.end47
 
-if.then25:                                        ; preds = %land.lhs.true
-  %22 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %23 = load i32, i32* %regptype.addr, align 4
-  %24 = load %struct.sVString*, %struct.sVString** %regex, align 8
-  %buffer26 = getelementptr inbounds %struct.sVString, %struct.sVString* %24, i32 0, i32 2
-  %25 = load i8*, i8** %buffer26, align 8
-  call void @addTagRegexOption(%struct.lregexControlBlock* %22, i32 %23, i8* %25)
-  br label %if.end
+if.then45:                                        ; preds = %land.lhs.true
+  %33 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %34 = load i32, i32* %regptype.addr, align 4
+  %35 = load %struct.sVString*, %struct.sVString** %regex, align 8
+  %buffer46 = getelementptr inbounds %struct.sVString, %struct.sVString* %35, i32 0, i32 2
+  %36 = load i8*, i8** %buffer46, align 8
+  call void @addTagRegexOption(%struct.lregexControlBlock* %33, i32 %34, i8* %36)
+  br label %if.end47
 
-if.end:                                           ; preds = %if.then25, %land.lhs.true, %while.body
+if.end47:                                         ; preds = %if.then45, %land.lhs.true, %while.body
   br label %while.cond
 
 while.end:                                        ; preds = %while.cond
-  %26 = load %struct._MIO*, %struct._MIO** %mio, align 8
-  %call27 = call i32 @mio_free(%struct._MIO* %26)
-  %27 = load %struct.sVString*, %struct.sVString** %regex, align 8
-  call void @vStringDelete(%struct.sVString* %27)
-  br label %if.end28
+  %37 = load %struct._MIO*, %struct._MIO** %mio, align 8
+  %call48 = call i32 @mio_free(%struct._MIO* %37)
+  %38 = load %struct.sVString*, %struct.sVString** %regex, align 8
+  call void @vStringDelete(%struct.sVString* %38)
+  br label %if.end49
 
-if.end28:                                         ; preds = %while.end, %if.then15
-  br label %if.end29
+if.end49:                                         ; preds = %while.end, %if.end34
+  br label %if.end50
 
-if.end29:                                         ; preds = %if.end28, %if.then9
-  br label %if.end30
+if.end50:                                         ; preds = %if.end49, %if.end
+  br label %if.end51
 
-if.end30:                                         ; preds = %if.end29, %if.then7
-  br label %if.end31
+if.end51:                                         ; preds = %if.end50, %if.then7
+  br label %if.end52
 
-if.end31:                                         ; preds = %if.end30, %if.then
+if.end52:                                         ; preds = %if.end51, %if.then
   ret void
 }
 
@@ -1612,7 +1718,7 @@ if.end:                                           ; preds = %entry
   store i8* null, i8** %regex_pat, align 8
   %1 = load i32, i32* %regptype.addr, align 4
   %cmp = icmp eq i32 %1, 2
-  br i1 %cmp, label %if.then1, label %if.else35
+  br i1 %cmp, label %if.then1, label %if.else43
 
 if.then1:                                         ; preds = %if.end
   %2 = load i8*, i8** %pattern.addr, align 8
@@ -1629,7 +1735,7 @@ for.body:                                         ; preds = %for.cond
   %5 = load i8*, i8** %c, align 8
   %6 = load i8, i8* %5, align 1
   %conv = sext i8 %6 to i32
-  %call = call i32 @isalnum(i32 %conv) #6
+  %call = call i32 @isalnum(i32 %conv) #8
   %tobool3 = icmp ne i32 %call, 0
   br i1 %tobool3, label %if.end20, label %lor.lhs.false
 
@@ -1702,78 +1808,98 @@ lor.lhs.false23:                                  ; preds = %for.end
   %24 = load i8, i8* %23, align 1
   %conv24 = sext i8 %24 to i32
   %cmp25 = icmp eq i32 %conv24, 0
-  br i1 %cmp25, label %if.then27, label %if.end28
+  br i1 %cmp25, label %if.then27, label %if.end32
 
 if.then27:                                        ; preds = %lor.lhs.false23, %for.end
-  %25 = load i8*, i8** %pattern.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.24, i64 0, i64 0), i8* %25)
-  br label %if.end28
+  %25 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call28 = call i8* @getExecutableName()
+  %call29 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %25, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call28, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %26 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %27 = load i8*, i8** %pattern.addr, align 8
+  %call30 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %26, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.29, i64 0, i64 0), i8* %27)
+  %28 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call31 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %28)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end28:                                         ; preds = %if.then27, %lor.lhs.false23
-  %26 = load i8*, i8** %pattern.addr, align 8
-  %27 = load i8*, i8** %c, align 8
-  %28 = load i8*, i8** %pattern.addr, align 8
-  %sub.ptr.lhs.cast = ptrtoint i8* %27 to i64
-  %sub.ptr.rhs.cast = ptrtoint i8* %28 to i64
+if.end32:                                         ; preds = %lor.lhs.false23
+  %29 = load i8*, i8** %pattern.addr, align 8
+  %30 = load i8*, i8** %c, align 8
+  %31 = load i8*, i8** %pattern.addr, align 8
+  %sub.ptr.lhs.cast = ptrtoint i8* %30 to i64
+  %sub.ptr.rhs.cast = ptrtoint i8* %31 to i64
   %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
-  %call29 = call i8* @eStrndup(i8* %26, i64 %sub.ptr.sub)
-  store i8* %call29, i8** %table_name, align 8
-  %29 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %30 = load i8*, i8** %table_name, align 8
-  %call30 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %29, i8* %30)
-  store i32 %call30, i32* %table_index, align 4
-  %31 = load i32, i32* %table_index, align 4
-  %cmp31 = icmp slt i32 %31, 0
-  br i1 %cmp31, label %if.then33, label %if.end34
+  %call33 = call i8* @eStrndup(i8* %29, i64 %sub.ptr.sub)
+  store i8* %call33, i8** %table_name, align 8
+  %32 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %33 = load i8*, i8** %table_name, align 8
+  %call34 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %32, i8* %33)
+  store i32 %call34, i32* %table_index, align 4
+  %34 = load i32, i32* %table_index, align 4
+  %cmp35 = icmp slt i32 %34, 0
+  br i1 %cmp35, label %if.then37, label %if.end42
 
-if.then33:                                        ; preds = %if.end28
-  %32 = load i8*, i8** %table_name, align 8
-  %33 = load i8*, i8** %pattern.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.25, i64 0, i64 0), i8* %32, i8* %33)
-  br label %if.end34
+if.then37:                                        ; preds = %if.end32
+  %35 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call38 = call i8* @getExecutableName()
+  %call39 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %35, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call38, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %36 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %37 = load i8*, i8** %table_name, align 8
+  %38 = load i8*, i8** %pattern.addr, align 8
+  %call40 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %36, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.30, i64 0, i64 0), i8* %37, i8* %38)
+  %39 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call41 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %39)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end34:                                         ; preds = %if.then33, %if.end28
-  %34 = load i8*, i8** %table_name, align 8
-  call void @eFree(i8* %34)
-  br label %if.end37
+if.end42:                                         ; preds = %if.end32
+  %40 = load i8*, i8** %table_name, align 8
+  call void @eFree(i8* %40)
+  br label %if.end45
 
-if.else35:                                        ; preds = %if.end
-  %35 = load i8*, i8** %pattern.addr, align 8
-  %call36 = call i8* @eStrdup(i8* %35)
-  store i8* %call36, i8** %regex_pat, align 8
-  br label %if.end37
+if.else43:                                        ; preds = %if.end
+  %41 = load i8*, i8** %pattern.addr, align 8
+  %call44 = call i8* @eStrdup(i8* %41)
+  store i8* %call44, i8** %regex_pat, align 8
+  br label %if.end45
 
-if.end37:                                         ; preds = %if.else35, %if.end34
-  %36 = load i32, i32* %regptype.addr, align 4
-  %37 = load i8*, i8** %regex_pat, align 8
-  %call38 = call zeroext i1 @parseTagRegex(i32 %36, i8* %37, i8** %name, i8** %kinds, i8** %flags)
-  br i1 %call38, label %if.then39, label %if.end41
+if.end45:                                         ; preds = %if.else43, %if.end42
+  %42 = load i32, i32* %regptype.addr, align 4
+  %43 = load i8*, i8** %regex_pat, align 8
+  %call46 = call zeroext i1 @parseTagRegex(i32 %42, i8* %43, i8** %name, i8** %kinds, i8** %flags)
+  br i1 %call46, label %if.then47, label %if.end49
 
-if.then39:                                        ; preds = %if.end37
-  %38 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %39 = load i32, i32* %table_index, align 4
-  %40 = load i32, i32* %regptype.addr, align 4
-  %41 = load i8*, i8** %regex_pat, align 8
-  %42 = load i8*, i8** %name, align 8
-  %43 = load i8*, i8** %kinds, align 8
-  %44 = load i8*, i8** %flags, align 8
-  %call40 = call %struct.regexPattern* @addTagRegexInternal(%struct.lregexControlBlock* %38, i32 %39, i32 %40, i8* %41, i8* %42, i8* %43, i8* %44, i8* null)
-  br label %if.end41
+if.then47:                                        ; preds = %if.end45
+  %44 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %45 = load i32, i32* %table_index, align 4
+  %46 = load i32, i32* %regptype.addr, align 4
+  %47 = load i8*, i8** %regex_pat, align 8
+  %48 = load i8*, i8** %name, align 8
+  %49 = load i8*, i8** %kinds, align 8
+  %50 = load i8*, i8** %flags, align 8
+  %call48 = call %struct.regexPattern* @addTagRegexInternal(%struct.lregexControlBlock* %44, i32 %45, i32 %46, i8* %47, i8* %48, i8* %49, i8* %50, i8* null)
+  br label %if.end49
 
-if.end41:                                         ; preds = %if.then39, %if.end37
-  %45 = load i8*, i8** %regex_pat, align 8
-  call void @eFree(i8* %45)
+if.end49:                                         ; preds = %if.then47, %if.end45
+  %51 = load i8*, i8** %regex_pat, align 8
+  call void @eFree(i8* %51)
   br label %return
 
-return:                                           ; preds = %if.end41, %if.then
+return:                                           ; preds = %if.end49, %if.then
   ret void
 }
 
 declare zeroext i1 @doesFileExist(i8*) #1
 
-declare void @verbose(i8*, ...) #1
+declare i32 @printf(i8*, ...) #1
 
 declare %struct._MIO* @mio_new_file(i8*, i8*) #1
+
+declare i8* @"\01_strerror"(i32) #1
+
+declare i32* @__error() #1
 
 declare %struct.sVString* @vStringNew() #1
 
@@ -2243,7 +2369,7 @@ for.body:                                         ; preds = %for.cond
   %3 = load i8*, i8** %c, align 8
   %4 = load i8, i8* %3, align 1
   %conv = sext i8 %4 to i32
-  %call = call i32 @isalnum(i32 %conv) #6
+  %call = call i32 @isalnum(i32 %conv) #8
   %tobool1 = icmp ne i32 %call, 0
   br i1 %tobool1, label %if.end, label %lor.lhs.false
 
@@ -2255,61 +2381,85 @@ lor.lhs.false:                                    ; preds = %for.body
   br i1 %cmp, label %if.end, label %if.then
 
 if.then:                                          ; preds = %lor.lhs.false
-  %7 = load i8*, i8** %c, align 8
-  %8 = load i8, i8* %7, align 1
-  %conv4 = sext i8 %8 to i32
-  %9 = load i8*, i8** %name.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str.5, i64 0, i64 0), i32 %conv4, i8* %9)
-  br label %if.end
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call4 = call i8* @getExecutableName()
+  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %7, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call4, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %8 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %9 = load i8*, i8** %c, align 8
+  %10 = load i8, i8* %9, align 1
+  %conv6 = sext i8 %10 to i32
+  %11 = load i8*, i8** %name.addr, align 8
+  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %8, i8* getelementptr inbounds ([53 x i8], [53 x i8]* @.str.10, i64 0, i64 0), i32 %conv6, i8* %11)
+  %12 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call8 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %12)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end:                                           ; preds = %if.then, %lor.lhs.false, %for.body
+if.end:                                           ; preds = %lor.lhs.false, %for.body
   br label %for.inc
 
 for.inc:                                          ; preds = %if.end
-  %10 = load i8*, i8** %c, align 8
-  %incdec.ptr = getelementptr inbounds i8, i8* %10, i32 1
+  %13 = load i8*, i8** %c, align 8
+  %incdec.ptr = getelementptr inbounds i8, i8* %13, i32 1
   store i8* %incdec.ptr, i8** %c, align 8
   br label %for.cond
 
 for.end:                                          ; preds = %for.cond
-  %11 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %12 = load i8*, i8** %name.addr, align 8
-  %call5 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %11, i8* %12)
-  %cmp6 = icmp sge i32 %call5, 0
-  br i1 %cmp6, label %if.then8, label %if.end9
-
-if.then8:                                         ; preds = %for.end
-  %13 = load i8*, i8** %name.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.6, i64 0, i64 0), i8* %13)
-  br label %return
-
-if.end9:                                          ; preds = %for.end
-  %call10 = call i8* @eCalloc(i64 1, i64 16)
-  %14 = bitcast i8* %call10 to %struct.regexTable*
-  store %struct.regexTable* %14, %struct.regexTable** %table, align 8
+  %14 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
   %15 = load i8*, i8** %name.addr, align 8
-  %call11 = call i8* @eStrdup(i8* %15)
-  %16 = load %struct.regexTable*, %struct.regexTable** %table, align 8
-  %name12 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %16, i32 0, i32 0
-  store i8* %call11, i8** %name12, align 8
-  %call13 = call %struct.sPtrArray* @ptrArrayNew(void (i8*)* @deletePattern)
-  %17 = load %struct.regexTable*, %struct.regexTable** %table, align 8
-  %patterns = getelementptr inbounds %struct.regexTable, %struct.regexTable* %17, i32 0, i32 1
-  store %struct.sPtrArray* %call13, %struct.sPtrArray** %patterns, align 8
-  %18 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tables = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %18, i32 0, i32 2
-  %19 = load %struct.sPtrArray*, %struct.sPtrArray** %tables, align 8
-  %20 = load %struct.regexTable*, %struct.regexTable** %table, align 8
-  %21 = bitcast %struct.regexTable* %20 to i8*
-  call void @ptrArrayAdd(%struct.sPtrArray* %19, i8* %21)
+  %call9 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %14, i8* %15)
+  %cmp10 = icmp sge i32 %call9, 0
+  br i1 %cmp10, label %if.then12, label %if.end20
+
+if.then12:                                        ; preds = %for.end
+  %16 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call13 = call i8* @getExecutableName()
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %16, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call13, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %17 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %18 = load i8*, i8** %name.addr, align 8
+  %call15 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %17, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.11, i64 0, i64 0), i8* %18)
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call16 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %19)
+  %20 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool17 = trunc i8 %20 to i1
+  br i1 %tobool17, label %if.then18, label %if.end19
+
+if.then18:                                        ; preds = %if.then12
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end19:                                         ; preds = %if.then12
   br label %return
 
-return:                                           ; preds = %if.end9, %if.then8
+if.end20:                                         ; preds = %for.end
+  %call21 = call i8* @eCalloc(i64 1, i64 16)
+  %21 = bitcast i8* %call21 to %struct.regexTable*
+  store %struct.regexTable* %21, %struct.regexTable** %table, align 8
+  %22 = load i8*, i8** %name.addr, align 8
+  %call22 = call i8* @eStrdup(i8* %22)
+  %23 = load %struct.regexTable*, %struct.regexTable** %table, align 8
+  %name23 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %23, i32 0, i32 0
+  store i8* %call22, i8** %name23, align 8
+  %call24 = call %struct.sPtrArray* @ptrArrayNew(void (i8*)* @deletePattern)
+  %24 = load %struct.regexTable*, %struct.regexTable** %table, align 8
+  %patterns = getelementptr inbounds %struct.regexTable, %struct.regexTable* %24, i32 0, i32 1
+  store %struct.sPtrArray* %call24, %struct.sPtrArray** %patterns, align 8
+  %25 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tables = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %25, i32 0, i32 2
+  %26 = load %struct.sPtrArray*, %struct.sPtrArray** %tables, align 8
+  %27 = load %struct.regexTable*, %struct.regexTable** %table, align 8
+  %28 = bitcast %struct.regexTable* %27 to i8*
+  call void @ptrArrayAdd(%struct.sPtrArray* %26, i8* %28)
+  br label %return
+
+return:                                           ; preds = %if.end20, %if.end19
   ret void
 }
 
 ; Function Attrs: nounwind readonly
-declare i32 @isalnum(i32) #2
+declare i32 @isalnum(i32) #3
 
 declare i8* @eStrdup(i8*) #1
 
@@ -2328,91 +2478,115 @@ entry:
   store %struct.lregexControlBlock* %lcb, %struct.lregexControlBlock** %lcb.addr, align 8
   store i8* %src, i8** %src.addr, align 8
   store i8* %dist, i8** %dist.addr, align 8
-  %0 = load i8*, i8** %dist.addr, align 8
-  %1 = load i8*, i8** %src.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.7, i64 0, i64 0), i8* %0, i8* %1)
-  %2 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %3 = load i8*, i8** %src.addr, align 8
-  %call = call i32 @getTableIndexForName(%struct.lregexControlBlock* %2, i8* %3)
-  store i32 %call, i32* %i, align 4
-  %4 = load i32, i32* %i, align 4
-  %cmp = icmp slt i32 %4, 0
-  br i1 %cmp, label %if.then, label %if.end
+  %0 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool = trunc i8 %0 to i1
+  br i1 %tobool, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  %5 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %owner = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %5, i32 0, i32 4
-  %6 = load i32, i32* %owner, align 8
-  %call1 = call i8* @getLanguageName(i32 %6)
-  %7 = load i8*, i8** %src.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.8, i64 0, i64 0), i8* %call1, i8* %7)
+  %1 = load i8*, i8** %dist.addr, align 8
+  %2 = load i8*, i8** %src.addr, align 8
+  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.12, i64 0, i64 0), i8* %1, i8* %2)
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
+  %3 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %4 = load i8*, i8** %src.addr, align 8
+  %call1 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %3, i8* %4)
+  store i32 %call1, i32* %i, align 4
+  %5 = load i32, i32* %i, align 4
+  %cmp = icmp slt i32 %5, 0
+  br i1 %cmp, label %if.then2, label %if.end8
+
+if.then2:                                         ; preds = %if.end
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i8* @getExecutableName()
+  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call3, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %8 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tables = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %8, i32 0, i32 2
-  %9 = load %struct.sPtrArray*, %struct.sPtrArray** %tables, align 8
-  %10 = load i32, i32* %i, align 4
-  %call2 = call i8* @ptrArrayItem(%struct.sPtrArray* %9, i32 %10)
-  %11 = bitcast i8* %call2 to %struct.regexTable*
-  store %struct.regexTable* %11, %struct.regexTable** %src_table, align 8
+  %owner = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %8, i32 0, i32 4
+  %9 = load i32, i32* %owner, align 8
+  %call5 = call i8* @getLanguageName(i32 %9)
+  %10 = load i8*, i8** %src.addr, align 8
+  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %7, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.13, i64 0, i64 0), i8* %call5, i8* %10)
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call7 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %11)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end8:                                          ; preds = %if.end
   %12 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %13 = load i8*, i8** %dist.addr, align 8
-  %call3 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %12, i8* %13)
-  store i32 %call3, i32* %i, align 4
+  %tables = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %12, i32 0, i32 2
+  %13 = load %struct.sPtrArray*, %struct.sPtrArray** %tables, align 8
   %14 = load i32, i32* %i, align 4
-  %cmp4 = icmp slt i32 %14, 0
-  br i1 %cmp4, label %if.then5, label %if.end8
-
-if.then5:                                         ; preds = %if.end
-  %15 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %owner6 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %15, i32 0, i32 4
-  %16 = load i32, i32* %owner6, align 8
-  %call7 = call i8* @getLanguageName(i32 %16)
+  %call9 = call i8* @ptrArrayItem(%struct.sPtrArray* %13, i32 %14)
+  %15 = bitcast i8* %call9 to %struct.regexTable*
+  store %struct.regexTable* %15, %struct.regexTable** %src_table, align 8
+  %16 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
   %17 = load i8*, i8** %dist.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.8, i64 0, i64 0), i8* %call7, i8* %17)
-  br label %if.end8
+  %call10 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %16, i8* %17)
+  store i32 %call10, i32* %i, align 4
+  %18 = load i32, i32* %i, align 4
+  %cmp11 = icmp slt i32 %18, 0
+  br i1 %cmp11, label %if.then12, label %if.end19
 
-if.end8:                                          ; preds = %if.then5, %if.end
-  %18 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tables9 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %18, i32 0, i32 2
-  %19 = load %struct.sPtrArray*, %struct.sPtrArray** %tables9, align 8
-  %20 = load i32, i32* %i, align 4
-  %call10 = call i8* @ptrArrayItem(%struct.sPtrArray* %19, i32 %20)
-  %21 = bitcast i8* %call10 to %struct.regexTable*
-  store %struct.regexTable* %21, %struct.regexTable** %dist_table, align 8
+if.then12:                                        ; preds = %if.end8
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call13 = call i8* @getExecutableName()
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %19, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call13, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %20 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %21 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %owner15 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %21, i32 0, i32 4
+  %22 = load i32, i32* %owner15, align 8
+  %call16 = call i8* @getLanguageName(i32 %22)
+  %23 = load i8*, i8** %dist.addr, align 8
+  %call17 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %20, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.13, i64 0, i64 0), i8* %call16, i8* %23)
+  %24 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call18 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %24)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end19:                                         ; preds = %if.end8
+  %25 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tables20 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %25, i32 0, i32 2
+  %26 = load %struct.sPtrArray*, %struct.sPtrArray** %tables20, align 8
+  %27 = load i32, i32* %i, align 4
+  %call21 = call i8* @ptrArrayItem(%struct.sPtrArray* %26, i32 %27)
+  %28 = bitcast i8* %call21 to %struct.regexTable*
+  store %struct.regexTable* %28, %struct.regexTable** %dist_table, align 8
   store i32 0, i32* %i, align 4
   br label %for.cond
 
-for.cond:                                         ; preds = %for.inc, %if.end8
-  %22 = load i32, i32* %i, align 4
-  %23 = load %struct.regexTable*, %struct.regexTable** %src_table, align 8
-  %patterns = getelementptr inbounds %struct.regexTable, %struct.regexTable* %23, i32 0, i32 1
-  %24 = load %struct.sPtrArray*, %struct.sPtrArray** %patterns, align 8
-  %call11 = call i32 @ptrArrayCount(%struct.sPtrArray* %24)
-  %cmp12 = icmp ult i32 %22, %call11
-  br i1 %cmp12, label %for.body, label %for.end
+for.cond:                                         ; preds = %for.inc, %if.end19
+  %29 = load i32, i32* %i, align 4
+  %30 = load %struct.regexTable*, %struct.regexTable** %src_table, align 8
+  %patterns = getelementptr inbounds %struct.regexTable, %struct.regexTable* %30, i32 0, i32 1
+  %31 = load %struct.sPtrArray*, %struct.sPtrArray** %patterns, align 8
+  %call22 = call i32 @ptrArrayCount(%struct.sPtrArray* %31)
+  %cmp23 = icmp ult i32 %29, %call22
+  br i1 %cmp23, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
-  %25 = load %struct.regexTable*, %struct.regexTable** %src_table, align 8
-  %patterns13 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %25, i32 0, i32 1
-  %26 = load %struct.sPtrArray*, %struct.sPtrArray** %patterns13, align 8
-  %27 = load i32, i32* %i, align 4
-  %call14 = call i8* @ptrArrayItem(%struct.sPtrArray* %26, i32 %27)
-  %28 = bitcast i8* %call14 to %struct.regexPattern*
-  store %struct.regexPattern* %28, %struct.regexPattern** %ptrn, align 8
-  %29 = load %struct.regexTable*, %struct.regexTable** %dist_table, align 8
-  %patterns15 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %29, i32 0, i32 1
-  %30 = load %struct.sPtrArray*, %struct.sPtrArray** %patterns15, align 8
-  %31 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
-  %call16 = call %struct.regexPattern* @refPattern(%struct.regexPattern* %31)
-  %32 = bitcast %struct.regexPattern* %call16 to i8*
-  call void @ptrArrayAdd(%struct.sPtrArray* %30, i8* %32)
+  %32 = load %struct.regexTable*, %struct.regexTable** %src_table, align 8
+  %patterns24 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %32, i32 0, i32 1
+  %33 = load %struct.sPtrArray*, %struct.sPtrArray** %patterns24, align 8
+  %34 = load i32, i32* %i, align 4
+  %call25 = call i8* @ptrArrayItem(%struct.sPtrArray* %33, i32 %34)
+  %35 = bitcast i8* %call25 to %struct.regexPattern*
+  store %struct.regexPattern* %35, %struct.regexPattern** %ptrn, align 8
+  %36 = load %struct.regexTable*, %struct.regexTable** %dist_table, align 8
+  %patterns26 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %36, i32 0, i32 1
+  %37 = load %struct.sPtrArray*, %struct.sPtrArray** %patterns26, align 8
+  %38 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
+  %call27 = call %struct.regexPattern* @refPattern(%struct.regexPattern* %38)
+  %39 = bitcast %struct.regexPattern* %call27 to i8*
+  call void @ptrArrayAdd(%struct.sPtrArray* %37, i8* %39)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body
-  %33 = load i32, i32* %i, align 4
-  %inc = add nsw i32 %33, 1
+  %40 = load i32, i32* %i, align 4
+  %inc = add nsw i32 %40, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
@@ -2469,9 +2643,9 @@ if.end:                                           ; preds = %entry
   %owner = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %6, i32 0, i32 4
   %7 = load i32, i32* %owner, align 8
   %call3 = call i8* @getLanguageName(i32 %7)
-  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.9, i64 0, i64 0), i8* %call3)
+  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.14, i64 0, i64 0), i8* %call3)
   %8 = load %struct.__sFILE*, %struct.__sFILE** %vfp.addr, align 8
-  %call5 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.10, i64 0, i64 0), %struct.__sFILE* %8)
+  %call5 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([48 x i8], [48 x i8]* @.str.15, i64 0, i64 0), %struct.__sFILE* %8)
   store i32 0, i32* %i, align 4
   br label %for.cond
 
@@ -2496,9 +2670,9 @@ for.body:                                         ; preds = %for.cond
   %17 = load %struct.regexTable*, %struct.regexTable** %table, align 8
   %name = getelementptr inbounds %struct.regexTable, %struct.regexTable* %17, i32 0, i32 0
   %18 = load i8*, i8** %name, align 8
-  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %16, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.11, i64 0, i64 0), i8* %18)
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %16, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.16, i64 0, i64 0), i8* %18)
   %19 = load %struct.__sFILE*, %struct.__sFILE** %vfp.addr, align 8
-  %call12 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.12, i64 0, i64 0), %struct.__sFILE* %19)
+  %call12 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.17, i64 0, i64 0), %struct.__sFILE* %19)
   store i32 0, i32* %j, align 4
   br label %for.cond13
 
@@ -2539,7 +2713,7 @@ for.body16:                                       ; preds = %for.cond13
   %36 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
   %refcount = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %36, i32 0, i32 14
   %37 = load i32, i32* %refcount, align 8
-  %call22 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %27, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.13, i64 0, i64 0), i32 %29, i32 %add, i8* %35, i32 %37)
+  %call22 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %27, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.18, i64 0, i64 0), i32 %29, i32 %add, i8* %35, i32 %37)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body16
@@ -2562,10 +2736,6 @@ for.inc24:                                        ; preds = %for.end
 for.end26:                                        ; preds = %if.then, %for.cond
   ret void
 }
-
-declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
-
-declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
 
 declare i32 @fputc(i32, %struct.__sFILE*) #1
 
@@ -2670,7 +2840,7 @@ for.end:                                          ; preds = %land.end
   %23 = load i32, i32* %offset, align 4
   %conv12 = zext i32 %23 to i64
   %call13 = call i64 @getInputLineNumberForFileOffset(i64 %conv12)
-  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %20, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.14, i64 0, i64 0), i8* %22, i64 %call13)
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %20, i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.19, i64 0, i64 0), i8* %22, i64 %call13)
   %24 = load %struct.sVString*, %struct.sVString** %v, align 8
   call void @vStringDelete(%struct.sVString* %24)
   br label %if.end15
@@ -2777,9 +2947,9 @@ entry:
   %vfp91 = alloca %struct.__sFILE*, align 8
   %vfp108 = alloca %struct.__sFILE*, align 8
   %vfp127 = alloca %struct.__sFILE*, align 8
-  %vfp147 = alloca %struct.__sFILE*, align 8
-  %vfp159 = alloca %struct.__sFILE*, align 8
-  %vfp169 = alloca %struct.__sFILE*, align 8
+  %vfp154 = alloca %struct.__sFILE*, align 8
+  %vfp166 = alloca %struct.__sFILE*, align 8
+  %vfp176 = alloca %struct.__sFILE*, align 8
   store %struct.lregexControlBlock* %lcb, %struct.lregexControlBlock** %lcb.addr, align 8
   store %struct.regexTable* %table, %struct.regexTable** %table.addr, align 8
   store %struct.sVString* %start, %struct.sVString** %start.addr, align 8
@@ -2791,7 +2961,7 @@ entry:
   store i8* %1, i8** %cstart, align 8
   br label %restart
 
-restart:                                          ; preds = %if.end186, %entry
+restart:                                          ; preds = %if.end193, %entry
   %2 = load i8*, i8** %cstart, align 8
   %3 = load i32*, i32** %offset.addr, align 8
   %4 = load i32, i32* %3, align 4
@@ -2904,7 +3074,7 @@ if.then32:                                        ; preds = %if.end27
   %name = getelementptr inbounds %struct.regexTable, %struct.regexTable* %24, i32 0, i32 0
   %25 = load i8*, i8** %name, align 8
   %26 = load i32, i32* %i, align 4
-  %call33 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %23, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.86, i64 0, i64 0), i8* %arraydecay, i8* %25, i32 %26)
+  %call33 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %23, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.91, i64 0, i64 0), i8* %arraydecay, i8* %25, i32 %26)
   br label %if.end47
 
 if.else34:                                        ; preds = %if.end27
@@ -2920,7 +3090,7 @@ if.then39:                                        ; preds = %if.else34
   %name40 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %29, i32 0, i32 0
   %30 = load i8*, i8** %name40, align 8
   %31 = load i32, i32* %i, align 4
-  %call41 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %28, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.87, i64 0, i64 0), i8* %30, i32 %31)
+  %call41 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %28, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.92, i64 0, i64 0), i8* %30, i32 %31)
   br label %if.end46
 
 if.else42:                                        ; preds = %if.else34
@@ -2930,7 +3100,7 @@ if.else42:                                        ; preds = %if.else34
   %name44 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %33, i32 0, i32 0
   %34 = load i8*, i8** %name44, align 8
   %35 = load i32, i32* %i, align 4
-  %call45 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %32, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.88, i64 0, i64 0), i8* %arraydecay43, i8* %34, i32 %35)
+  %call45 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %32, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.93, i64 0, i64 0), i8* %arraydecay43, i8* %34, i32 %35)
   br label %if.end46
 
 if.end46:                                         ; preds = %if.else42, %if.then39
@@ -2941,7 +3111,7 @@ if.end47:                                         ; preds = %if.end46, %if.then3
   %37 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
   %pattern_string = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %37, i32 0, i32 12
   %38 = load i8*, i8** %pattern_string, align 8
-  %call48 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %36, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.89, i64 0, i64 0), i8* %38)
+  %call48 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %36, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.94, i64 0, i64 0), i8* %38)
   br label %if.end49
 
 if.end49:                                         ; preds = %if.end47, %do.body
@@ -2976,7 +3146,7 @@ if.end55:                                         ; preds = %land.lhs.true, %do.
   store i32 %call57, i32* %match, align 4
   %47 = load i32, i32* %match, align 4
   %cmp58 = icmp eq i32 %47, 0
-  br i1 %cmp58, label %if.then60, label %if.else187
+  br i1 %cmp58, label %if.then60, label %if.else194
 
 if.then60:                                        ; preds = %if.end55
   %48 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
@@ -2989,7 +3159,7 @@ if.then60:                                        ; preds = %if.end55
   %type = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %50, i32 0, i32 1
   %51 = load i32, i32* %type, align 8
   %cmp62 = icmp eq i32 %51, 0
-  br i1 %cmp62, label %if.then64, label %if.else177
+  br i1 %cmp62, label %if.then64, label %if.else184
 
 if.then64:                                        ; preds = %if.then60
   %52 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
@@ -3079,9 +3249,9 @@ cond.end:                                         ; preds = %cond.false, %cond.t
     i32 0, label %sw.bb
     i32 1, label %sw.bb96
     i32 2, label %sw.bb123
-    i32 3, label %sw.bb142
-    i32 4, label %sw.bb154
-    i32 5, label %sw.bb165
+    i32 3, label %sw.bb149
+    i32 4, label %sw.bb161
+    i32 5, label %sw.bb172
   ]
 
 sw.bb:                                            ; preds = %cond.end
@@ -3099,7 +3269,7 @@ if.then90:                                        ; preds = %do.body88
   %81 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
   %name92 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %81, i32 0, i32 0
   %82 = load i8*, i8** %name92, align 8
-  %call93 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %80, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.90, i64 0, i64 0), i8* %82)
+  %call93 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %80, i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.95, i64 0, i64 0), i8* %82)
   %83 = load %struct.__sFILE*, %struct.__sFILE** %vfp91, align 8
   %84 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
   %tstack = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %84, i32 0, i32 3
@@ -3167,7 +3337,7 @@ if.then111:                                       ; preds = %if.then107
   %104 = load %struct.regexTable*, %struct.regexTable** %continuation_table113, align 8
   %name114 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %104, i32 0, i32 0
   %105 = load i8*, i8** %name114, align 8
-  %call115 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %100, i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.91, i64 0, i64 0), i8* %102, i8* %105)
+  %call115 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %100, i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.96, i64 0, i64 0), i8* %102, i8* %105)
   br label %if.end119
 
 if.else116:                                       ; preds = %if.then107
@@ -3175,7 +3345,7 @@ if.else116:                                       ; preds = %if.then107
   %107 = load %struct.regexTable*, %struct.regexTable** %next, align 8
   %name117 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %107, i32 0, i32 0
   %108 = load i8*, i8** %name117, align 8
-  %call118 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %106, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.92, i64 0, i64 0), i8* %108)
+  %call118 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %106, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.97, i64 0, i64 0), i8* %108)
   br label %if.end119
 
 if.end119:                                        ; preds = %if.else116, %if.then111
@@ -3207,7 +3377,7 @@ if.then126:                                       ; preds = %do.body124
   %115 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
   %name128 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %115, i32 0, i32 0
   %116 = load i8*, i8** %name128, align 8
-  %call129 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %114, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.93, i64 0, i64 0), i8* %116)
+  %call129 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %114, i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.98, i64 0, i64 0), i8* %116)
   %117 = load %struct.__sFILE*, %struct.__sFILE** %vfp127, align 8
   %118 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
   %tstack130 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %118, i32 0, i32 3
@@ -3224,223 +3394,247 @@ do.end132:                                        ; preds = %if.end131
   %121 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack133, align 8
   %call134 = call i32 @ptrArrayCount(%struct.sPtrArray* %121)
   %cmp135 = icmp eq i32 %call134, 0
-  br i1 %cmp135, label %if.then137, label %if.end138
+  br i1 %cmp135, label %if.then137, label %if.end145
 
 if.then137:                                       ; preds = %do.end132
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.94, i64 0, i64 0))
+  %122 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call138 = call i8* @getExecutableName()
+  %call139 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %122, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call138, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %123 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call140 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %123, i8* getelementptr inbounds ([70 x i8], [70 x i8]* @.str.99, i64 0, i64 0))
+  %124 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call141 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %124)
+  %125 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool142 = trunc i8 %125 to i1
+  br i1 %tobool142, label %if.then143, label %if.end144
+
+if.then143:                                       ; preds = %if.then137
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end144:                                        ; preds = %if.then137
   store %struct.regexTable* null, %struct.regexTable** %retval, align 8
   br label %return
 
-if.end138:                                        ; preds = %do.end132
-  %122 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack139 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %122, i32 0, i32 3
-  %123 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack139, align 8
-  %call140 = call i8* @ptrArrayLast(%struct.sPtrArray* %123)
-  %124 = bitcast i8* %call140 to %struct.regexTable*
-  store %struct.regexTable* %124, %struct.regexTable** %next, align 8
-  %125 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack141 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %125, i32 0, i32 3
-  %126 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack141, align 8
-  call void @ptrArrayRemoveLast(%struct.sPtrArray* %126)
-  br label %sw.epilog
-
-sw.bb142:                                         ; preds = %cond.end
-  %127 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %table143 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %127, i32 0, i32 1
-  %128 = load %struct.regexTable*, %struct.regexTable** %table143, align 8
+if.end145:                                        ; preds = %do.end132
+  %126 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack146 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %126, i32 0, i32 3
+  %127 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack146, align 8
+  %call147 = call i8* @ptrArrayLast(%struct.sPtrArray* %127)
+  %128 = bitcast i8* %call147 to %struct.regexTable*
   store %struct.regexTable* %128, %struct.regexTable** %next, align 8
-  br label %do.body144
-
-do.body144:                                       ; preds = %sw.bb142
-  %129 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
-  %tobool145 = trunc i8 %129 to i1
-  br i1 %tobool145, label %if.then146, label %if.end152
-
-if.then146:                                       ; preds = %do.body144
-  %130 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
-  store %struct.__sFILE* %130, %struct.__sFILE** %vfp147, align 8
-  %131 = load %struct.__sFILE*, %struct.__sFILE** %vfp147, align 8
-  %132 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
-  %name148 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %132, i32 0, i32 0
-  %133 = load i8*, i8** %name148, align 8
-  %134 = load %struct.regexTable*, %struct.regexTable** %next, align 8
-  %name149 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %134, i32 0, i32 0
-  %135 = load i8*, i8** %name149, align 8
-  %call150 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %131, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.95, i64 0, i64 0), i8* %133, i8* %135)
-  %136 = load %struct.__sFILE*, %struct.__sFILE** %vfp147, align 8
-  %137 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack151 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %137, i32 0, i32 3
-  %138 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack151, align 8
-  call void @dumpTstack(%struct.__sFILE* %136, %struct.sPtrArray* %138)
-  br label %if.end152
-
-if.end152:                                        ; preds = %if.then146, %do.body144
-  br label %do.end153
-
-do.end153:                                        ; preds = %if.end152
+  %129 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack148 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %129, i32 0, i32 3
+  %130 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack148, align 8
+  call void @ptrArrayRemoveLast(%struct.sPtrArray* %130)
   br label %sw.epilog
 
-sw.bb154:                                         ; preds = %cond.end
-  %139 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %table155 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %139, i32 0, i32 1
-  %140 = load %struct.regexTable*, %struct.regexTable** %table155, align 8
-  store %struct.regexTable* %140, %struct.regexTable** %next, align 8
-  br label %do.body156
+sw.bb149:                                         ; preds = %cond.end
+  %131 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
+  %table150 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %131, i32 0, i32 1
+  %132 = load %struct.regexTable*, %struct.regexTable** %table150, align 8
+  store %struct.regexTable* %132, %struct.regexTable** %next, align 8
+  br label %do.body151
 
-do.body156:                                       ; preds = %sw.bb154
-  %141 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
-  %tobool157 = trunc i8 %141 to i1
-  br i1 %tobool157, label %if.then158, label %if.end162
+do.body151:                                       ; preds = %sw.bb149
+  %133 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool152 = trunc i8 %133 to i1
+  br i1 %tobool152, label %if.then153, label %if.end159
 
-if.then158:                                       ; preds = %do.body156
-  %142 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
-  store %struct.__sFILE* %142, %struct.__sFILE** %vfp159, align 8
-  %143 = load %struct.__sFILE*, %struct.__sFILE** %vfp159, align 8
-  %144 = load %struct.regexTable*, %struct.regexTable** %next, align 8
-  %name160 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %144, i32 0, i32 0
-  %145 = load i8*, i8** %name160, align 8
-  %call161 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %143, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.96, i64 0, i64 0), i8* %145)
-  br label %if.end162
+if.then153:                                       ; preds = %do.body151
+  %134 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  store %struct.__sFILE* %134, %struct.__sFILE** %vfp154, align 8
+  %135 = load %struct.__sFILE*, %struct.__sFILE** %vfp154, align 8
+  %136 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
+  %name155 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %136, i32 0, i32 0
+  %137 = load i8*, i8** %name155, align 8
+  %138 = load %struct.regexTable*, %struct.regexTable** %next, align 8
+  %name156 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %138, i32 0, i32 0
+  %139 = load i8*, i8** %name156, align 8
+  %call157 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %135, i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.100, i64 0, i64 0), i8* %137, i8* %139)
+  %140 = load %struct.__sFILE*, %struct.__sFILE** %vfp154, align 8
+  %141 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack158 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %141, i32 0, i32 3
+  %142 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack158, align 8
+  call void @dumpTstack(%struct.__sFILE* %140, %struct.sPtrArray* %142)
+  br label %if.end159
 
-if.end162:                                        ; preds = %if.then158, %do.body156
-  br label %do.end163
+if.end159:                                        ; preds = %if.then153, %do.body151
+  br label %do.end160
 
-do.end163:                                        ; preds = %if.end162
-  %146 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack164 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %146, i32 0, i32 3
-  %147 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack164, align 8
-  call void @ptrArrayClear(%struct.sPtrArray* %147)
+do.end160:                                        ; preds = %if.end159
   br label %sw.epilog
 
-sw.bb165:                                         ; preds = %cond.end
-  br label %do.body166
+sw.bb161:                                         ; preds = %cond.end
+  %143 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
+  %table162 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %143, i32 0, i32 1
+  %144 = load %struct.regexTable*, %struct.regexTable** %table162, align 8
+  store %struct.regexTable* %144, %struct.regexTable** %next, align 8
+  br label %do.body163
 
-do.body166:                                       ; preds = %sw.bb165
-  %148 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
-  %tobool167 = trunc i8 %148 to i1
-  br i1 %tobool167, label %if.then168, label %if.end172
+do.body163:                                       ; preds = %sw.bb161
+  %145 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool164 = trunc i8 %145 to i1
+  br i1 %tobool164, label %if.then165, label %if.end169
 
-if.then168:                                       ; preds = %do.body166
-  %149 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
-  store %struct.__sFILE* %149, %struct.__sFILE** %vfp169, align 8
-  %150 = load %struct.__sFILE*, %struct.__sFILE** %vfp169, align 8
-  %call170 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %150, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.97, i64 0, i64 0))
-  %151 = load %struct.__sFILE*, %struct.__sFILE** %vfp169, align 8
-  %152 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack171 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %152, i32 0, i32 3
-  %153 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack171, align 8
-  call void @dumpTstack(%struct.__sFILE* %151, %struct.sPtrArray* %153)
-  br label %if.end172
+if.then165:                                       ; preds = %do.body163
+  %146 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  store %struct.__sFILE* %146, %struct.__sFILE** %vfp166, align 8
+  %147 = load %struct.__sFILE*, %struct.__sFILE** %vfp166, align 8
+  %148 = load %struct.regexTable*, %struct.regexTable** %next, align 8
+  %name167 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %148, i32 0, i32 0
+  %149 = load i8*, i8** %name167, align 8
+  %call168 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %147, i8* getelementptr inbounds ([34 x i8], [34 x i8]* @.str.101, i64 0, i64 0), i8* %149)
+  br label %if.end169
 
-if.end172:                                        ; preds = %if.then168, %do.body166
-  br label %do.end173
+if.end169:                                        ; preds = %if.then165, %do.body163
+  br label %do.end170
 
-do.end173:                                        ; preds = %if.end172
+do.end170:                                        ; preds = %if.end169
+  %150 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack171 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %150, i32 0, i32 3
+  %151 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack171, align 8
+  call void @ptrArrayClear(%struct.sPtrArray* %151)
+  br label %sw.epilog
+
+sw.bb172:                                         ; preds = %cond.end
+  br label %do.body173
+
+do.body173:                                       ; preds = %sw.bb172
+  %152 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool174 = trunc i8 %152 to i1
+  br i1 %tobool174, label %if.then175, label %if.end179
+
+if.then175:                                       ; preds = %do.body173
+  %153 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  store %struct.__sFILE* %153, %struct.__sFILE** %vfp176, align 8
+  %154 = load %struct.__sFILE*, %struct.__sFILE** %vfp176, align 8
+  %call177 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %154, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.102, i64 0, i64 0))
+  %155 = load %struct.__sFILE*, %struct.__sFILE** %vfp176, align 8
+  %156 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack178 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %156, i32 0, i32 3
+  %157 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack178, align 8
+  call void @dumpTstack(%struct.__sFILE* %155, %struct.sPtrArray* %157)
+  br label %if.end179
+
+if.end179:                                        ; preds = %if.then175, %do.body173
+  br label %do.end180
+
+do.end180:                                        ; preds = %if.end179
   store %struct.regexTable* null, %struct.regexTable** %retval, align 8
   br label %return
 
-sw.epilog:                                        ; preds = %cond.end, %do.end163, %do.end153, %if.end138, %do.end122, %do.end95
-  %154 = load %struct.regexTable*, %struct.regexTable** %next, align 8
-  %tobool174 = icmp ne %struct.regexTable* %154, null
-  br i1 %tobool174, label %if.then175, label %if.end176
+sw.epilog:                                        ; preds = %cond.end, %do.end170, %do.end160, %if.end145, %do.end122, %do.end95
+  %158 = load %struct.regexTable*, %struct.regexTable** %next, align 8
+  %tobool181 = icmp ne %struct.regexTable* %158, null
+  br i1 %tobool181, label %if.then182, label %if.end183
 
-if.then175:                                       ; preds = %sw.epilog
+if.then182:                                       ; preds = %sw.epilog
   br label %for.end
 
-if.end176:                                        ; preds = %sw.epilog
-  br label %if.end186
+if.end183:                                        ; preds = %sw.epilog
+  br label %if.end193
 
-if.else177:                                       ; preds = %if.then60
-  %155 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
-  %type178 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %155, i32 0, i32 1
-  %156 = load i32, i32* %type178, align 8
-  %cmp179 = icmp eq i32 %156, 1
-  br i1 %cmp179, label %if.then181, label %if.else182
+if.else184:                                       ; preds = %if.then60
+  %159 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
+  %type185 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %159, i32 0, i32 1
+  %160 = load i32, i32* %type185, align 8
+  %cmp186 = icmp eq i32 %160, 1
+  br i1 %cmp186, label %if.then188, label %if.else189
 
-if.then181:                                       ; preds = %if.else177
-  br label %if.end185
+if.then188:                                       ; preds = %if.else184
+  br label %if.end192
 
-if.else182:                                       ; preds = %if.else177
-  br label %do.body183
+if.else189:                                       ; preds = %if.else184
+  br label %do.body190
 
-do.body183:                                       ; preds = %if.else182
-  br label %do.end184
+do.body190:                                       ; preds = %if.else189
+  br label %do.end191
 
-do.end184:                                        ; preds = %do.body183
+do.end191:                                        ; preds = %do.body190
   br label %for.end
 
-if.end185:                                        ; preds = %if.then181
-  br label %if.end186
+if.end192:                                        ; preds = %if.then188
+  br label %if.end193
 
-if.end186:                                        ; preds = %if.end185, %if.end176
+if.end193:                                        ; preds = %if.end192, %if.end183
   br label %restart
 
-if.else187:                                       ; preds = %if.end55
-  %157 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
-  %statistics188 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %157, i32 0, i32 13
-  %unmatch = getelementptr inbounds %struct.anon.4, %struct.anon.4* %statistics188, i32 0, i32 1
-  %158 = load i32, i32* %unmatch, align 4
-  %inc189 = add i32 %158, 1
-  store i32 %inc189, i32* %unmatch, align 4
-  br label %if.end190
+if.else194:                                       ; preds = %if.end55
+  %161 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
+  %statistics195 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %161, i32 0, i32 13
+  %unmatch = getelementptr inbounds %struct.anon.4, %struct.anon.4* %statistics195, i32 0, i32 1
+  %162 = load i32, i32* %unmatch, align 4
+  %inc196 = add i32 %162, 1
+  store i32 %inc196, i32* %unmatch, align 4
+  br label %if.end197
 
-if.end190:                                        ; preds = %if.else187
+if.end197:                                        ; preds = %if.else194
   br label %for.inc
 
-for.inc:                                          ; preds = %if.end190, %if.then54
-  %159 = load i32, i32* %i, align 4
-  %inc191 = add i32 %159, 1
-  store i32 %inc191, i32* %i, align 4
+for.inc:                                          ; preds = %if.end197, %if.then54
+  %163 = load i32, i32* %i, align 4
+  %inc198 = add i32 %163, 1
+  store i32 %inc198, i32* %i, align 4
   br label %for.cond
 
-for.end:                                          ; preds = %do.end184, %if.then175, %for.cond
-  %160 = load %struct.regexTable*, %struct.regexTable** %next, align 8
-  %cmp192 = icmp eq %struct.regexTable* %160, null
-  br i1 %cmp192, label %land.lhs.true194, label %if.end208
+for.end:                                          ; preds = %do.end191, %if.then182, %for.cond
+  %164 = load %struct.regexTable*, %struct.regexTable** %next, align 8
+  %cmp199 = icmp eq %struct.regexTable* %164, null
+  br i1 %cmp199, label %land.lhs.true201, label %if.end219
 
-land.lhs.true194:                                 ; preds = %for.end
-  %161 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack195 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %161, i32 0, i32 3
-  %162 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack195, align 8
-  %call196 = call i32 @ptrArrayCount(%struct.sPtrArray* %162)
-  %cmp197 = icmp ugt i32 %call196, 0
-  br i1 %cmp197, label %if.then199, label %if.end208
+land.lhs.true201:                                 ; preds = %for.end
+  %165 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack202 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %165, i32 0, i32 3
+  %166 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack202, align 8
+  %call203 = call i32 @ptrArrayCount(%struct.sPtrArray* %166)
+  %cmp204 = icmp ugt i32 %call203, 0
+  br i1 %cmp204, label %if.then206, label %if.end219
 
-if.then199:                                       ; preds = %land.lhs.true194
-  %163 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack200 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %163, i32 0, i32 3
-  %164 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack200, align 8
-  %call201 = call i8* @ptrArrayLast(%struct.sPtrArray* %164)
-  %165 = bitcast i8* %call201 to %struct.regexTable*
-  store %struct.regexTable* %165, %struct.regexTable** %next, align 8
-  %166 = load i32, i32* @apop_count, align 4
-  %inc202 = add nsw i32 %166, 1
-  store i32 %inc202, i32* @apop_count, align 4
-  %167 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
-  %name203 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %167, i32 0, i32 0
-  %168 = load i8*, i8** %name203, align 8
-  %169 = load %struct.regexTable*, %struct.regexTable** %next, align 8
-  %name204 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %169, i32 0, i32 0
-  %170 = load i8*, i8** %name204, align 8
-  %171 = load i32*, i32** %offset.addr, align 8
-  %172 = load i32, i32* %171, align 4
-  %conv205 = zext i32 %172 to i64
-  %call206 = call i64 @getInputLineNumberForFileOffset(i64 %conv205)
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.98, i64 0, i64 0), i32 %166, i8* %168, i8* %170, i64 %call206)
-  %173 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %tstack207 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %173, i32 0, i32 3
-  %174 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack207, align 8
-  call void @ptrArrayRemoveLast(%struct.sPtrArray* %174)
-  br label %if.end208
+if.then206:                                       ; preds = %land.lhs.true201
+  %167 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack207 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %167, i32 0, i32 3
+  %168 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack207, align 8
+  %call208 = call i8* @ptrArrayLast(%struct.sPtrArray* %168)
+  %169 = bitcast i8* %call208 to %struct.regexTable*
+  store %struct.regexTable* %169, %struct.regexTable** %next, align 8
+  %170 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool209 = trunc i8 %170 to i1
+  br i1 %tobool209, label %if.then210, label %if.end217
 
-if.end208:                                        ; preds = %if.then199, %land.lhs.true194, %for.end
-  %175 = load %struct.regexTable*, %struct.regexTable** %next, align 8
-  store %struct.regexTable* %175, %struct.regexTable** %retval, align 8
+if.then210:                                       ; preds = %if.then206
+  %171 = load i32, i32* @apop_count, align 4
+  %inc211 = add nsw i32 %171, 1
+  store i32 %inc211, i32* @apop_count, align 4
+  %172 = load %struct.regexTable*, %struct.regexTable** %table.addr, align 8
+  %name212 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %172, i32 0, i32 0
+  %173 = load i8*, i8** %name212, align 8
+  %174 = load %struct.regexTable*, %struct.regexTable** %next, align 8
+  %name213 = getelementptr inbounds %struct.regexTable, %struct.regexTable* %174, i32 0, i32 0
+  %175 = load i8*, i8** %name213, align 8
+  %176 = load i32*, i32** %offset.addr, align 8
+  %177 = load i32, i32* %176, align 4
+  %conv214 = zext i32 %177 to i64
+  %call215 = call i64 @getInputLineNumberForFileOffset(i64 %conv214)
+  %call216 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.103, i64 0, i64 0), i32 %171, i8* %173, i8* %175, i64 %call215)
+  br label %if.end217
+
+if.end217:                                        ; preds = %if.then210, %if.then206
+  %178 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %tstack218 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %178, i32 0, i32 3
+  %179 = load %struct.sPtrArray*, %struct.sPtrArray** %tstack218, align 8
+  call void @ptrArrayRemoveLast(%struct.sPtrArray* %179)
+  br label %if.end219
+
+if.end219:                                        ; preds = %if.end217, %land.lhs.true201, %for.end
+  %180 = load %struct.regexTable*, %struct.regexTable** %next, align 8
+  store %struct.regexTable* %180, %struct.regexTable** %retval, align 8
   br label %return
 
-return:                                           ; preds = %if.end208, %do.end173, %if.then137
-  %176 = load %struct.regexTable*, %struct.regexTable** %retval, align 8
-  ret %struct.regexTable* %176
+return:                                           ; preds = %if.end219, %do.end180, %if.end144
+  %181 = load %struct.regexTable*, %struct.regexTable** %retval, align 8
+  ret %struct.regexTable* %181
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -3661,199 +3855,215 @@ if.then47:                                        ; preds = %land.lhs.true42
   %tobool48 = trunc i8 %45 to i1
   %conv49 = zext i1 %tobool48 to i32
   %cmp50 = icmp eq i32 %conv49, 0
-  br i1 %cmp50, label %if.then52, label %if.end59
+  br i1 %cmp50, label %if.then52, label %if.end66
 
 if.then52:                                        ; preds = %if.then47
-  %call53 = call i8* @getInputFileName()
-  %46 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %regptype54 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %46, i32 0, i32 7
-  %47 = load i32, i32* %regptype54, align 8
-  %48 = load i64, i64* %offset.addr, align 8
-  %call55 = call i64 @getInputLineNumberInRegPType(i32 %47, i64 %48)
-  %49 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %u56 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %49, i32 0, i32 4
-  %tag57 = bitcast %union.anon.1* %u56 to %struct.anon.2*
-  %name_pattern58 = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag57, i32 0, i32 1
-  %50 = load i8*, i8** %name_pattern58, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.15, i64 0, i64 0), i8* %call53, i64 %call55, i8* %50)
-  br label %if.end59
+  %46 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call53 = call i8* @getExecutableName()
+  %call54 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %46, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call53, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %47 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call55 = call i8* @getInputFileName()
+  %48 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %regptype56 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %48, i32 0, i32 7
+  %49 = load i32, i32* %regptype56, align 8
+  %50 = load i64, i64* %offset.addr, align 8
+  %call57 = call i64 @getInputLineNumberInRegPType(i32 %49, i64 %50)
+  %51 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %u58 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %51, i32 0, i32 4
+  %tag59 = bitcast %union.anon.1* %u58 to %struct.anon.2*
+  %name_pattern60 = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag59, i32 0, i32 1
+  %52 = load i8*, i8** %name_pattern60, align 8
+  %call61 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %47, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.20, i64 0, i64 0), i8* %call55, i64 %call57, i8* %52)
+  %53 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call62 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %53)
+  %54 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool63 = trunc i8 %54 to i1
+  br i1 %tobool63, label %if.then64, label %if.end65
 
-if.end59:                                         ; preds = %if.then52, %if.then47
+if.then64:                                        ; preds = %if.then52
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end65:                                         ; preds = %if.then52
+  br label %if.end66
+
+if.end66:                                         ; preds = %if.end65, %if.then47
   store i32 0, i32* %n, align 4
-  br label %if.end107
+  br label %if.end114
 
 if.else:                                          ; preds = %land.lhs.true42, %if.end39
   store i64 0, i64* %ln, align 8
-  %51 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %regptype60 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %51, i32 0, i32 7
-  %52 = load i32, i32* %regptype60, align 8
-  %cmp61 = icmp eq i32 %52, 1
-  br i1 %cmp61, label %if.then66, label %lor.lhs.false
+  %55 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %regptype67 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %55, i32 0, i32 7
+  %56 = load i32, i32* %regptype67, align 8
+  %cmp68 = icmp eq i32 %56, 1
+  br i1 %cmp68, label %if.then73, label %lor.lhs.false
 
 lor.lhs.false:                                    ; preds = %if.else
-  %53 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %regptype63 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %53, i32 0, i32 7
-  %54 = load i32, i32* %regptype63, align 8
-  %cmp64 = icmp eq i32 %54, 2
-  br i1 %cmp64, label %if.then66, label %if.end70
+  %57 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %regptype70 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %57, i32 0, i32 7
+  %58 = load i32, i32* %regptype70, align 8
+  %cmp71 = icmp eq i32 %58, 2
+  br i1 %cmp71, label %if.then73, label %if.end77
 
-if.then66:                                        ; preds = %lor.lhs.false, %if.else
-  %55 = load i64, i64* %offset.addr, align 8
-  %call67 = call i64 @getInputLineNumberForFileOffset(i64 %55)
-  store i64 %call67, i64* %ln, align 8
-  %56 = load i64, i64* %ln, align 8
-  %conv68 = trunc i64 %56 to i32
-  %call69 = call [2 x i64] @getInputFilePositionForLine(i32 %conv68)
-  %57 = bitcast %struct._MIOPos* %tmp to [2 x i64]*
-  store [2 x i64] %call69, [2 x i64]* %57, align 8
-  %58 = bitcast %struct._MIOPos* %pos to i8*
-  %59 = bitcast %struct._MIOPos* %tmp to i8*
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %58, i8* align 8 %59, i64 16, i1 false)
-  br label %if.end70
+if.then73:                                        ; preds = %lor.lhs.false, %if.else
+  %59 = load i64, i64* %offset.addr, align 8
+  %call74 = call i64 @getInputLineNumberForFileOffset(i64 %59)
+  store i64 %call74, i64* %ln, align 8
+  %60 = load i64, i64* %ln, align 8
+  %conv75 = trunc i64 %60 to i32
+  %call76 = call [2 x i64] @getInputFilePositionForLine(i32 %conv75)
+  %61 = bitcast %struct._MIOPos* %tmp to [2 x i64]*
+  store [2 x i64] %call76, [2 x i64]* %61, align 8
+  %62 = bitcast %struct._MIOPos* %pos to i8*
+  %63 = bitcast %struct._MIOPos* %tmp to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %62, i8* align 8 %63, i64 16, i1 false)
+  br label %if.end77
 
-if.end70:                                         ; preds = %if.then66, %lor.lhs.false
+if.end77:                                         ; preds = %if.then73, %lor.lhs.false
   store i32 0, i32* %n, align 4
-  %60 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %u71 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %60, i32 0, i32 4
-  %tag72 = bitcast %union.anon.1* %u71 to %struct.anon.2*
-  %kindIndex = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag72, i32 0, i32 0
-  %61 = load i32, i32* %kindIndex, align 8
-  store i32 %61, i32* %kind, align 4
-  %62 = load %struct.sVString*, %struct.sVString** %name, align 8
-  %63 = load i32, i32* %kind, align 4
-  %64 = load i64, i64* %scope, align 8
-  %conv73 = trunc i64 %64 to i32
-  %65 = load i8, i8* %placeholder, align 1
-  %tobool74 = trunc i8 %65 to i1
-  %conv75 = zext i1 %tobool74 to i32
-  %66 = load i64, i64* %ln, align 8
-  %67 = load i64, i64* %ln, align 8
-  %cmp76 = icmp eq i64 %67, 0
-  br i1 %cmp76, label %cond.true78, label %cond.false79
+  %64 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %u78 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %64, i32 0, i32 4
+  %tag79 = bitcast %union.anon.1* %u78 to %struct.anon.2*
+  %kindIndex = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag79, i32 0, i32 0
+  %65 = load i32, i32* %kindIndex, align 8
+  store i32 %65, i32* %kind, align 4
+  %66 = load %struct.sVString*, %struct.sVString** %name, align 8
+  %67 = load i32, i32* %kind, align 4
+  %68 = load i64, i64* %scope, align 8
+  %conv80 = trunc i64 %68 to i32
+  %69 = load i8, i8* %placeholder, align 1
+  %tobool81 = trunc i8 %69 to i1
+  %conv82 = zext i1 %tobool81 to i32
+  %70 = load i64, i64* %ln, align 8
+  %71 = load i64, i64* %ln, align 8
+  %cmp83 = icmp eq i64 %71, 0
+  br i1 %cmp83, label %cond.true85, label %cond.false86
 
-cond.true78:                                      ; preds = %if.end70
-  br label %cond.end80
+cond.true85:                                      ; preds = %if.end77
+  br label %cond.end87
 
-cond.false79:                                     ; preds = %if.end70
-  br label %cond.end80
+cond.false86:                                     ; preds = %if.end77
+  br label %cond.end87
 
-cond.end80:                                       ; preds = %cond.false79, %cond.true78
-  %cond81 = phi %struct._MIOPos* [ null, %cond.true78 ], [ %pos, %cond.false79 ]
-  %68 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %xtagType = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %68, i32 0, i32 10
-  %69 = load i32, i32* %xtagType, align 8
-  %call82 = call zeroext i1 @initRegexTag(%struct.sTagEntryInfo* %e, %struct.sVString* %62, i32 %63, i32 %conv73, i32 %conv75, i64 %66, %struct._MIOPos* %cond81, i32 %69)
-  br i1 %call82, label %if.then83, label %if.end106
+cond.end87:                                       ; preds = %cond.false86, %cond.true85
+  %cond88 = phi %struct._MIOPos* [ null, %cond.true85 ], [ %pos, %cond.false86 ]
+  %72 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %xtagType = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %72, i32 0, i32 10
+  %73 = load i32, i32* %xtagType, align 8
+  %call89 = call zeroext i1 @initRegexTag(%struct.sTagEntryInfo* %e, %struct.sVString* %66, i32 %67, i32 %conv80, i32 %conv82, i64 %70, %struct._MIOPos* %cond88, i32 %73)
+  br i1 %call89, label %if.then90, label %if.end113
 
-if.then83:                                        ; preds = %cond.end80
-  %70 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
-  %cmp84 = icmp eq %struct.sTrashBox* %70, null
-  br i1 %cmp84, label %if.then86, label %if.end89
+if.then90:                                        ; preds = %cond.end87
+  %74 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
+  %cmp91 = icmp eq %struct.sTrashBox* %74, null
+  br i1 %cmp91, label %if.then93, label %if.end96
 
-if.then86:                                        ; preds = %if.then83
-  %call87 = call %struct.sTrashBox* @trashBoxNew()
-  store %struct.sTrashBox* %call87, %struct.sTrashBox** @field_trashbox, align 8
-  %71 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
-  %72 = bitcast %struct.sTrashBox* %71 to i8*
-  %call88 = call i8* @trashBoxPut(%struct.sTrashBox* null, i8* %72, void (i8*)* bitcast (void (%struct.sTrashBox*)* @trashBoxDelete to void (i8*)*))
-  br label %if.end89
+if.then93:                                        ; preds = %if.then90
+  %call94 = call %struct.sTrashBox* @trashBoxNew()
+  store %struct.sTrashBox* %call94, %struct.sTrashBox** @field_trashbox, align 8
+  %75 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
+  %76 = bitcast %struct.sTrashBox* %75 to i8*
+  %call95 = call i8* @trashBoxPut(%struct.sTrashBox* null, i8* %76, void (i8*)* bitcast (void (%struct.sTrashBox*)* @trashBoxDelete to void (i8*)*))
+  br label %if.end96
 
-if.end89:                                         ; preds = %if.then86, %if.then83
-  %73 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %fieldPatterns = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %73, i32 0, i32 11
-  %74 = load %struct.sPtrArray*, %struct.sPtrArray** %fieldPatterns, align 8
-  %tobool90 = icmp ne %struct.sPtrArray* %74, null
-  br i1 %tobool90, label %if.then91, label %if.end104
+if.end96:                                         ; preds = %if.then93, %if.then90
+  %77 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %fieldPatterns = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %77, i32 0, i32 11
+  %78 = load %struct.sPtrArray*, %struct.sPtrArray** %fieldPatterns, align 8
+  %tobool97 = icmp ne %struct.sPtrArray* %78, null
+  br i1 %tobool97, label %if.then98, label %if.end111
 
-if.then91:                                        ; preds = %if.end89
+if.then98:                                        ; preds = %if.end96
   store i32 0, i32* %i, align 4
   br label %for.cond
 
-for.cond:                                         ; preds = %for.inc, %if.then91
-  %75 = load i32, i32* %i, align 4
-  %76 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %fieldPatterns92 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %76, i32 0, i32 11
-  %77 = load %struct.sPtrArray*, %struct.sPtrArray** %fieldPatterns92, align 8
-  %call93 = call i32 @ptrArrayCount(%struct.sPtrArray* %77)
-  %cmp94 = icmp ult i32 %75, %call93
-  br i1 %cmp94, label %for.body, label %for.end
+for.cond:                                         ; preds = %for.inc, %if.then98
+  %79 = load i32, i32* %i, align 4
+  %80 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %fieldPatterns99 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %80, i32 0, i32 11
+  %81 = load %struct.sPtrArray*, %struct.sPtrArray** %fieldPatterns99, align 8
+  %call100 = call i32 @ptrArrayCount(%struct.sPtrArray* %81)
+  %cmp101 = icmp ult i32 %79, %call100
+  br i1 %cmp101, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
-  %78 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %fieldPatterns96 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %78, i32 0, i32 11
-  %79 = load %struct.sPtrArray*, %struct.sPtrArray** %fieldPatterns96, align 8
-  %80 = load i32, i32* %i, align 4
-  %call97 = call i8* @ptrArrayItem(%struct.sPtrArray* %79, i32 %80)
-  %81 = bitcast i8* %call97 to %struct.fieldPattern*
-  store %struct.fieldPattern* %81, %struct.fieldPattern** %fp, align 8
-  %82 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
-  %ftype = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %82, i32 0, i32 0
-  %83 = load i32, i32* %ftype, align 8
-  %call98 = call zeroext i1 @isFieldEnabled(i32 %83)
-  br i1 %call98, label %if.then99, label %if.end103
+  %82 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %fieldPatterns103 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %82, i32 0, i32 11
+  %83 = load %struct.sPtrArray*, %struct.sPtrArray** %fieldPatterns103, align 8
+  %84 = load i32, i32* %i, align 4
+  %call104 = call i8* @ptrArrayItem(%struct.sPtrArray* %83, i32 %84)
+  %85 = bitcast i8* %call104 to %struct.fieldPattern*
+  store %struct.fieldPattern* %85, %struct.fieldPattern** %fp, align 8
+  %86 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
+  %ftype = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %86, i32 0, i32 0
+  %87 = load i32, i32* %ftype, align 8
+  %call105 = call zeroext i1 @isFieldEnabled(i32 %87)
+  br i1 %call105, label %if.then106, label %if.end110
 
-if.then99:                                        ; preds = %for.body
-  %84 = load i8*, i8** %line.addr, align 8
-  %85 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
-  %template = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %85, i32 0, i32 1
-  %86 = load i8*, i8** %template, align 8
-  %87 = load %struct.regmatch_t*, %struct.regmatch_t** %pmatch.addr, align 8
-  %call100 = call %struct.sVString* @substitute(i8* %84, i8* %86, i32 10, %struct.regmatch_t* %87)
-  store %struct.sVString* %call100, %struct.sVString** %value, align 8
-  %88 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
-  %ftype101 = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %88, i32 0, i32 0
-  %89 = load i32, i32* %ftype101, align 8
-  %90 = load %struct.sVString*, %struct.sVString** %value, align 8
-  %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %90, i32 0, i32 2
-  %91 = load i8*, i8** %buffer, align 8
-  call void @attachParserField(%struct.sTagEntryInfo* %e, i32 %89, i8* %91)
-  %92 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
-  %93 = load %struct.sVString*, %struct.sVString** %value, align 8
-  %94 = bitcast %struct.sVString* %93 to i8*
-  %call102 = call i8* @trashBoxPut(%struct.sTrashBox* %92, i8* %94, void (i8*)* bitcast (void (%struct.sVString*)* @vStringDelete to void (i8*)*))
-  br label %if.end103
+if.then106:                                       ; preds = %for.body
+  %88 = load i8*, i8** %line.addr, align 8
+  %89 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
+  %template = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %89, i32 0, i32 1
+  %90 = load i8*, i8** %template, align 8
+  %91 = load %struct.regmatch_t*, %struct.regmatch_t** %pmatch.addr, align 8
+  %call107 = call %struct.sVString* @substitute(i8* %88, i8* %90, i32 10, %struct.regmatch_t* %91)
+  store %struct.sVString* %call107, %struct.sVString** %value, align 8
+  %92 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
+  %ftype108 = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %92, i32 0, i32 0
+  %93 = load i32, i32* %ftype108, align 8
+  %94 = load %struct.sVString*, %struct.sVString** %value, align 8
+  %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %94, i32 0, i32 2
+  %95 = load i8*, i8** %buffer, align 8
+  call void @attachParserField(%struct.sTagEntryInfo* %e, i32 %93, i8* %95)
+  %96 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
+  %97 = load %struct.sVString*, %struct.sVString** %value, align 8
+  %98 = bitcast %struct.sVString* %97 to i8*
+  %call109 = call i8* @trashBoxPut(%struct.sTrashBox* %96, i8* %98, void (i8*)* bitcast (void (%struct.sVString*)* @vStringDelete to void (i8*)*))
+  br label %if.end110
 
-if.end103:                                        ; preds = %if.then99, %for.body
+if.end110:                                        ; preds = %if.then106, %for.body
   br label %for.inc
 
-for.inc:                                          ; preds = %if.end103
-  %95 = load i32, i32* %i, align 4
-  %inc = add i32 %95, 1
+for.inc:                                          ; preds = %if.end110
+  %99 = load i32, i32* %i, align 4
+  %inc = add i32 %99, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
 for.end:                                          ; preds = %for.cond
-  br label %if.end104
+  br label %if.end111
 
-if.end104:                                        ; preds = %for.end, %if.end89
-  %call105 = call i32 @makeTagEntry(%struct.sTagEntryInfo* %e)
-  store i32 %call105, i32* %n, align 4
-  %96 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
-  call void @trashBoxMakeEmpty(%struct.sTrashBox* %96)
-  br label %if.end106
+if.end111:                                        ; preds = %for.end, %if.end96
+  %call112 = call i32 @makeTagEntry(%struct.sTagEntryInfo* %e)
+  store i32 %call112, i32* %n, align 4
+  %100 = load %struct.sTrashBox*, %struct.sTrashBox** @field_trashbox, align 8
+  call void @trashBoxMakeEmpty(%struct.sTrashBox* %100)
+  br label %if.end113
 
-if.end106:                                        ; preds = %if.end104, %cond.end80
-  br label %if.end107
-
-if.end107:                                        ; preds = %if.end106, %if.end59
-  %97 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
-  %scopeActions108 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %97, i32 0, i32 5
-  %98 = load i32, i32* %scopeActions108, align 8
-  %and109 = and i32 %98, 4
-  %tobool110 = icmp ne i32 %and109, 0
-  br i1 %tobool110, label %if.then111, label %if.end114
-
-if.then111:                                       ; preds = %if.end107
-  %99 = load i32, i32* %n, align 4
-  %conv112 = sext i32 %99 to i64
-  %100 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %currentScope113 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %100, i32 0, i32 0
-  store i64 %conv112, i64* %currentScope113, align 8
+if.end113:                                        ; preds = %if.end111, %cond.end87
   br label %if.end114
 
-if.end114:                                        ; preds = %if.then111, %if.end107
-  %101 = load %struct.sVString*, %struct.sVString** %name, align 8
-  call void @vStringDelete(%struct.sVString* %101)
+if.end114:                                        ; preds = %if.end113, %if.end66
+  %101 = load %struct.regexPattern*, %struct.regexPattern** %patbuf.addr, align 8
+  %scopeActions115 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %101, i32 0, i32 5
+  %102 = load i32, i32* %scopeActions115, align 8
+  %and116 = and i32 %102, 4
+  %tobool117 = icmp ne i32 %and116, 0
+  br i1 %tobool117, label %if.then118, label %if.end121
+
+if.then118:                                       ; preds = %if.end114
+  %103 = load i32, i32* %n, align 4
+  %conv119 = sext i32 %103 to i64
+  %104 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %currentScope120 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %104, i32 0, i32 0
+  store i64 %conv119, i64* %currentScope120, align 8
+  br label %if.end121
+
+if.end121:                                        ; preds = %if.then118, %if.end114
+  %105 = load %struct.sVString*, %struct.sVString** %name, align 8
+  call void @vStringDelete(%struct.sVString* %105)
   ret void
 }
 
@@ -3993,7 +4203,7 @@ land.lhs.true:                                    ; preds = %for.body
   store i8* %incdec.ptr, i8** %p, align 8
   %6 = load i8, i8* %incdec.ptr, align 1
   %conv5 = sext i8 %6 to i32
-  %call6 = call i32 @isdigit(i32 %conv5) #6
+  %call6 = call i32 @isdigit(i32 %conv5) #8
   %tobool = icmp ne i32 %call6, 0
   br i1 %tobool, label %if.then, label %if.else
 
@@ -4136,7 +4346,7 @@ declare i8* @getInputFileName() #1
 declare [2 x i64] @getInputFilePositionForLine(i32) #1
 
 ; Function Attrs: argmemonly nounwind willreturn
-declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #3
+declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #4
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal zeroext i1 @initRegexTag(%struct.sTagEntryInfo* %e, %struct.sVString* %name, i32 %kindIndex, i32 %scopeIndex, i32 %placeholder, i64 %line, %struct._MIOPos* %pos, i32 %xtag_type) #0 {
@@ -4251,7 +4461,7 @@ declare i32 @makeTagEntry(%struct.sTagEntryInfo*) #1
 declare void @trashBoxMakeEmpty(%struct.sTrashBox*) #1
 
 ; Function Attrs: nounwind readonly
-declare i32 @isdigit(i32) #2
+declare i32 @isdigit(i32) #3
 
 declare void @vStringNCatS(%struct.sVString*, i8*, i64) #1
 
@@ -4297,7 +4507,7 @@ lor.lhs.false:                                    ; preds = %entry
 if.then:                                          ; preds = %lor.lhs.false, %entry
   %6 = load i8*, i8** %kind.addr, align 8
   store i8 114, i8* %6, align 1
-  %call = call i8* @eStrdup(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.18, i64 0, i64 0))
+  %call = call i8* @eStrdup(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.23, i64 0, i64 0))
   %7 = load i8**, i8*** %kindName.addr, align 8
   store i8* %call, i8** %7, align 8
   br label %if.end61
@@ -4372,7 +4582,7 @@ if.end28:                                         ; preds = %if.then26, %if.end
   br i1 %cmp31, label %if.then33, label %if.else35
 
 if.then33:                                        ; preds = %if.end28
-  %call34 = call i8* @eStrdup(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.18, i64 0, i64 0))
+  %call34 = call i8* @eStrdup(i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.23, i64 0, i64 0))
   %26 = load i8**, i8*** %kindName.addr, align 8
   store i8* %call34, i8** %26, align 8
   br label %if.end59
@@ -4635,7 +4845,7 @@ if.then34:                                        ; preds = %land.lhs.true30
   %tag36 = bitcast %union.anon.1* %u35 to %struct.anon.2*
   %kindIndex = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag36, i32 0, i32 0
   store i32 -1, i32* %kindIndex, align 8
-  br label %if.end63
+  br label %if.end70
 
 if.else:                                          ; preds = %land.lhs.true30, %land.lhs.true, %if.end18
   %46 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
@@ -4646,12 +4856,12 @@ if.else:                                          ; preds = %land.lhs.true30, %l
   store %struct.sKindDefinition* %call38, %struct.sKindDefinition** %kdef, align 8
   %49 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
   %tobool39 = icmp ne %struct.sKindDefinition* %49, null
-  br i1 %tobool39, label %if.then40, label %if.else55
+  br i1 %tobool39, label %if.then40, label %if.else62
 
 if.then40:                                        ; preds = %if.else
   %50 = load i8*, i8** %kindName.addr, align 8
   %tobool41 = icmp ne i8* %50, null
-  br i1 %tobool41, label %land.lhs.true42, label %if.end54
+  br i1 %tobool41, label %land.lhs.true42, label %if.end61
 
 land.lhs.true42:                                  ; preds = %if.then40
   %51 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
@@ -4660,60 +4870,76 @@ land.lhs.true42:                                  ; preds = %if.then40
   %53 = load i8*, i8** %kindName.addr, align 8
   %call44 = call i32 @strcmp(i8* %52, i8* %53)
   %tobool45 = icmp ne i32 %call44, 0
-  br i1 %tobool45, label %land.lhs.true46, label %if.end54
+  br i1 %tobool45, label %land.lhs.true46, label %if.end61
 
 land.lhs.true46:                                  ; preds = %land.lhs.true42
   %54 = load i8*, i8** %kindName.addr, align 8
-  %call47 = call i32 @strcmp(i8* %54, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.18, i64 0, i64 0))
+  %call47 = call i32 @strcmp(i8* %54, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.23, i64 0, i64 0))
   %tobool48 = icmp ne i32 %call47, 0
-  br i1 %tobool48, label %if.then49, label %if.end54
+  br i1 %tobool48, label %if.then49, label %if.end61
 
 if.then49:                                        ; preds = %land.lhs.true46
-  %55 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
-  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %55, i32 0, i32 1
-  %56 = load i8, i8* %letter, align 1
-  %conv50 = sext i8 %56 to i32
-  %57 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %owner51 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %57, i32 0, i32 4
-  %58 = load i32, i32* %owner51, align 8
-  %call52 = call i8* @getLanguageName(i32 %58)
-  %59 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
-  %name53 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %59, i32 0, i32 2
-  %60 = load i8*, i8** %name53, align 8
-  %61 = load i8*, i8** %kindName.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.19, i64 0, i64 0), i32 %conv50, i8* %call52, i8* %60, i8* %61)
-  br label %if.end54
-
-if.end54:                                         ; preds = %if.then49, %land.lhs.true46, %land.lhs.true42, %if.then40
-  br label %if.end59
-
-if.else55:                                        ; preds = %if.else
-  %62 = load i8, i8* %kindLetter.addr, align 1
+  %55 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call50 = call i8* @getExecutableName()
+  %call51 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %55, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call50, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %56 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %57 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
+  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %57, i32 0, i32 1
+  %58 = load i8, i8* %letter, align 1
+  %conv52 = sext i8 %58 to i32
+  %59 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %owner53 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %59, i32 0, i32 4
+  %60 = load i32, i32* %owner53, align 8
+  %call54 = call i8* @getLanguageName(i32 %60)
+  %61 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
+  %name55 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %61, i32 0, i32 2
+  %62 = load i8*, i8** %name55, align 8
   %63 = load i8*, i8** %kindName.addr, align 8
-  %64 = load i8*, i8** %description.addr, align 8
-  %call56 = call %struct.sKindDefinition* @kindNew(i8 signext %62, i8* %63, i8* %64)
-  store %struct.sKindDefinition* %call56, %struct.sKindDefinition** %kdef, align 8
-  %65 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
-  %owner57 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %65, i32 0, i32 4
-  %66 = load i32, i32* %owner57, align 8
-  %67 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
-  %call58 = call i32 @defineLanguageKind(i32 %66, %struct.sKindDefinition* %67, void (%struct.sKindDefinition*)* @kindFree)
-  br label %if.end59
+  %call56 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %56, i8* getelementptr inbounds ([73 x i8], [73 x i8]* @.str.24, i64 0, i64 0), i32 %conv52, i8* %call54, i8* %62, i8* %63)
+  %64 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call57 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %64)
+  %65 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool58 = trunc i8 %65 to i1
+  br i1 %tobool58, label %if.then59, label %if.end60
 
-if.end59:                                         ; preds = %if.else55, %if.end54
-  %68 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
-  %id = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %68, i32 0, i32 9
-  %69 = load i32, i32* %id, align 4
-  %70 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
-  %u60 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %70, i32 0, i32 4
-  %tag61 = bitcast %union.anon.1* %u60 to %struct.anon.2*
-  %kindIndex62 = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag61, i32 0, i32 0
-  store i32 %69, i32* %kindIndex62, align 8
-  br label %if.end63
+if.then59:                                        ; preds = %if.then49
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end63:                                         ; preds = %if.end59, %if.then34
-  %71 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
-  ret %struct.regexPattern* %71
+if.end60:                                         ; preds = %if.then49
+  br label %if.end61
+
+if.end61:                                         ; preds = %if.end60, %land.lhs.true46, %land.lhs.true42, %if.then40
+  br label %if.end66
+
+if.else62:                                        ; preds = %if.else
+  %66 = load i8, i8* %kindLetter.addr, align 1
+  %67 = load i8*, i8** %kindName.addr, align 8
+  %68 = load i8*, i8** %description.addr, align 8
+  %call63 = call %struct.sKindDefinition* @kindNew(i8 signext %66, i8* %67, i8* %68)
+  store %struct.sKindDefinition* %call63, %struct.sKindDefinition** %kdef, align 8
+  %69 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb.addr, align 8
+  %owner64 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %69, i32 0, i32 4
+  %70 = load i32, i32* %owner64, align 8
+  %71 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
+  %call65 = call i32 @defineLanguageKind(i32 %70, %struct.sKindDefinition* %71, void (%struct.sKindDefinition*)* @kindFree)
+  br label %if.end66
+
+if.end66:                                         ; preds = %if.else62, %if.end61
+  %72 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
+  %id = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %72, i32 0, i32 9
+  %73 = load i32, i32* %id, align 4
+  %74 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
+  %u67 = getelementptr inbounds %struct.regexPattern, %struct.regexPattern* %74, i32 0, i32 4
+  %tag68 = bitcast %union.anon.1* %u67 to %struct.anon.2*
+  %kindIndex69 = getelementptr inbounds %struct.anon.2, %struct.anon.2* %tag68, i32 0, i32 0
+  store i32 %73, i32* %kindIndex69, align 8
+  br label %if.end70
+
+if.end70:                                         ; preds = %if.end66, %if.then34
+  %75 = load %struct.regexPattern*, %struct.regexPattern** %ptrn, align 8
+  ret %struct.regexPattern* %75
 }
 
 declare i8* @strchr(i8*, i32) #1
@@ -4821,7 +5047,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %4, %cond.true ], [ getelementptr inbounds ([6 x i8], [6 x i8]* @.str.18, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %4, %cond.true ], [ getelementptr inbounds ([6 x i8], [6 x i8]* @.str.23, i64 0, i64 0), %cond.false ]
   %call2 = call i8* @eStrdup(i8* %cond)
   %5 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
   %name3 = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %5, i32 0, i32 2
@@ -4973,7 +5199,7 @@ entry:
 declare i32 @"\01_regcomp"(%struct.regex_t*, i8*, i32) #1
 
 ; Function Attrs: cold
-declare i64 @regerror(i32, %struct.regex_t*, i8*, i64) #4
+declare i64 @regerror(i32, %struct.regex_t*, i8*, i64) #5
 
 declare void @vStringCatS(%struct.sVString*, i8*) #1
 
@@ -5016,111 +5242,175 @@ entry:
   br i1 %cmp, label %if.then, label %if.else
 
 if.then:                                          ; preds = %entry
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.26, i64 0, i64 0))
-  br label %if.end33
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i8* @getExecutableName()
+  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %7, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call3, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %8 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %8, i8* getelementptr inbounds ([13 x i8], [13 x i8]* @.str.31, i64 0, i64 0))
+  %9 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call6 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %9)
+  %10 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool = trunc i8 %10 to i1
+  br i1 %tobool, label %if.then7, label %if.end
+
+if.then7:                                         ; preds = %if.then
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end:                                           ; preds = %if.then
+  br label %if.end60
 
 if.else:                                          ; preds = %entry
-  %7 = load i8**, i8*** %name.addr, align 8
-  %8 = load i8*, i8** %7, align 8
-  %9 = load i8, i8* %8, align 1
-  %conv3 = sext i8 %9 to i32
-  %10 = load i32, i32* %separator, align 4
-  %cmp4 = icmp ne i32 %conv3, %10
-  br i1 %cmp4, label %if.then6, label %if.else7
+  %11 = load i8**, i8*** %name.addr, align 8
+  %12 = load i8*, i8** %11, align 8
+  %13 = load i8, i8* %12, align 1
+  %conv8 = sext i8 %13 to i32
+  %14 = load i32, i32* %separator, align 4
+  %cmp9 = icmp ne i32 %conv8, %14
+  br i1 %cmp9, label %if.then11, label %if.else19
 
-if.then6:                                         ; preds = %if.else
-  %11 = load i8*, i8** %regexp.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.27, i64 0, i64 0), i8* %11)
-  br label %if.end32
+if.then11:                                        ; preds = %if.else
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call12 = call i8* @getExecutableName()
+  %call13 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %15, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call12, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %16 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %17 = load i8*, i8** %regexp.addr, align 8
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %16, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.32, i64 0, i64 0), i8* %17)
+  %18 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call15 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %18)
+  %19 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool16 = trunc i8 %19 to i1
+  br i1 %tobool16, label %if.then17, label %if.end18
 
-if.else7:                                         ; preds = %if.else
-  %12 = load i8**, i8*** %name.addr, align 8
-  %13 = load i8*, i8** %12, align 8
-  %call8 = call i8* @scanSeparators(i8* %13, i32 0)
-  store i8* %call8, i8** %third, align 8
-  %14 = load i8**, i8*** %name.addr, align 8
-  %15 = load i8*, i8** %14, align 8
-  %16 = load i8, i8* %15, align 1
-  %conv9 = sext i8 %16 to i32
-  %cmp10 = icmp ne i32 %conv9, 0
-  br i1 %cmp10, label %land.lhs.true, label %if.end
+if.then17:                                        ; preds = %if.then11
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-land.lhs.true:                                    ; preds = %if.else7
-  %17 = load i8**, i8*** %name.addr, align 8
-  %18 = load i8*, i8** %17, align 8
-  %19 = load i8**, i8*** %name.addr, align 8
-  %20 = load i8*, i8** %19, align 8
-  %call12 = call i64 @strlen(i8* %20)
-  %sub = sub i64 %call12, 1
-  %arrayidx13 = getelementptr inbounds i8, i8* %18, i64 %sub
-  %21 = load i8, i8* %arrayidx13, align 1
-  %conv14 = sext i8 %21 to i32
-  %cmp15 = icmp eq i32 %conv14, 92
-  br i1 %cmp15, label %if.then17, label %if.end
+if.end18:                                         ; preds = %if.then11
+  br label %if.end59
 
-if.then17:                                        ; preds = %land.lhs.true
+if.else19:                                        ; preds = %if.else
+  %20 = load i8**, i8*** %name.addr, align 8
+  %21 = load i8*, i8** %20, align 8
+  %call20 = call i8* @scanSeparators(i8* %21, i32 0)
+  store i8* %call20, i8** %third, align 8
   %22 = load i8**, i8*** %name.addr, align 8
   %23 = load i8*, i8** %22, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.28, i64 0, i64 0), i8* %23)
-  br label %if.end
+  %24 = load i8, i8* %23, align 1
+  %conv21 = sext i8 %24 to i32
+  %cmp22 = icmp ne i32 %conv21, 0
+  br i1 %cmp22, label %land.lhs.true, label %if.end37
 
-if.end:                                           ; preds = %if.then17, %land.lhs.true, %if.else7
-  %24 = load i8*, i8** %third, align 8
-  %25 = load i8, i8* %24, align 1
-  %conv18 = sext i8 %25 to i32
-  %26 = load i32, i32* %separator, align 4
-  %cmp19 = icmp ne i32 %conv18, %26
-  br i1 %cmp19, label %if.then21, label %if.else22
+land.lhs.true:                                    ; preds = %if.else19
+  %25 = load i8**, i8*** %name.addr, align 8
+  %26 = load i8*, i8** %25, align 8
+  %27 = load i8**, i8*** %name.addr, align 8
+  %28 = load i8*, i8** %27, align 8
+  %call24 = call i64 @strlen(i8* %28)
+  %sub = sub i64 %call24, 1
+  %arrayidx25 = getelementptr inbounds i8, i8* %26, i64 %sub
+  %29 = load i8, i8* %arrayidx25, align 1
+  %conv26 = sext i8 %29 to i32
+  %cmp27 = icmp eq i32 %conv26, 92
+  br i1 %cmp27, label %if.then29, label %if.end37
 
-if.then21:                                        ; preds = %if.end
-  %27 = load i8*, i8** %regexp.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.29, i64 0, i64 0), i8* %27)
-  br label %if.end31
+if.then29:                                        ; preds = %land.lhs.true
+  %30 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call30 = call i8* @getExecutableName()
+  %call31 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %30, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call30, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %31 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %32 = load i8**, i8*** %name.addr, align 8
+  %33 = load i8*, i8** %32, align 8
+  %call32 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %31, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.33, i64 0, i64 0), i8* %33)
+  %34 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call33 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %34)
+  %35 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool34 = trunc i8 %35 to i1
+  br i1 %tobool34, label %if.then35, label %if.end36
 
-if.else22:                                        ; preds = %if.end
-  %28 = load i8*, i8** %third, align 8
-  %call23 = call i8* @scanSeparators(i8* %28, i32 0)
-  store i8* %call23, i8** %fourth, align 8
-  %29 = load i8*, i8** %fourth, align 8
-  %30 = load i8, i8* %29, align 1
-  %conv24 = sext i8 %30 to i32
-  %31 = load i32, i32* %separator, align 4
-  %cmp25 = icmp eq i32 %conv24, %31
-  br i1 %cmp25, label %if.then27, label %if.else29
+if.then35:                                        ; preds = %if.then29
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.then27:                                        ; preds = %if.else22
-  %32 = load i8*, i8** %third, align 8
-  %33 = load i8**, i8*** %kinds.addr, align 8
-  store i8* %32, i8** %33, align 8
-  %34 = load i8*, i8** %fourth, align 8
-  %call28 = call i8* @scanSeparators(i8* %34, i32 0)
-  %35 = load i8*, i8** %fourth, align 8
-  %36 = load i8**, i8*** %flags.addr, align 8
-  store i8* %35, i8** %36, align 8
-  br label %if.end30
+if.end36:                                         ; preds = %if.then29
+  br label %if.end37
 
-if.else29:                                        ; preds = %if.else22
-  %37 = load i8*, i8** %third, align 8
-  %38 = load i8**, i8*** %flags.addr, align 8
-  store i8* %37, i8** %38, align 8
-  %39 = load i8**, i8*** %kinds.addr, align 8
-  store i8* null, i8** %39, align 8
-  br label %if.end30
+if.end37:                                         ; preds = %if.end36, %land.lhs.true, %if.else19
+  %36 = load i8*, i8** %third, align 8
+  %37 = load i8, i8* %36, align 1
+  %conv38 = sext i8 %37 to i32
+  %38 = load i32, i32* %separator, align 4
+  %cmp39 = icmp ne i32 %conv38, %38
+  br i1 %cmp39, label %if.then41, label %if.else49
 
-if.end30:                                         ; preds = %if.else29, %if.then27
+if.then41:                                        ; preds = %if.end37
+  %39 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call42 = call i8* @getExecutableName()
+  %call43 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %39, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call42, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %40 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %41 = load i8*, i8** %regexp.addr, align 8
+  %call44 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %40, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.34, i64 0, i64 0), i8* %41)
+  %42 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call45 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %42)
+  %43 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool46 = trunc i8 %43 to i1
+  br i1 %tobool46, label %if.then47, label %if.end48
+
+if.then47:                                        ; preds = %if.then41
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end48:                                         ; preds = %if.then41
+  br label %if.end58
+
+if.else49:                                        ; preds = %if.end37
+  %44 = load i8*, i8** %third, align 8
+  %call50 = call i8* @scanSeparators(i8* %44, i32 0)
+  store i8* %call50, i8** %fourth, align 8
+  %45 = load i8*, i8** %fourth, align 8
+  %46 = load i8, i8* %45, align 1
+  %conv51 = sext i8 %46 to i32
+  %47 = load i32, i32* %separator, align 4
+  %cmp52 = icmp eq i32 %conv51, %47
+  br i1 %cmp52, label %if.then54, label %if.else56
+
+if.then54:                                        ; preds = %if.else49
+  %48 = load i8*, i8** %third, align 8
+  %49 = load i8**, i8*** %kinds.addr, align 8
+  store i8* %48, i8** %49, align 8
+  %50 = load i8*, i8** %fourth, align 8
+  %call55 = call i8* @scanSeparators(i8* %50, i32 0)
+  %51 = load i8*, i8** %fourth, align 8
+  %52 = load i8**, i8*** %flags.addr, align 8
+  store i8* %51, i8** %52, align 8
+  br label %if.end57
+
+if.else56:                                        ; preds = %if.else49
+  %53 = load i8*, i8** %third, align 8
+  %54 = load i8**, i8*** %flags.addr, align 8
+  store i8* %53, i8** %54, align 8
+  %55 = load i8**, i8*** %kinds.addr, align 8
+  store i8* null, i8** %55, align 8
+  br label %if.end57
+
+if.end57:                                         ; preds = %if.else56, %if.then54
   store i8 1, i8* %result, align 1
-  br label %if.end31
+  br label %if.end58
 
-if.end31:                                         ; preds = %if.end30, %if.then21
-  br label %if.end32
+if.end58:                                         ; preds = %if.end57, %if.end48
+  br label %if.end59
 
-if.end32:                                         ; preds = %if.end31, %if.then6
-  br label %if.end33
+if.end59:                                         ; preds = %if.end58, %if.end18
+  br label %if.end60
 
-if.end33:                                         ; preds = %if.end32, %if.then
-  %40 = load i8, i8* %result, align 1
-  %tobool = trunc i8 %40 to i1
-  ret i1 %tobool
+if.end60:                                         ; preds = %if.end59, %if.end
+  %56 = load i8, i8* %result, align 1
+  %tobool61 = trunc i8 %56 to i1
+  ret i1 %tobool61
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -5430,7 +5720,7 @@ entry:
   %1 = bitcast i8* %0 to i64*
   store i64* %1, i64** %bfields, align 8
   %2 = load i8*, i8** %v.addr, align 8
-  %call = call i32 @strcmp(i8* %2, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.43, i64 0, i64 0))
+  %call = call i32 @strcmp(i8* %2, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.48, i64 0, i64 0))
   %cmp = icmp eq i32 %call, 0
   br i1 %cmp, label %if.then, label %if.else
 
@@ -5439,11 +5729,11 @@ if.then:                                          ; preds = %entry
   %4 = load i64, i64* %3, align 8
   %or = or i64 %4, 1
   store i64 %or, i64* %3, align 8
-  br label %if.end24
+  br label %if.end28
 
 if.else:                                          ; preds = %entry
   %5 = load i8*, i8** %v.addr, align 8
-  %call1 = call i32 @strcmp(i8* %5, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.44, i64 0, i64 0))
+  %call1 = call i32 @strcmp(i8* %5, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.49, i64 0, i64 0))
   %cmp2 = icmp eq i32 %call1, 0
   br i1 %cmp2, label %if.then3, label %if.else5
 
@@ -5452,11 +5742,11 @@ if.then3:                                         ; preds = %if.else
   %7 = load i64, i64* %6, align 8
   %or4 = or i64 %7, 5
   store i64 %or4, i64* %6, align 8
-  br label %if.end23
+  br label %if.end27
 
 if.else5:                                         ; preds = %if.else
   %8 = load i8*, i8** %v.addr, align 8
-  %call6 = call i32 @strcmp(i8* %8, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.45, i64 0, i64 0))
+  %call6 = call i32 @strcmp(i8* %8, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.50, i64 0, i64 0))
   %cmp7 = icmp eq i32 %call6, 0
   br i1 %cmp7, label %if.then8, label %if.else10
 
@@ -5465,11 +5755,11 @@ if.then8:                                         ; preds = %if.else5
   %10 = load i64, i64* %9, align 8
   %or9 = or i64 %10, 2
   store i64 %or9, i64* %9, align 8
-  br label %if.end22
+  br label %if.end26
 
 if.else10:                                        ; preds = %if.else5
   %11 = load i8*, i8** %v.addr, align 8
-  %call11 = call i32 @strcmp(i8* %11, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.46, i64 0, i64 0))
+  %call11 = call i32 @strcmp(i8* %11, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.51, i64 0, i64 0))
   %cmp12 = icmp eq i32 %call11, 0
   br i1 %cmp12, label %if.then13, label %if.else15
 
@@ -5478,11 +5768,11 @@ if.then13:                                        ; preds = %if.else10
   %13 = load i64, i64* %12, align 8
   %or14 = or i64 %13, 8
   store i64 %or14, i64* %12, align 8
-  br label %if.end21
+  br label %if.end25
 
 if.else15:                                        ; preds = %if.else10
   %14 = load i8*, i8** %v.addr, align 8
-  %call16 = call i32 @strcmp(i8* %14, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.47, i64 0, i64 0))
+  %call16 = call i32 @strcmp(i8* %14, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.52, i64 0, i64 0))
   %cmp17 = icmp eq i32 %call16, 0
   br i1 %cmp17, label %if.then18, label %if.else20
 
@@ -5494,23 +5784,31 @@ if.then18:                                        ; preds = %if.else15
   br label %if.end
 
 if.else20:                                        ; preds = %if.else15
-  %17 = load i8*, i8** %v.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([62 x i8], [62 x i8]* @.str.48, i64 0, i64 0), i8* %17)
-  br label %if.end
+  %17 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call21 = call i8* @getExecutableName()
+  %call22 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %17, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call21, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %18 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %19 = load i8*, i8** %v.addr, align 8
+  %call23 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %18, i8* getelementptr inbounds ([62 x i8], [62 x i8]* @.str.53, i64 0, i64 0), i8* %19)
+  %20 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call24 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %20)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end:                                           ; preds = %if.else20, %if.then18
-  br label %if.end21
+if.end:                                           ; preds = %if.then18
+  br label %if.end25
 
-if.end21:                                         ; preds = %if.end, %if.then13
-  br label %if.end22
+if.end25:                                         ; preds = %if.end, %if.then13
+  br label %if.end26
 
-if.end22:                                         ; preds = %if.end21, %if.then8
-  br label %if.end23
+if.end26:                                         ; preds = %if.end25, %if.then8
+  br label %if.end27
 
-if.end23:                                         ; preds = %if.end22, %if.then3
-  br label %if.end24
+if.end27:                                         ; preds = %if.end26, %if.then3
+  br label %if.end28
 
-if.end24:                                         ; preds = %if.end23, %if.then
+if.end28:                                         ; preds = %if.end27, %if.then
   ret void
 }
 
@@ -5549,38 +5847,70 @@ entry:
   store %struct.extraFlagData* %1, %struct.extraFlagData** %xdata, align 8
   %2 = load i8*, i8** %v.addr, align 8
   %tobool = icmp ne i8* %2, null
-  br i1 %tobool, label %if.end, label %if.then
+  br i1 %tobool, label %if.end6, label %if.then
 
 if.then:                                          ; preds = %entry
-  %3 = load i8*, i8** %s.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.52, i64 0, i64 0), i8* %3)
-  br label %if.end5
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call = call i8* @getExecutableName()
+  %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %5 = load i8*, i8** %s.addr, align 8
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %4, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.57, i64 0, i64 0), i8* %5)
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %6)
+  %7 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool4 = trunc i8 %7 to i1
+  br i1 %tobool4, label %if.then5, label %if.end
 
-if.end:                                           ; preds = %entry
-  %4 = load i8*, i8** %v.addr, align 8
-  %5 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
-  %owner = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %5, i32 0, i32 1
-  %6 = load i32, i32* %owner, align 4
-  %call = call i32 @getXtagTypeForNameAndLanguage(i8* %4, i32 %6)
-  %7 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
-  %xtype = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %7, i32 0, i32 0
-  store i32 %call, i32* %xtype, align 4
-  %8 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
-  %xtype1 = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %8, i32 0, i32 0
-  %9 = load i32, i32* %xtype1, align 4
-  %cmp = icmp eq i32 %9, -1
-  br i1 %cmp, label %if.then2, label %if.end5
+if.then5:                                         ; preds = %if.then
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.then2:                                         ; preds = %if.end
-  %10 = load i8*, i8** %v.addr, align 8
+if.end:                                           ; preds = %if.then
+  br label %if.end19
+
+if.end6:                                          ; preds = %entry
+  %8 = load i8*, i8** %v.addr, align 8
+  %9 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
+  %owner = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %9, i32 0, i32 1
+  %10 = load i32, i32* %owner, align 4
+  %call7 = call i32 @getXtagTypeForNameAndLanguage(i8* %8, i32 %10)
   %11 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
-  %owner3 = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %11, i32 0, i32 1
-  %12 = load i32, i32* %owner3, align 4
-  %call4 = call i8* @getLanguageName(i32 %12)
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.53, i64 0, i64 0), i8* %10, i8* %call4)
-  br label %if.end5
+  %xtype = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %11, i32 0, i32 0
+  store i32 %call7, i32* %xtype, align 4
+  %12 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
+  %xtype8 = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %12, i32 0, i32 0
+  %13 = load i32, i32* %xtype8, align 4
+  %cmp = icmp eq i32 %13, -1
+  br i1 %cmp, label %if.then9, label %if.end19
 
-if.end5:                                          ; preds = %if.then, %if.then2, %if.end
+if.then9:                                         ; preds = %if.end6
+  %14 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call10 = call i8* @getExecutableName()
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %14, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call10, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %16 = load i8*, i8** %v.addr, align 8
+  %17 = load %struct.extraFlagData*, %struct.extraFlagData** %xdata, align 8
+  %owner12 = getelementptr inbounds %struct.extraFlagData, %struct.extraFlagData* %17, i32 0, i32 1
+  %18 = load i32, i32* %owner12, align 4
+  %call13 = call i8* @getLanguageName(i32 %18)
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %15, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.58, i64 0, i64 0), i8* %16, i8* %call13)
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call15 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %19)
+  %20 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool16 = trunc i8 %20 to i1
+  br i1 %tobool16, label %if.then17, label %if.end18
+
+if.then17:                                        ; preds = %if.then9
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end18:                                         ; preds = %if.then9
+  br label %if.end19
+
+if.end19:                                         ; preds = %if.end, %if.end18, %if.end6
   ret void
 }
 
@@ -5607,153 +5937,217 @@ entry:
   store %struct.fieldFlagData* %1, %struct.fieldFlagData** %fdata, align 8
   %2 = load i8*, i8** %v.addr, align 8
   %tobool = icmp ne i8* %2, null
-  br i1 %tobool, label %if.end, label %if.then
+  br i1 %tobool, label %if.end6, label %if.then
 
 if.then:                                          ; preds = %entry
-  %3 = load i8*, i8** %s.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.52, i64 0, i64 0), i8* %3)
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call = call i8* @getExecutableName()
+  %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %5 = load i8*, i8** %s.addr, align 8
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %4, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.57, i64 0, i64 0), i8* %5)
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %6)
+  %7 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool4 = trunc i8 %7 to i1
+  br i1 %tobool4, label %if.then5, label %if.end
+
+if.then5:                                         ; preds = %if.then
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end:                                           ; preds = %if.then
   br label %return
 
-if.end:                                           ; preds = %entry
-  %4 = load i8*, i8** %v.addr, align 8
-  %call = call i8* @strchr(i8* %4, i32 58)
-  store i8* %call, i8** %tmp, align 8
-  %5 = load i8*, i8** %tmp, align 8
-  %cmp = icmp eq i8* %5, null
-  br i1 %cmp, label %if.then2, label %lor.lhs.false
+if.end6:                                          ; preds = %entry
+  %8 = load i8*, i8** %v.addr, align 8
+  %call7 = call i8* @strchr(i8* %8, i32 58)
+  store i8* %call7, i8** %tmp, align 8
+  %9 = load i8*, i8** %tmp, align 8
+  %cmp = icmp eq i8* %9, null
+  br i1 %cmp, label %if.then9, label %lor.lhs.false
 
-lor.lhs.false:                                    ; preds = %if.end
-  %6 = load i8*, i8** %tmp, align 8
-  %7 = load i8*, i8** %v.addr, align 8
-  %cmp1 = icmp eq i8* %6, %7
-  br i1 %cmp1, label %if.then2, label %if.end3
-
-if.then2:                                         ; preds = %lor.lhs.false, %if.end
-  %8 = load i8*, i8** %s.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.57, i64 0, i64 0), i8* %8)
-  br label %return
-
-if.end3:                                          ; preds = %lor.lhs.false
-  %9 = load i8*, i8** %v.addr, align 8
+lor.lhs.false:                                    ; preds = %if.end6
   %10 = load i8*, i8** %tmp, align 8
   %11 = load i8*, i8** %v.addr, align 8
-  %sub.ptr.lhs.cast = ptrtoint i8* %10 to i64
-  %sub.ptr.rhs.cast = ptrtoint i8* %11 to i64
-  %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
-  %call4 = call i8* @eStrndup(i8* %9, i64 %sub.ptr.sub)
-  store i8* %call4, i8** %fname, align 8
-  %12 = load i8*, i8** %fname, align 8
-  %13 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %owner = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %13, i32 0, i32 1
-  %14 = load i32, i32* %owner, align 8
-  %call5 = call i32 @getFieldTypeForNameAndLanguage(i8* %12, i32 %14)
-  store i32 %call5, i32* %ftype, align 4
-  %15 = load i32, i32* %ftype, align 4
-  %cmp6 = icmp eq i32 %15, -1
-  br i1 %cmp6, label %if.then7, label %if.end10
+  %cmp8 = icmp eq i8* %10, %11
+  br i1 %cmp8, label %if.then9, label %if.end17
 
-if.then7:                                         ; preds = %if.end3
-  %16 = load i8*, i8** %fname, align 8
-  %17 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %owner8 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %17, i32 0, i32 1
-  %18 = load i32, i32* %owner8, align 8
-  %call9 = call i8* @getLanguageName(i32 %18)
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.58, i64 0, i64 0), i8* %16, i8* %call9)
-  %19 = load i8*, i8** %fname, align 8
-  call void @eFree(i8* %19)
+if.then9:                                         ; preds = %lor.lhs.false, %if.end6
+  %12 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call10 = call i8* @getExecutableName()
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %12, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call10, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %13 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %14 = load i8*, i8** %s.addr, align 8
+  %call12 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %13, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.62, i64 0, i64 0), i8* %14)
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call13 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %15)
+  %16 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool14 = trunc i8 %16 to i1
+  br i1 %tobool14, label %if.then15, label %if.end16
+
+if.then15:                                        ; preds = %if.then9
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end16:                                         ; preds = %if.then9
   br label %return
 
-if.end10:                                         ; preds = %if.end3
-  %20 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %spec = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %20, i32 0, i32 0
-  %21 = load %struct.sPtrArray*, %struct.sPtrArray** %spec, align 8
-  %tobool11 = icmp ne %struct.sPtrArray* %21, null
-  br i1 %tobool11, label %if.then12, label %if.end24
+if.end17:                                         ; preds = %lor.lhs.false
+  %17 = load i8*, i8** %v.addr, align 8
+  %18 = load i8*, i8** %tmp, align 8
+  %19 = load i8*, i8** %v.addr, align 8
+  %sub.ptr.lhs.cast = ptrtoint i8* %18 to i64
+  %sub.ptr.rhs.cast = ptrtoint i8* %19 to i64
+  %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
+  %call18 = call i8* @eStrndup(i8* %17, i64 %sub.ptr.sub)
+  store i8* %call18, i8** %fname, align 8
+  %20 = load i8*, i8** %fname, align 8
+  %21 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %owner = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %21, i32 0, i32 1
+  %22 = load i32, i32* %owner, align 8
+  %call19 = call i32 @getFieldTypeForNameAndLanguage(i8* %20, i32 %22)
+  store i32 %call19, i32* %ftype, align 4
+  %23 = load i32, i32* %ftype, align 4
+  %cmp20 = icmp eq i32 %23, -1
+  br i1 %cmp20, label %if.then21, label %if.end31
 
-if.then12:                                        ; preds = %if.end10
+if.then21:                                        ; preds = %if.end17
+  %24 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call22 = call i8* @getExecutableName()
+  %call23 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %24, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call22, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %25 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %26 = load i8*, i8** %fname, align 8
+  %27 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %owner24 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %27, i32 0, i32 1
+  %28 = load i32, i32* %owner24, align 8
+  %call25 = call i8* @getLanguageName(i32 %28)
+  %call26 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %25, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.63, i64 0, i64 0), i8* %26, i8* %call25)
+  %29 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call27 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %29)
+  %30 = load i8*, i8** %fname, align 8
+  call void @eFree(i8* %30)
+  %31 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool28 = trunc i8 %31 to i1
+  br i1 %tobool28, label %if.then29, label %if.end30
+
+if.then29:                                        ; preds = %if.then21
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end30:                                         ; preds = %if.then21
+  br label %return
+
+if.end31:                                         ; preds = %if.end17
+  %32 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %spec = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %32, i32 0, i32 0
+  %33 = load %struct.sPtrArray*, %struct.sPtrArray** %spec, align 8
+  %tobool32 = icmp ne %struct.sPtrArray* %33, null
+  br i1 %tobool32, label %if.then33, label %if.end52
+
+if.then33:                                        ; preds = %if.end31
   store i32 0, i32* %i, align 4
   br label %for.cond
 
-for.cond:                                         ; preds = %for.inc, %if.then12
-  %22 = load i32, i32* %i, align 4
-  %23 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %spec13 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %23, i32 0, i32 0
-  %24 = load %struct.sPtrArray*, %struct.sPtrArray** %spec13, align 8
-  %call14 = call i32 @ptrArrayCount(%struct.sPtrArray* %24)
-  %cmp15 = icmp ult i32 %22, %call14
-  br i1 %cmp15, label %for.body, label %for.end
+for.cond:                                         ; preds = %for.inc, %if.then33
+  %34 = load i32, i32* %i, align 4
+  %35 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %spec34 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %35, i32 0, i32 0
+  %36 = load %struct.sPtrArray*, %struct.sPtrArray** %spec34, align 8
+  %call35 = call i32 @ptrArrayCount(%struct.sPtrArray* %36)
+  %cmp36 = icmp ult i32 %34, %call35
+  br i1 %cmp36, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
-  %25 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %spec16 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %25, i32 0, i32 0
-  %26 = load %struct.sPtrArray*, %struct.sPtrArray** %spec16, align 8
-  %27 = load i32, i32* %i, align 4
-  %call17 = call i8* @ptrArrayItem(%struct.sPtrArray* %26, i32 %27)
-  %28 = bitcast i8* %call17 to %struct.fieldPattern*
-  store %struct.fieldPattern* %28, %struct.fieldPattern** %fp, align 8
-  %29 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
-  %ftype18 = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %29, i32 0, i32 0
-  %30 = load i32, i32* %ftype18, align 8
-  %31 = load i32, i32* %ftype, align 4
-  %cmp19 = icmp eq i32 %30, %31
-  br i1 %cmp19, label %if.then20, label %if.end23
+  %37 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %spec37 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %37, i32 0, i32 0
+  %38 = load %struct.sPtrArray*, %struct.sPtrArray** %spec37, align 8
+  %39 = load i32, i32* %i, align 4
+  %call38 = call i8* @ptrArrayItem(%struct.sPtrArray* %38, i32 %39)
+  %40 = bitcast i8* %call38 to %struct.fieldPattern*
+  store %struct.fieldPattern* %40, %struct.fieldPattern** %fp, align 8
+  %41 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
+  %ftype39 = getelementptr inbounds %struct.fieldPattern, %struct.fieldPattern* %41, i32 0, i32 0
+  %42 = load i32, i32* %ftype39, align 8
+  %43 = load i32, i32* %ftype, align 4
+  %cmp40 = icmp eq i32 %42, %43
+  br i1 %cmp40, label %if.then41, label %if.end51
 
-if.then20:                                        ; preds = %for.body
-  %32 = load i8*, i8** %fname, align 8
-  %33 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %owner21 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %33, i32 0, i32 1
-  %34 = load i32, i32* %owner21, align 8
-  %call22 = call i8* @getLanguageName(i32 %34)
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.59, i64 0, i64 0), i8* %32, i8* %call22)
-  %35 = load i8*, i8** %fname, align 8
-  call void @eFree(i8* %35)
+if.then41:                                        ; preds = %for.body
+  %44 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call42 = call i8* @getExecutableName()
+  %call43 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %44, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call42, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %45 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %46 = load i8*, i8** %fname, align 8
+  %47 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %owner44 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %47, i32 0, i32 1
+  %48 = load i32, i32* %owner44, align 8
+  %call45 = call i8* @getLanguageName(i32 %48)
+  %call46 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %45, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.64, i64 0, i64 0), i8* %46, i8* %call45)
+  %49 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call47 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %49)
+  %50 = load i8*, i8** %fname, align 8
+  call void @eFree(i8* %50)
+  %51 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool48 = trunc i8 %51 to i1
+  br i1 %tobool48, label %if.then49, label %if.end50
+
+if.then49:                                        ; preds = %if.then41
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end50:                                         ; preds = %if.then41
   br label %return
 
-if.end23:                                         ; preds = %for.body
+if.end51:                                         ; preds = %for.body
   br label %for.inc
 
-for.inc:                                          ; preds = %if.end23
-  %36 = load i32, i32* %i, align 4
-  %inc = add i32 %36, 1
+for.inc:                                          ; preds = %if.end51
+  %52 = load i32, i32* %i, align 4
+  %inc = add i32 %52, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
 for.end:                                          ; preds = %for.cond
-  br label %if.end24
+  br label %if.end52
 
-if.end24:                                         ; preds = %for.end, %if.end10
-  %37 = load i8*, i8** %fname, align 8
-  call void @eFree(i8* %37)
-  %38 = load i8*, i8** %tmp, align 8
-  %add.ptr = getelementptr inbounds i8, i8* %38, i64 1
+if.end52:                                         ; preds = %for.end, %if.end31
+  %53 = load i8*, i8** %fname, align 8
+  call void @eFree(i8* %53)
+  %54 = load i8*, i8** %tmp, align 8
+  %add.ptr = getelementptr inbounds i8, i8* %54, i64 1
   store i8* %add.ptr, i8** %template, align 8
-  %39 = load i32, i32* %ftype, align 4
-  %40 = load i8*, i8** %template, align 8
-  %call25 = call %struct.fieldPattern* @fieldPatternNew(i32 %39, i8* %40)
-  store %struct.fieldPattern* %call25, %struct.fieldPattern** %fp, align 8
-  %41 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %spec26 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %41, i32 0, i32 0
-  %42 = load %struct.sPtrArray*, %struct.sPtrArray** %spec26, align 8
-  %cmp27 = icmp eq %struct.sPtrArray* %42, null
-  br i1 %cmp27, label %if.then28, label %if.end31
+  %55 = load i32, i32* %ftype, align 4
+  %56 = load i8*, i8** %template, align 8
+  %call53 = call %struct.fieldPattern* @fieldPatternNew(i32 %55, i8* %56)
+  store %struct.fieldPattern* %call53, %struct.fieldPattern** %fp, align 8
+  %57 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %spec54 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %57, i32 0, i32 0
+  %58 = load %struct.sPtrArray*, %struct.sPtrArray** %spec54, align 8
+  %cmp55 = icmp eq %struct.sPtrArray* %58, null
+  br i1 %cmp55, label %if.then56, label %if.end59
 
-if.then28:                                        ; preds = %if.end24
-  %call29 = call %struct.sPtrArray* @ptrArrayNew(void (i8*)* bitcast (void (%struct.fieldPattern*)* @fieldPatternDelete to void (i8*)*))
-  %43 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %spec30 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %43, i32 0, i32 0
-  store %struct.sPtrArray* %call29, %struct.sPtrArray** %spec30, align 8
-  br label %if.end31
+if.then56:                                        ; preds = %if.end52
+  %call57 = call %struct.sPtrArray* @ptrArrayNew(void (i8*)* bitcast (void (%struct.fieldPattern*)* @fieldPatternDelete to void (i8*)*))
+  %59 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %spec58 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %59, i32 0, i32 0
+  store %struct.sPtrArray* %call57, %struct.sPtrArray** %spec58, align 8
+  br label %if.end59
 
-if.end31:                                         ; preds = %if.then28, %if.end24
-  %44 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
-  %spec32 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %44, i32 0, i32 0
-  %45 = load %struct.sPtrArray*, %struct.sPtrArray** %spec32, align 8
-  %46 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
-  %47 = bitcast %struct.fieldPattern* %46 to i8*
-  call void @ptrArrayAdd(%struct.sPtrArray* %45, i8* %47)
+if.end59:                                         ; preds = %if.then56, %if.end52
+  %60 = load %struct.fieldFlagData*, %struct.fieldFlagData** %fdata, align 8
+  %spec60 = getelementptr inbounds %struct.fieldFlagData, %struct.fieldFlagData* %60, i32 0, i32 0
+  %61 = load %struct.sPtrArray*, %struct.sPtrArray** %spec60, align 8
+  %62 = load %struct.fieldPattern*, %struct.fieldPattern** %fp, align 8
+  %63 = bitcast %struct.fieldPattern* %62 to i8*
+  call void @ptrArrayAdd(%struct.sPtrArray* %61, i8* %63)
   br label %return
 
-return:                                           ; preds = %if.end31, %if.then20, %if.then7, %if.then2, %if.then
+return:                                           ; preds = %if.end59, %if.end50, %if.end30, %if.end16, %if.end
   ret void
 }
 
@@ -5813,79 +6207,127 @@ entry:
   store %struct.mGroupSpec* %1, %struct.mGroupSpec** %mgroup, align 8
   %2 = load i8*, i8** %v.addr, align 8
   %tobool = icmp ne i8* %2, null
-  br i1 %tobool, label %if.end, label %if.then
+  br i1 %tobool, label %if.end6, label %if.then
 
 if.then:                                          ; preds = %entry
-  %3 = load i8*, i8** %s.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.52, i64 0, i64 0), i8* %3)
-  br label %if.end15
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call = call i8* @getExecutableName()
+  %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %5 = load i8*, i8** %s.addr, align 8
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %4, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.57, i64 0, i64 0), i8* %5)
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %6)
+  %7 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool4 = trunc i8 %7 to i1
+  br i1 %tobool4, label %if.then5, label %if.end
 
-if.end:                                           ; preds = %entry
-  %4 = load i8*, i8** %v.addr, align 8
-  %5 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forLineNumberDetermination = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %5, i32 0, i32 0
-  %call = call zeroext i1 @strToInt(i8* %4, i32 10, i32* %forLineNumberDetermination)
-  br i1 %call, label %if.else, label %if.then1
+if.then5:                                         ; preds = %if.then
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.then1:                                         ; preds = %if.end
-  %6 = load i8*, i8** %s.addr, align 8
-  %7 = load i8*, i8** %v.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.66, i64 0, i64 0), i8* %6, i8* %7)
-  %8 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forLineNumberDetermination2 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %8, i32 0, i32 0
-  store i32 -1, i32* %forLineNumberDetermination2, align 4
-  br label %if.end9
+if.end:                                           ; preds = %if.then
+  br label %if.end36
 
-if.else:                                          ; preds = %if.end
+if.end6:                                          ; preds = %entry
+  %8 = load i8*, i8** %v.addr, align 8
   %9 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forLineNumberDetermination3 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %9, i32 0, i32 0
-  %10 = load i32, i32* %forLineNumberDetermination3, align 4
-  %cmp = icmp slt i32 %10, 0
-  br i1 %cmp, label %if.then6, label %lor.lhs.false
+  %forLineNumberDetermination = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %9, i32 0, i32 0
+  %call7 = call zeroext i1 @strToInt(i8* %8, i32 10, i32* %forLineNumberDetermination)
+  br i1 %call7, label %if.else, label %if.then8
+
+if.then8:                                         ; preds = %if.end6
+  %10 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call9 = call i8* @getExecutableName()
+  %call10 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call9, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %12 = load i8*, i8** %s.addr, align 8
+  %13 = load i8*, i8** %v.addr, align 8
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %11, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.71, i64 0, i64 0), i8* %12, i8* %13)
+  %14 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call12 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %14)
+  %15 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool13 = trunc i8 %15 to i1
+  br i1 %tobool13, label %if.then14, label %if.end15
+
+if.then14:                                        ; preds = %if.then8
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end15:                                         ; preds = %if.then8
+  %16 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forLineNumberDetermination16 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %16, i32 0, i32 0
+  store i32 -1, i32* %forLineNumberDetermination16, align 4
+  br label %if.end30
+
+if.else:                                          ; preds = %if.end6
+  %17 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forLineNumberDetermination17 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %17, i32 0, i32 0
+  %18 = load i32, i32* %forLineNumberDetermination17, align 4
+  %cmp = icmp slt i32 %18, 0
+  br i1 %cmp, label %if.then20, label %lor.lhs.false
 
 lor.lhs.false:                                    ; preds = %if.else
-  %11 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forLineNumberDetermination4 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %11, i32 0, i32 0
-  %12 = load i32, i32* %forLineNumberDetermination4, align 4
-  %cmp5 = icmp sge i32 %12, 10
-  br i1 %cmp5, label %if.then6, label %if.end8
+  %19 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forLineNumberDetermination18 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %19, i32 0, i32 0
+  %20 = load i32, i32* %forLineNumberDetermination18, align 4
+  %cmp19 = icmp sge i32 %20, 10
+  br i1 %cmp19, label %if.then20, label %if.end29
 
-if.then6:                                         ; preds = %lor.lhs.false, %if.else
-  %13 = load i8*, i8** %s.addr, align 8
-  %14 = load i8*, i8** %v.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.67, i64 0, i64 0), i32 9, i8* %13, i8* %14)
-  %15 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forLineNumberDetermination7 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %15, i32 0, i32 0
-  store i32 -1, i32* %forLineNumberDetermination7, align 4
-  br label %if.end8
+if.then20:                                        ; preds = %lor.lhs.false, %if.else
+  %21 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call21 = call i8* @getExecutableName()
+  %call22 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %21, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call21, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %22 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %23 = load i8*, i8** %s.addr, align 8
+  %24 = load i8*, i8** %v.addr, align 8
+  %call23 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %22, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.72, i64 0, i64 0), i32 9, i8* %23, i8* %24)
+  %25 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call24 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %25)
+  %26 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool25 = trunc i8 %26 to i1
+  br i1 %tobool25, label %if.then26, label %if.end27
 
-if.end8:                                          ; preds = %if.then6, %lor.lhs.false
-  br label %if.end9
+if.then26:                                        ; preds = %if.then20
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end9:                                          ; preds = %if.end8, %if.then1
-  %16 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forLineNumberDetermination10 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %16, i32 0, i32 0
-  %17 = load i32, i32* %forLineNumberDetermination10, align 4
-  %cmp11 = icmp ne i32 %17, -1
-  br i1 %cmp11, label %land.lhs.true, label %if.end15
+if.end27:                                         ; preds = %if.then20
+  %27 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forLineNumberDetermination28 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %27, i32 0, i32 0
+  store i32 -1, i32* %forLineNumberDetermination28, align 4
+  br label %if.end29
 
-land.lhs.true:                                    ; preds = %if.end9
-  %18 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forNextScanning = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %18, i32 0, i32 1
-  %19 = load i32, i32* %forNextScanning, align 4
-  %cmp12 = icmp eq i32 %19, -1
-  br i1 %cmp12, label %if.then13, label %if.end15
+if.end29:                                         ; preds = %if.end27, %lor.lhs.false
+  br label %if.end30
 
-if.then13:                                        ; preds = %land.lhs.true
-  %20 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forNextScanning14 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %20, i32 0, i32 1
-  store i32 0, i32* %forNextScanning14, align 4
-  %21 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %nextFromStart = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %21, i32 0, i32 2
+if.end30:                                         ; preds = %if.end29, %if.end15
+  %28 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forLineNumberDetermination31 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %28, i32 0, i32 0
+  %29 = load i32, i32* %forLineNumberDetermination31, align 4
+  %cmp32 = icmp ne i32 %29, -1
+  br i1 %cmp32, label %land.lhs.true, label %if.end36
+
+land.lhs.true:                                    ; preds = %if.end30
+  %30 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forNextScanning = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %30, i32 0, i32 1
+  %31 = load i32, i32* %forNextScanning, align 4
+  %cmp33 = icmp eq i32 %31, -1
+  br i1 %cmp33, label %if.then34, label %if.end36
+
+if.then34:                                        ; preds = %land.lhs.true
+  %32 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forNextScanning35 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %32, i32 0, i32 1
+  store i32 0, i32* %forNextScanning35, align 4
+  %33 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %nextFromStart = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %33, i32 0, i32 2
   store i8 0, i8* %nextFromStart, align 4
-  br label %if.end15
+  br label %if.end36
 
-if.end15:                                         ; preds = %if.then, %if.then13, %land.lhs.true, %if.end9
+if.end36:                                         ; preds = %if.end, %if.then34, %land.lhs.true, %if.end30
   ret void
 }
 
@@ -5906,97 +6348,145 @@ entry:
   store %struct.mGroupSpec* %1, %struct.mGroupSpec** %mgroup, align 8
   %2 = load i8*, i8** %v.addr, align 8
   %tobool = icmp ne i8* %2, null
-  br i1 %tobool, label %if.end, label %if.then
+  br i1 %tobool, label %if.end6, label %if.then
 
 if.then:                                          ; preds = %entry
-  %3 = load i8*, i8** %s.addr, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.52, i64 0, i64 0), i8* %3)
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call = call i8* @getExecutableName()
+  %call1 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %5 = load i8*, i8** %s.addr, align 8
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %4, i8* getelementptr inbounds ([26 x i8], [26 x i8]* @.str.57, i64 0, i64 0), i8* %5)
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %6)
+  %7 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool4 = trunc i8 %7 to i1
+  br i1 %tobool4, label %if.then5, label %if.end
+
+if.then5:                                         ; preds = %if.then
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end:                                           ; preds = %if.then
   br label %return
 
-if.end:                                           ; preds = %entry
-  %4 = load i8*, i8** %v.addr, align 8
-  %call = call i8* @eStrdup(i8* %4)
-  store i8* %call, i8** %vdup, align 8
-  %5 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %nextFromStart = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %5, i32 0, i32 2
+if.end6:                                          ; preds = %entry
+  %8 = load i8*, i8** %v.addr, align 8
+  %call7 = call i8* @eStrdup(i8* %8)
+  store i8* %call7, i8** %vdup, align 8
+  %9 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %nextFromStart = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %9, i32 0, i32 2
   store i8 0, i8* %nextFromStart, align 4
-  %6 = load i8*, i8** %vdup, align 8
-  %call1 = call i8* @strstr(i8* %6, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.68, i64 0, i64 0))
-  store i8* %call1, i8** %tmp, align 8
-  %tobool2 = icmp ne i8* %call1, null
-  br i1 %tobool2, label %if.then3, label %if.else
+  %10 = load i8*, i8** %vdup, align 8
+  %call8 = call i8* @strstr(i8* %10, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.73, i64 0, i64 0))
+  store i8* %call8, i8** %tmp, align 8
+  %tobool9 = icmp ne i8* %call8, null
+  br i1 %tobool9, label %if.then10, label %if.else
 
-if.then3:                                         ; preds = %if.end
-  %7 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %nextFromStart4 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %7, i32 0, i32 2
-  store i8 1, i8* %nextFromStart4, align 4
-  %8 = load i8*, i8** %tmp, align 8
-  store i8 0, i8* %8, align 1
-  br label %if.end9
+if.then10:                                        ; preds = %if.end6
+  %11 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %nextFromStart11 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %11, i32 0, i32 2
+  store i8 1, i8* %nextFromStart11, align 4
+  %12 = load i8*, i8** %tmp, align 8
+  store i8 0, i8* %12, align 1
+  br label %if.end16
 
-if.else:                                          ; preds = %if.end
-  %9 = load i8*, i8** %vdup, align 8
-  %call5 = call i8* @strstr(i8* %9, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.69, i64 0, i64 0))
-  store i8* %call5, i8** %tmp, align 8
-  %tobool6 = icmp ne i8* %call5, null
-  br i1 %tobool6, label %if.then7, label %if.end8
+if.else:                                          ; preds = %if.end6
+  %13 = load i8*, i8** %vdup, align 8
+  %call12 = call i8* @strstr(i8* %13, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.74, i64 0, i64 0))
+  store i8* %call12, i8** %tmp, align 8
+  %tobool13 = icmp ne i8* %call12, null
+  br i1 %tobool13, label %if.then14, label %if.end15
 
-if.then7:                                         ; preds = %if.else
-  %10 = load i8*, i8** %tmp, align 8
-  store i8 0, i8* %10, align 1
-  br label %if.end8
+if.then14:                                        ; preds = %if.else
+  %14 = load i8*, i8** %tmp, align 8
+  store i8 0, i8* %14, align 1
+  br label %if.end15
 
-if.end8:                                          ; preds = %if.then7, %if.else
-  br label %if.end9
+if.end15:                                         ; preds = %if.then14, %if.else
+  br label %if.end16
 
-if.end9:                                          ; preds = %if.end8, %if.then3
-  %11 = load i8*, i8** %vdup, align 8
-  %12 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forNextScanning = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %12, i32 0, i32 1
-  %call10 = call zeroext i1 @strToInt(i8* %11, i32 10, i32* %forNextScanning)
-  br i1 %call10, label %if.else13, label %if.then11
-
-if.then11:                                        ; preds = %if.end9
-  %13 = load i8*, i8** %s.addr, align 8
-  %14 = load i8*, i8** %vdup, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.66, i64 0, i64 0), i8* %13, i8* %14)
-  %15 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %nextFromStart12 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %15, i32 0, i32 2
-  store i8 0, i8* %nextFromStart12, align 4
-  br label %if.end20
-
-if.else13:                                        ; preds = %if.end9
+if.end16:                                         ; preds = %if.end15, %if.then10
+  %15 = load i8*, i8** %vdup, align 8
   %16 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forNextScanning14 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %16, i32 0, i32 1
-  %17 = load i32, i32* %forNextScanning14, align 4
-  %cmp = icmp slt i32 %17, 0
-  br i1 %cmp, label %if.then17, label %lor.lhs.false
+  %forNextScanning = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %16, i32 0, i32 1
+  %call17 = call zeroext i1 @strToInt(i8* %15, i32 10, i32* %forNextScanning)
+  br i1 %call17, label %if.else27, label %if.then18
 
-lor.lhs.false:                                    ; preds = %if.else13
-  %18 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %forNextScanning15 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %18, i32 0, i32 1
-  %19 = load i32, i32* %forNextScanning15, align 4
-  %cmp16 = icmp sge i32 %19, 10
-  br i1 %cmp16, label %if.then17, label %if.end19
+if.then18:                                        ; preds = %if.end16
+  %17 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call19 = call i8* @getExecutableName()
+  %call20 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %17, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call19, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %18 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %19 = load i8*, i8** %s.addr, align 8
+  %20 = load i8*, i8** %vdup, align 8
+  %call21 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %18, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.71, i64 0, i64 0), i8* %19, i8* %20)
+  %21 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call22 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %21)
+  %22 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool23 = trunc i8 %22 to i1
+  br i1 %tobool23, label %if.then24, label %if.end25
 
-if.then17:                                        ; preds = %lor.lhs.false, %if.else13
-  %20 = load i8*, i8** %s.addr, align 8
-  %21 = load i8*, i8** %vdup, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.67, i64 0, i64 0), i32 9, i8* %20, i8* %21)
-  %22 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
-  %nextFromStart18 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %22, i32 0, i32 2
-  store i8 0, i8* %nextFromStart18, align 4
-  br label %if.end19
+if.then24:                                        ; preds = %if.then18
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end19:                                         ; preds = %if.then17, %lor.lhs.false
-  br label %if.end20
+if.end25:                                         ; preds = %if.then18
+  %23 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %nextFromStart26 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %23, i32 0, i32 2
+  store i8 0, i8* %nextFromStart26, align 4
+  br label %if.end41
 
-if.end20:                                         ; preds = %if.end19, %if.then11
-  %23 = load i8*, i8** %vdup, align 8
-  call void @eFree(i8* %23)
+if.else27:                                        ; preds = %if.end16
+  %24 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forNextScanning28 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %24, i32 0, i32 1
+  %25 = load i32, i32* %forNextScanning28, align 4
+  %cmp = icmp slt i32 %25, 0
+  br i1 %cmp, label %if.then31, label %lor.lhs.false
+
+lor.lhs.false:                                    ; preds = %if.else27
+  %26 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %forNextScanning29 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %26, i32 0, i32 1
+  %27 = load i32, i32* %forNextScanning29, align 4
+  %cmp30 = icmp sge i32 %27, 10
+  br i1 %cmp30, label %if.then31, label %if.end40
+
+if.then31:                                        ; preds = %lor.lhs.false, %if.else27
+  %28 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call32 = call i8* @getExecutableName()
+  %call33 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %28, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call32, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.4, i64 0, i64 0))
+  %29 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %30 = load i8*, i8** %s.addr, align 8
+  %31 = load i8*, i8** %vdup, align 8
+  %call34 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %29, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.72, i64 0, i64 0), i32 9, i8* %30, i8* %31)
+  %32 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call35 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %32)
+  %33 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool36 = trunc i8 %33 to i1
+  br i1 %tobool36, label %if.then37, label %if.end38
+
+if.then37:                                        ; preds = %if.then31
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end38:                                         ; preds = %if.then31
+  %34 = load %struct.mGroupSpec*, %struct.mGroupSpec** %mgroup, align 8
+  %nextFromStart39 = getelementptr inbounds %struct.mGroupSpec, %struct.mGroupSpec* %34, i32 0, i32 2
+  store i8 0, i8* %nextFromStart39, align 4
+  br label %if.end40
+
+if.end40:                                         ; preds = %if.end38, %lor.lhs.false
+  br label %if.end41
+
+if.end41:                                         ; preds = %if.end40, %if.end25
+  %35 = load i8*, i8** %vdup, align 8
+  call void @eFree(i8* %35)
   br label %return
 
-return:                                           ; preds = %if.end20, %if.then
+return:                                           ; preds = %if.end41, %if.end
   ret void
 }
 
@@ -6029,7 +6519,7 @@ entry:
   store %struct.mTableActionSpec* %3, %struct.mTableActionSpec** %taction, align 8
   store i8 1, i8* %taking_table, align 1
   %4 = load i8*, i8** %s.addr, align 8
-  %call = call i32 @strcmp(i8* %4, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.70, i64 0, i64 0))
+  %call = call i32 @strcmp(i8* %4, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.75, i64 0, i64 0))
   %cmp = icmp eq i32 %call, 0
   br i1 %cmp, label %if.then, label %if.else
 
@@ -6041,7 +6531,7 @@ if.then:                                          ; preds = %entry
 
 if.else:                                          ; preds = %entry
   %6 = load i8*, i8** %s.addr, align 8
-  %call2 = call i32 @strcmp(i8* %6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.73, i64 0, i64 0))
+  %call2 = call i32 @strcmp(i8* %6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.78, i64 0, i64 0))
   %cmp3 = icmp eq i32 %call2, 0
   br i1 %cmp3, label %if.then4, label %if.else6
 
@@ -6054,7 +6544,7 @@ if.then4:                                         ; preds = %if.else
 
 if.else6:                                         ; preds = %if.else
   %8 = load i8*, i8** %s.addr, align 8
-  %call7 = call i32 @strcmp(i8* %8, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.75, i64 0, i64 0))
+  %call7 = call i32 @strcmp(i8* %8, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.80, i64 0, i64 0))
   %cmp8 = icmp eq i32 %call7, 0
   br i1 %cmp8, label %if.then9, label %if.else11
 
@@ -6066,7 +6556,7 @@ if.then9:                                         ; preds = %if.else6
 
 if.else11:                                        ; preds = %if.else6
   %10 = load i8*, i8** %s.addr, align 8
-  %call12 = call i32 @strcmp(i8* %10, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.78, i64 0, i64 0))
+  %call12 = call i32 @strcmp(i8* %10, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.83, i64 0, i64 0))
   %cmp13 = icmp eq i32 %call12, 0
   br i1 %cmp13, label %if.then14, label %if.else16
 
@@ -6078,7 +6568,7 @@ if.then14:                                        ; preds = %if.else11
 
 if.else16:                                        ; preds = %if.else11
   %12 = load i8*, i8** %s.addr, align 8
-  %call17 = call i32 @strcmp(i8* %12, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.80, i64 0, i64 0))
+  %call17 = call i32 @strcmp(i8* %12, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.85, i64 0, i64 0))
   %cmp18 = icmp eq i32 %call17, 0
   br i1 %cmp18, label %if.then19, label %if.end
 
@@ -6104,7 +6594,7 @@ if.end23:                                         ; preds = %if.end22, %if.then4
 if.end24:                                         ; preds = %if.end23, %if.then
   %14 = load i8, i8* %taking_table, align 1
   %tobool = trunc i8 %14 to i1
-  br i1 %tobool, label %if.then25, label %if.end67
+  br i1 %tobool, label %if.then25, label %if.end87
 
 if.then25:                                        ; preds = %if.end24
   store i8* null, i8** %continuation, align 8
@@ -6116,145 +6606,185 @@ lor.lhs.false:                                    ; preds = %if.then25
   %16 = load i8*, i8** %v.addr, align 8
   %17 = load i8, i8* %16, align 1
   %tobool27 = icmp ne i8 %17, 0
-  br i1 %tobool27, label %if.end29, label %if.then28
+  br i1 %tobool27, label %if.end33, label %if.then28
 
 if.then28:                                        ; preds = %lor.lhs.false, %if.then25
-  %18 = load i8*, i8** %s.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.82, i64 0, i64 0), i8* %18)
-  br label %if.end29
+  %18 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call29 = call i8* @getExecutableName()
+  %call30 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %18, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call29, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %20 = load i8*, i8** %s.addr, align 8
+  %call31 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %19, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.87, i64 0, i64 0), i8* %20)
+  %21 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call32 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %21)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end29:                                         ; preds = %if.then28, %lor.lhs.false
-  %19 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %action30 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %19, i32 0, i32 0
-  %20 = load i32, i32* %action30, align 8
-  %cmp31 = icmp eq i32 %20, 1
-  br i1 %cmp31, label %land.lhs.true, label %if.else55
+if.end33:                                         ; preds = %lor.lhs.false
+  %22 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
+  %action34 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %22, i32 0, i32 0
+  %23 = load i32, i32* %action34, align 8
+  %cmp35 = icmp eq i32 %23, 1
+  br i1 %cmp35, label %land.lhs.true, label %if.else71
 
-land.lhs.true:                                    ; preds = %if.end29
-  %21 = load i8*, i8** %v.addr, align 8
-  %call32 = call i8* @strchr(i8* %21, i32 44)
-  store i8* %call32, i8** %continuation, align 8
-  %tobool33 = icmp ne i8* %call32, null
-  br i1 %tobool33, label %if.then34, label %if.else55
-
-if.then34:                                        ; preds = %land.lhs.true
-  %22 = load i8*, i8** %v.addr, align 8
-  %23 = load i8*, i8** %continuation, align 8
+land.lhs.true:                                    ; preds = %if.end33
   %24 = load i8*, i8** %v.addr, align 8
-  %sub.ptr.lhs.cast = ptrtoint i8* %23 to i64
-  %sub.ptr.rhs.cast = ptrtoint i8* %24 to i64
+  %call36 = call i8* @strchr(i8* %24, i32 44)
+  store i8* %call36, i8** %continuation, align 8
+  %tobool37 = icmp ne i8* %call36, null
+  br i1 %tobool37, label %if.then38, label %if.else71
+
+if.then38:                                        ; preds = %land.lhs.true
+  %25 = load i8*, i8** %v.addr, align 8
+  %26 = load i8*, i8** %continuation, align 8
+  %27 = load i8*, i8** %v.addr, align 8
+  %sub.ptr.lhs.cast = ptrtoint i8* %26 to i64
+  %sub.ptr.rhs.cast = ptrtoint i8* %27 to i64
   %sub.ptr.sub = sub i64 %sub.ptr.lhs.cast, %sub.ptr.rhs.cast
-  %call35 = call i8* @eStrndup(i8* %22, i64 %sub.ptr.sub)
-  store i8* %call35, i8** %tableEnterTo, align 8
-  %25 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
-  %lcb = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %25, i32 0, i32 0
-  %26 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb, align 8
-  %27 = load i8*, i8** %tableEnterTo, align 8
-  %call36 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %26, i8* %27)
-  store i32 %call36, i32* %t, align 4
-  %28 = load i32, i32* %t, align 4
-  %cmp37 = icmp slt i32 %28, 0
-  br i1 %cmp37, label %if.then38, label %if.end39
+  %call39 = call i8* @eStrndup(i8* %25, i64 %sub.ptr.sub)
+  store i8* %call39, i8** %tableEnterTo, align 8
+  %28 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
+  %lcb = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %28, i32 0, i32 0
+  %29 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb, align 8
+  %30 = load i8*, i8** %tableEnterTo, align 8
+  %call40 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %29, i8* %30)
+  store i32 %call40, i32* %t, align 4
+  %31 = load i32, i32* %t, align 4
+  %cmp41 = icmp slt i32 %31, 0
+  br i1 %cmp41, label %if.then42, label %if.end47
 
-if.then38:                                        ; preds = %if.then34
-  %29 = load i8*, i8** %tableEnterTo, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.83, i64 0, i64 0), i8* %29)
-  br label %if.end39
+if.then42:                                        ; preds = %if.then38
+  %32 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call43 = call i8* @getExecutableName()
+  %call44 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %32, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call43, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %33 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %34 = load i8*, i8** %tableEnterTo, align 8
+  %call45 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %33, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.88, i64 0, i64 0), i8* %34)
+  %35 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call46 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %35)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end39:                                         ; preds = %if.then38, %if.then34
-  %30 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
-  %lcb40 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %30, i32 0, i32 0
-  %31 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb40, align 8
-  %tables = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %31, i32 0, i32 2
-  %32 = load %struct.sPtrArray*, %struct.sPtrArray** %tables, align 8
-  %33 = load i32, i32* %t, align 4
-  %call41 = call i8* @ptrArrayItem(%struct.sPtrArray* %32, i32 %33)
-  %34 = bitcast i8* %call41 to %struct.regexTable*
-  %35 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %table = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %35, i32 0, i32 1
-  store %struct.regexTable* %34, %struct.regexTable** %table, align 8
-  %36 = load i8*, i8** %tableEnterTo, align 8
-  call void @eFree(i8* %36)
-  %37 = load i8*, i8** %continuation, align 8
-  %add.ptr = getelementptr inbounds i8, i8* %37, i64 1
-  %38 = load i8, i8* %add.ptr, align 1
-  %tobool42 = icmp ne i8 %38, 0
-  br i1 %tobool42, label %if.end44, label %if.then43
+if.end47:                                         ; preds = %if.then38
+  %36 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
+  %lcb48 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %36, i32 0, i32 0
+  %37 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb48, align 8
+  %tables = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %37, i32 0, i32 2
+  %38 = load %struct.sPtrArray*, %struct.sPtrArray** %tables, align 8
+  %39 = load i32, i32* %t, align 4
+  %call49 = call i8* @ptrArrayItem(%struct.sPtrArray* %38, i32 %39)
+  %40 = bitcast i8* %call49 to %struct.regexTable*
+  %41 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
+  %table = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %41, i32 0, i32 1
+  store %struct.regexTable* %40, %struct.regexTable** %table, align 8
+  %42 = load i8*, i8** %tableEnterTo, align 8
+  call void @eFree(i8* %42)
+  %43 = load i8*, i8** %continuation, align 8
+  %add.ptr = getelementptr inbounds i8, i8* %43, i64 1
+  %44 = load i8, i8* %add.ptr, align 1
+  %tobool50 = icmp ne i8 %44, 0
+  br i1 %tobool50, label %if.end56, label %if.then51
 
-if.then43:                                        ; preds = %if.end39
-  %39 = load i8*, i8** %v.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.84, i64 0, i64 0), i8* %39)
-  br label %if.end44
+if.then51:                                        ; preds = %if.end47
+  %45 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call52 = call i8* @getExecutableName()
+  %call53 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %45, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call52, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %46 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %47 = load i8*, i8** %v.addr, align 8
+  %call54 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %46, i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.89, i64 0, i64 0), i8* %47)
+  %48 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call55 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %48)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end44:                                         ; preds = %if.then43, %if.end39
-  %40 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
-  %lcb45 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %40, i32 0, i32 0
-  %41 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb45, align 8
-  %42 = load i8*, i8** %continuation, align 8
-  %add.ptr46 = getelementptr inbounds i8, i8* %42, i64 1
-  %call47 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %41, i8* %add.ptr46)
-  store i32 %call47, i32* %t_cont, align 4
-  %43 = load i32, i32* %t_cont, align 4
-  %cmp48 = icmp slt i32 %43, 0
-  br i1 %cmp48, label %if.then49, label %if.end51
+if.end56:                                         ; preds = %if.end47
+  %49 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
+  %lcb57 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %49, i32 0, i32 0
+  %50 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb57, align 8
+  %51 = load i8*, i8** %continuation, align 8
+  %add.ptr58 = getelementptr inbounds i8, i8* %51, i64 1
+  %call59 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %50, i8* %add.ptr58)
+  store i32 %call59, i32* %t_cont, align 4
+  %52 = load i32, i32* %t_cont, align 4
+  %cmp60 = icmp slt i32 %52, 0
+  br i1 %cmp60, label %if.then61, label %if.end67
 
-if.then49:                                        ; preds = %if.end44
-  %44 = load i8*, i8** %continuation, align 8
-  %add.ptr50 = getelementptr inbounds i8, i8* %44, i64 1
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.85, i64 0, i64 0), i8* %add.ptr50)
-  br label %if.end51
+if.then61:                                        ; preds = %if.end56
+  %53 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call62 = call i8* @getExecutableName()
+  %call63 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %53, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call62, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %54 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %55 = load i8*, i8** %continuation, align 8
+  %add.ptr64 = getelementptr inbounds i8, i8* %55, i64 1
+  %call65 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %54, i8* getelementptr inbounds ([42 x i8], [42 x i8]* @.str.90, i64 0, i64 0), i8* %add.ptr64)
+  %56 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call66 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %56)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
 
-if.end51:                                         ; preds = %if.then49, %if.end44
-  %45 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
-  %lcb52 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %45, i32 0, i32 0
-  %46 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb52, align 8
-  %tables53 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %46, i32 0, i32 2
-  %47 = load %struct.sPtrArray*, %struct.sPtrArray** %tables53, align 8
-  %48 = load i32, i32* %t_cont, align 4
-  %call54 = call i8* @ptrArrayItem(%struct.sPtrArray* %47, i32 %48)
-  %49 = bitcast i8* %call54 to %struct.regexTable*
-  %50 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %continuation_table = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %50, i32 0, i32 2
-  store %struct.regexTable* %49, %struct.regexTable** %continuation_table, align 8
-  br label %if.end66
-
-if.else55:                                        ; preds = %land.lhs.true, %if.end29
-  %51 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
-  %lcb56 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %51, i32 0, i32 0
-  %52 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb56, align 8
-  %53 = load i8*, i8** %v.addr, align 8
-  %call57 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %52, i8* %53)
-  store i32 %call57, i32* %t, align 4
-  %54 = load i32, i32* %t, align 4
-  %cmp58 = icmp slt i32 %54, 0
-  br i1 %cmp58, label %if.then59, label %if.end60
-
-if.then59:                                        ; preds = %if.else55
-  %55 = load i8*, i8** %v.addr, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.83, i64 0, i64 0), i8* %55)
-  br label %if.end60
-
-if.end60:                                         ; preds = %if.then59, %if.else55
-  %56 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
-  %lcb61 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %56, i32 0, i32 0
-  %57 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb61, align 8
-  %tables62 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %57, i32 0, i32 2
-  %58 = load %struct.sPtrArray*, %struct.sPtrArray** %tables62, align 8
-  %59 = load i32, i32* %t, align 4
-  %call63 = call i8* @ptrArrayItem(%struct.sPtrArray* %58, i32 %59)
-  %60 = bitcast i8* %call63 to %struct.regexTable*
-  %61 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %table64 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %61, i32 0, i32 1
-  store %struct.regexTable* %60, %struct.regexTable** %table64, align 8
+if.end67:                                         ; preds = %if.end56
+  %57 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
+  %lcb68 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %57, i32 0, i32 0
+  %58 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb68, align 8
+  %tables69 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %58, i32 0, i32 2
+  %59 = load %struct.sPtrArray*, %struct.sPtrArray** %tables69, align 8
+  %60 = load i32, i32* %t_cont, align 4
+  %call70 = call i8* @ptrArrayItem(%struct.sPtrArray* %59, i32 %60)
+  %61 = bitcast i8* %call70 to %struct.regexTable*
   %62 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
-  %continuation_table65 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %62, i32 0, i32 2
-  store %struct.regexTable* null, %struct.regexTable** %continuation_table65, align 8
-  br label %if.end66
+  %continuation_table = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %62, i32 0, i32 2
+  store %struct.regexTable* %61, %struct.regexTable** %continuation_table, align 8
+  br label %if.end86
 
-if.end66:                                         ; preds = %if.end60, %if.end51
-  br label %if.end67
+if.else71:                                        ; preds = %land.lhs.true, %if.end33
+  %63 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
+  %lcb72 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %63, i32 0, i32 0
+  %64 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb72, align 8
+  %65 = load i8*, i8** %v.addr, align 8
+  %call73 = call i32 @getTableIndexForName(%struct.lregexControlBlock* %64, i8* %65)
+  store i32 %call73, i32* %t, align 4
+  %66 = load i32, i32* %t, align 4
+  %cmp74 = icmp slt i32 %66, 0
+  br i1 %cmp74, label %if.then75, label %if.end80
 
-if.end67:                                         ; preds = %if.end66, %if.end24
+if.then75:                                        ; preds = %if.else71
+  %67 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call76 = call i8* @getExecutableName()
+  %call77 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %67, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call76, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %68 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %69 = load i8*, i8** %v.addr, align 8
+  %call78 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %68, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.88, i64 0, i64 0), i8* %69)
+  %70 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call79 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0), %struct.__sFILE* %70)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #6
+  unreachable
+
+if.end80:                                         ; preds = %if.else71
+  %71 = load %struct.mtableFlagData*, %struct.mtableFlagData** %mdata, align 8
+  %lcb81 = getelementptr inbounds %struct.mtableFlagData, %struct.mtableFlagData* %71, i32 0, i32 0
+  %72 = load %struct.lregexControlBlock*, %struct.lregexControlBlock** %lcb81, align 8
+  %tables82 = getelementptr inbounds %struct.lregexControlBlock, %struct.lregexControlBlock* %72, i32 0, i32 2
+  %73 = load %struct.sPtrArray*, %struct.sPtrArray** %tables82, align 8
+  %74 = load i32, i32* %t, align 4
+  %call83 = call i8* @ptrArrayItem(%struct.sPtrArray* %73, i32 %74)
+  %75 = bitcast i8* %call83 to %struct.regexTable*
+  %76 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
+  %table84 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %76, i32 0, i32 1
+  store %struct.regexTable* %75, %struct.regexTable** %table84, align 8
+  %77 = load %struct.mTableActionSpec*, %struct.mTableActionSpec** %taction, align 8
+  %continuation_table85 = getelementptr inbounds %struct.mTableActionSpec, %struct.mTableActionSpec* %77, i32 0, i32 2
+  store %struct.regexTable* null, %struct.regexTable** %continuation_table85, align 8
+  br label %if.end86
+
+if.end86:                                         ; preds = %if.end80, %if.end67
+  br label %if.end87
+
+if.end87:                                         ; preds = %if.end86, %if.end24
   ret void
 }
 
@@ -6269,7 +6799,7 @@ entry:
   store %struct.__sFILE* %fp, %struct.__sFILE** %fp.addr, align 8
   store i64 %scope, i64* %scope.addr, align 8
   %0 = load %struct.__sFILE*, %struct.__sFILE** %fp.addr, align 8
-  %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.99, i64 0, i64 0))
+  %call = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.104, i64 0, i64 0))
   br label %while.cond
 
 while.cond:                                       ; preds = %if.end, %entry
@@ -6286,7 +6816,7 @@ while.body:                                       ; preds = %while.cond
   %4 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %entry1, align 8
   %name = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %4, i32 0, i32 7
   %5 = load i8*, i8** %name, align 8
-  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.4, i64 0, i64 0), i8* %5)
+  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.8, i64 0, i64 0), i8* %5)
   %6 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %entry1, align 8
   %extensionFields = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %6, i32 0, i32 11
   %scopeIndex = getelementptr inbounds %struct.anon, %struct.anon* %extensionFields, i32 0, i32 7
@@ -6299,7 +6829,7 @@ while.body:                                       ; preds = %while.cond
 
 if.then:                                          ; preds = %while.body
   %9 = load %struct.__sFILE*, %struct.__sFILE** %fp.addr, align 8
-  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %9, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.100, i64 0, i64 0), i32 47)
+  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %9, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.105, i64 0, i64 0), i32 47)
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %while.body
@@ -6307,7 +6837,7 @@ if.end:                                           ; preds = %if.then, %while.bod
 
 while.end:                                        ; preds = %while.cond
   %10 = load %struct.__sFILE*, %struct.__sFILE** %fp.addr, align 8
-  %call8 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.101, i64 0, i64 0))
+  %call8 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0))
   ret void
 }
 
@@ -6360,7 +6890,7 @@ if.end:                                           ; preds = %if.else, %if.then
   %name = getelementptr inbounds %struct.regexTable, %struct.regexTable* %7, i32 0, i32 0
   %8 = load i8*, i8** %name, align 8
   %arraydecay = getelementptr inbounds [2 x i8], [2 x i8]* %tmp, i64 0, i64 0
-  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %6, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.102, i64 0, i64 0), i8* %8, i8* %arraydecay)
+  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %6, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.106, i64 0, i64 0), i8* %8, i8* %arraydecay)
   br label %for.inc
 
 for.inc:                                          ; preds = %if.end
@@ -6371,7 +6901,7 @@ for.inc:                                          ; preds = %if.end
 
 for.end:                                          ; preds = %for.cond
   %10 = load %struct.__sFILE*, %struct.__sFILE** %fp.addr, align 8
-  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.101, i64 0, i64 0))
+  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %10, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0))
   ret void
 }
 
@@ -6381,11 +6911,13 @@ declare void @ptrArrayRemoveLast(%struct.sPtrArray*) #1
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readonly "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #3 = { argmemonly nounwind willreturn }
-attributes #4 = { cold "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #5 = { cold }
-attributes #6 = { nounwind readonly }
+attributes #2 = { noreturn "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind readonly "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #4 = { argmemonly nounwind willreturn }
+attributes #5 = { cold "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #6 = { noreturn }
+attributes #7 = { cold }
+attributes #8 = { nounwind readonly }
 
 !llvm.module.flags = !{!0, !1}
 !llvm.ident = !{!2}
