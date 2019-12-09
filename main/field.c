@@ -977,15 +977,16 @@ extern bool enableField (fieldType type, bool state, bool warnIfFixedField)
 	{
 		getFieldObject(type)->def->enabled = state;
 
-		if (isCommonField (type))
+        if (isCommonField (type)) {
 			iOS_verbose ("enable field \"%s\": %s\n",
 				 getFieldObject(type)->def->name,
 				 (state? "yes": "no"));
-		else
+        } else {
 			iOS_verbose ("enable field \"%s\"<%s>: %s\n",
 				 getFieldObject(type)->def->name,
 				 getLanguageName (getFieldOwner(type)),
 				 (state? "yes": "no"));
+        }
 	}
 	return old;
 }
