@@ -14,96 +14,100 @@ target triple = "arm64-apple-ios11.0.0"
 %struct.sFieldObject = type { %struct.sFieldDefinition*, i8, %struct.sVString*, i8*, i32, i32 }
 %struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
 %struct.sFmtElement = type opaque
-%struct.sTrashBox = type opaque
-%struct.colprintTable = type opaque
-%struct.colprintLine = type opaque
 %struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
 %struct.__sFILEX = type opaque
 %struct.__sbuf = type { i8*, i32 }
+%struct.sTrashBox = type opaque
+%struct.colprintTable = type opaque
+%struct.colprintLine = type opaque
 %struct.sKindDefinition = type { i8, i8, i8*, i8*, i8, i32, %struct.sRoleDesc*, %struct.sScopeSeparator*, i32, i32, i32, %struct.sKindDefinition*, %struct.sKindDefinition* }
 %struct.sRoleDesc = type { i8, i8*, i8* }
 %struct.sScopeSeparator = type { i32, i8* }
 
-@fieldDefinitionsFixed = internal global [3 x %struct.sFieldDefinition] [%struct.sFieldDefinition { i8 78, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.15, i32 0, i32 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.16, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldNameNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldNameNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 70, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.17, i32 0, i32 0), i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.18, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInput, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInputNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInputNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 80, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.19, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldPatternCtags, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldPatternCommon, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldPatternCommon], i1 (%struct.sTagEntryInfo*)* null, i32 5, i32 0 }], align 8
-@fieldDefinitionsExuberant = internal global [13 x %struct.sFieldDefinition] [%struct.sFieldDefinition { i8 67, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.27, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldCompactInputLine, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 97, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.28, i32 0, i32 0), i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.29, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldAccess, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isAccessFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 102, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.30, i32 0, i32 0), i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.31, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldFile, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isFileFieldAvailable, i32 4, i32 0 }, %struct.sFieldDefinition { i8 105, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.32, i32 0, i32 0), i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.33, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInherits, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isInheritsFieldAvailable, i32 5, i32 0 }, %struct.sFieldDefinition { i8 75, i8* null, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.34, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldKindName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 107, i8* null, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.35, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldKindLetter, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 108, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.36, i32 0, i32 0), i8* getelementptr inbounds ([38 x i8], [38 x i8]* @.str.37, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldLanguage, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isLanguageFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 109, i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.38, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.39, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldImplementation, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isImplementationFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 110, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.40, i32 0, i32 0), i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.41, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldLineNumber, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 2, i32 0 }, %struct.sFieldDefinition { i8 83, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.42, i32 0, i32 0), i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.43, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldSignature, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isSignatureFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 115, i8* null, i8* getelementptr inbounds ([64 x i8], [64 x i8]* @.str.44, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScope, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 116, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.45, i32 0, i32 0), i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.46, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldTyperef, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isTyperefFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 122, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.47, i32 0, i32 0), i8* getelementptr inbounds ([97 x i8], [97 x i8]* @.str.48, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldKindName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }], align 8
-@fieldDefinitionsUniversal = internal global [7 x %struct.sFieldDefinition] [%struct.sFieldDefinition { i8 114, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.51, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.52, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldRole, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isRoleFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 82, i8* null, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.53, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldRefMarker, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 90, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.54, i32 0, i32 0), i8* getelementptr inbounds ([90 x i8], [90 x i8]* @.str.55, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScope, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 69, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.56, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.57, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldExtras, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isExtrasFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 120, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.58, i32 0, i32 0), i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.59, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldXpath, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isXpathFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 112, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.60, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.61, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeKindName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 101, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.62, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.63, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldEnd, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isEndFieldAvailable, i32 2, i32 0 }], align 8
+@fieldDefinitionsFixed = internal global [3 x %struct.sFieldDefinition] [%struct.sFieldDefinition { i8 78, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.18, i32 0, i32 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.19, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldNameNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldNameNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 70, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.20, i32 0, i32 0), i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.21, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInput, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInputNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInputNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 80, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.22, i32 0, i32 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.22, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldPatternCtags, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldPatternCommon, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldPatternCommon], i1 (%struct.sTagEntryInfo*)* null, i32 5, i32 0 }], align 8
+@fieldDefinitionsExuberant = internal global [13 x %struct.sFieldDefinition] [%struct.sFieldDefinition { i8 67, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.29, i32 0, i32 0), i8* getelementptr inbounds ([46 x i8], [46 x i8]* @.str.30, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldCompactInputLine, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 97, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.31, i32 0, i32 0), i8* getelementptr inbounds ([36 x i8], [36 x i8]* @.str.32, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldAccess, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isAccessFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 102, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.33, i32 0, i32 0), i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.34, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldFile, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isFileFieldAvailable, i32 4, i32 0 }, %struct.sFieldDefinition { i8 105, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.35, i32 0, i32 0), i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.36, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldInherits, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isInheritsFieldAvailable, i32 5, i32 0 }, %struct.sFieldDefinition { i8 75, i8* null, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.37, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldKindName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 107, i8* null, i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.38, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldKindLetter, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 108, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.39, i32 0, i32 0), i8* getelementptr inbounds ([38 x i8], [38 x i8]* @.str.40, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldLanguage, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isLanguageFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 109, i8* getelementptr inbounds ([15 x i8], [15 x i8]* @.str.41, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.42, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldImplementation, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isImplementationFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 110, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.43, i32 0, i32 0), i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.44, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldLineNumber, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 2, i32 0 }, %struct.sFieldDefinition { i8 83, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.45, i32 0, i32 0), i8* getelementptr inbounds ([56 x i8], [56 x i8]* @.str.46, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldSignature, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isSignatureFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 115, i8* null, i8* getelementptr inbounds ([64 x i8], [64 x i8]* @.str.47, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScope, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 116, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.48, i32 0, i32 0), i8* getelementptr inbounds ([39 x i8], [39 x i8]* @.str.49, i32 0, i32 0), i8 1, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldTyperef, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isTyperefFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 122, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.50, i32 0, i32 0), i8* getelementptr inbounds ([97 x i8], [97 x i8]* @.str.51, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldKindName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }], align 8
+@fieldDefinitionsUniversal = internal global [7 x %struct.sFieldDefinition] [%struct.sFieldDefinition { i8 114, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.54, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.55, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldRole, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isRoleFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 82, i8* null, i8* getelementptr inbounds ([68 x i8], [68 x i8]* @.str.56, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldRefMarker, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 90, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.57, i32 0, i32 0), i8* getelementptr inbounds ([90 x i8], [90 x i8]* @.str.58, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScope, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeNoEscape], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 69, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.59, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.60, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldExtras, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isExtrasFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 120, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.61, i32 0, i32 0), i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.62, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldXpath, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isXpathFieldAvailable, i32 1, i32 0 }, %struct.sFieldDefinition { i8 112, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.63, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.64, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldScopeKindName, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* null, i32 1, i32 0 }, %struct.sFieldDefinition { i8 101, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.65, i32 0, i32 0), i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.66, i32 0, i32 0), i8 0, [5 x i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)*] [i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* @renderFieldEnd, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null, i8* (%struct.sTagEntryInfo*, i8*, %struct.sVString*, i8*)* null], i1 (%struct.sTagEntryInfo*)* @isEndFieldAvailable, i32 2, i32 0 }], align 8
 @fieldObjectAllocated = internal global i32 0, align 4
 @fieldObjects = internal global %struct.sFieldObject* null, align 8
 @fieldObjectUsed = internal global i32 0, align 4
 @.str = private unnamed_addr constant [7 x i8] c"UCTAGS\00", align 1
 @getFieldTypeForNameAndLanguage.initialized = internal global i8 0, align 1
 @Option = external constant %struct.sOptionValues, align 8
-@.str.1 = private unnamed_addr constant [37 x i8] c"Cannot disable fixed field: '%c'{%s}\00", align 1
-@.str.2 = private unnamed_addr constant [33 x i8] c"Cannot disable fixed field: {%s}\00", align 1
-@.str.3 = private unnamed_addr constant [33 x i8] c"Cannot disable fixed field: '%c'\00", align 1
-@.str.4 = private unnamed_addr constant [23 x i8] c"enable field \22%s\22: %s\0A\00", align 1
-@.str.5 = private unnamed_addr constant [4 x i8] c"yes\00", align 1
-@.str.6 = private unnamed_addr constant [3 x i8] c"no\00", align 1
-@.str.7 = private unnamed_addr constant [27 x i8] c"enable field \22%s\22<%s>: %s\0A\00", align 1
-@.str.8 = private unnamed_addr constant [9 x i8] c"L:LETTER\00", align 1
-@.str.9 = private unnamed_addr constant [7 x i8] c"L:NAME\00", align 1
-@.str.10 = private unnamed_addr constant [10 x i8] c"L:ENABLED\00", align 1
-@.str.11 = private unnamed_addr constant [11 x i8] c"L:LANGUAGE\00", align 1
-@.str.12 = private unnamed_addr constant [9 x i8] c"L:JSTYPE\00", align 1
-@.str.13 = private unnamed_addr constant [8 x i8] c"L:FIXED\00", align 1
-@.str.14 = private unnamed_addr constant [14 x i8] c"L:DESCRIPTION\00", align 1
-@.str.15 = private unnamed_addr constant [5 x i8] c"name\00", align 1
-@.str.16 = private unnamed_addr constant [9 x i8] c"tag name\00", align 1
-@.str.17 = private unnamed_addr constant [6 x i8] c"input\00", align 1
-@.str.18 = private unnamed_addr constant [11 x i8] c"input file\00", align 1
-@.str.19 = private unnamed_addr constant [8 x i8] c"pattern\00", align 1
-@.str.20 = private unnamed_addr constant [5 x i8] c"\\x20\00", align 1
-@.str.21 = private unnamed_addr constant [5 x i8] c"\\x21\00", align 1
-@.str.22 = private unnamed_addr constant [59 x i8] c"Unexpected character %#04x included in a tagEntryInfo: %s\0A\00", align 1
-@.str.23 = private unnamed_addr constant [41 x i8] c"File: %s, Line: %lu, Lang: %s, Kind: %c\0A\00", align 1
-@.str.24 = private unnamed_addr constant [22 x i8] c"Escape the character\0A\00", align 1
-@.str.25 = private unnamed_addr constant [3 x i8] c" \09\00", align 1
-@.str.26 = private unnamed_addr constant [8 x i8] c"compact\00", align 1
-@.str.27 = private unnamed_addr constant [46 x i8] c"compact input line (used only in xref output)\00", align 1
-@.str.28 = private unnamed_addr constant [7 x i8] c"access\00", align 1
-@.str.29 = private unnamed_addr constant [36 x i8] c"Access (or export) of class members\00", align 1
-@.str.30 = private unnamed_addr constant [5 x i8] c"file\00", align 1
-@.str.31 = private unnamed_addr constant [24 x i8] c"File-restricted scoping\00", align 1
-@.str.32 = private unnamed_addr constant [9 x i8] c"inherits\00", align 1
-@.str.33 = private unnamed_addr constant [24 x i8] c"Inheritance information\00", align 1
-@.str.34 = private unnamed_addr constant [25 x i8] c"Kind of tag as full name\00", align 1
-@.str.35 = private unnamed_addr constant [31 x i8] c"Kind of tag as a single letter\00", align 1
-@.str.36 = private unnamed_addr constant [9 x i8] c"language\00", align 1
-@.str.37 = private unnamed_addr constant [38 x i8] c"Language of input file containing tag\00", align 1
-@.str.38 = private unnamed_addr constant [15 x i8] c"implementation\00", align 1
-@.str.39 = private unnamed_addr constant [27 x i8] c"Implementation information\00", align 1
-@.str.40 = private unnamed_addr constant [5 x i8] c"line\00", align 1
-@.str.41 = private unnamed_addr constant [30 x i8] c"Line number of tag definition\00", align 1
-@.str.42 = private unnamed_addr constant [10 x i8] c"signature\00", align 1
-@.str.43 = private unnamed_addr constant [56 x i8] c"Signature of routine (e.g. prototype or parameter list)\00", align 1
-@.str.44 = private unnamed_addr constant [64 x i8] c"Scope of tag definition (`p' can be used for printing its kind)\00", align 1
-@.str.45 = private unnamed_addr constant [8 x i8] c"typeref\00", align 1
-@.str.46 = private unnamed_addr constant [39 x i8] c"Type and name of a variable or typedef\00", align 1
-@.str.47 = private unnamed_addr constant [5 x i8] c"kind\00", align 1
-@.str.48 = private unnamed_addr constant [97 x i8] c"Include the \22kind:\22 key in kind field (use k or K) in tags output, kind full name in xref output\00", align 1
+@__stderrp = external global %struct.__sFILE*, align 8
+@.str.1 = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
+@.str.2 = private unnamed_addr constant [10 x i8] c"Warning: \00", align 1
+@.str.3 = private unnamed_addr constant [37 x i8] c"Cannot disable fixed field: '%c'{%s}\00", align 1
+@.str.4 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+@.str.5 = private unnamed_addr constant [33 x i8] c"Cannot disable fixed field: {%s}\00", align 1
+@.str.6 = private unnamed_addr constant [33 x i8] c"Cannot disable fixed field: '%c'\00", align 1
+@.str.7 = private unnamed_addr constant [23 x i8] c"enable field \22%s\22: %s\0A\00", align 1
+@.str.8 = private unnamed_addr constant [4 x i8] c"yes\00", align 1
+@.str.9 = private unnamed_addr constant [3 x i8] c"no\00", align 1
+@.str.10 = private unnamed_addr constant [27 x i8] c"enable field \22%s\22<%s>: %s\0A\00", align 1
+@.str.11 = private unnamed_addr constant [9 x i8] c"L:LETTER\00", align 1
+@.str.12 = private unnamed_addr constant [7 x i8] c"L:NAME\00", align 1
+@.str.13 = private unnamed_addr constant [10 x i8] c"L:ENABLED\00", align 1
+@.str.14 = private unnamed_addr constant [11 x i8] c"L:LANGUAGE\00", align 1
+@.str.15 = private unnamed_addr constant [9 x i8] c"L:JSTYPE\00", align 1
+@.str.16 = private unnamed_addr constant [8 x i8] c"L:FIXED\00", align 1
+@.str.17 = private unnamed_addr constant [14 x i8] c"L:DESCRIPTION\00", align 1
+@.str.18 = private unnamed_addr constant [5 x i8] c"name\00", align 1
+@.str.19 = private unnamed_addr constant [9 x i8] c"tag name\00", align 1
+@.str.20 = private unnamed_addr constant [6 x i8] c"input\00", align 1
+@.str.21 = private unnamed_addr constant [11 x i8] c"input file\00", align 1
+@.str.22 = private unnamed_addr constant [8 x i8] c"pattern\00", align 1
+@.str.23 = private unnamed_addr constant [5 x i8] c"\\x20\00", align 1
+@.str.24 = private unnamed_addr constant [5 x i8] c"\\x21\00", align 1
+@.str.25 = private unnamed_addr constant [59 x i8] c"Unexpected character %#04x included in a tagEntryInfo: %s\0A\00", align 1
+@.str.26 = private unnamed_addr constant [41 x i8] c"File: %s, Line: %lu, Lang: %s, Kind: %c\0A\00", align 1
+@.str.27 = private unnamed_addr constant [22 x i8] c"Escape the character\0A\00", align 1
+@.str.28 = private unnamed_addr constant [3 x i8] c" \09\00", align 1
+@.str.29 = private unnamed_addr constant [8 x i8] c"compact\00", align 1
+@.str.30 = private unnamed_addr constant [46 x i8] c"compact input line (used only in xref output)\00", align 1
+@.str.31 = private unnamed_addr constant [7 x i8] c"access\00", align 1
+@.str.32 = private unnamed_addr constant [36 x i8] c"Access (or export) of class members\00", align 1
+@.str.33 = private unnamed_addr constant [5 x i8] c"file\00", align 1
+@.str.34 = private unnamed_addr constant [24 x i8] c"File-restricted scoping\00", align 1
+@.str.35 = private unnamed_addr constant [9 x i8] c"inherits\00", align 1
+@.str.36 = private unnamed_addr constant [24 x i8] c"Inheritance information\00", align 1
+@.str.37 = private unnamed_addr constant [25 x i8] c"Kind of tag as full name\00", align 1
+@.str.38 = private unnamed_addr constant [31 x i8] c"Kind of tag as a single letter\00", align 1
+@.str.39 = private unnamed_addr constant [9 x i8] c"language\00", align 1
+@.str.40 = private unnamed_addr constant [38 x i8] c"Language of input file containing tag\00", align 1
+@.str.41 = private unnamed_addr constant [15 x i8] c"implementation\00", align 1
+@.str.42 = private unnamed_addr constant [27 x i8] c"Implementation information\00", align 1
+@.str.43 = private unnamed_addr constant [5 x i8] c"line\00", align 1
+@.str.44 = private unnamed_addr constant [30 x i8] c"Line number of tag definition\00", align 1
+@.str.45 = private unnamed_addr constant [10 x i8] c"signature\00", align 1
+@.str.46 = private unnamed_addr constant [56 x i8] c"Signature of routine (e.g. prototype or parameter list)\00", align 1
+@.str.47 = private unnamed_addr constant [64 x i8] c"Scope of tag definition (`p' can be used for printing its kind)\00", align 1
+@.str.48 = private unnamed_addr constant [8 x i8] c"typeref\00", align 1
+@.str.49 = private unnamed_addr constant [39 x i8] c"Type and name of a variable or typedef\00", align 1
+@.str.50 = private unnamed_addr constant [5 x i8] c"kind\00", align 1
+@.str.51 = private unnamed_addr constant [97 x i8] c"Include the \22kind:\22 key in kind field (use k or K) in tags output, kind full name in xref output\00", align 1
 @renderFieldCompactInputLine.tmp = internal global %struct.sVString* null, align 8
-@.str.49 = private unnamed_addr constant [2 x i8] c"-\00", align 1
+@.str.52 = private unnamed_addr constant [2 x i8] c"-\00", align 1
 @renderFieldKindLetter.c = internal global [2 x i8] zeroinitializer, align 1
-@.str.50 = private unnamed_addr constant [4 x i8] c"%ld\00", align 1
-@.str.51 = private unnamed_addr constant [5 x i8] c"role\00", align 1
-@.str.52 = private unnamed_addr constant [5 x i8] c"Role\00", align 1
-@.str.53 = private unnamed_addr constant [68 x i8] c"Marker (R or D) representing whether tag is definition or reference\00", align 1
-@.str.54 = private unnamed_addr constant [6 x i8] c"scope\00", align 1
-@.str.55 = private unnamed_addr constant [90 x i8] c"Include the \22scope:\22 key in scope field (use s) in tags output, scope name in xref output\00", align 1
-@.str.56 = private unnamed_addr constant [7 x i8] c"extras\00", align 1
-@.str.57 = private unnamed_addr constant [27 x i8] c"Extra tag type information\00", align 1
-@.str.58 = private unnamed_addr constant [6 x i8] c"xpath\00", align 1
-@.str.59 = private unnamed_addr constant [18 x i8] c"xpath for the tag\00", align 1
-@.str.60 = private unnamed_addr constant [10 x i8] c"scopeKind\00", align 1
-@.str.61 = private unnamed_addr constant [27 x i8] c"Kind of scope as full name\00", align 1
-@.str.62 = private unnamed_addr constant [4 x i8] c"end\00", align 1
-@.str.63 = private unnamed_addr constant [27 x i8] c"end lines of various items\00", align 1
+@.str.53 = private unnamed_addr constant [4 x i8] c"%ld\00", align 1
+@.str.54 = private unnamed_addr constant [5 x i8] c"role\00", align 1
+@.str.55 = private unnamed_addr constant [5 x i8] c"Role\00", align 1
+@.str.56 = private unnamed_addr constant [68 x i8] c"Marker (R or D) representing whether tag is definition or reference\00", align 1
+@.str.57 = private unnamed_addr constant [6 x i8] c"scope\00", align 1
+@.str.58 = private unnamed_addr constant [90 x i8] c"Include the \22scope:\22 key in scope field (use s) in tags output, scope name in xref output\00", align 1
+@.str.59 = private unnamed_addr constant [7 x i8] c"extras\00", align 1
+@.str.60 = private unnamed_addr constant [27 x i8] c"Extra tag type information\00", align 1
+@.str.61 = private unnamed_addr constant [6 x i8] c"xpath\00", align 1
+@.str.62 = private unnamed_addr constant [18 x i8] c"xpath for the tag\00", align 1
+@.str.63 = private unnamed_addr constant [10 x i8] c"scopeKind\00", align 1
+@.str.64 = private unnamed_addr constant [27 x i8] c"Kind of scope as full name\00", align 1
+@.str.65 = private unnamed_addr constant [4 x i8] c"end\00", align 1
+@.str.66 = private unnamed_addr constant [27 x i8] c"end lines of various items\00", align 1
 @renderFieldRefMarker.c = internal global [2 x i8] zeroinitializer, align 1
 @renderFieldEnd.buf = internal global [16 x i8] zeroinitializer, align 1
-@.str.64 = private unnamed_addr constant [4 x i8] c"%lu\00", align 1
-@.str.65 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
+@.str.67 = private unnamed_addr constant [4 x i8] c"%lu\00", align 1
+@.str.68 = private unnamed_addr constant [5 x i8] c"NONE\00", align 1
 @__const.fieldColprintAddLine.typefields = private unnamed_addr constant [4 x i8] c"---\00", align 1
-@.str.66 = private unnamed_addr constant [4 x i8] c"sib\00", align 1
+@.str.69 = private unnamed_addr constant [4 x i8] c"sib\00", align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @resetFieldOptionsToDefaultValues() #0 {
@@ -840,17 +844,17 @@ entry:
   store i8 %frombool3, i8* %old, align 1
   %4 = load i32, i32* %type.addr, align 4
   %call4 = call zeroext i1 @isFieldFixed(i32 %4)
-  br i1 %call4, label %if.then, label %if.else33
+  br i1 %call4, label %if.then, label %if.else54
 
 if.then:                                          ; preds = %entry
   %5 = load i8, i8* %state.addr, align 1
   %tobool5 = trunc i8 %5 to i1
-  br i1 %tobool5, label %if.end32, label %land.lhs.true
+  br i1 %tobool5, label %if.end53, label %land.lhs.true
 
 land.lhs.true:                                    ; preds = %if.then
   %6 = load i8, i8* %warnIfFixedField.addr, align 1
   %tobool6 = trunc i8 %6 to i1
-  br i1 %tobool6, label %if.then7, label %if.end32
+  br i1 %tobool6, label %if.then7, label %if.end53
 
 if.then7:                                         ; preds = %land.lhs.true
   %7 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
@@ -868,122 +872,186 @@ land.lhs.true9:                                   ; preds = %if.then7
   br i1 %cmp, label %if.then11, label %if.else
 
 if.then11:                                        ; preds = %land.lhs.true9
-  %11 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
-  %letter12 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %11, i32 0, i32 0
-  %12 = load i8, i8* %letter12, align 8
-  %conv13 = zext i8 %12 to i32
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call12 = call i8* @getExecutableName()
+  %call13 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %11, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.1, i64 0, i64 0), i8* %call12, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.2, i64 0, i64 0))
+  %12 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %13 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
-  %name14 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %13, i32 0, i32 1
-  %14 = load i8*, i8** %name14, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.1, i64 0, i64 0), i32 %conv13, i8* %14)
-  br label %if.end31
+  %letter14 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %13, i32 0, i32 0
+  %14 = load i8, i8* %letter14, align 8
+  %conv15 = zext i8 %14 to i32
+  %15 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
+  %name16 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %15, i32 0, i32 1
+  %16 = load i8*, i8** %name16, align 8
+  %call17 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %12, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.3, i64 0, i64 0), i32 %conv15, i8* %16)
+  %17 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call18 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %17)
+  %18 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool19 = trunc i8 %18 to i1
+  br i1 %tobool19, label %if.then20, label %if.end
+
+if.then20:                                        ; preds = %if.then11
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #5
+  unreachable
+
+if.end:                                           ; preds = %if.then11
+  br label %if.end52
 
 if.else:                                          ; preds = %land.lhs.true9, %if.then7
-  %15 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
-  %name15 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %15, i32 0, i32 1
-  %16 = load i8*, i8** %name15, align 8
-  %tobool16 = icmp ne i8* %16, null
-  br i1 %tobool16, label %if.then17, label %if.else19
-
-if.then17:                                        ; preds = %if.else
-  %17 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
-  %name18 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %17, i32 0, i32 1
-  %18 = load i8*, i8** %name18, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.2, i64 0, i64 0), i8* %18)
-  br label %if.end30
-
-if.else19:                                        ; preds = %if.else
   %19 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
-  %letter20 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %19, i32 0, i32 0
-  %20 = load i8, i8* %letter20, align 8
-  %conv21 = zext i8 %20 to i32
-  %cmp22 = icmp ne i32 %conv21, 0
-  br i1 %cmp22, label %if.then24, label %if.else29
+  %name21 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %19, i32 0, i32 1
+  %20 = load i8*, i8** %name21, align 8
+  %tobool22 = icmp ne i8* %20, null
+  br i1 %tobool22, label %if.then23, label %if.else32
 
-if.then24:                                        ; preds = %if.else19
-  %21 = load i32, i32* %type.addr, align 4
-  %call25 = call %struct.sFieldObject* @getFieldObject(i32 %21)
-  %def26 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call25, i32 0, i32 0
-  %22 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def26, align 8
-  %letter27 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %22, i32 0, i32 0
-  %23 = load i8, i8* %letter27, align 8
-  %conv28 = zext i8 %23 to i32
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.3, i64 0, i64 0), i32 %conv28)
-  br label %if.end
+if.then23:                                        ; preds = %if.else
+  %21 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call24 = call i8* @getExecutableName()
+  %call25 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %21, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.1, i64 0, i64 0), i8* %call24, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.2, i64 0, i64 0))
+  %22 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %23 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
+  %name26 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %23, i32 0, i32 1
+  %24 = load i8*, i8** %name26, align 8
+  %call27 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %22, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.5, i64 0, i64 0), i8* %24)
+  %25 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call28 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %25)
+  %26 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool29 = trunc i8 %26 to i1
+  br i1 %tobool29, label %if.then30, label %if.end31
 
-if.else29:                                        ; preds = %if.else19
+if.then30:                                        ; preds = %if.then23
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #5
+  unreachable
+
+if.end31:                                         ; preds = %if.then23
+  br label %if.end51
+
+if.else32:                                        ; preds = %if.else
+  %27 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def, align 8
+  %letter33 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %27, i32 0, i32 0
+  %28 = load i8, i8* %letter33, align 8
+  %conv34 = zext i8 %28 to i32
+  %cmp35 = icmp ne i32 %conv34, 0
+  br i1 %cmp35, label %if.then37, label %if.else49
+
+if.then37:                                        ; preds = %if.else32
+  %29 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call38 = call i8* @getExecutableName()
+  %call39 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %29, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.1, i64 0, i64 0), i8* %call38, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.2, i64 0, i64 0))
+  %30 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %31 = load i32, i32* %type.addr, align 4
+  %call40 = call %struct.sFieldObject* @getFieldObject(i32 %31)
+  %def41 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call40, i32 0, i32 0
+  %32 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def41, align 8
+  %letter42 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %32, i32 0, i32 0
+  %33 = load i8, i8* %letter42, align 8
+  %conv43 = zext i8 %33 to i32
+  %call44 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %30, i8* getelementptr inbounds ([33 x i8], [33 x i8]* @.str.6, i64 0, i64 0), i32 %conv43)
+  %34 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call45 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %34)
+  %35 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool46 = trunc i8 %35 to i1
+  br i1 %tobool46, label %if.then47, label %if.end48
+
+if.then47:                                        ; preds = %if.then37
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #5
+  unreachable
+
+if.end48:                                         ; preds = %if.then37
+  br label %if.end50
+
+if.else49:                                        ; preds = %if.else32
   br label %do.body
 
-do.body:                                          ; preds = %if.else29
+do.body:                                          ; preds = %if.else49
   br label %do.end
 
 do.end:                                           ; preds = %do.body
-  br label %if.end
+  br label %if.end50
 
-if.end:                                           ; preds = %do.end, %if.then24
-  br label %if.end30
+if.end50:                                         ; preds = %do.end, %if.end48
+  br label %if.end51
 
-if.end30:                                         ; preds = %if.end, %if.then17
-  br label %if.end31
+if.end51:                                         ; preds = %if.end50, %if.end31
+  br label %if.end52
 
-if.end31:                                         ; preds = %if.end30, %if.then11
-  br label %if.end32
+if.end52:                                         ; preds = %if.end51, %if.end
+  br label %if.end53
 
-if.end32:                                         ; preds = %if.end31, %land.lhs.true, %if.then
-  br label %if.end56
+if.end53:                                         ; preds = %if.end52, %land.lhs.true, %if.then
+  br label %if.end85
 
-if.else33:                                        ; preds = %entry
-  %24 = load i8, i8* %state.addr, align 1
-  %tobool34 = trunc i8 %24 to i1
-  %25 = load i32, i32* %type.addr, align 4
-  %call35 = call %struct.sFieldObject* @getFieldObject(i32 %25)
-  %def36 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call35, i32 0, i32 0
-  %26 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def36, align 8
-  %enabled37 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %26, i32 0, i32 3
-  %frombool38 = zext i1 %tobool34 to i8
-  store i8 %frombool38, i8* %enabled37, align 8
-  %27 = load i32, i32* %type.addr, align 4
-  %call39 = call zeroext i1 @isCommonField(i32 %27)
-  br i1 %call39, label %if.then40, label %if.else46
+if.else54:                                        ; preds = %entry
+  %36 = load i8, i8* %state.addr, align 1
+  %tobool55 = trunc i8 %36 to i1
+  %37 = load i32, i32* %type.addr, align 4
+  %call56 = call %struct.sFieldObject* @getFieldObject(i32 %37)
+  %def57 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call56, i32 0, i32 0
+  %38 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def57, align 8
+  %enabled58 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %38, i32 0, i32 3
+  %frombool59 = zext i1 %tobool55 to i8
+  store i8 %frombool59, i8* %enabled58, align 8
+  %39 = load i32, i32* %type.addr, align 4
+  %call60 = call zeroext i1 @isCommonField(i32 %39)
+  br i1 %call60, label %if.then61, label %if.end84
 
-if.then40:                                        ; preds = %if.else33
-  %28 = load i32, i32* %type.addr, align 4
-  %call41 = call %struct.sFieldObject* @getFieldObject(i32 %28)
-  %def42 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call41, i32 0, i32 0
-  %29 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def42, align 8
-  %name43 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %29, i32 0, i32 1
-  %30 = load i8*, i8** %name43, align 8
-  %31 = load i8, i8* %state.addr, align 1
-  %tobool44 = trunc i8 %31 to i1
-  %32 = zext i1 %tobool44 to i64
-  %cond = select i1 %tobool44, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.6, i64 0, i64 0)
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.4, i64 0, i64 0), i8* %30, i8* %cond)
-  br label %if.end55
+if.then61:                                        ; preds = %if.else54
+  %40 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool62 = trunc i8 %40 to i1
+  br i1 %tobool62, label %if.then63, label %if.else70
 
-if.else46:                                        ; preds = %if.else33
-  %33 = load i32, i32* %type.addr, align 4
-  %call47 = call %struct.sFieldObject* @getFieldObject(i32 %33)
-  %def48 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call47, i32 0, i32 0
-  %34 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def48, align 8
-  %name49 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %34, i32 0, i32 1
-  %35 = load i8*, i8** %name49, align 8
-  %36 = load i32, i32* %type.addr, align 4
-  %call50 = call i32 @getFieldOwner(i32 %36)
-  %call51 = call i8* @getLanguageName(i32 %call50)
-  %37 = load i8, i8* %state.addr, align 1
-  %tobool52 = trunc i8 %37 to i1
-  %38 = zext i1 %tobool52 to i64
-  %cond54 = select i1 %tobool52, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.6, i64 0, i64 0)
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.7, i64 0, i64 0), i8* %35, i8* %call51, i8* %cond54)
-  br label %if.end55
+if.then63:                                        ; preds = %if.then61
+  %41 = load i32, i32* %type.addr, align 4
+  %call64 = call %struct.sFieldObject* @getFieldObject(i32 %41)
+  %def65 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call64, i32 0, i32 0
+  %42 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def65, align 8
+  %name66 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %42, i32 0, i32 1
+  %43 = load i8*, i8** %name66, align 8
+  %44 = load i8, i8* %state.addr, align 1
+  %tobool67 = trunc i8 %44 to i1
+  %45 = zext i1 %tobool67 to i64
+  %cond = select i1 %tobool67, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i64 0, i64 0)
+  %call69 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([23 x i8], [23 x i8]* @.str.7, i64 0, i64 0), i8* %43, i8* %cond)
+  br label %if.end83
 
-if.end55:                                         ; preds = %if.else46, %if.then40
-  br label %if.end56
+if.else70:                                        ; preds = %if.then61
+  %46 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool71 = trunc i8 %46 to i1
+  br i1 %tobool71, label %if.then72, label %if.end82
 
-if.end56:                                         ; preds = %if.end55, %if.end32
-  %39 = load i8, i8* %old, align 1
-  %tobool57 = trunc i8 %39 to i1
-  ret i1 %tobool57
+if.then72:                                        ; preds = %if.else70
+  %47 = load i32, i32* %type.addr, align 4
+  %call73 = call %struct.sFieldObject* @getFieldObject(i32 %47)
+  %def74 = getelementptr inbounds %struct.sFieldObject, %struct.sFieldObject* %call73, i32 0, i32 0
+  %48 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %def74, align 8
+  %name75 = getelementptr inbounds %struct.sFieldDefinition, %struct.sFieldDefinition* %48, i32 0, i32 1
+  %49 = load i8*, i8** %name75, align 8
+  %50 = load i32, i32* %type.addr, align 4
+  %call76 = call i32 @getFieldOwner(i32 %50)
+  %call77 = call i8* @getLanguageName(i32 %call76)
+  %51 = load i8, i8* %state.addr, align 1
+  %tobool78 = trunc i8 %51 to i1
+  %52 = zext i1 %tobool78 to i64
+  %cond80 = select i1 %tobool78, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.9, i64 0, i64 0)
+  %call81 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.10, i64 0, i64 0), i8* %49, i8* %call77, i8* %cond80)
+  br label %if.end82
+
+if.end82:                                         ; preds = %if.then72, %if.else70
+  br label %if.end83
+
+if.end83:                                         ; preds = %if.end82, %if.then63
+  br label %if.end84
+
+if.end84:                                         ; preds = %if.end83, %if.else54
+  br label %if.end85
+
+if.end85:                                         ; preds = %if.end84, %if.end53
+  %53 = load i8, i8* %old, align 1
+  %tobool86 = trunc i8 %53 to i1
+  ret i1 %tobool86
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -1004,7 +1072,16 @@ entry:
   ret i1 %tobool1
 }
 
-declare void @error(i32, i8*, ...) #1
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+
+declare i8* @getExecutableName() #1
+
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
+
+declare void @ctags_cleanup(...) #1
+
+; Function Attrs: noreturn
+declare void @exit(i32) #2
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define zeroext i1 @isCommonField(i32 %type) #0 {
@@ -1019,7 +1096,7 @@ entry:
   ret i1 %tobool
 }
 
-declare void @verbose(i8*, ...) #1
+declare i32 @printf(i8*, ...) #1
 
 declare i8* @getLanguageName(i32) #1
 
@@ -1350,7 +1427,7 @@ for.end:                                          ; preds = %do.end, %for.cond
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define %struct.colprintTable* @fieldColprintTableNew() #0 {
 entry:
-  %call = call %struct.colprintTable* (i8*, ...) @colprintTableNew(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.8, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i64 0, i64 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.10, i64 0, i64 0), i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.11, i64 0, i64 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i64 0, i64 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.13, i64 0, i64 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.14, i64 0, i64 0), i8* null)
+  %call = call %struct.colprintTable* (i8*, ...) @colprintTableNew(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.11, i64 0, i64 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.12, i64 0, i64 0), i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.13, i64 0, i64 0), i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.14, i64 0, i64 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i64 0, i64 0), i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.16, i64 0, i64 0), i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.17, i64 0, i64 0), i8* null)
   ret %struct.colprintTable* %call
 }
 
@@ -1449,7 +1526,7 @@ cond.false8:                                      ; preds = %cond.end
   br label %cond.end9
 
 cond.end9:                                        ; preds = %cond.false8, %cond.true7
-  %cond10 = phi i8* [ %12, %cond.true7 ], [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0), %cond.false8 ]
+  %cond10 = phi i8* [ %12, %cond.true7 ], [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0), %cond.false8 ]
   call void @colprintLineAppendColumnCString(%struct.colprintLine* %10, i8* %cond10)
   %13 = load %struct.colprintLine*, %struct.colprintLine** %line, align 8
   %14 = load %struct.sFieldDefinition*, %struct.sFieldDefinition** %fdef, align 8
@@ -1475,7 +1552,7 @@ cond.false15:                                     ; preds = %cond.end9
   br label %cond.end18
 
 cond.end18:                                       ; preds = %cond.false15, %cond.true14
-  %cond19 = phi i8* [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0), %cond.true14 ], [ %call17, %cond.false15 ]
+  %cond19 = phi i8* [ getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0), %cond.true14 ], [ %call17, %cond.false15 ]
   call void @colprintLineAppendColumnCString(%struct.colprintLine* %16, i8* %cond19)
   %21 = bitcast [4 x i8]* %typefields to i8*
   call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 1 %21, i8* align 1 getelementptr inbounds ([4 x i8], [4 x i8]* @__const.fieldColprintAddLine.typefields, i32 0, i32 0), i64 4, i1 false)
@@ -1501,7 +1578,7 @@ for.body:                                         ; preds = %for.cond
 if.then:                                          ; preds = %for.body
   %26 = load i32, i32* %offset, align 4
   %idxprom = zext i32 %26 to i64
-  %arrayidx = getelementptr inbounds [4 x i8], [4 x i8]* @.str.66, i64 0, i64 %idxprom
+  %arrayidx = getelementptr inbounds [4 x i8], [4 x i8]* @.str.69, i64 0, i64 %idxprom
   %27 = load i8, i8* %arrayidx, align 1
   %28 = load i32, i32* %offset, align 4
   %idxprom24 = zext i32 %28 to i64
@@ -1652,13 +1729,13 @@ entry:
   %call3 = call i8* @colprintLineGetColumn(%struct.colprintLine* %3, i32 3)
   store i8* %call3, i8** %b_parser, align 8
   %4 = load i8*, i8** %a_fixed, align 8
-  %call4 = call i32 @strcmp(i8* %4, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
+  %call4 = call i32 @strcmp(i8* %4, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
   %cmp = icmp eq i32 %call4, 0
   br i1 %cmp, label %land.lhs.true, label %if.else33
 
 land.lhs.true:                                    ; preds = %entry
   %5 = load i8*, i8** %b_fixed, align 8
-  %call5 = call i32 @strcmp(i8* %5, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
+  %call5 = call i32 @strcmp(i8* %5, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
   %cmp6 = icmp eq i32 %call5, 0
   br i1 %cmp6, label %if.then, label %if.else33
 
@@ -1758,13 +1835,13 @@ if.else32:                                        ; preds = %if.else
 
 if.else33:                                        ; preds = %land.lhs.true, %entry
   %24 = load i8*, i8** %a_fixed, align 8
-  %call34 = call i32 @strcmp(i8* %24, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
+  %call34 = call i32 @strcmp(i8* %24, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
   %cmp35 = icmp eq i32 %call34, 0
   br i1 %cmp35, label %land.lhs.true37, label %if.else42
 
 land.lhs.true37:                                  ; preds = %if.else33
   %25 = load i8*, i8** %b_fixed, align 8
-  %call38 = call i32 @strcmp(i8* %25, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
+  %call38 = call i32 @strcmp(i8* %25, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
   %cmp39 = icmp ne i32 %call38, 0
   br i1 %cmp39, label %if.then41, label %if.else42
 
@@ -1774,13 +1851,13 @@ if.then41:                                        ; preds = %land.lhs.true37
 
 if.else42:                                        ; preds = %land.lhs.true37, %if.else33
   %26 = load i8*, i8** %a_fixed, align 8
-  %call43 = call i32 @strcmp(i8* %26, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
+  %call43 = call i32 @strcmp(i8* %26, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
   %cmp44 = icmp ne i32 %call43, 0
   br i1 %cmp44, label %land.lhs.true46, label %if.end51
 
 land.lhs.true46:                                  ; preds = %if.else42
   %27 = load i8*, i8** %b_fixed, align 8
-  %call47 = call i32 @strcmp(i8* %27, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
+  %call47 = call i32 @strcmp(i8* %27, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
   %cmp48 = icmp eq i32 %call47, 0
   br i1 %cmp48, label %if.then50, label %if.end51
 
@@ -1796,13 +1873,13 @@ if.end52:                                         ; preds = %if.end51
 
 if.end53:                                         ; preds = %if.end52
   %28 = load i8*, i8** %a_parser, align 8
-  %call54 = call i32 @strcmp(i8* %28, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0))
+  %call54 = call i32 @strcmp(i8* %28, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0))
   %cmp55 = icmp eq i32 %call54, 0
   br i1 %cmp55, label %land.lhs.true57, label %if.else62
 
 land.lhs.true57:                                  ; preds = %if.end53
   %29 = load i8*, i8** %b_parser, align 8
-  %call58 = call i32 @strcmp(i8* %29, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0))
+  %call58 = call i32 @strcmp(i8* %29, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0))
   %cmp59 = icmp ne i32 %call58, 0
   br i1 %cmp59, label %if.then61, label %if.else62
 
@@ -1812,13 +1889,13 @@ if.then61:                                        ; preds = %land.lhs.true57
 
 if.else62:                                        ; preds = %land.lhs.true57, %if.end53
   %30 = load i8*, i8** %a_parser, align 8
-  %call63 = call i32 @strcmp(i8* %30, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0))
+  %call63 = call i32 @strcmp(i8* %30, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0))
   %cmp64 = icmp ne i32 %call63, 0
   br i1 %cmp64, label %land.lhs.true66, label %if.else71
 
 land.lhs.true66:                                  ; preds = %if.else62
   %31 = load i8*, i8** %b_parser, align 8
-  %call67 = call i32 @strcmp(i8* %31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0))
+  %call67 = call i32 @strcmp(i8* %31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0))
   %cmp68 = icmp eq i32 %call67, 0
   br i1 %cmp68, label %if.then70, label %if.else71
 
@@ -1828,13 +1905,13 @@ if.then70:                                        ; preds = %land.lhs.true66
 
 if.else71:                                        ; preds = %land.lhs.true66, %if.else62
   %32 = load i8*, i8** %a_parser, align 8
-  %call72 = call i32 @strcmp(i8* %32, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0))
+  %call72 = call i32 @strcmp(i8* %32, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0))
   %cmp73 = icmp ne i32 %call72, 0
   br i1 %cmp73, label %land.lhs.true75, label %if.else90
 
 land.lhs.true75:                                  ; preds = %if.else71
   %33 = load i8*, i8** %b_parser, align 8
-  %call76 = call i32 @strcmp(i8* %33, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.65, i64 0, i64 0))
+  %call76 = call i32 @strcmp(i8* %33, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.68, i64 0, i64 0))
   %cmp77 = icmp ne i32 %call76, 0
   br i1 %cmp77, label %if.then79, label %if.else90
 
@@ -1920,7 +1997,7 @@ entry:
   %0 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
   %name = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %0, i32 0, i32 7
   %1 = load i8*, i8** %name, align 8
-  %call = call i8* @strpbrk(i8* %1, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.25, i64 0, i64 0))
+  %call = call i8* @strpbrk(i8* %1, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.28, i64 0, i64 0))
   %tobool = icmp ne i8* %call, null
   br i1 %tobool, label %if.then, label %if.end
 
@@ -2023,7 +2100,7 @@ if.then:                                          ; preds = %land.lhs.true
 
 if.end:                                           ; preds = %if.then, %land.lhs.true, %entry
   %7 = load i8*, i8** %f, align 8
-  %call = call i8* @strpbrk(i8* %7, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.25, i64 0, i64 0))
+  %call = call i8* @strpbrk(i8* %7, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.28, i64 0, i64 0))
   %tobool3 = icmp ne i8* %call, null
   br i1 %tobool3, label %if.then4, label %if.end5
 
@@ -2199,7 +2276,7 @@ if.then:                                          ; preds = %lor.lhs.false, %lan
 
 sw.bb:                                            ; preds = %if.then
   %9 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
-  call void @vStringCatS(%struct.sVString* %9, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i64 0, i64 0))
+  call void @vStringCatS(%struct.sVString* %9, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.23, i64 0, i64 0))
   %10 = load i8*, i8** %s.addr, align 8
   %incdec.ptr = getelementptr inbounds i8, i8* %10, i32 1
   store i8* %incdec.ptr, i8** %s.addr, align 8
@@ -2207,7 +2284,7 @@ sw.bb:                                            ; preds = %if.then
 
 sw.bb7:                                           ; preds = %if.then
   %11 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
-  call void @vStringCatS(%struct.sVString* %11, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.21, i64 0, i64 0))
+  call void @vStringCatS(%struct.sVString* %11, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.24, i64 0, i64 0))
   %12 = load i8*, i8** %s.addr, align 8
   %incdec.ptr8 = getelementptr inbounds i8, i8* %12, i32 1
   store i8* %incdec.ptr8, i8** %s.addr, align 8
@@ -2264,39 +2341,63 @@ while.end:                                        ; preds = %land.end
 if.end:                                           ; preds = %while.end, %sw.epilog
   %22 = load i32, i32* %unexpected_byte, align 4
   %tobool17 = icmp ne i32 %22, 0
-  br i1 %tobool17, label %if.then18, label %if.end21
+  br i1 %tobool17, label %if.then18, label %if.end33
 
 if.then18:                                        ; preds = %if.end
   %23 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
   %call = call %struct.sKindDefinition* @getTagKind(%struct.sTagEntryInfo* %23)
   store %struct.sKindDefinition* %call, %struct.sKindDefinition** %kdef, align 8
-  %24 = load i32, i32* %unexpected_byte, align 4
-  %25 = load i8*, i8** %s.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([59 x i8], [59 x i8]* @.str.22, i64 0, i64 0), i32 %24, i8* %25)
-  %26 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %inputFileName = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %26, i32 0, i32 6
-  %27 = load i8*, i8** %inputFileName, align 8
-  %28 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %lineNumber = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %28, i32 0, i32 1
-  %29 = load i64, i64* %lineNumber, align 8
-  %30 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %langType = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %30, i32 0, i32 5
-  %31 = load i32, i32* %langType, align 8
-  %call19 = call i8* @getLanguageName(i32 %31)
-  %32 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
-  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %32, i32 0, i32 1
-  %33 = load i8, i8* %letter, align 1
-  %conv20 = sext i8 %33 to i32
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.23, i64 0, i64 0), i8* %27, i64 %29, i8* %call19, i32 %conv20)
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.24, i64 0, i64 0))
-  br label %if.end21
+  %24 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool19 = trunc i8 %24 to i1
+  br i1 %tobool19, label %if.then20, label %if.end22
 
-if.end21:                                         ; preds = %if.then18, %if.end
-  %34 = load i8*, i8** %s.addr, align 8
-  %35 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %36 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
-  %call22 = call i8* @renderEscapedString(i8* %34, %struct.sTagEntryInfo* %35, %struct.sVString* %36)
-  ret i8* %call22
+if.then20:                                        ; preds = %if.then18
+  %25 = load i32, i32* %unexpected_byte, align 4
+  %26 = load i8*, i8** %s.addr, align 8
+  %call21 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([59 x i8], [59 x i8]* @.str.25, i64 0, i64 0), i32 %25, i8* %26)
+  br label %if.end22
+
+if.end22:                                         ; preds = %if.then20, %if.then18
+  %27 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool23 = trunc i8 %27 to i1
+  br i1 %tobool23, label %if.then24, label %if.end28
+
+if.then24:                                        ; preds = %if.end22
+  %28 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %inputFileName = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %28, i32 0, i32 6
+  %29 = load i8*, i8** %inputFileName, align 8
+  %30 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %lineNumber = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %30, i32 0, i32 1
+  %31 = load i64, i64* %lineNumber, align 8
+  %32 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %langType = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %32, i32 0, i32 5
+  %33 = load i32, i32* %langType, align 8
+  %call25 = call i8* @getLanguageName(i32 %33)
+  %34 = load %struct.sKindDefinition*, %struct.sKindDefinition** %kdef, align 8
+  %letter = getelementptr inbounds %struct.sKindDefinition, %struct.sKindDefinition* %34, i32 0, i32 1
+  %35 = load i8, i8* %letter, align 1
+  %conv26 = sext i8 %35 to i32
+  %call27 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([41 x i8], [41 x i8]* @.str.26, i64 0, i64 0), i8* %29, i64 %31, i8* %call25, i32 %conv26)
+  br label %if.end28
+
+if.end28:                                         ; preds = %if.then24, %if.end22
+  %36 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool29 = trunc i8 %36 to i1
+  br i1 %tobool29, label %if.then30, label %if.end32
+
+if.then30:                                        ; preds = %if.end28
+  %call31 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.27, i64 0, i64 0))
+  br label %if.end32
+
+if.end32:                                         ; preds = %if.then30, %if.end28
+  br label %if.end33
+
+if.end33:                                         ; preds = %if.end32, %if.end
+  %37 = load i8*, i8** %s.addr, align 8
+  %38 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %39 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
+  %call34 = call i8* @renderEscapedString(i8* %37, %struct.sTagEntryInfo* %38, %struct.sVString* %39)
+  ret i8* %call34
 }
 
 declare void @vStringCatS(%struct.sVString*, i8*) #1
@@ -2424,7 +2525,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %4, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %4, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0), %cond.false ]
   %call = call i8* @renderAsIs(%struct.sVString* %0, i8* %cond)
   ret i8* %call
 }
@@ -2465,7 +2566,7 @@ entry:
   %bf.cast = zext i8 %bf.clear to i32
   %tobool = icmp ne i32 %bf.cast, 0
   %3 = zext i1 %tobool to i64
-  %cond = select i1 %tobool, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.30, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0)
+  %cond = select i1 %tobool, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.33, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0)
   %call = call i8* @renderAsIs(%struct.sVString* %0, i8* %cond)
   ret i8* %call
 }
@@ -2517,7 +2618,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %3, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %3, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0), %cond.false ]
   %4 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
   %5 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
   %call = call i8* @renderEscapedString(i8* %cond, %struct.sTagEntryInfo* %4, %struct.sVString* %5)
@@ -2633,7 +2734,7 @@ cond.false:                                       ; preds = %if.end
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %9, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %9, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0), %cond.false ]
   %call4 = call i8* @renderAsIs(%struct.sVString* %7, i8* %cond)
   ret i8* %call4
 }
@@ -2683,7 +2784,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %4, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %4, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0), %cond.false ]
   %call = call i8* @renderAsIs(%struct.sVString* %0, i8* %cond)
   ret i8* %call
 }
@@ -2746,7 +2847,7 @@ if.then:                                          ; preds = %land.lhs.true
 if.end:                                           ; preds = %if.then, %land.lhs.true, %entry
   %arraydecay = getelementptr inbounds [32 x i8], [32 x i8]* %buf, i64 0, i64 0
   %9 = load i64, i64* %ln, align 8
-  %call = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %arraydecay, i64 32, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.50, i64 0, i64 0), i64 %9)
+  %call = call i32 (i8*, i64, i8*, ...) @snprintf(i8* %arraydecay, i64 32, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.53, i64 0, i64 0), i64 %9)
   %10 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
   %arraydecay2 = getelementptr inbounds [32 x i8], [32 x i8]* %buf, i64 0, i64 0
   call void @vStringCatS(%struct.sVString* %10, i8* %arraydecay2)
@@ -2785,7 +2886,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %3, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %3, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0), %cond.false ]
   %4 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
   %5 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
   %call = call i8* @renderEscapedString(i8* %cond, %struct.sTagEntryInfo* %4, %struct.sVString* %5)
@@ -2862,7 +2963,7 @@ entry:
 
 land.lhs.true:                                    ; preds = %entry
   %2 = load i8*, i8** %scope, align 8
-  %call = call i8* @strpbrk(i8* %2, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.25, i64 0, i64 0))
+  %call = call i8* @strpbrk(i8* %2, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.28, i64 0, i64 0))
   %tobool1 = icmp ne i8* %call, null
   br i1 %tobool1, label %if.then, label %if.end
 
@@ -2927,7 +3028,7 @@ cond.false:                                       ; preds = %entry
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i8* [ %3, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.49, i64 0, i64 0), %cond.false ]
+  %cond = phi i8* [ %3, %cond.true ], [ getelementptr inbounds ([2 x i8], [2 x i8]* @.str.52, i64 0, i64 0), %cond.false ]
   %4 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
   %5 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
   %call = call i8* @renderEscapedName(i1 zeroext false, i8* %cond, %struct.sTagEntryInfo* %4, %struct.sVString* %5)
@@ -3007,14 +3108,14 @@ for.body:                                         ; preds = %land.end
 
 lor.lhs.false:                                    ; preds = %for.body
   %7 = load i32, i32* %c, align 4
-  %call = call i32 @isspace(i32 %7) #4
+  %call = call i32 @isspace(i32 %7) #6
   %tobool5 = icmp ne i32 %call, 0
   br i1 %tobool5, label %if.end25, label %if.then
 
 if.then:                                          ; preds = %lor.lhs.false, %for.body
   store i8 1, i8* %lineStarted, align 1
   %8 = load i32, i32* %c, align 4
-  %call6 = call i32 @isspace(i32 %8) #4
+  %call6 = call i32 @isspace(i32 %8) #6
   %tobool7 = icmp ne i32 %call6, 0
   br i1 %tobool7, label %if.then8, label %if.end
 
@@ -3028,7 +3129,7 @@ while.cond:                                       ; preds = %while.body, %if.the
   %conv9 = sext i8 %10 to i32
   store i32 %conv9, i32* %next, align 4
   %11 = load i32, i32* %next, align 4
-  %call10 = call i32 @isspace(i32 %11) #4
+  %call10 = call i32 @isspace(i32 %11) #6
   %tobool11 = icmp ne i32 %call10, 0
   br i1 %tobool11, label %land.rhs12, label %land.end15
 
@@ -3093,7 +3194,7 @@ for.end:                                          ; preds = %land.end
 }
 
 ; Function Attrs: nounwind readonly
-declare i32 @isspace(i32) #2
+declare i32 @isspace(i32) #3
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @vStringPut(%struct.sVString* %string, i32 %c) #0 {
@@ -3160,7 +3261,7 @@ declare i8* @getTagKindName(%struct.sTagEntryInfo*) #1
 declare signext i8 @getTagKindLetter(%struct.sTagEntryInfo*) #1
 
 ; Function Attrs: argmemonly nounwind willreturn
-declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #3
+declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #4
 
 declare i32 @snprintf(i8*, i64, i8*, ...) #1
 
@@ -3518,7 +3619,7 @@ if.then:                                          ; preds = %entry
   %extensionFields1 = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %2, i32 0, i32 11
   %endLine2 = getelementptr inbounds %struct.anon, %struct.anon* %extensionFields1, i32 0, i32 11
   %3 = load i64, i64* %endLine2, align 8
-  %call = call i32 (i8*, i8*, ...) @sprintf(i8* getelementptr inbounds ([16 x i8], [16 x i8]* @renderFieldEnd.buf, i64 0, i64 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.64, i64 0, i64 0), i64 %3)
+  %call = call i32 (i8*, i8*, ...) @sprintf(i8* getelementptr inbounds ([16 x i8], [16 x i8]* @renderFieldEnd.buf, i64 0, i64 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.67, i64 0, i64 0), i64 %3)
   %4 = load %struct.sVString*, %struct.sVString** %b.addr, align 8
   %call3 = call i8* @renderAsIs(%struct.sVString* %4, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @renderFieldEnd.buf, i64 0, i64 0))
   store i8* %call3, i8** %retval, align 8
@@ -3568,15 +3669,17 @@ declare void @colprintLineAppendColumnCString(%struct.colprintLine*, i8*) #1
 declare void @colprintLineAppendColumnBool(%struct.colprintLine*, i1 zeroext) #1
 
 ; Function Attrs: argmemonly nounwind willreturn
-declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #3
+declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #4
 
 declare i8* @colprintLineGetColumn(%struct.colprintLine*, i32) #1
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind readonly "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #3 = { argmemonly nounwind willreturn }
-attributes #4 = { nounwind readonly }
+attributes #2 = { noreturn "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind readonly "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #4 = { argmemonly nounwind willreturn }
+attributes #5 = { noreturn }
+attributes #6 = { nounwind readonly }
 
 !llvm.module.flags = !{!0, !1}
 !llvm.ident = !{!2}

@@ -103,56 +103,8 @@ declare i32* @__error() #1
 
 declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
 
-; Function Attrs: noinline nounwind optnone ssp uwtable
-define void @error(i32 %selection, i8* %format, ...) #0 {
-entry:
-  %selection.addr = alloca i32, align 4
-  %format.addr = alloca i8*, align 8
-  %ap = alloca i8*, align 8
-  %shouldExit = alloca i8, align 1
-  store i32 %selection, i32* %selection.addr, align 4
-  store i8* %format, i8** %format.addr, align 8
-  %ap1 = bitcast i8** %ap to i8*
-  call void @llvm.va_start(i8* %ap1)
-  %0 = load i1 (i32, i8*, i8*, i8*)*, i1 (i32, i8*, i8*, i8*)** @errorPrinter, align 8
-  %1 = load i32, i32* %selection.addr, align 4
-  %2 = load i8*, i8** %format.addr, align 8
-  %3 = load i8*, i8** %ap, align 8
-  %4 = load i8*, i8** @errorPrinterData, align 8
-  %call = call zeroext i1 %0(i32 %1, i8* %2, i8* %3, i8* %4)
-  %frombool = zext i1 %call to i8
-  store i8 %frombool, i8* %shouldExit, align 1
-  %ap2 = bitcast i8** %ap to i8*
-  call void @llvm.va_end(i8* %ap2)
-  %5 = load i8, i8* %shouldExit, align 1
-  %tobool = trunc i8 %5 to i1
-  br i1 %tobool, label %if.then, label %if.end
-
-if.then:                                          ; preds = %entry
-  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
-  call void @exit(i32 1) #4
-  unreachable
-
-if.end:                                           ; preds = %entry
-  ret void
-}
-
-; Function Attrs: nounwind
-declare void @llvm.va_start(i8*) #2
-
-; Function Attrs: nounwind
-declare void @llvm.va_end(i8*) #2
-
-declare void @ctags_cleanup(...) #1
-
-; Function Attrs: noreturn
-declare void @exit(i32) #3
-
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { nounwind }
-attributes #3 = { noreturn "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #4 = { noreturn }
 
 !llvm.module.flags = !{!0, !1}
 !llvm.ident = !{!2}
