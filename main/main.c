@@ -219,15 +219,14 @@ static bool recurseIntoDirectory (const char *const dirName)
 	recursionDepth++;
 
 	bool resize = false;
-	if (isRecursiveLink (dirName))
+    if (isRecursiveLink (dirName)) {
 		iOS_verbose ("ignoring \"%s\" (recursive link)\n", dirName);
-	else if (! Option.recurse)
+    } else if (! Option.recurse) {
 		iOS_verbose ("ignoring \"%s\" (directory)\n", dirName);
-	else if(recursionDepth > Option.maxRecursionDepth)
+    } else if(recursionDepth > Option.maxRecursionDepth) {
 		iOS_verbose ("not descending in directory \"%s\" (depth %u > %u)\n",
 				dirName, recursionDepth, Option.maxRecursionDepth);
-	else
-	{
+    } else {
 		iOS_verbose ("RECURSING into directory \"%s\"\n", dirName);
 #if defined (HAVE_OPENDIR)
 		resize = recurseUsingOpendir (dirName);
@@ -254,11 +253,11 @@ static bool createTagsForEntry (const char *const entryName)
 	fileStatus *status = eStat (entryName);
 
 	Assert (entryName != NULL);
-	if (isExcludedFile (entryName))
+    if (isExcludedFile (entryName)) {
 		iOS_verbose ("excluding \"%s\"\n", entryName);
-	else if (status->isSymbolicLink  &&  ! Option.followLinks)
+    } else if (status->isSymbolicLink  &&  ! Option.followLinks) {
 		iOS_verbose ("ignoring \"%s\" (symbolic link)\n", entryName);
-    else if (! status->exists) {
+    } else if (! status->exists) {
 		// error (WARNING | PERROR, "cannot open input file \"%s\"", entryName);
         fprintf (stderr, "%s: %s", getExecutableName (), "Warning: ");
         fprintf (stderr, "cannot open input file \"%s\"", entryName);
@@ -271,9 +270,9 @@ static bool createTagsForEntry (const char *const entryName)
     }
 	else if (status->isDirectory)
 		resize = recurseIntoDirectory (entryName);
-	else if (! status->isNormalFile)
+    else if (! status->isNormalFile) {
 		iOS_verbose ("ignoring \"%s\" (special file)\n", entryName);
-	else
+    } else
 		resize = parseFile (entryName);
 
 	eStatFree (status);
