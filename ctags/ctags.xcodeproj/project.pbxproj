@@ -43,7 +43,6 @@
 		223948EA20434F75001740E7 /* promise.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948BE20434F72001740E7 /* promise.c */; };
 		223948EB20434F75001740E7 /* portable-scandir.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948BF20434F72001740E7 /* portable-scandir.c */; };
 		223948EC20434F75001740E7 /* writer-etags.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948C020434F72001740E7 /* writer-etags.c */; };
-		223948ED20434F75001740E7 /* trace.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948C120434F73001740E7 /* trace.c */; };
 		223948EE20434F75001740E7 /* dependency.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948C220434F73001740E7 /* dependency.c */; };
 		223948EF20434F75001740E7 /* read.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948C320434F73001740E7 /* read.c */; };
 		223948F020434F75001740E7 /* mbcs.c in Sources */ = {isa = PBXBuildFile; fileRef = 223948C420434F73001740E7 /* mbcs.c */; };
@@ -160,13 +159,8 @@
 		223949D9204353C1001740E7 /* readtags.c in Sources */ = {isa = PBXBuildFile; fileRef = 223949D7204353C1001740E7 /* readtags.c */; };
 		223949DC204353DB001740E7 /* es-lang-c-stdc99.c in Sources */ = {isa = PBXBuildFile; fileRef = 223949DA204353DB001740E7 /* es-lang-c-stdc99.c */; };
 		223949DD204353DB001740E7 /* qualifier.c in Sources */ = {isa = PBXBuildFile; fileRef = 223949DB204353DB001740E7 /* qualifier.c */; settings = {COMPILER_FLAGS = "-I ../read/"; }; };
-		223949E020442A35001740E7 /* ios_system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 223949DF20442A35001740E7 /* ios_system.framework */; };
 		223949E220442A72001740E7 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 223949E120442A72001740E7 /* libiconv.tbd */; };
 		22A0806D2055760C00AC3B4D /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A0806C2055760C00AC3B4D /* libxml2.tbd */; };
-		22A0806E2055762D00AC3B4D /* maven2.c in Sources */ = {isa = PBXBuildFile; fileRef = 223949122043501E001740E7 /* maven2.c */; };
-		22A0806F2055763A00AC3B4D /* dbusintrospect.c in Sources */ = {isa = PBXBuildFile; fileRef = 223949202043501F001740E7 /* dbusintrospect.c */; };
-		22A080702055765A00AC3B4D /* plist.c in Sources */ = {isa = PBXBuildFile; fileRef = 2239491A2043501E001740E7 /* plist.c */; };
-		22A080712055766400AC3B4D /* xslt.c in Sources */ = {isa = PBXBuildFile; fileRef = 2239491C2043501F001740E7 /* xslt.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -355,7 +349,6 @@
 			files = (
 				22A0806D2055760C00AC3B4D /* libxml2.tbd in Frameworks */,
 				223949E220442A72001740E7 /* libiconv.tbd in Frameworks */,
-				223949E020442A35001740E7 /* ios_system.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,7 +686,6 @@
 				223949CD20435346001740E7 /* pod.c in Sources */,
 				223948D520434F75001740E7 /* error.c in Sources */,
 				2239496B20435023001740E7 /* php.c in Sources */,
-				22A0806E2055762D00AC3B4D /* maven2.c in Sources */,
 				2239495920435023001740E7 /* protobuf.c in Sources */,
 				2239497320435023001740E7 /* tcloo.c in Sources */,
 				2239495420435023001740E7 /* vim.c in Sources */,
@@ -734,7 +726,6 @@
 				2239495C20435023001740E7 /* tex.c in Sources */,
 				2239497520435023001740E7 /* perl6.c in Sources */,
 				223949B6204351DB001740E7 /* cxx_debug.c in Sources */,
-				22A0806F2055763A00AC3B4D /* dbusintrospect.c in Sources */,
 				2239496020435023001740E7 /* make.c in Sources */,
 				2239498820435023001740E7 /* fortran.c in Sources */,
 				223949BE204351DB001740E7 /* cxx_parser_variable.c in Sources */,
@@ -742,7 +733,6 @@
 				223949B8204351DB001740E7 /* cxx_subparser.c in Sources */,
 				2239496620435023001740E7 /* myrddin.c in Sources */,
 				2239495220435023001740E7 /* cpreprocessor.c in Sources */,
-				223948ED20434F75001740E7 /* trace.c in Sources */,
 				2239499420435023001740E7 /* rust.c in Sources */,
 				2239498220435023001740E7 /* rst.c in Sources */,
 				223948D620434F75001740E7 /* ptrarray.c in Sources */,
@@ -768,7 +758,6 @@
 				223948D320434F75001740E7 /* writer-ctags.c in Sources */,
 				223948CA20434F74001740E7 /* trashbox.c in Sources */,
 				223948E820434F75001740E7 /* routines.c in Sources */,
-				22A080702055765A00AC3B4D /* plist.c in Sources */,
 				223949DD204353DB001740E7 /* qualifier.c in Sources */,
 				223948D220434F75001740E7 /* xtag.c in Sources */,
 				223949CB20435346001740E7 /* man.c in Sources */,
@@ -782,7 +771,6 @@
 				2239494A20435023001740E7 /* rpmspec.c in Sources */,
 				223949D420435372001740E7 /* debug.c in Sources */,
 				223948F420434F75001740E7 /* htable.c in Sources */,
-				22A080712055766400AC3B4D /* xslt.c in Sources */,
 				223948CF20434F74001740E7 /* param.c in Sources */,
 				223949B2204351DB001740E7 /* cxx_parser_block.c in Sources */,
 				223949B4204351DB001740E7 /* cxx_scope.c in Sources */,
