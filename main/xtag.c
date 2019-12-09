@@ -346,7 +346,7 @@ extern int defineXtag (xtagDefinition *def, langType language)
 
 	updateSiblingXtag (def->xtype, def->name);
 
-	verbose ("Add extra[%d]: %s,%s in %s\n",
+	iOS_verbose ("Add extra[%d]: %s,%s in %s\n",
 			 def->xtype,
 			 def->name, def->description,
 			 getLanguageName (language));

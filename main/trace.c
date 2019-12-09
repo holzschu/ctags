@@ -9,6 +9,7 @@
 
 #include "trace.h"
 
+// iOS: tracing is incompatible with clang, so it is disabled
 #ifdef DO_TRACING
 
 #include "read.h"

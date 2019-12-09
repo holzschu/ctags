@@ -214,8 +214,14 @@ extern void *eMalloc (const size_t size)
 {
 	void *buffer = malloc (size);
 
-	if (buffer == NULL)
-		error (FATAL, "out of memory");
+    if (buffer == NULL) {
+        // error (FATAL, "out of memory");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "out of memory");
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	return buffer;
 }
@@ -224,8 +230,14 @@ extern void *eCalloc (const size_t count, const size_t size)
 {
 	void *buffer = calloc (count, size);
 
-	if (buffer == NULL)
-		error (FATAL, "out of memory");
+    if (buffer == NULL) {
+        // error (FATAL, "out of memory");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "out of memory");
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	return buffer;
 }
@@ -238,8 +250,14 @@ extern void *eRealloc (void *const ptr, const size_t size)
 	else
 	{
 		buffer = realloc (ptr, size);
-		if (buffer == NULL)
-			error (FATAL, "out of memory");
+        if (buffer == NULL) {
+            // error (FATAL, "out of memory");
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "out of memory");
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 	return buffer;
 }
@@ -919,11 +937,25 @@ extern MIO *tempFile (const char *const mode, char **const pName)
 		error (FATAL | PERROR, "cannot assign temporary file name");
 	fd = open (name, O_RDWR | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR);
 #endif
-	if (fd == -1)
-		error (FATAL | PERROR, "cannot open temporary file: %s", name);
+    if (fd == -1) {
+		// error (FATAL | PERROR, "cannot open temporary file: %s", name);
+        fprintf (stderr, "%s: %s", getExecutableName (), "");
+        fprintf (stderr, "cannot open temporary file: %s", name);
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	fp = fdopen (fd, mode);
-	if (fp == NULL)
-		error (FATAL | PERROR, "cannot open temporary file");
+    if (fp == NULL) {
+		// error (FATAL | PERROR, "cannot open temporary file");
+        fprintf (stderr, "%s: %s", getExecutableName (), "");
+        fprintf (stderr, "cannot open temporary file");
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	mio = mio_new_fp (fp, fclose);
 	DebugStatement (
 		debugPrintf (DEBUG_STATUS, "opened temporary file %s\n", name); )

@@ -200,7 +200,7 @@ extern void chooseExclusiveSubparser (subparser *s, void *data)
 		s->chosenAsExclusiveSubparser = true;
 		enterSubparser(s);
 		s->exclusiveSubparserChosenNotify (s, data);
-		verbose ("%s is chosen as exclusive subparser\n",
+		iOS_verbose ("%s is chosen as exclusive subparser\n",
 				 getLanguageName (getSubparserLanguage (s)));
 		leaveSubparser();
 	}

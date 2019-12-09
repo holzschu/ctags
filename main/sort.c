@@ -30,6 +30,8 @@
 #include "read.h"
 #include "routines.h"
 #include "sort.h"
+// iOS:
+#include <errno.h>
 
 /*
 *   FUNCTION DEFINITIONS
@@ -131,7 +133,7 @@ extern void externalSortTags (const bool toStdout, MIO *tagFile)
 			appendCstringWithQuotes (cmd, tagFileName ());
 		}
 #endif
-		verbose ("system (\"%s\")\n", vStringValue (cmd));
+		iOS_verbose ("system (\"%s\")\n", vStringValue (cmd));
 		if (toStdout)
 		{
 			const int fdstdin = fileno(stdin);
@@ -170,10 +172,23 @@ extern void failedSort (MIO *const mio, const char* msg)
 	const char* const cannotSort = "cannot sort tag file";
 	if (mio != NULL)
 		mio_free (mio);
-	if (msg == NULL)
-		error (FATAL | PERROR, "%s", cannotSort);
-	else
-		error (FATAL, "%s: %s", msg, cannotSort);
+    if (msg == NULL) {
+		// error (FATAL | PERROR, "%s", cannotSort);
+        fprintf (stderr, "%s: %s", getExecutableName (), "");
+        fprintf (stderr, "%s", cannotSort);
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+    else {
+		// error (FATAL, "%s: %s", msg, cannotSort);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "%s: %s", msg, cannotSort);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static int compareTagsFolded(const void *const one, const void *const two)

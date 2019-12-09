@@ -793,6 +793,8 @@ int mio_puts (MIO *mio, const char *s)
 	}
 }
 
+// iOS: deactivate all functions with variable parameters for the LLVM interpreter
+#if 0
 /**
  * mio_vprintf:
  * @mio: A #MIO object
@@ -879,7 +881,7 @@ int mio_printf (MIO *mio, const char *format, ...)
 
 	return rv;
 }
-
+#endif
 /**
  * mio_getc:
  * @mio: A #MIO object

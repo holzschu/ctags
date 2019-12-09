@@ -86,7 +86,8 @@ static int printTagField (fmtSpec* fspec, MIO* fp, const tagEntryInfo * tag)
 		str = "";
 
 	if (width)
-		i = mio_printf (fp, fspec->field.raw_fmtstr, width, str);
+		// i = mio_printf (fp, fspec->field.raw_fmtstr, width, str);
+        i = fprintf(mio_file_get_fp(fp), fspec->field.raw_fmtstr, width, str);
 	else
 	{
 		mio_puts (fp, str);
@@ -174,8 +175,14 @@ static fmtElement** queueTagField (fmtElement **last, long width, bool truncatio
 		const char *f;
 
 		language = getLanguageComponentInFieldName (field_name, &f);
-		if (f == NULL)
-			error (FATAL, "No suitable parser for field name: %s", field_name);
+        if (f == NULL) {
+			// error (FATAL, "No suitable parser for field name: %s", field_name);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "No suitable parser for field name: %s", field_name);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		ftype = getFieldTypeForNameAndLanguage (f, language);
 	}
 	else
@@ -186,16 +193,33 @@ static fmtElement** queueTagField (fmtElement **last, long width, bool truncatio
 
 	if (ftype == FIELD_UNKNOWN)
 	{
-		if (field_letter == NUL_FIELD_LETTER)
-			error (FATAL, "No such field name: %s", field_name);
-		else
-			error (FATAL, "No such field letter: %c", field_letter);
+        if (field_letter == NUL_FIELD_LETTER) {
+			// error (FATAL, "No such field name: %s", field_name);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "No such field name: %s", field_name);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
+        else {
+			// error (FATAL, "No such field letter: %c", field_letter);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "No such field letter: %c", field_letter);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 
 	if (!isFieldRenderable (ftype))
 	{
 		Assert (field_letter != NUL_FIELD_LETTER);
-		error (FATAL, "The field cannot be printed in format output: %c", field_letter);
+		// error (FATAL, "The field cannot be printed in format output: %c", field_letter);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "The field cannot be printed in format output: %c", field_letter);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
 	}
 
 	cur = xMalloc (1, fmtElement);
@@ -267,8 +291,14 @@ extern fmtElement *fmtNew (const char*  fmtString)
 					justification_right = -1;
 					i++;
 
-					if (cursor [i] == '\0')
-						error (FATAL, "unexpectedly terminated just after '-': \"%s\"", fmtString);
+                    if (cursor [i] == '\0') {
+						// error (FATAL, "unexpectedly terminated just after '-': \"%s\"", fmtString);
+                        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                        fprintf (stderr, "unexpectedly terminated just after '-': \"%s\"", fmtString);
+                        fputs ("\n", stderr);
+                        ctags_cleanup();
+                        exit (1);
+                    }
 
 				}
 				if (cursor [i] == '.')
@@ -276,8 +306,14 @@ extern fmtElement *fmtNew (const char*  fmtString)
 					truncation = true;
 					i++;
 
-					if (cursor [i] == '\0')
-						error (FATAL, "unexpectedly terminated just after '.': \"%s\"", fmtString);
+                    if (cursor [i] == '\0') {
+						// error (FATAL, "unexpectedly terminated just after '.': \"%s\"", fmtString);
+                        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                        fprintf (stderr, "unexpectedly terminated just after '.': \"%s\"", fmtString);
+                        fputs ("\n", stderr);
+                        ctags_cleanup();
+                        exit (1);
+                    }
 				}
 
 				while ( '0' <= cursor[i] && cursor[i] <= '9' )
@@ -287,18 +323,37 @@ extern fmtElement *fmtNew (const char*  fmtString)
 					vStringPut (width, cursor[i]);
 					i++;
 
-					if (cursor [i] == '\0')
-						error (FATAL, "unexpectedly terminated during parsing column width: \"%s\"", fmtString);
+                    if (cursor [i] == '\0') {
+						// error (FATAL, "unexpectedly terminated during parsing column width: \"%s\"", fmtString);
+                        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                        fprintf (stderr, "unexpectedly terminated during parsing column width: \"%s\"", fmtString);
+                        fputs ("\n", stderr);
+                        ctags_cleanup();
+                        exit (1);
+                    }
 				}
 
-				if (justification_right == -1 && width == NULL)
-					error (FATAL, "no column width given after '-': \"%s\"", fmtString);
+                if (justification_right == -1 && width == NULL) {
+					// error (FATAL, "no column width given after '-': \"%s\"", fmtString);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr, "no column width given after '-': \"%s\"", fmtString);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 
 				column_width = 0;
 				if (width)
 				{
-					if(!strToLong (vStringValue (width), 0, &column_width))
-						error (FATAL | PERROR, "converting failed: %s", vStringValue (width));
+                    if(!strToLong (vStringValue (width), 0, &column_width)) {
+						// error (FATAL | PERROR, "converting failed: %s", vStringValue (width));
+                        fprintf (stderr, "%s: %s", getExecutableName (), "");
+                        fprintf (stderr, "converting failed: %s", vStringValue (width));
+                        fprintf (stderr, " : %s", strerror (errno));
+                        fputs ("\n", stderr);
+                        ctags_cleanup();
+                        exit (1);
+                    }
 					vStringDelete (width);
 					width = NULL;
 					column_width *= justification_right;

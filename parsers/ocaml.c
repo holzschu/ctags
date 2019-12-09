@@ -632,7 +632,7 @@ static void pushContext (contextKind kind, contextType type, parseNext after,
 
 	if (stackIndex >= OCAML_MAX_STACK_SIZE)
 	{
-		verbose ("OCaml Maximum depth reached");
+		iOS_verbose ("OCaml Maximum depth reached");
 		return;
 	}
 

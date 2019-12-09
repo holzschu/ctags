@@ -420,22 +420,22 @@ selectParserForXmlDoc (xmlDocPtr doc,
 
 	unsigned int lang_index;
 
-	verbose ("		Xml[rootElementName]: %s\n",
+	iOS_verbose ("		Xml[rootElementName]: %s\n",
 			 (doc->children && doc->children->name)
 			 ? ((char *)doc->children->name): "-");
-	verbose ("		Xml[nameInDTD]: %s\n",
+	iOS_verbose ("		Xml[nameInDTD]: %s\n",
 			 (doc->intSubset && doc->intSubset->name)
 			 ? ((char *)doc->intSubset->name): "-");
-	verbose ("		Xml[externalID]: %s\n",
+	iOS_verbose ("		Xml[externalID]: %s\n",
 			 (doc->intSubset && doc->intSubset->ExternalID)
 			 ? ((char *)doc->intSubset->ExternalID): "-");
-	verbose ("		Xml[systemID]: %s\n",
+	iOS_verbose ("		Xml[systemID]: %s\n",
 			 (doc->intSubset && doc->intSubset->SystemID)
 			 ? ((char *)doc->intSubset->SystemID): "-");
-	verbose ("		Xml[rootNSPrefix]: %s\n",
+	iOS_verbose ("		Xml[rootNSPrefix]: %s\n",
 			 (doc->children && doc->children->ns && doc->children->ns->prefix)
 			 ? ((char *)doc->children->ns->prefix): "-");
-	verbose ("		Xml[rootNSHref]: %s\n",
+	iOS_verbose ("		Xml[rootNSHref]: %s\n",
 			 (doc->children && doc->children->ns && doc->children->ns->href)
 			 ? ((char *)doc->children->ns->href): "-");
 
@@ -445,7 +445,7 @@ selectParserForXmlDoc (xmlDocPtr doc,
 		xpathFileSpec* spec;
 		unsigned int spec_count;
 
-		verbose ("		lxpath examines %s\n", getLanguageName (candidates[lang_index]));
+		iOS_verbose ("		lxpath examines %s\n", getLanguageName (candidates[lang_index]));
 
 		spec_count = getXpathFileSpecCount (candidates[lang_index]);
 		for (spec_index = 0; spec_index < spec_count; spec_index++)

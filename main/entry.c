@@ -174,8 +174,15 @@ extern const char *tagFileName (void)
 
 extern void abort_if_ferror(MIO *const mio)
 {
-	if (mio_error (mio))
-		error (FATAL | PERROR, "cannot write tag file");
+    if (mio_error (mio)) {
+		// error (FATAL | PERROR, "cannot write tag file");
+        fprintf (stderr, "%s: %s", getExecutableName (), "");
+        fprintf (stderr, "cannot write tag file");
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static void rememberMaxLengths (const size_t nameLength, const size_t lineLength)
@@ -246,9 +253,17 @@ static void updateSortedFlag (
 		{
 			MIOPos nextLine;
 
-			if (mio_getpos (mio, &nextLine) == -1 || mio_setpos (mio, &startOfLine) == -1)
-				error (WARNING, "Failed to update 'sorted' pseudo-tag");
-			else
+            if (mio_getpos (mio, &nextLine) == -1 || mio_setpos (mio, &startOfLine) == -1) {
+				// error (WARNING, "Failed to update 'sorted' pseudo-tag");
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Failed to update 'sorted' pseudo-tag");
+                fputs ("\n", stderr);
+                int shouldExit =  Option.fatalWarnings? true: false;
+                if (shouldExit) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            } else
 			{
 				MIOPos flagLocation;
 				int c, d;
@@ -342,9 +357,14 @@ static bool isCtagsLine (const char *const line)
 	const size_t fieldLength = strlen (line) + 1;
 	char *const fields = xMalloc (NUM_FIELDS * fieldLength, char);
 
-	if (fields == NULL)
-		error (FATAL, "Cannot analyze tag file");
-	else
+    if (fields == NULL) {
+		// error (FATAL, "Cannot analyze tag file");
+        fprintf (stderr, "%s: %s", getExecutableName (), "");
+        fprintf (stderr, "Cannot analyze tag file");
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    } else
 	{
 #define field(x)		(fields + ((size_t) (x) * fieldLength))
 
@@ -438,11 +458,16 @@ extern void openTagFile (void)
 
 		TagFile.name = eStrdup (Option.tagFileName);
 		fileExists = doesFileExist (TagFile.name);
-		if (fileExists  &&  ! isTagFile (TagFile.name))
-			error (FATAL,
-			  "\"%s\" doesn't look like a tag file; I refuse to overwrite it.",
-				  TagFile.name);
-
+        if (fileExists  &&  ! isTagFile (TagFile.name)) {
+			// error (FATAL,
+			//  "\"%s\" doesn't look like a tag file; I refuse to overwrite it.",
+			//	  TagFile.name);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "\"%s\" doesn't look like a tag file; I refuse to overwrite it.", TagFile.name);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		if (Option.etags)
 		{
 			if (Option.append  &&  fileExists)
@@ -469,8 +494,15 @@ extern void openTagFile (void)
 					addCommonPseudoTags ();
 			}
 		}
-		if (TagFile.mio == NULL)
-			error (FATAL | PERROR, "cannot open tag file");
+        if (TagFile.mio == NULL) {
+			// error (FATAL | PERROR, "cannot open tag file");
+            fprintf (stderr, "%s: %s", getExecutableName (), "");
+            fprintf (stderr, "cannot open tag file");
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 
 	if (TagFile.directory == NULL)
@@ -495,8 +527,9 @@ static void copyBytes (MIO* const fromMio, MIO* const toMio, const long size)
 		toRead = (0 < remaining && remaining < BufferSize) ?
 					remaining : (long) BufferSize;
 		numRead = mio_read (fromMio, buffer, (size_t) 1, (size_t) toRead);
-		if (mio_write (toMio, buffer, (size_t)1, (size_t)numRead) < (size_t)numRead)
+        if (mio_write (toMio, buffer, (size_t)1, (size_t)numRead) < (size_t)numRead) {
 			error (FATAL | PERROR, "cannot complete write");
+        }
 		if (remaining > 0)
 			remaining -= numRead;
 	} while (numRead == toRead  &&  remaining != 0);
@@ -573,7 +606,7 @@ static void sortTagFile (void)
 	{
 		if (Option.sorted != SO_UNSORTED)
 		{
-			verbose ("sorting tag file\n");
+			iOS_verbose ("sorting tag file\n");
 #ifdef EXTERNAL_SORT
 			externalSortTags (TagsToStdout, TagFile.mio);
 #else
@@ -624,7 +657,8 @@ static void writeEtagsIncludes (MIO *const mio)
 		for (i = 0  ;  i < stringListCount (Option.etagsInclude)  ;  ++i)
 		{
 			vString *item = stringListItem (Option.etagsInclude, i);
-			mio_printf (mio, "\f\n%s,include\n", vStringValue (item));
+			// mio_printf (mio, "\f\n%s,include\n", vStringValue (item));
+            fprintf(mio_file_get_fp(mio), "\f\n%s,include\n", vStringValue (item));
 		}
 	}
 }
@@ -639,8 +673,15 @@ extern void closeTagFile (const bool resize)
 
 	if ((TagsToStdout && (Option.sorted == SO_UNSORTED)))
 	{
-		if (mio_free (TagFile.mio) != 0)
-			error (FATAL | PERROR, "cannot close tag file");
+        if (mio_free (TagFile.mio) != 0) {
+			// error (FATAL | PERROR, "cannot close tag file");
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "cannot close tag file");
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		goto out;
 	}
 
@@ -650,8 +691,15 @@ extern void closeTagFile (const bool resize)
 	size = mio_tell (TagFile.mio);
 	if (! TagsToStdout)
 		/* The tag file should be closed before resizing. */
-		if (mio_free (TagFile.mio) != 0)
-			error (FATAL | PERROR, "cannot close tag file");
+        if (mio_free (TagFile.mio) != 0) {
+			// error (FATAL | PERROR, "cannot close tag file");
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "cannot close tag file");
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 
 	if (resize  &&  desiredSize < size)
 	{
@@ -663,8 +711,15 @@ extern void closeTagFile (const bool resize)
 	sortTagFile ();
 	if (TagsToStdout)
 	{
-		if (mio_free (TagFile.mio) != 0)
-			error (FATAL | PERROR, "cannot close tag file");
+        if (mio_free (TagFile.mio) != 0) {
+			// error (FATAL | PERROR, "cannot close tag file");
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "cannot close tag file");
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		remove (tagFileName ());  /* remove temporary file */
 	}
 
@@ -885,8 +940,14 @@ static int   makePatternStringCommon (const tagEntryInfo *const tag,
 		return puts_func (vStringValue (cached_pattern), output);
 
 	line = readLineFromBypass (TagFile.vLine, tag->filePosition, NULL);
-	if (line == NULL)
-		error (FATAL, "could not read tag line from %s at line %lu", getInputFileName (),tag->lineNumber);
+    if (line == NULL) {
+		// error (FATAL, "could not read tag line from %s at line %lu", getInputFileName (),tag->lineNumber);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "could not read tag line from %s at line %lu", getInputFileName (),tag->lineNumber);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	if (tag->truncateLineAfterTag)
 		truncateTagLineAfterTag (line, tag->name, false);
 
@@ -1339,9 +1400,18 @@ extern int makeTagEntry (const tagEntryInfo *const tag)
 
 	if (tag->name [0] == '\0' && (!tag->placeholder))
 	{
-		if (!doesInputLanguageAllowNullTag())
-			error (WARNING, "ignoring null tag in %s(line: %lu)",
-			       getInputFileName (), tag->lineNumber);
+        if (!doesInputLanguageAllowNullTag()) {
+			// error (WARNING, "ignoring null tag in %s(line: %lu)",
+            //       getInputFileName (), tag->lineNumber);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "ignoring null tag in %s(line: %lu)",
+                     getInputFileName (), tag->lineNumber);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 		goto out;
 	}
 

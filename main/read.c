@@ -35,6 +35,8 @@
 # include <sys/types.h>  /* declare off_t (not known to regex.h on FreeBSD) */
 #endif
 #include <regex.h>
+// iOS:
+#include <errno.h>
 
 /*
 *   DATA DECLARATIONS
@@ -724,8 +726,17 @@ extern bool openInputFile (const char *const fileName, const langType language,
 
 	File.mio = mio? mio_ref (mio): getMio (fileName, openMode, memStreamRequired);
 
-	if (File.mio == NULL)
-		error (WARNING | PERROR, "cannot open \"%s\"", fileName);
+    if (File.mio == NULL) {
+		// error (WARNING | PERROR, "cannot open \"%s\"", fileName);
+        fprintf (stderr, "%s: %s", getExecutableName (), "Warning: ");
+        fprintf (stderr, "cannot open \"%s\"", fileName);
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 	else
 	{
 		opened = true;
@@ -751,7 +762,7 @@ extern bool openInputFile (const char *const fileName, const langType language,
 		allocLineFposMap (&File.lineFposMap);
 
 		File.thinDepth = 0;
-		verbose ("OPENING%s %s as %s language %sfile [%s%s]\n",
+		iOS_verbose ("OPENING%s %s as %s language %sfile [%s%s]\n",
 				 (File.bomFound? "(skipping utf-8 bom)": ""),
 				 fileName,
 				 getLanguageName (language),
@@ -856,8 +867,15 @@ static eolType readLine (vString *const vLine, MIO *const mio)
 
 		if (mio_gets (mio, str, size) == NULL)
 		{
-			if (!mio_eof (mio))
-				error (FATAL | PERROR, "Failure on attempt to read file");
+            if (!mio_eof (mio)) {
+				// error (FATAL | PERROR, "Failure on attempt to read file");
+                fprintf (stderr, "%s: %s", getExecutableName (), "");
+                fprintf (stderr, "Failure on attempt to read file");
+                fprintf (stderr, " : %s", strerror (errno));
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 		}
 		vStringSetLength (vLine);
 		newLine = vStringLength (vLine) > 0 && vStringLast (vLine) == '\n';
@@ -1015,8 +1033,14 @@ extern const unsigned char *readLineFromInputFile (void)
  */
 extern char *readLineRaw (vString *const vLine, MIO *const mio)
 {
-	if (mio == NULL)  /* to free memory allocated to buffer */
-		error (FATAL, "NULL file pointer");
+    if (mio == NULL)  /* to free memory allocated to buffer */ {
+		// error (FATAL, "NULL file pointer");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "NULL file pointer");
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else
 	{
 		readLine (vLine, mio);
@@ -1091,8 +1115,14 @@ extern char *readLineFromBypassSlow (vString *const vLine,
 		if (errcode != 0)
 		{
 			regerror (errcode, &patbuf, errmsg, 256);
-			error (WARNING, "regcomp %s in readLineFromBypassSlow: %s", pattern, errmsg);
-			regfree (&patbuf);
+			// error (WARNING, "regcomp %s in readLineFromBypassSlow: %s", pattern, errmsg);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "regcomp %s in readLineFromBypassSlow: %s", pattern, errmsg);
+            regfree (&patbuf);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
 			return NULL;
 		}
 	}
@@ -1166,7 +1196,7 @@ extern void   pushNarrowedInputStream (
 						  sourceLineOffset))
 	{
 		File.thinDepth++;
-		verbose ("push thin stream (%d)\n", File.thinDepth);
+		iOS_verbose ("push thin stream (%d)\n", File.thinDepth);
 		return;
 	}
 	Assert (File.thinDepth == 0);
@@ -1188,8 +1218,14 @@ extern void   pushNarrowedInputStream (
 	invalidatePatternCache();
 
 	subio = mio_new_mio (File.mio, p, q - p);
-	if (subio == NULL)
-		error (FATAL, "memory for mio may be exhausted");
+    if (subio == NULL) {
+		// error (FATAL, "memory for mio may be exhausted");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "memory for mio may be exhausted");
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	BackupFile = File;
 
@@ -1235,7 +1271,7 @@ extern void   popNarrowedInputStream  (void)
 	if (File.thinDepth)
 	{
 		File.thinDepth--;
-		verbose ("CLEARING thin flag(%d)\n", File.thinDepth);
+		iOS_verbose ("CLEARING thin flag(%d)\n", File.thinDepth);
 		return;
 	}
 	mio_free (File.mio);

@@ -38,6 +38,9 @@
 #include "ptrarray.h"
 #include "trashbox.h"
 
+// iOS
+#include <errno.h>
+
 static bool regexAvailable = false;
 
 /*
@@ -330,17 +333,49 @@ static bool parseTagRegex (
 	const int separator = (unsigned char) regexp [0];
 
 	*name = scanSeparators (regexp, regptype);
-	if (*regexp == '\0')
-		error (WARNING, "empty regexp");
-	else if (**name != separator)
-		error (WARNING, "%s: incomplete regexp", regexp);
+    if (*regexp == '\0') {
+		// error (WARNING, "empty regexp");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "empty regexp");
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
+    else if (**name != separator) {
+        // error (WARNING, "%s: incomplete regexp", regexp);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "%s: incomplete regexp", regexp);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 	else
 	{
 		char* const third = scanSeparators (*name, false);
-		if (**name != '\0' && (*name) [strlen (*name) - 1] == '\\')
-			error (WARNING, "error in name pattern: \"%s\"", *name);
-		if (*third != separator)
-			error (WARNING, "%s: regexp missing final separator", regexp);
+        if (**name != '\0' && (*name) [strlen (*name) - 1] == '\\') {
+			// error (WARNING, "error in name pattern: \"%s\"", *name);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "error in name pattern: \"%s\"", *name);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
+        if (*third != separator) {
+			// error (WARNING, "%s: regexp missing final separator", regexp);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "%s: regexp missing final separator", regexp);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 		else
 		{
 			char* const fourth = scanSeparators (third, false);
@@ -393,8 +428,14 @@ static void scope_ptrn_flag_eval (const char* const f  CTAGS_ATTR_UNUSED,
 		*bfields |= SCOPE_CLEAR;
 	else if (strcmp (v, "set") == 0)
 		*bfields |= (SCOPE_CLEAR | SCOPE_PUSH);
-	else
-		error (FATAL, "Unexpected value for scope flag in regex definition: scope=%s", v);
+    else {
+		// error (FATAL, "Unexpected value for scope flag in regex definition: scope=%s", v);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "Unexpected value for scope flag in regex definition: scope=%s", v);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 }
 
 static void placeholder_ptrn_flag_eval (const char* const f  CTAGS_ATTR_UNUSED,
@@ -497,20 +538,43 @@ static void pre_ptrn_flag_mgroup_long (const char* const s, const char* const v,
 	struct mGroupSpec *mgroup = data;
 	if (!v)
 	{
-		error (WARNING, "no value is given for: %s", s);
+		// error (WARNING, "no value is given for: %s", s);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no value is given for: %s", s);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 	if (!strToInt (v, 10, &mgroup->forLineNumberDetermination))
 	{
-		error (WARNING, "wrong %s specification: %s", s, v);
+		// error (WARNING, "wrong %s specification: %s", s, v);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "wrong %s specification: %s", s, v);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		mgroup->forLineNumberDetermination = NO_MULTILINE;
 	}
 	else if (mgroup->forLineNumberDetermination < 0
 			 || mgroup->forLineNumberDetermination >= BACK_REFERENCE_COUNT)
 	{
-		error (WARNING, "out of range(0 ~ %d) %s specification: %s",
-			   (BACK_REFERENCE_COUNT - 1),
-			   s, v);
+		// error (WARNING, "out of range(0 ~ %d) %s specification: %s",
+		//	   (BACK_REFERENCE_COUNT - 1),
+		//	   s, v);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "out of range(0 ~ %d) %s specification: %s",
+                 (BACK_REFERENCE_COUNT - 1),
+                 s, v);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		mgroup->forLineNumberDetermination = NO_MULTILINE;
 	}
 
@@ -531,7 +595,14 @@ static void pre_ptrn_flag_advanceTo_long (const char* const s, const char* const
 
 	if (!v)
 	{
-		error (WARNING, "no value is given for: %s", s);
+		// error (WARNING, "no value is given for: %s", s);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no value is given for: %s", s);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
@@ -548,13 +619,28 @@ static void pre_ptrn_flag_advanceTo_long (const char* const s, const char* const
 
 	if (!strToInt (vdup, 10, &(mgroup->forNextScanning)))
 	{
-		error (WARNING, "wrong %s specification: %s", s, vdup);
+		// error (WARNING, "wrong %s specification: %s", s, vdup);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "wrong %s specification: %s", s, vdup);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		mgroup->nextFromStart = false;
 	}
 	else if (mgroup->forNextScanning < 0 || mgroup->forNextScanning >= BACK_REFERENCE_COUNT)
 	{
-		error (WARNING, "out of range(0 ~ %d) %s specification: %s",
-			   (BACK_REFERENCE_COUNT - 1), s, vdup);
+		// error (WARNING, "out of range(0 ~ %d) %s specification: %s",
+		//	   (BACK_REFERENCE_COUNT - 1), s, vdup);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "out of range(0 ~ %d) %s specification: %s",
+                 (BACK_REFERENCE_COUNT - 1), s, vdup);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		mgroup->nextFromStart = false;
 	}
 
@@ -579,13 +665,28 @@ static void pre_ptrn_flag_extra_long (const char* const s CTAGS_ATTR_UNUSED, con
 
 	if (!v)
 	{
-		error (WARNING, "no value is given for: %s", s);
+		// error (WARNING, "no value is given for: %s", s);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no value is given for: %s", s);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
 	xdata->xtype = getXtagTypeForNameAndLanguage (v, xdata->owner);
-	if (xdata->xtype == XTAG_UNKNOWN)
-		error (WARNING, "no such extra \"%s\" in %s", v, getLanguageName(xdata->owner));
+    if (xdata->xtype == XTAG_UNKNOWN) {
+		// error (WARNING, "no such extra \"%s\" in %s", v, getLanguageName(xdata->owner));
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no such extra \"%s\" in %s", v, getLanguageName(xdata->owner));
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 }
 
 static flagDefinition extraSpecFlagDef[] = {
@@ -628,14 +729,28 @@ static void pre_ptrn_flag_field_long (const char* const s CTAGS_ATTR_UNUSED, con
 
 	if (!v)
 	{
-		error (WARNING, "no value is given for: %s", s);
+		// error (WARNING, "no value is given for: %s", s);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no value is given for: %s", s);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
 	tmp = strchr (v, ':');
 	if (tmp == NULL || tmp == v)
 	{
-		error (WARNING, "no field name is given for: %s", s);
+		// error (WARNING, "no field name is given for: %s", s);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no field name is given for: %s", s);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
@@ -643,8 +758,15 @@ static void pre_ptrn_flag_field_long (const char* const s CTAGS_ATTR_UNUSED, con
 	ftype = getFieldTypeForNameAndLanguage (fname, fdata->owner);
 	if (ftype == FIELD_UNKNOWN)
 	{
-		error (WARNING, "no such field \"%s\" in %s", fname, getLanguageName(fdata->owner));
-		eFree (fname);
+		// error (WARNING, "no such field \"%s\" in %s", fname, getLanguageName(fdata->owner));
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "no such field \"%s\" in %s", fname, getLanguageName(fdata->owner));
+        fputs ("\n", stderr);
+        eFree (fname);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
@@ -655,8 +777,15 @@ static void pre_ptrn_flag_field_long (const char* const s CTAGS_ATTR_UNUSED, con
 			fp = ptrArrayItem(fdata->spec, i);
 			if (fp->ftype == ftype)
 			{
-				error (WARNING, "duplicated field specification \"%s\" in %s", fname, getLanguageName(fdata->owner));
-				eFree (fname);
+				// error (WARNING, "duplicated field specification \"%s\" in %s", fname, getLanguageName(fdata->owner));
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "duplicated field specification \"%s\" in %s", fname, getLanguageName(fdata->owner));
+                fputs ("\n", stderr);
+                eFree (fname);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
 				return;
 			}
 		}
@@ -712,8 +841,14 @@ static void pre_ptrn_flag_mtable_long (const char* const s, const char* const v,
 		char *continuation = NULL;
 
 
-		if (!v || (!*v))
-			error (FATAL, "no table is given for table action: %s", s);
+        if (!v || (!*v)) {
+			// error (FATAL, "no table is given for table action: %s", s);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "no table is given for table action: %s", s);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 
 		if (taction->action == TACTION_ENTER
 			&& (continuation = strchr (v, ',')))
@@ -722,24 +857,48 @@ static void pre_ptrn_flag_mtable_long (const char* const s, const char* const v,
 
 			tableEnterTo = eStrndup (v, continuation - v);
 			t = getTableIndexForName (mdata->lcb, tableEnterTo);
-			if (t < 0)
-				error (FATAL, "table is not defined: %s", tableEnterTo);
+            if (t < 0) {
+				// error (FATAL, "table is not defined: %s", tableEnterTo);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "table is not defined: %s", tableEnterTo);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			taction->table = ptrArrayItem (mdata->lcb->tables, t);
 			eFree (tableEnterTo);
 
-			if (!*(continuation + 1))
-				error (FATAL, "no continuation table is given for: %s", v);
+            if (!*(continuation + 1)) {
+				// error (FATAL, "no continuation table is given for: %s", v);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "no continuation table is given for: %s", v);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 
 			int t_cont = getTableIndexForName (mdata->lcb, continuation + 1);
-			if (t_cont < 0)
-				error (FATAL, "table for continuation is not defined: %s", continuation + 1);
+            if (t_cont < 0) {
+				// error (FATAL, "table for continuation is not defined: %s", continuation + 1);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "table for continuation is not defined: %s", continuation + 1);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			taction->continuation_table = ptrArrayItem (mdata->lcb->tables, t_cont);
 		}
 		else
 		{
 			t = getTableIndexForName (mdata->lcb, v);
-			if (t < 0)
-				error (FATAL, "table is not defined: %s", v);
+            if (t < 0) {
+				// error (FATAL, "table is not defined: %s", v);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "table is not defined: %s", v);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			taction->table = ptrArrayItem (mdata->lcb->tables, t);
 			taction->continuation_table = NULL;
 		}
@@ -818,12 +977,22 @@ static regexPattern *addCompiledTagPattern (struct lregexControlBlock *lcb,
 		kdef = getLanguageKindForLetter (lcb->owner, kindLetter);
 		if (kdef)
 		{
-			if (kindName && strcmp (kdef->name, kindName) && (strcmp(kindName, KIND_REGEX_DEFAULT_LONG)))
+            if (kindName && strcmp (kdef->name, kindName) && (strcmp(kindName, KIND_REGEX_DEFAULT_LONG))) {
 				/* When using a same kind letter for multiple regex patterns, the name of kind
 				   should be the same. */
-				error  (WARNING, "Don't reuse the kind letter `%c' in a language %s (old: \"%s\", new: \"%s\")",
-						kdef->letter, getLanguageName (lcb->owner),
-						kdef->name, kindName);
+                //error  (WARNING, "Don't reuse the kind letter `%c' in a language %s (old: \"%s\", new: \"%s\")",
+                //	kdef->letter, getLanguageName (lcb->owner),
+                //		kdef->name, kindName);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Don't reuse the kind letter `%c' in a language %s (old: \"%s\", new: \"%s\")",
+                         kdef->letter, getLanguageName (lcb->owner),
+                         kdef->name, kindName);
+                fputs ("\n", stderr);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
 		}
 		else
 		{
@@ -919,9 +1088,16 @@ static regex_t* compileRegex (enum regexParserType regptype,
 	{
 		char errmsg[256];
 		regerror (errcode, result, errmsg, 256);
-		error (WARNING, "regcomp %s: %s", regexp, errmsg);
-		regfree (result);
-		eFree (result);
+		// error (WARNING, "regcomp %s: %s", regexp, errmsg);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "regcomp %s: %s", regexp, errmsg);
+        fputs ("\n", stderr);
+        regfree (result);
+        eFree (result);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		result = NULL;
 	}
 	return result;
@@ -1070,11 +1246,22 @@ static void matchTagPattern (struct lregexControlBlock *lcb,
 
 	if (vStringLength (name) == 0 && (placeholder == false))
 	{
-		if (patbuf->accept_empty_name == false)
-			error (WARNING, "%s:%lu: null expansion of name pattern \"%s\"",
-			       getInputFileName (),
-				   getInputLineNumberInRegPType(patbuf->regptype, offset),
-			       patbuf->u.tag.name_pattern);
+        if (patbuf->accept_empty_name == false) {
+            // error (WARNING, "%s:%lu: null expansion of name pattern \"%s\"",
+            //        getInputFileName (),
+            // 	   getInputLineNumberInRegPType(patbuf->regptype, offset),
+            //        patbuf->u.tag.name_pattern);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "%s:%lu: null expansion of name pattern \"%s\"",
+                     getInputFileName (),
+                     getInputLineNumberInRegPType(patbuf->regptype, offset),
+                     patbuf->u.tag.name_pattern);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 		n = CORK_NIL;
 	}
 	else
@@ -1367,13 +1554,22 @@ static regexPattern *addTagRegexInternal (struct lregexControlBlock *lcb,
 		char* description;
 
 		parseKinds (kinds, &kind, &kindName, &description);
-		if (kind == getLanguageKind (lcb->owner, KIND_FILE_INDEX)->letter)
-			error (FATAL,
-				   "Kind letter \'%c\' used in regex definition \"%s\" of %s language is reserved in ctags main",
-				   kind,
-				   regex,
-				   getLanguageName (lcb->owner));
-
+        if (kind == getLanguageKind (lcb->owner, KIND_FILE_INDEX)->letter) {
+			// error (FATAL,
+			// 	   "Kind letter \'%c\' used in regex definition \"%s\" of %s language is reserved in ctags main",
+			//	   kind,
+            //       regex,
+            //       getLanguageName (lcb->owner));
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr,
+                     "Kind letter \'%c\' used in regex definition \"%s\" of %s language is reserved in ctags main",
+                     kind,
+                     regex,
+                     getLanguageName (lcb->owner));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		rptr = addCompiledTagPattern (lcb, table_index,
 									  regptype, cp, name,
 									  kind, kindName, description, flags,
@@ -1389,8 +1585,16 @@ static regexPattern *addTagRegexInternal (struct lregexControlBlock *lcb,
 			if (rptr->exclusive || rptr->scopeActions & SCOPE_PLACEHOLDER
 				|| regptype == REG_PARSER_MULTI_TABLE)
 				rptr->accept_empty_name = true;
-			else
-				error (WARNING, "%s: regexp missing name pattern", regex);
+            else {
+				// error (WARNING, "%s: regexp missing name pattern", regex);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "%s: regexp missing name pattern", regex);
+                fputs ("\n", stderr);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
 		}
 	}
 
@@ -1424,8 +1628,14 @@ extern void addTagMultiTableRegex(struct lregexControlBlock *lcb,
 {
 	int table_index = getTableIndexForName (lcb, table_name);
 
-	if (table_index < 0)
-		error (FATAL, "unknown table name: %s", table_name);
+    if (table_index < 0) {
+		// error (FATAL, "unknown table name: %s", table_name);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "unknown table name: %s", table_name);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	addTagRegexInternal (lcb, table_index, REG_PARSER_MULTI_TABLE, regex, name, kinds, flags,
 						 disabled);
@@ -1488,13 +1698,25 @@ static void addTagRegexOption (struct lregexControlBlock *lcb,
 			}
 		}
 
-		if (regex_pat == NULL || *regex_pat == '\0')
-			error (FATAL, "wrong mtable pattern specification: %s", pattern);
+        if (regex_pat == NULL || *regex_pat == '\0') {
+            // error (FATAL, "wrong mtable pattern specification: %s", pattern);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "wrong mtable pattern specification: %s", pattern);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 
 		char *table_name = eStrndup(pattern, c - pattern);
 		table_index = getTableIndexForName (lcb, table_name);
-		if (table_index < 0)
-			error (FATAL, "unknown table name: %s (in %s)", table_name, pattern);
+        if (table_index < 0) {
+			// error (FATAL, "unknown table name: %s (in %s)", table_name, pattern);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "unknown table name: %s (in %s)", table_name, pattern);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		eFree(table_name);
 	}
 	else
@@ -1515,16 +1737,33 @@ extern void processTagRegexOption (struct lregexControlBlock *lcb,
 		clearPatternSet (lcb);
 	else if (parameter [0] != '@')
 		addTagRegexOption (lcb, regptype, parameter);
-	else if (! doesFileExist (parameter + 1))
-		error (WARNING, "cannot open regex file");
+    else if (! doesFileExist (parameter + 1)) {
+		// error (WARNING, "cannot open regex file");
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "cannot open regex file");
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 	else
 	{
 		const char* regexfile = parameter + 1;
 
-		verbose ("open a regex file: %s\n", regexfile);
+		iOS_verbose ("open a regex file: %s\n", regexfile);
 		MIO* const mio = mio_new_file (regexfile, "r");
-		if (mio == NULL)
-			error (WARNING | PERROR, "%s", regexfile);
+        if (mio == NULL) {
+			// error (WARNING | PERROR, "%s", regexfile);
+            fprintf (stderr, "%s: %s", getExecutableName (), "Warning: ");
+            fprintf (stderr, "%s", regexfile);
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 		else
 		{
 			vString* const regex = vStringNew ();
@@ -1643,12 +1882,25 @@ extern void addRegexTable (struct lregexControlBlock *lcb, const char *name)
 {
 	const char *c;
 	for (c = name; *c; c++)
-		if (! (isalnum(*c) || *c == '_'))
-			error (FATAL, "`%c' in \"%s\" is not acceptable as part of table name", *c, name);
+        if (! (isalnum(*c) || *c == '_')) {
+            // error (FATAL, "`%c' in \"%s\" is not acceptable as part of table name", *c, name);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "`%c' in \"%s\" is not acceptable as part of table name", *c, name);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 
 	if (getTableIndexForName(lcb, name) >= 0)
 	{
-		error (WARNING, "regex table \"%s\" is already defined", name);
+		// error (WARNING, "regex table \"%s\" is already defined", name);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "regex table \"%s\" is already defined", name);
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
@@ -1818,7 +2070,14 @@ static struct regexTable * matchMultitableRegexTable (struct lregexControlBlock 
 					END_VERBOSE();
 					if (ptrArrayCount (lcb->tstack) == 0)
 					{
-						error (WARNING, "leave is specified as regex table action but the table stack is empty");
+						// error (WARNING, "leave is specified as regex table action but the table stack is empty");
+                        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                        fprintf (stderr, "leave is specified as regex table action but the table stack is empty");
+                        fputs ("\n", stderr);
+                        if (Option.fatalWarnings) {
+                            ctags_cleanup();
+                            exit (1);
+                        }
 						return NULL;
 					}
 					next = ptrArrayLast(lcb->tstack);
@@ -1875,7 +2134,7 @@ static struct regexTable * matchMultitableRegexTable (struct lregexControlBlock 
 	if (next == NULL && ptrArrayCount (lcb->tstack) > 0)
 	{
 		next = ptrArrayLast(lcb->tstack);
-		verbose("stack: autopop<%d> from %s to %s @ %lu\n", apop_count++, table->name, next->name,
+		iOS_verbose("stack: autopop<%d> from %s to %s @ %lu\n", apop_count++, table->name, next->name,
 				getInputLineNumberForFileOffset(*offset));
 		ptrArrayRemoveLast (lcb->tstack);
 	}
@@ -1889,16 +2148,28 @@ extern void extendRegexTable (struct lregexControlBlock *lcb, const char *src, c
 	struct regexTable * src_table;
 	struct regexTable * dist_table;
 
-	verbose ("extend regex table  \"%s\" with \"%s\"\n", dist, src);
+	iOS_verbose ("extend regex table  \"%s\" with \"%s\"\n", dist, src);
 
 	i = getTableIndexForName (lcb, src);
-	if (i < 0)
-		error (FATAL, "no such regex table in %s: %s", getLanguageName(lcb->owner), src);
+    if (i < 0) {
+        // error (FATAL, "no such regex table in %s: %s", getLanguageName(lcb->owner), src);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no such regex table in %s: %s", getLanguageName(lcb->owner), src);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	src_table = ptrArrayItem(lcb->tables, i);
 
 	i = getTableIndexForName (lcb, dist);
-	if (i < 0)
-		error (FATAL, "no such regex table in %s: %s", getLanguageName(lcb->owner), dist);
+    if (i < 0) {
+        // error (FATAL, "no such regex table in %s: %s", getLanguageName(lcb->owner), dist);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no such regex table in %s: %s", getLanguageName(lcb->owner), dist);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	dist_table = ptrArrayItem(lcb->tables, i);
 
 	for (i = 0; i < ptrArrayCount(src_table->patterns); i++)

@@ -67,7 +67,7 @@ extern void addTagXpath (const langType language CTAGS_ATTR_UNUSED, tagXpathTabl
     // iOS: because we can re-enter the same function, can't assert this
 	// Assert (!xpathTable->xpathCompiled);
 
-	verbose ("compile a xpath expression: %s\n", (xmlChar *)xpathTable->xpath);
+	iOS_verbose ("compile a xpath expression: %s\n", (xmlChar *)xpathTable->xpath);
 	xpathTable->xpathCompiled = xmlXPathCompile ((xmlChar *)xpathTable->xpath);
 	if (!xpathTable->xpathCompiled)
 		error (WARNING, "Failed to compile the Xpath expression: %s", xpathTable->xpath);
@@ -138,7 +138,7 @@ static xmlDocPtr makeXMLDoc (void)
 	doc = getInputFileUserData ();
 	if (doc)
 	{
-		verbose ("reuse xml doc data\n");
+		iOS_verbose ("reuse xml doc data\n");
 		return doc;
 	}
 
@@ -171,7 +171,7 @@ extern void findXMLTags (xmlXPathContext *ctx, xmlNode *root,
 
 		if (doc == NULL)
 		{
-			verbose ("could not parse %s as a XML file\n", getInputFileName());
+			iOS_verbose ("could not parse %s as a XML file\n", getInputFileName());
 			return;
 		}
 
@@ -182,7 +182,7 @@ extern void findXMLTags (xmlXPathContext *ctx, xmlNode *root,
 		root = xmlDocGetRootElement(doc);
 		if (root == NULL)
 		{
-			verbose ("could not get the root node for %s\n", getInputFileName());
+			iOS_verbose ("could not get the root node for %s\n", getInputFileName());
 			goto out;
 		}
 	}

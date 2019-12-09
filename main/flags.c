@@ -43,8 +43,16 @@ void flagsEval (const char* flags_original, flagDefinition* defs, unsigned int n
 
 			if (needle_close_paren == NULL)
 			{
-				error (WARNING, "long flags specifier opened with `%c' is not closed `%c'",
-				       LONG_FLAGS_OPEN, LONG_FLAGS_CLOSE);
+                // error (WARNING, "long flags specifier opened with `%c' is not closed `%c'",
+                //     LONG_FLAGS_OPEN, LONG_FLAGS_CLOSE);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "long flags specifier opened with `%c' is not closed `%c'",
+                         LONG_FLAGS_OPEN, LONG_FLAGS_CLOSE);
+                fputs ("\n", stderr);
+                /* if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                } */
 				break;
 			}
 

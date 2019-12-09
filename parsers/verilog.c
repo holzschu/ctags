@@ -491,11 +491,11 @@ static int skipMacro (int c)
 			    strcmp (vStringValue (token->name), "ifndef") == 0 ||
 				strcmp (vStringValue (token->name), "elsif") == 0)
 			{
-				verbose ("%c\n", c);
+				iOS_verbose ("%c\n", c);
 				c = skipWhite (c);
 				readIdentifier (token, c);
 				c = vGetc ();
-				verbose ("Skipping conditional macro %s\n", vStringValue (token->name));
+				iOS_verbose ("Skipping conditional macro %s\n", vStringValue (token->name));
 			}
 			/* Skip macro functions */
 			else
@@ -539,19 +539,19 @@ static void createContext (tokenInfo *const scope)
 		currentContext = pushToken (currentContext, scope);
 		vStringCopy (currentContext->name, contextName);
 		vStringDelete (contextName);
-		verbose ("Created new context %s (kind %d)\n", vStringValue (currentContext->name), currentContext->kind);
+		iOS_verbose ("Created new context %s (kind %d)\n", vStringValue (currentContext->name), currentContext->kind);
 	}
 }
 
 static void dropEndContext (tokenInfo *const token)
 {
-	verbose ("current context %s; context kind %0d; nest level %0d\n", vStringValue (currentContext->name), currentContext->kind, currentContext->nestLevel);
+	iOS_verbose ("current context %s; context kind %0d; nest level %0d\n", vStringValue (currentContext->name), currentContext->kind, currentContext->nestLevel);
 	vString *endTokenName = vStringNewInit("end");
 	if ((currentContext->kind == K_COVERGROUP && strcmp (vStringValue (token->name), "endgroup") == 0) ||
 	    (currentContext->kind == K_BLOCK && currentContext->nestLevel == 0 && strcmp (vStringValue (token->name), vStringValue (endTokenName)) == 0)
 	    )
 	{
-		verbose ("Dropping context %s\n", vStringValue (currentContext->name));
+		iOS_verbose ("Dropping context %s\n", vStringValue (currentContext->name));
 		currentContext = popToken (currentContext);
 	}
 	else
@@ -559,11 +559,11 @@ static void dropEndContext (tokenInfo *const token)
 		vStringCatS (endTokenName, getNameForKind (currentContext->kind));
 		if (strcmp (vStringValue (token->name), vStringValue (endTokenName)) == 0)
 		{
-			verbose ("Dropping context %s\n", vStringValue (currentContext->name));
+			iOS_verbose ("Dropping context %s\n", vStringValue (currentContext->name));
 			currentContext = popToken (currentContext);
 			if (currentContext->classScope)
 			{
-				verbose ("Dropping local context %s\n", vStringValue (currentContext->name));
+				iOS_verbose ("Dropping local context %s\n", vStringValue (currentContext->name));
 				currentContext = popToken (currentContext);
 			}
 		}
@@ -590,7 +590,7 @@ static void createTag (tokenInfo *const token)
 	/* Do nothing it tag name is empty or tag kind is disabled */
 	if (vStringLength (token->name) == 0 || ! kindEnabled (kind))
 	{
-		verbose ("Unexpected empty token or kind disabled\n");
+		iOS_verbose ("Unexpected empty token or kind disabled\n");
 		return;
 	}
 
@@ -601,19 +601,19 @@ static void createTag (tokenInfo *const token)
 	tag.lineNumber = token->lineNumber;
 	tag.filePosition = token->filePosition;
 
-	verbose ("Adding tag %s (kind %d)", vStringValue (token->name), kind);
+	iOS_verbose ("Adding tag %s (kind %d)", vStringValue (token->name), kind);
 	if (currentContext->kind != K_UNDEFINED)
 	{
-		verbose (" to context %s\n", vStringValue (currentContext->name));
+		iOS_verbose (" to context %s\n", vStringValue (currentContext->name));
 		currentContext->lastKind = kind;
 		tag.extensionFields.scopeKindIndex = currentContext->kind;
 		tag.extensionFields.scopeName = vStringValue (currentContext->name);
 	}
-	verbose ("\n");
+	iOS_verbose ("\n");
 	if (vStringLength (token->inheritance) > 0)
 	{
 		tag.extensionFields.inheritance = vStringValue (token->inheritance);
-		verbose ("Class %s extends %s\n", vStringValue (token->name), tag.extensionFields.inheritance);
+		iOS_verbose ("Class %s extends %s\n", vStringValue (token->name), tag.extensionFields.inheritance);
 	}
 	makeTagEntry (&tag);
 	if (isXtagEnabled(XTAG_QUALIFIED_TAGS) && currentContext->kind != K_UNDEFINED)
@@ -645,7 +645,7 @@ static void createTag (tokenInfo *const token)
 		{
 			tokenInfo* content = tagContents;
 
-			verbose ("Including tagContents\n");
+			iOS_verbose ("Including tagContents\n");
 			do
 			{
 				createTag (content);
@@ -656,7 +656,7 @@ static void createTag (tokenInfo *const token)
 		/* Drop temporary contexts */
 		if (isTempContext (currentContext))
 		{
-			verbose ("Dropping context %s\n", vStringValue (currentContext->name));
+			iOS_verbose ("Dropping context %s\n", vStringValue (currentContext->name));
 			currentContext = popToken (currentContext);
 		}
 	}
@@ -699,15 +699,15 @@ static void processBlock (tokenInfo *const token)
 
 	if (findBlockName (token))
 	{
-		verbose ("Found block: %s\n", vStringValue (token->name));
+		iOS_verbose ("Found block: %s\n", vStringValue (token->name));
 		if (blockStart)
 		{
 			createTag (token);
-			verbose ("Current context %s\n", vStringValue (currentContext->name));
+			iOS_verbose ("Current context %s\n", vStringValue (currentContext->name));
 		}
 		if (blockEnd && currentContext->kind == K_BLOCK && currentContext->nestLevel <= 1)
 		{
-			verbose ("Dropping context %s\n", vStringValue (currentContext->name));
+			iOS_verbose ("Dropping context %s\n", vStringValue (currentContext->name));
 			currentContext = popToken (currentContext);
 		}
 	}
@@ -759,7 +759,7 @@ static void processPortList (int c)
 					c = skipWhite (vGetc ());
 					if (! isIdentifierCharacter (c) || c == '`')
 					{
-						verbose ("Found port: %s\n", vStringValue (token->name));
+						iOS_verbose ("Found port: %s\n", vStringValue (token->name));
 						token->kind = K_PORT;
 						createTag (token);
 					}
@@ -803,7 +803,7 @@ static void processFunction (tokenInfo *const token)
 			c = vGetc ();
 			if (c == ':')
 			{
-				verbose ("Found function declaration with class type %s\n", vStringValue (token->name));
+				iOS_verbose ("Found function declaration with class type %s\n", vStringValue (token->name));
 				classType = newToken ();
 				vStringCopy (classType->name, token->name);
 				classType->kind = K_CLASS;
@@ -819,7 +819,7 @@ static void processFunction (tokenInfo *const token)
 
 	if ( vStringLength (token->name) > 0 )
 	{
-		verbose ("Found function: %s\n", vStringValue (token->name));
+		iOS_verbose ("Found function: %s\n", vStringValue (token->name));
 
 		/* Create tag */
 		createTag (token);
@@ -849,7 +849,7 @@ static void processEnum (tokenInfo *const token)
 			readIdentifier (type, c);
 			updateKind (type);
 			typeQueue = pushToken (typeQueue, type);
-			verbose ("Enum type %s\n", vStringValue (type->name));
+			iOS_verbose ("Enum type %s\n", vStringValue (type->name));
 			c = skipWhite (vGetc ());
 		} while (isIdentifierCharacter (c));
 
@@ -858,7 +858,7 @@ static void processEnum (tokenInfo *const token)
 		 * indicates that this is in fact a forward declaration */
 		if (type->kind == K_UNDEFINED && (typeQueue->scope == NULL || typeQueue->scope->kind != K_UNDEFINED))
 		{
-			verbose ("Prototype enum found \"%s\"\n", vStringValue (type->name));
+			iOS_verbose ("Prototype enum found \"%s\"\n", vStringValue (type->name));
 			type->kind = K_PROTOTYPE;
 			createTag (type);
 			pruneTokens (typeQueue);
@@ -886,7 +886,7 @@ static void processEnum (tokenInfo *const token)
 			readIdentifier (content, c);
 			content->kind = K_CONSTANT;
 			tagContents = pushToken (tagContents, content);
-			verbose ("Pushed enum element \"%s\"\n", vStringValue (content->name));
+			iOS_verbose ("Pushed enum element \"%s\"\n", vStringValue (content->name));
 
 			c = skipWhite (vGetc ());
 			/* Skip element ranges */
@@ -924,7 +924,7 @@ static void processEnum (tokenInfo *const token)
 	}
 
 	/* Following identifiers are tag names */
-	verbose ("Find enum tags. Token %s kind %d\n", vStringValue (token->name), token->kind);
+	iOS_verbose ("Find enum tags. Token %s kind %d\n", vStringValue (token->name), token->kind);
 	tagNameList (token, c);
 }
 
@@ -1049,7 +1049,7 @@ static void processClass (tokenInfo *const token)
 				c = skipWhite (vGetc ());
 				readIdentifier (parameters, c);
 				updateKind (parameters);
-				verbose ("Found class parameter %s\n", vStringValue (parameters->name));
+				iOS_verbose ("Found class parameter %s\n", vStringValue (parameters->name));
 				if (parameters->kind == K_UNDEFINED)
 				{
 					parameters->kind = K_CONSTANT;
@@ -1077,7 +1077,7 @@ static void processClass (tokenInfo *const token)
 		{
 			readIdentifier (extra, c);
 			vStringCopy (token->inheritance, extra->name);
-			verbose ("Inheritance %s\n", vStringValue (token->inheritance));
+			iOS_verbose ("Inheritance %s\n", vStringValue (token->inheritance));
 		}
 		deleteToken (extra);
 	}
@@ -1181,7 +1181,7 @@ static void tagNameList (tokenInfo* token, int c)
 
 static void findTag (tokenInfo *const token)
 {
-	verbose ("Checking token %s of kind %d\n", vStringValue (token->name), token->kind);
+	iOS_verbose ("Checking token %s of kind %d\n", vStringValue (token->name), token->kind);
 
 	if (currentContext->kind != K_UNDEFINED)
 	{
@@ -1303,7 +1303,7 @@ static void findVerilogTags (void)
 				 * end statement */
 				if (currentContext->scope && currentContext->scope->prototype)
 				{
-					verbose ("Dropping context %s\n", vStringValue (currentContext->name));
+					iOS_verbose ("Dropping context %s\n", vStringValue (currentContext->name));
 					currentContext = popToken (currentContext);
 					currentContext->prototype = false;
 				}

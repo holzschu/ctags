@@ -94,7 +94,8 @@ extern void freeRoutineResources (void);
 extern void setExecutableName (const char *const path);
 extern const char *getExecutableName (void);
 extern const char *getExecutablePath (void);
-extern void error (const errorSelection selection, const char *const format, ...) CTAGS_ATTR_PRINTF (2, 3);
+// iOS: this causes issues at interpretation
+// extern void error (const errorSelection selection, const char *const format, ...) CTAGS_ATTR_PRINTF (2, 3);
 
 /* Memory allocation functions */
 #ifdef NEED_PROTO_MALLOC

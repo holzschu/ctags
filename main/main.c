@@ -80,7 +80,8 @@
 #include <jansson.h>
 #include <errno.h>
 #endif
-
+// iOS:
+#include <errno.h>
 /*
 *   MACROS
 */
@@ -131,8 +132,17 @@ static bool recurseUsingOpendir (const char *const dirName)
 {
 	bool resize = false;
 	DIR *const dir = opendir (dirName);
-	if (dir == NULL)
-		error (WARNING | PERROR, "cannot recurse into directory \"%s\"", dirName);
+    if (dir == NULL) {
+		// error (WARNING | PERROR, "cannot recurse into directory \"%s\"", dirName);
+        fprintf (stderr, "%s: %s", getExecutableName (), "Warning: ");
+        fprintf (stderr, "cannot recurse into directory \"%s\"", dirName);
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 	else
 	{
 		struct dirent *entry;
@@ -210,15 +220,15 @@ static bool recurseIntoDirectory (const char *const dirName)
 
 	bool resize = false;
 	if (isRecursiveLink (dirName))
-		verbose ("ignoring \"%s\" (recursive link)\n", dirName);
+		iOS_verbose ("ignoring \"%s\" (recursive link)\n", dirName);
 	else if (! Option.recurse)
-		verbose ("ignoring \"%s\" (directory)\n", dirName);
+		iOS_verbose ("ignoring \"%s\" (directory)\n", dirName);
 	else if(recursionDepth > Option.maxRecursionDepth)
-		verbose ("not descending in directory \"%s\" (depth %u > %u)\n",
+		iOS_verbose ("not descending in directory \"%s\" (depth %u > %u)\n",
 				dirName, recursionDepth, Option.maxRecursionDepth);
 	else
 	{
-		verbose ("RECURSING into directory \"%s\"\n", dirName);
+		iOS_verbose ("RECURSING into directory \"%s\"\n", dirName);
 #if defined (HAVE_OPENDIR)
 		resize = recurseUsingOpendir (dirName);
 #elif defined (HAVE__FINDFIRST)
@@ -245,15 +255,24 @@ static bool createTagsForEntry (const char *const entryName)
 
 	Assert (entryName != NULL);
 	if (isExcludedFile (entryName))
-		verbose ("excluding \"%s\"\n", entryName);
+		iOS_verbose ("excluding \"%s\"\n", entryName);
 	else if (status->isSymbolicLink  &&  ! Option.followLinks)
-		verbose ("ignoring \"%s\" (symbolic link)\n", entryName);
-	else if (! status->exists)
-		error (WARNING | PERROR, "cannot open input file \"%s\"", entryName);
+		iOS_verbose ("ignoring \"%s\" (symbolic link)\n", entryName);
+    else if (! status->exists) {
+		// error (WARNING | PERROR, "cannot open input file \"%s\"", entryName);
+        fprintf (stderr, "%s: %s", getExecutableName (), "Warning: ");
+        fprintf (stderr, "cannot open input file \"%s\"", entryName);
+        fprintf (stderr, " : %s", strerror (errno));
+        fputs ("\n", stderr);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 	else if (status->isDirectory)
 		resize = recurseIntoDirectory (entryName);
 	else if (! status->isNormalFile)
-		verbose ("ignoring \"%s\" (special file)\n", entryName);
+		iOS_verbose ("ignoring \"%s\" (special file)\n", entryName);
 	else
 		resize = parseFile (entryName);
 
@@ -345,8 +364,15 @@ static bool createTagsFromListFile (const char *const fileName)
 	else
 	{
 		FILE *const fp = fopen (fileName, "r");
-		if (fp == NULL)
-			error (FATAL | PERROR, "cannot open list file \"%s\"", fileName);
+        if (fp == NULL) {
+			// error (FATAL | PERROR, "cannot open list file \"%s\"", fileName);
+            fprintf (stderr, "%s: %s", getExecutableName (), "");
+            fprintf (stderr, "cannot open list file \"%s\"", fileName);
+            fprintf (stderr, " : %s", strerror (errno));
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		resize = createTagsFromFileInput (fp, false);
 		fclose (fp);
 	}
@@ -441,8 +467,14 @@ static void batchMakeTags (cookedArgs *args, void *user CTAGS_ATTR_UNUSED)
 
 	if (! files)
 	{
-		if (filesRequired ()) 
-			error (FATAL, "No files specified. Try \"%s --help\".", getExecutableName ());
+        if (filesRequired ()) {
+            // error (FATAL, "No files specified. Try \"%s --help\".", getExecutableName ());
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "No files specified. Try \"%s --help\".", getExecutableName ());
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		else if (! Option.recurse && ! etagsInclude ())
 			return;
 	}
@@ -455,17 +487,17 @@ static void batchMakeTags (cookedArgs *args, void *user CTAGS_ATTR_UNUSED)
 
 	if (! cArgOff (args))
 	{
-		verbose ("Reading command line arguments\n");
+		iOS_verbose ("Reading command line arguments\n");
 		resize = createTagsForArgs (args);
 	}
 	if (Option.fileList != NULL)
 	{
-		verbose ("Reading list file\n");
+		iOS_verbose ("Reading list file\n");
 		resize = (bool) (createTagsFromListFile (Option.fileList) || resize);
 	}
 	if (Option.filter)
 	{
-		verbose ("Reading filter input\n");
+		iOS_verbose ("Reading filter input\n");
 		resize = (bool) (createTagsFromFileInput (stdin, true) || resize);
 	}
 	if (! files  &&  Option.recurse)
@@ -631,7 +663,14 @@ static void sanitizeEnviron (void)
 		{
 			if (isSafeVar (e [i]))
 				continue;
-			error (WARNING, "reset environment: %s", e [i]);
+			// error (WARNING, "reset environment: %s", e [i]);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "reset environment: %s", e [i]);
+            fputs ("\n", stderr);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
 			value [0] = '\0';
 		}
 	}
@@ -666,18 +705,20 @@ extern int main (int argc CTAGS_ATTR_UNUSED, char **argv)
 	initializeParsing ();
 	initOptions ();
 	readOptionConfiguration ();
-	verbose ("Reading initial options from command line\n");
+	iOS_verbose ("Reading initial options from command line\n");
 	parseCmdlineOptions (args);
 	checkOptions ();
 
 	runMainLoop (args);
 
-
 	BEGIN_VERBOSE(vfp);
-	{
-		for (unsigned int i = 0; i < countParsers(); i++)
-			printLanguageMultitableStatistics (i, vfp);
-	}
+    if (Option.verbose) {
+        FILE* vfp = stderr;
+        {
+            for (unsigned int i = 0; i < countParsers(); i++)
+                printLanguageMultitableStatistics (i, vfp);
+        }
+    }
 	END_VERBOSE();
 
     ctags_cleanup();

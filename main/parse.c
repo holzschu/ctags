@@ -953,12 +953,12 @@ pickLanguageBySelection (selectLanguage selector, MIO *input,
 
     if (lang)
     {
-        verbose ("		selection: %s\n", lang);
+        iOS_verbose ("		selection: %s\n", lang);
         return getNamedLanguage(lang, 0);
     }
     else
     {
-	verbose ("		no selection\n");
+	iOS_verbose ("		no selection\n");
         return LANG_IGNORE;
     }
 }
@@ -1016,9 +1016,9 @@ static void verboseReportCandidate (const char *header,
 				    unsigned int n_candidates)
 {
 	unsigned int i;
-	verbose ("		#%s: %u\n", header, n_candidates);
+	iOS_verbose ("		#%s: %u\n", header, n_candidates);
 	for (i = 0; i < n_candidates; i++)
-		verbose ("			%u: %s (%s: \"%s\")\n",
+		iOS_verbose ("			%u: %s (%s: \"%s\")\n",
 			 i,
 			 LanguageTable[candidates[i].lang].def->name,
 			 specTypeName [candidates[i].specType],
@@ -1068,10 +1068,10 @@ static langType getSpecLanguageCommon (const char *const spec, struct getLangCtx
 
 		GLC_FOPEN_IF_NECESSARY(glc, fopen_error, memStreamRequired);
 		if (selector) {
-			verbose ("	selector: %p\n", selector);
+			iOS_verbose ("	selector: %p\n", selector);
 			language = pickLanguageBySelection(selector, glc->input, candidates, n_candidates);
 		} else {
-			verbose ("	selector: NONE\n");
+			iOS_verbose ("	selector: NONE\n");
 		fopen_error:
 			language = LANG_IGNORE;
 		}
@@ -1128,7 +1128,7 @@ tasteLanguage (struct getLangCtx *glc, const struct taster *const tasters, int n
 	spec = tasters[i].taste(glc->input);
 
         if (NULL != spec) {
-            verbose ("	%s: %s\n", tasters[i].msg, vStringValue (spec));
+            iOS_verbose ("	%s: %s\n", tasters[i].msg, vStringValue (spec));
             language = getSpecLanguage (vStringValue (spec), glc,
 					(fallback && (*fallback == LANG_IGNORE))? fallback: NULL);
             vStringDelete (spec);
@@ -1194,9 +1194,9 @@ getFileLanguageForRequestInternal (struct GetLanguageRequest *req)
     for (i = 0; i < N_HINTS; i++)
 	fallback [i] = LANG_IGNORE;
 
-    verbose ("Get file language for %s\n", fileName);
+    iOS_verbose ("Get file language for %s\n", fileName);
 
-    verbose ("	pattern: %s\n", baseName);
+    iOS_verbose ("	pattern: %s\n", baseName);
     language = getPatternLanguage (baseName, &glc,
 				   fallback + HINT_FILENAME);
     if (language != LANG_IGNORE || glc.err)
@@ -1207,7 +1207,7 @@ getFileLanguageForRequestInternal (struct GetLanguageRequest *req)
         templateBaseName = baseFilenameSansExtensionNew (fileName, tExt);
         if (templateBaseName)
         {
-            verbose ("	pattern + template(%s): %s\n", tExt, templateBaseName);
+            iOS_verbose ("	pattern + template(%s): %s\n", tExt, templateBaseName);
             GLC_FOPEN_IF_NECESSARY(&glc, cleanup, false);
             mio_rewind(glc.input);
             language = getPatternLanguage(templateBaseName, &glc,
@@ -1255,7 +1255,7 @@ getFileLanguageForRequestInternal (struct GetLanguageRequest *req)
     {
         language = fallback [i];
 	if (language != LANG_IGNORE)
-        verbose ("	fallback[hint = %d]: %s\n", i, getLanguageName (language));
+        iOS_verbose ("	fallback[hint = %d]: %s\n", i, getLanguageName (language));
     }
 
     return language;
@@ -1269,9 +1269,16 @@ static langType getFileLanguageForRequest (struct GetLanguageRequest *req)
 		return getFileLanguageForRequestInternal(req);
 	else if (! isLanguageEnabled (l))
 	{
-		error (FATAL,
-		       "%s parser specified with --language-force is disabled",
-		       getLanguageName (l));
+		// error (FATAL,
+		//        "%s parser specified with --language-force is disabled",
+		//       getLanguageName (l));
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr,
+                 "%s parser specified with --language-force is disabled",
+                 getLanguageName (l));
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
 		/* For suppressing warnings. */
 		return LANG_AUTO;
 	}
@@ -1362,7 +1369,7 @@ extern void installLanguageMapDefaults (void)
 	unsigned int i;
 	for (i = 0  ;  i < LanguageCount  ;  ++i)
 	{
-		verbose ("    %s: ", getLanguageName (i));
+		iOS_verbose ("    %s: ", getLanguageName (i));
 		installLanguageMapDefault (i);
 	}
 }
@@ -1396,7 +1403,7 @@ extern void installLanguageAliasesDefaults (void)
 	unsigned int i;
 	for (i = 0  ;  i < LanguageCount  ;  ++i)
 	{
-		verbose ("    %s: ", getLanguageName (i));
+		iOS_verbose ("    %s: ", getLanguageName (i));
 		installLanguageAliasesDefault (i);
 	}
 }
@@ -1424,7 +1431,7 @@ static bool removeLanguagePatternMap1(const langType language, const char *const
 
 	if (ptrn != NULL && stringListDeleteItemExtension (ptrn, pattern))
 	{
-		verbose (" (removed from %s)", getLanguageName (language));
+		iOS_verbose (" (removed from %s)", getLanguageName (language));
 		result = true;
 	}
 	return result;
@@ -1464,7 +1471,7 @@ static bool removeLanguageExtensionMap1 (const langType language, const char *co
 
 	if (exts != NULL  &&  stringListDeleteItemExtension (exts, extension))
 	{
-		verbose (" (removed from %s)", getLanguageName (language));
+		iOS_verbose (" (removed from %s)", getLanguageName (language));
 		result = true;
 	}
 	return result;
@@ -1557,7 +1564,7 @@ static void initializeParserOne (langType lang)
 	if (parser->initialized)
 		goto out;
 
-	verbose ("Initialize parser: %s\n", parser->def->name);
+	iOS_verbose ("Initialize parser: %s\n", parser->def->name);
 	parser->initialized = true;
 
 	installKeywordTable (lang);
@@ -1646,9 +1653,9 @@ static void initializeParsingCommon (parserDefinition *def, bool is_builtin)
 	parserObject *parser;
 
 	if (is_builtin)
-		verbose ("%s%s", LanguageCount > 0 ? ", " : "", def->name);
+		iOS_verbose ("%s%s", LanguageCount > 0 ? ", " : "", def->name);
 	else
-		verbose ("Add optlib parser: %s\n", def->name);
+		iOS_verbose ("Add optlib parser: %s\n", def->name);
 
 	def->id = LanguageCount++;
 	parser = LanguageTable + def->id;
@@ -1679,31 +1686,45 @@ extern void initializeParsing (void)
 								   NULL);
 	DEFAULT_TRASH_BOX(LanguageHTable, hashTableDelete);
 
-	verbose ("Installing parsers: ");
+	iOS_verbose ("Installing parsers: ");
 	for (i = 0  ;  i < builtInCount  ;  ++i)
 	{
 		parserDefinition* const def = (*BuiltInParsers [i]) ();
 		if (def != NULL)
 		{
 			bool accepted = false;
-			if (def->name == NULL  ||  def->name[0] == '\0')
-				error (FATAL, "parser definition must contain name\n");
+            if (def->name == NULL  ||  def->name[0] == '\0') {
+				// error (FATAL, "parser definition must contain name\n");
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "parser definition must contain name\n");
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			else if (def->method & METHOD_NOT_CRAFTED)
 			{
 				def->parser = findRegexTags;
 				accepted = true;
 			}
-			else if ((!def->invisible) && (((!!def->parser) + (!!def->parser2)) != 1))
-				error (FATAL,
-		"%s parser definition must define one and only one parsing routine\n",
-					   def->name);
+            else if ((!def->invisible) && (((!!def->parser) + (!!def->parser2)) != 1)) {
+                // error (FATAL,
+                // "%s parser definition must define one and only one parsing routine\n",
+                // 		   def->name);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr,
+                         "%s parser definition must define one and only one parsing routine\n",
+                         def->name);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 			else
 				accepted = true;
 			if (accepted)
 				initializeParsingCommon (def, true);
 		}
 	}
-	verbose ("\n");
+	iOS_verbose ("\n");
 
 	for (i = 0; i < builtInCount  ;  ++i)
 		linkDependenciesAtInitializeParsing (LanguageTable [i].def);
@@ -1797,15 +1818,28 @@ static void pre_lang_def_flag_base_long (const char* const optflag, const char* 
 
 	if (param[0] == '\0')
 	{
-		error (WARNING, "No base parser specified for \"%s\" flag of --langdef option", optflag);
+		// error (WARNING, "No base parser specified for \"%s\" flag of --langdef option", optflag);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "No base parser specified for \"%s\" flag of --langdef option", optflag);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 	}
 
 	base = getNamedLanguage (param, 0);
 	if (base == LANG_IGNORE)
 	{
-		error (WARNING, "Unknown language(%s) is specified for \"%s\" flag of --langdef option",
-			   param, optflag);
+		// error (WARNING, "Unknown language(%s) is specified for \"%s\" flag of --langdef option",
+		//	   param, optflag);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Unknown language(%s) is specified for \"%s\" flag of --langdef option",
+        param, optflag);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return;
 
 	}
@@ -1892,10 +1926,24 @@ static parserDefinition* OptlibParser(const char *name, const char *base,
 extern void processLanguageDefineOption (
 		const char *const option, const char *const parameter)
 {
-	if (parameter [0] == '\0')
-		error (WARNING, "No language specified for \"%s\" option", option);
-	else if (getNamedLanguage (parameter, 0) != LANG_IGNORE)
-		error (WARNING, "Language \"%s\" already defined", parameter);
+    if (parameter [0] == '\0') {
+		// error (WARNING, "No language specified for \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "No language specified for \"%s\" option", option);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
+    else if (getNamedLanguage (parameter, 0) != LANG_IGNORE) {
+		// error (WARNING, "Language \"%s\" already defined", parameter);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "Language \"%s\" already defined", parameter);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
+    }
 	else
 	{
 		char *name;
@@ -1917,8 +1965,15 @@ extern void processLanguageDefineOption (
 		};
 		flagsEval (flags, PreLangDefFlagDef, ARRAY_SIZE (PreLangDefFlagDef), &data);
 
-		if (data.base == NULL && data.direction != SUBPARSER_UNKNOWN_DIRECTION)
-			error (WARNING, "Ignore the direction of subparser because \"{base=}\" is not given");
+        if (data.base == NULL && data.direction != SUBPARSER_UNKNOWN_DIRECTION) {
+			// error (WARNING, "Ignore the direction of subparser because \"{base=}\" is not given");
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "Ignore the direction of subparser because \"{base=}\" is not given");
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 
 		if (data.base && data.direction == SUBPARSER_UNKNOWN_DIRECTION)
 			data.direction = SUBPARSER_BASE_RUNS_SUB;
@@ -2047,23 +2102,46 @@ static void processLangKindDefinition (
 				mode = false;
 			break;
 		case '{':
-			if (inLongName)
-				error(FATAL,
-				      "unexpected character in kind specification: \'%c\'",
-				      c);
+                if (inLongName) {
+                    // error(FATAL,
+                    //  "unexpected character in kind specification: \'%c\'",
+                    // c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in kind specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 			inLongName = true;
 			break;
 		case '}':
-			if (!inLongName)
-				error(FATAL,
-				      "unexpected character in kind specification: \'%c\'",
-				      c);
+                if (!inLongName) {
+                    // error(FATAL,
+                    //  "unexpected character in kind specification: \'%c\'",
+                    // c);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                    fprintf (stderr,
+                             "unexpected character in kind specification: \'%c\'",
+                             c);
+                    fputs ("\n", stderr);
+                    ctags_cleanup();
+                    exit (1);
+                }
 			k = vStringValue (longName);
 			r = enableLanguageKindLong (language, k, mode);
-			if (! r)
-				error (WARNING, "Unsupported kind: '%s' for --%s option",
-				       k, option);
-
+                if (! r) {
+				// error (WARNING, "Unsupported kind: '%s' for --%s option",
+				//       k, option);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                    fprintf (stderr, "Unsupported kind: '%s' for --%s option",
+                             k, option);
+                    if (Option.fatalWarnings) {
+                        ctags_cleanup();
+                        exit (1);
+                    }
+                }
 			inLongName = false;
 			vStringClear (longName);
 			break;
@@ -2073,9 +2151,17 @@ static void processLangKindDefinition (
 			else
 			{
 				r = enableLanguageKind (language, c, mode);
-				if (! r)
-					error (WARNING, "Unsupported kind: '%c' for --%s option",
-					       c, option);
+                if (! r) {
+					// error (WARNING, "Unsupported kind: '%c' for --%s option",
+					//       c, option);
+                    fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                    fprintf (stderr, "Unsupported kind: '%c' for --%s option",
+                    c, option);
+                    if (Option.fatalWarnings) {
+                        ctags_cleanup();
+                        exit (1);
+                    }
+                }
 			}
 			break;
 		}
@@ -2109,56 +2195,130 @@ static bool processLangDefineKind(const langType language,
 
 	Assert (p);
 
-	if (p[0] == '\0')
-		error (FATAL, "no kind definition specified in \"--%s\" option", option);
+    if (p[0] == '\0') {
+		// error (FATAL, "no kind definition specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no kind definition specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	letter = p[0];
-	if (letter == ',')
-		error (FATAL, "no kind letter specified in \"--%s\" option", option);
-	if (!isalnum (letter))
-		error (FATAL, "the kind letter give in \"--%s\" option is not an alphabet or a number", option);
-	else if (letter == KIND_FILE_DEFAULT)
-		error (FATAL, "the kind letter `F' in \"--%s\" option is reserved for \"file\" kind", option);
+    if (letter == ',') {
+		// error (FATAL, "no kind letter specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no kind letter specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+
+    if (!isalnum (letter)) {
+		// error (FATAL, "the kind letter give in \"--%s\" option is not an alphabet or a number", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the kind letter give in \"--%s\" option is not an alphabet or a number", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+    else if (letter == KIND_FILE_DEFAULT) {
+		// error (FATAL, "the kind letter `F' in \"--%s\" option is reserved for \"file\" kind", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the kind letter `F' in \"--%s\" option is reserved for \"file\" kind", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	else if (getKindForLetter (parser->kindControlBlock, letter))
 	{
-		error (WARNING, "the kind for letter `%c' specified in \"--%s\" option is already defined.",
-			   letter, option);
+		// error (WARNING, "the kind for letter `%c' specified in \"--%s\" option is already defined.",
+		//	   letter, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "the kind for letter `%c' specified in \"--%s\" option is already defined.",
+        letter, option);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return true;
 	}
 
-	if (p[1] != ',')
-		error (FATAL, "wrong kind definition in \"--%s\" option: no comma after letter", option);
+    if (p[1] != ',') {
+		// error (FATAL, "wrong kind definition in \"--%s\" option: no comma after letter", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "wrong kind definition in \"--%s\" option: no comma after letter", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	p += 2;
-	if (p[0] == '\0')
-		error (FATAL, "no kind name specified in \"--%s\" option", option);
+    if (p[0] == '\0') {
+		// error (FATAL, "no kind name specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no kind name specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	tmp_end = strchr (p, ',');
-	if (!tmp_end)
-		error (FATAL, "no kind description specified in \"--%s\" option", option);
-
+    if (!tmp_end) {
+		// error (FATAL, "no kind description specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no kind description specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	tmp_start = p;
 	while (p != tmp_end)
 	{
-		if (!isalnum (*p))
-			error (FATAL, "unacceptable char as part of kind name in \"--%s\" option", option);
+        if (!isalnum (*p)) {
+			// error (FATAL, "unacceptable char as part of kind name in \"--%s\" option", option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "unacceptable char as part of kind name in \"--%s\" option", option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 		p++;
 	}
 
-	if (tmp_end == tmp_start)
-		error (FATAL, "the kind name in \"--%s\" option is empty", option);
+    if (tmp_end == tmp_start) {
+		// error (FATAL, "the kind name in \"--%s\" option is empty", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the kind name in \"--%s\" option is empty", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	name = eStrndup (tmp_start, tmp_end - tmp_start);
 	if (getKindForName (parser->kindControlBlock, name))
 	{
-		error (WARNING, "the kind for name `%s' specified in \"--%s\" option is already defined.",
-			   name, option);
-		eFree (name);
+		//error (WARNING, "the kind for name `%s' specified in \"--%s\" option is already defined.",
+		//	   name, option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+        fprintf (stderr, "the kind for name `%s' specified in \"--%s\" option is already defined.",
+        name, option);
+        eFree (name);
+        if (Option.fatalWarnings) {
+            ctags_cleanup();
+            exit (1);
+        }
 		return true;
 	}
 
 	p++;
-	if (p [0] == '\0')
-		error (FATAL, "found an empty kind description in \"--%s\" option", option);
+    if (p [0] == '\0') {
+		// error (FATAL, "found an empty kind description in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "found an empty kind description in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 	description = eStrdup (p);
 
 	kdef = xCalloc (1, kindDefinition);
@@ -2220,8 +2380,14 @@ extern bool processKindsOption (
 			if (language == LANG_IGNORE)
 			{
 				char *langName = eStrndup (option, len);
-				error (WARNING, "Unknown language \"%s\" in \"%s\" option", langName, option);
-				eFree (langName);
+				// error (WARNING, "Unknown language \"%s\" in \"%s\" option", langName, option);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", langName, option);
+                eFree (langName);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
 			}
 			else
 				processLangKindDefinition (language, option, parameter);
@@ -2233,15 +2399,29 @@ extern bool processKindsOption (
 		const char* lang;
 
 		lang = option + PREFIX_LEN;
-		if (lang[0] == '\0')
-			error (WARNING, "No language given in \"%s\" option", option);
+        if (lang[0] == '\0') {
+			// error (WARNING, "No language given in \"%s\" option", option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "No language given in \"%s\" option", option);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
+        }
 		else if (strcmp (lang, RSV_LANG_ALL) == 0)
 			foreachLanguage(processLangKindDefinitionEach, &arg);
 		else
 		{
 			language = getNamedLanguage (lang, 0);
-			if (language == LANG_IGNORE)
-				error (WARNING, "Unknown language \"%s\" in \"%s\" option", lang, option);
+            if (language == LANG_IGNORE) {
+				// error (WARNING, "Unknown language \"%s\" in \"%s\" option", lang, option);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+                fprintf (stderr, "Unknown language \"%s\" in \"%s\" option", lang, option);
+                if (Option.fatalWarnings) {
+                    ctags_cleanup();
+                    exit (1);
+                }
+            }
 			else
 				processLangKindDefinition (language, option, parameter);
 		}
@@ -2387,18 +2567,18 @@ static void processLangAliasOption (const langType language,
 	if (parameter[0] == '\0')
 	{
 		clearLanguageAliases (language);
-		verbose ("clear aliases for %s\n", parser->def->name);
+		iOS_verbose ("clear aliases for %s\n", parser->def->name);
 	}
 	else if (strcmp (parameter, RSV_LANGMAP_DEFAULT) == 0)
 	{
 		installLanguageAliasesDefault (language);
-		verbose ("reset aliases for %s\n", parser->def->name);
+		iOS_verbose ("reset aliases for %s\n", parser->def->name);
 	}
 	else if (parameter[0] == '+')
 	{
 		alias = parameter + 1;
 		addLanguageAlias(language, alias);
-		verbose ("add an alias %s to %s\n", alias, parser->def->name);
+		iOS_verbose ("add an alias %s to %s\n", alias, parser->def->name);
 	}
 	else if (parameter[0] == '-')
 	{
@@ -2407,7 +2587,7 @@ static void processLangAliasOption (const langType language,
 			alias = parameter + 1;
 			if (stringListDeleteItemExtension (parser->currentAliases, alias))
 			{
-				verbose ("remove an alias %s from %s\n", alias, parser->def->name);
+				iOS_verbose ("remove an alias %s from %s\n", alias, parser->def->name);
 			}
 		}
 	}
@@ -2416,7 +2596,7 @@ static void processLangAliasOption (const langType language,
 		alias = parameter;
 		clearLanguageAliases (language);
 		addLanguageAlias(language, alias);
-		verbose ("set alias %s to %s\n", alias, parser->def->name);
+		iOS_verbose ("set alias %s to %s\n", alias, parser->def->name);
 	}
 
 }
@@ -2437,18 +2617,24 @@ extern bool processAliasOption (
 			for (unsigned int i = 0; i < LanguageCount; i++)
 			{
 				clearLanguageAliases (i);
-				verbose ("clear aliases for %s\n", getLanguageName(i));
+				iOS_verbose ("clear aliases for %s\n", getLanguageName(i));
 			}
 
 			if (parameter[0] != '\0')
 			{
-				verbose ("  Installing default language aliases:\n");
+				iOS_verbose ("  Installing default language aliases:\n");
 				installLanguageAliasesDefaults ();
 			}
 		}
 		else
 		{
-			error (WARNING, "Use \"%s\" option for reset (\"default\") or clearing (\"\")", option);
+			// error (WARNING, "Use \"%s\" option for reset (\"default\") or clearing (\"\")", option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "Warning: ");
+            fprintf (stderr, "Use \"%s\" option for reset (\"default\") or clearing (\"\")", option);
+            if (Option.fatalWarnings) {
+                ctags_cleanup();
+                exit (1);
+            }
 			return false;
 		}
 		return true;
@@ -2689,20 +2875,45 @@ static bool processLangDefineExtra (const langType language,
 	Assert (0 <= language  &&  language < (int) LanguageCount);
 	Assert (p);
 
-	if (p[0] == '\0')
-		error (FATAL, "no extra definition specified in \"--%s\" option", option);
+    if (p[0] == '\0') {
+		// error (FATAL, "no extra definition specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no extra definition specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	desc = strchr (p, ',');
-	if (!desc)
-		error (FATAL, "no extra description specified in \"--%s\" option", option);
-	else if (desc == p)
-		error (FATAL, "the extra name in \"--%s\" option is empty", option);
+    if (!desc) {
+		// error (FATAL, "no extra description specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no extra description specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+    else if (desc == p) {
+		// error (FATAL, "the extra name in \"--%s\" option is empty", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the extra name in \"--%s\" option is empty", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	for (; p < desc; p++)
 	{
-		if (!isalnum (*p))
-			error (FATAL, "unacceptable char as part of extra name in \"--%s\" option",
-				   option);
+        if (!isalnum (*p)) {
+			// error (FATAL, "unacceptable char as part of extra name in \"--%s\" option",
+			// 	   option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "unacceptable char as part of extra name in \"--%s\" option",
+                     option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 
 	xdef = xCalloc (1, xtagDefinition);
@@ -2747,24 +2958,55 @@ static bool processLangDefineField (const langType language,
 	Assert (0 <= language  &&  language < (int) LanguageCount);
 	Assert (p);
 
-	if (p[0] == '\0')
-		error (FATAL, "no field definition specified in \"--%s\" option", option);
+    if (p[0] == '\0') {
+		// error (FATAL, "no field definition specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no field definition specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	desc = strchr (p, ',');
-	if (!desc)
-		error (FATAL, "no field description specified in \"--%s\" option", option);
-	else if (desc == p)
-		error (FATAL, "the field name in \"--%s\" option is empty", option);
+    if (!desc) {
+		// error (FATAL, "no field description specified in \"--%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no field description specified in \"--%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
+    else if (desc == p) {
+		// error (FATAL, "the field name in \"--%s\" option is empty", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the field name in \"--%s\" option is empty", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	for (; p < desc; p++)
 	{
-		if (!isalnum (*p))
-			error (FATAL, "unacceptable char as part of field name in \"--%s\" option",
-				   option);
+        if (!isalnum (*p)) {
+			// error (FATAL, "unacceptable char as part of field name in \"--%s\" option",
+			//	   option);
+            fprintf (stderr, "%s: %s", getExecutableName (),  "");
+            fprintf (stderr, "unacceptable char as part of field name in \"--%s\" option",
+                     option);
+            fputs ("\n", stderr);
+            ctags_cleanup();
+            exit (1);
+        }
 	}
 
-	if (strlen (desc + 1) == 0)
-		error (FATAL, "field description in \"--%s\" option is empty", option);
+    if (strlen (desc + 1) == 0) {
+		// error (FATAL, "field description in \"--%s\" option is empty", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "field description in \"--%s\" option is empty", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	fdef = xCalloc (1, fieldDefinition);
 	fdef->enabled = false;
@@ -2958,7 +3200,7 @@ extern bool runParserInNarrowedInputStream (const langType language,
 {
 	bool tagFileResized;
 
-	verbose ("runParserInNarrowedInputStream: %s; "
+	iOS_verbose ("runParserInNarrowedInputStream: %s; "
 			 "file: %s, "
 			 "start(line: %lu, offset: %ld, srcline: %lu)"
 			 " - "
@@ -3099,7 +3341,7 @@ extern bool doesParserRequireMemoryStream (const langType language)
 	if (lang->tagXpathTableCount > 0
 		|| lang->useMemoryStreamInput)
 	{
-		verbose ("%s requires a memory stream for input\n", lang->name);
+		iOS_verbose ("%s requires a memory stream for input\n", lang->name);
 		return true;
 	}
 
@@ -3113,7 +3355,7 @@ extern bool doesParserRequireMemoryStream (const langType language)
 			baseParser = getNamedLanguage (d->upperParser, 0);
 			if (doesParserRequireMemoryStream(baseParser))
 			{
-				verbose ("%s/%s requires a memory stream for input\n", lang->name,
+				iOS_verbose ("%s/%s requires a memory stream for input\n", lang->name,
 						 LanguageTable[baseParser].def->name);
 				return true;
 			}
@@ -3151,7 +3393,7 @@ extern bool parseFileWithMio (const char *const fileName, MIO *mio)
 	}
 
 	if (language == LANG_IGNORE)
-		verbose ("ignoring %s (unknown language/language disabled)\n",
+		iOS_verbose ("ignoring %s (unknown language/language disabled)\n",
 			 fileName);
 	else
 	{
@@ -3235,15 +3477,33 @@ extern void processLanguageMultitableExtendingOption (langType language, const c
 
 	tmp = strchr(parameter, '+');
 
-	if (!tmp)
-		error (FATAL, "no separator(+) found: %s", parameter);
+    if (!tmp) {
+		// error (FATAL, "no separator(+) found: %s", parameter);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "no separator(+) found: %s", parameter);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
-	if (tmp == parameter)
-		error (FATAL, "the name of source table is empty in table extending: %s", parameter);
+    if (tmp == parameter) {
+		// error (FATAL, "the name of source table is empty in table extending: %s", parameter);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the name of source table is empty in table extending: %s", parameter);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	src = tmp + 1;
-	if (!*src)
-		error (FATAL, "the name of dist table is empty in table extending: %s", parameter);
+    if (!*src) {
+		// error (FATAL, "the name of dist table is empty in table extending: %s", parameter);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "the name of dist table is empty in table extending: %s", parameter);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	dist = eStrndup(parameter, tmp  - parameter);
 	extendRegexTable(((LanguageTable + language)->lregexControlBlock), src, dist);
@@ -3328,8 +3588,14 @@ extern bool processTabledefOption (const char *const option, const char *const p
 	if (language == LANG_IGNORE)
 		return false;
 
-	if (parameter == NULL || parameter[0] == '\0')
-		error (FATAL, "A parameter is needed after \"%s\" option", option);
+    if (parameter == NULL || parameter[0] == '\0') {
+        // error (FATAL, "A parameter is needed after \"%s\" option", option);
+        fprintf (stderr, "%s: %s", getExecutableName (),  "");
+        fprintf (stderr, "A parameter is needed after \"%s\" option", option);
+        fputs ("\n", stderr);
+        ctags_cleanup();
+        exit (1);
+    }
 
 	addRegexTable((LanguageTable +language)->lregexControlBlock, parameter);
 	return true;
@@ -3665,7 +3931,12 @@ extern void applyParameter (const langType language, const char *name, const cha
 		}
 	}
 
-	error (FATAL, "no such parameter in %s: %s", parser->name, name);
+	// error (FATAL, "no such parameter in %s: %s", parser->name, name);
+    fprintf (stderr, "%s: %s", getExecutableName (),  "");
+    fprintf (stderr, "no such parameter in %s: %s", parser->name, name);
+    fputs ("\n", stderr);
+    ctags_cleanup();
+    exit (1);
 }
 
 extern subparser *getNextSubparser(subparser *last,
@@ -3742,21 +4013,21 @@ extern void scheduleRunningBaseparser (int dependencyIndex)
 	{
 		enableLanguage (base, true);
 		base_parser->dontEmit = true;
-		verbose ("force enable \"%s\" as base parser\n", base_parser->def->name);
+		iOS_verbose ("force enable \"%s\" as base parser\n", base_parser->def->name);
 	}
 
 	{
 		subparser *tmp;
 
-		verbose ("scheduleRunningBaseparser %s with subparsers: ", base_name);
+		iOS_verbose ("scheduleRunningBaseparser %s with subparsers: ", base_name);
 		pushLanguage (base);
 		foreachSubparser(tmp, true)
 		{
 			langType t = getSubparserLanguage (tmp);
-			verbose ("%s ", getLanguageName (t));
+			iOS_verbose ("%s ", getLanguageName (t));
 		}
 		popLanguage ();
-		verbose ("\n");
+		iOS_verbose ("\n");
 	}
 
 

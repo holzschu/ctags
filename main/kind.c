@@ -135,7 +135,7 @@ extern int  defineKind (struct kindControlBlock* kcb, kindDefinition *def,
 	kcb->kind [def->id].def = def;
 	kcb->kind [def->id].free = freeKindDef;
 
-	verbose ("Add kind[%d] \"%c,%s,%s\" to %s\n", def->id,
+	iOS_verbose ("Add kind[%d] \"%c,%s,%s\" to %s\n", def->id,
 			 def->letter, def->name, def->description,
 			 getLanguageName (kcb->owner));
 
@@ -349,10 +349,22 @@ extern void roleColprintAddRoles (struct colprintTable *table, struct kindContro
 			const char *start = c + 1;
 			const char *end = strchr(c, '}');
 
-			if (!end)
-				error (FATAL, "'{' is not closed with '}' in \"%s\"", c);
-			if (start == end)
-				error (FATAL, "empty kind name is given in \"%s\"", c);
+            if (!end) {
+				// error (FATAL, "'{' is not closed with '}' in \"%s\"", c);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "'{' is not closed with '}' in \"%s\"", c);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
+            if (start == end) {
+				// error (FATAL, "empty kind name is given in \"%s\"", c);
+                fprintf (stderr, "%s: %s", getExecutableName (),  "");
+                fprintf (stderr, "empty kind name is given in \"%s\"", c);
+                fputs ("\n", stderr);
+                ctags_cleanup();
+                exit (1);
+            }
 
 			kname = start;
 			kname_len = end - start;
