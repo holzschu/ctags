@@ -29,41 +29,40 @@ target triple = "arm64-apple-ios11.0.0"
 @args = internal global %struct.sCookedArgs* null, align 8
 @.str.2 = private unnamed_addr constant [43 x i8] c"Reading initial options from command line\0A\00", align 1
 @__stderrp = external global %struct.__sFILE*, align 8
-@.str.3 = private unnamed_addr constant [25 x i8] c"we have an execName: %s\0A\00", align 1
-@.str.4 = private unnamed_addr constant [37 x i8] c"No files specified. Try \22%s --help\22.\00", align 1
-@.str.5 = private unnamed_addr constant [32 x i8] c"Reading command line arguments\0A\00", align 1
-@.str.6 = private unnamed_addr constant [19 x i8] c"Reading list file\0A\00", align 1
-@.str.7 = private unnamed_addr constant [22 x i8] c"Reading filter input\0A\00", align 1
+@.str.3 = private unnamed_addr constant [37 x i8] c"No files specified. Try \22%s --help\22.\00", align 1
+@.str.4 = private unnamed_addr constant [32 x i8] c"Reading command line arguments\0A\00", align 1
+@.str.5 = private unnamed_addr constant [19 x i8] c"Reading list file\0A\00", align 1
+@.str.6 = private unnamed_addr constant [22 x i8] c"Reading filter input\0A\00", align 1
 @__stdinp = external global %struct.__sFILE*, align 8
-@.str.8 = private unnamed_addr constant [2 x i8] c".\00", align 1
-@.str.9 = private unnamed_addr constant [16 x i8] c"excluding \22%s\22\0A\00", align 1
-@.str.10 = private unnamed_addr constant [31 x i8] c"ignoring \22%s\22 (symbolic link)\0A\00", align 1
-@.str.11 = private unnamed_addr constant [28 x i8] c"cannot open input file \22%s\22\00", align 1
-@.str.12 = private unnamed_addr constant [30 x i8] c"ignoring \22%s\22 (special file)\0A\00", align 1
-@.str.13 = private unnamed_addr constant [2 x i8] c"r\00", align 1
-@.str.14 = private unnamed_addr constant [27 x i8] c"cannot open list file \22%s\22\00", align 1
+@.str.7 = private unnamed_addr constant [2 x i8] c".\00", align 1
+@.str.8 = private unnamed_addr constant [16 x i8] c"excluding \22%s\22\0A\00", align 1
+@.str.9 = private unnamed_addr constant [31 x i8] c"ignoring \22%s\22 (symbolic link)\0A\00", align 1
+@.str.10 = private unnamed_addr constant [28 x i8] c"cannot open input file \22%s\22\00", align 1
+@.str.11 = private unnamed_addr constant [30 x i8] c"ignoring \22%s\22 (special file)\0A\00", align 1
+@.str.12 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.13 = private unnamed_addr constant [27 x i8] c"cannot open list file \22%s\22\00", align 1
 @__stdoutp = external global %struct.__sFILE*, align 8
 @recurseIntoDirectory.recursionDepth = internal global i32 0, align 4
-@.str.15 = private unnamed_addr constant [32 x i8] c"ignoring \22%s\22 (recursive link)\0A\00", align 1
-@.str.16 = private unnamed_addr constant [27 x i8] c"ignoring \22%s\22 (directory)\0A\00", align 1
-@.str.17 = private unnamed_addr constant [50 x i8] c"not descending in directory \22%s\22 (depth %u > %u)\0A\00", align 1
-@.str.18 = private unnamed_addr constant [31 x i8] c"RECURSING into directory \22%s\22\0A\00", align 1
-@.str.19 = private unnamed_addr constant [35 x i8] c"cannot recurse into directory \22%s\22\00", align 1
-@.str.20 = private unnamed_addr constant [3 x i8] c"..\00", align 1
-@.str.21 = private unnamed_addr constant [40 x i8] c"%ld file%s, %ld line%s (%ld kB) scanned\00", align 1
-@.str.22 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
-@.str.23 = private unnamed_addr constant [2 x i8] c"s\00", align 1
-@.str.24 = private unnamed_addr constant [18 x i8] c" in %.01f seconds\00", align 1
-@.str.25 = private unnamed_addr constant [12 x i8] c" (%lu kB/s)\00", align 1
-@.str.26 = private unnamed_addr constant [28 x i8] c"%lu tag%s added to tag file\00", align 1
-@.str.27 = private unnamed_addr constant [16 x i8] c" (now %lu tags)\00", align 1
-@.str.28 = private unnamed_addr constant [17 x i8] c"%lu tag%s sorted\00", align 1
-@.str.29 = private unnamed_addr constant [18 x i8] c" in %.02f seconds\00", align 1
-@.str.30 = private unnamed_addr constant [5 x i8] c"() {\00", align 1
-@.str.31 = private unnamed_addr constant [22 x i8] c"reset environment: %s\00", align 1
-@.str.32 = private unnamed_addr constant [20 x i8] c"BASH_FUNC_module()=\00", align 1
-@.str.33 = private unnamed_addr constant [17 x i8] c"BASH_FUNC_scl()=\00", align 1
-@__const.isSafeVar.safe_vars = private unnamed_addr constant [3 x i8*] [i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.32, i32 0, i32 0), i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.33, i32 0, i32 0), i8* null], align 8
+@.str.14 = private unnamed_addr constant [32 x i8] c"ignoring \22%s\22 (recursive link)\0A\00", align 1
+@.str.15 = private unnamed_addr constant [27 x i8] c"ignoring \22%s\22 (directory)\0A\00", align 1
+@.str.16 = private unnamed_addr constant [50 x i8] c"not descending in directory \22%s\22 (depth %u > %u)\0A\00", align 1
+@.str.17 = private unnamed_addr constant [31 x i8] c"RECURSING into directory \22%s\22\0A\00", align 1
+@.str.18 = private unnamed_addr constant [35 x i8] c"cannot recurse into directory \22%s\22\00", align 1
+@.str.19 = private unnamed_addr constant [3 x i8] c"..\00", align 1
+@.str.20 = private unnamed_addr constant [40 x i8] c"%ld file%s, %ld line%s (%ld kB) scanned\00", align 1
+@.str.21 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str.22 = private unnamed_addr constant [2 x i8] c"s\00", align 1
+@.str.23 = private unnamed_addr constant [18 x i8] c" in %.01f seconds\00", align 1
+@.str.24 = private unnamed_addr constant [12 x i8] c" (%lu kB/s)\00", align 1
+@.str.25 = private unnamed_addr constant [28 x i8] c"%lu tag%s added to tag file\00", align 1
+@.str.26 = private unnamed_addr constant [16 x i8] c" (now %lu tags)\00", align 1
+@.str.27 = private unnamed_addr constant [17 x i8] c"%lu tag%s sorted\00", align 1
+@.str.28 = private unnamed_addr constant [18 x i8] c" in %.02f seconds\00", align 1
+@.str.29 = private unnamed_addr constant [5 x i8] c"() {\00", align 1
+@.str.30 = private unnamed_addr constant [22 x i8] c"reset environment: %s\00", align 1
+@.str.31 = private unnamed_addr constant [20 x i8] c"BASH_FUNC_module()=\00", align 1
+@.str.32 = private unnamed_addr constant [17 x i8] c"BASH_FUNC_scl()=\00", align 1
+@__const.isSafeVar.safe_vars = private unnamed_addr constant [3 x i8*] [i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.str.31, i32 0, i32 0), i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.32, i32 0, i32 0), i8* null], align 8
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @addTotals(i32 %files, i64 %lines, i64 %bytes) #0 {
@@ -189,59 +188,57 @@ do.end:                                           ; preds = %do.body
   call void @setTagWriter(i32 0)
   call void @setCurrentDirectory()
   %0 = load i8**, i8*** %argv.addr, align 8
-  %arrayidx = getelementptr inbounds i8*, i8** %0, i64 0
-  %1 = load i8*, i8** %arrayidx, align 8
+  %incdec.ptr = getelementptr inbounds i8*, i8** %0, i32 1
+  store i8** %incdec.ptr, i8*** %argv.addr, align 8
+  %1 = load i8*, i8** %0, align 8
   call void @setExecutableName(i8* %1)
-  %2 = load i8**, i8*** %argv.addr, align 8
-  %add.ptr = getelementptr inbounds i8*, i8** %2, i64 1
-  store i8** %add.ptr, i8*** %argv.addr, align 8
   call void @sanitizeEnviron()
   %call = call zeroext i1 @checkRegex()
   call void @initFieldObjects()
   call void @initXtagObjects()
-  %3 = load i8**, i8*** %argv.addr, align 8
-  %call1 = call %struct.sCookedArgs* @cArgNewFromArgv(i8** %3)
+  %2 = load i8**, i8*** %argv.addr, align 8
+  %call1 = call %struct.sCookedArgs* @cArgNewFromArgv(i8** %2)
   store %struct.sCookedArgs* %call1, %struct.sCookedArgs** @args, align 8
-  %4 = load %struct.sCookedArgs*, %struct.sCookedArgs** @args, align 8
-  call void @previewFirstOption(%struct.sCookedArgs* %4)
+  %3 = load %struct.sCookedArgs*, %struct.sCookedArgs** @args, align 8
+  call void @previewFirstOption(%struct.sCookedArgs* %3)
   call void @testEtagsInvocation()
   call void @initializeParsing()
   call void @initOptions()
   call void @readOptionConfiguration()
   call void (i8*, ...) @verbose(i8* getelementptr inbounds ([43 x i8], [43 x i8]* @.str.2, i64 0, i64 0))
-  %5 = load %struct.sCookedArgs*, %struct.sCookedArgs** @args, align 8
-  call void @parseCmdlineOptions(%struct.sCookedArgs* %5)
+  %4 = load %struct.sCookedArgs*, %struct.sCookedArgs** @args, align 8
+  call void @parseCmdlineOptions(%struct.sCookedArgs* %4)
   call void @checkOptions()
-  %6 = load %struct.sCookedArgs*, %struct.sCookedArgs** @args, align 8
-  call void @runMainLoop(%struct.sCookedArgs* %6)
+  %5 = load %struct.sCookedArgs*, %struct.sCookedArgs** @args, align 8
+  call void @runMainLoop(%struct.sCookedArgs* %5)
   br label %do.body2
 
 do.body2:                                         ; preds = %do.end
-  %7 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
-  %tobool = trunc i8 %7 to i1
+  %6 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool = trunc i8 %6 to i1
   br i1 %tobool, label %if.then, label %if.end
 
 if.then:                                          ; preds = %do.body2
-  %8 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
-  store %struct.__sFILE* %8, %struct.__sFILE** %vfp, align 8
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  store %struct.__sFILE* %7, %struct.__sFILE** %vfp, align 8
   store i32 0, i32* %i, align 4
   br label %for.cond
 
 for.cond:                                         ; preds = %for.inc, %if.then
-  %9 = load i32, i32* %i, align 4
+  %8 = load i32, i32* %i, align 4
   %call3 = call i32 @countParsers()
-  %cmp = icmp ult i32 %9, %call3
+  %cmp = icmp ult i32 %8, %call3
   br i1 %cmp, label %for.body, label %for.end
 
 for.body:                                         ; preds = %for.cond
-  %10 = load i32, i32* %i, align 4
-  %11 = load %struct.__sFILE*, %struct.__sFILE** %vfp, align 8
-  call void @printLanguageMultitableStatistics(i32 %10, %struct.__sFILE* %11)
+  %9 = load i32, i32* %i, align 4
+  %10 = load %struct.__sFILE*, %struct.__sFILE** %vfp, align 8
+  call void @printLanguageMultitableStatistics(i32 %9, %struct.__sFILE* %10)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body
-  %12 = load i32, i32* %i, align 4
-  %inc = add i32 %12, 1
+  %11 = load i32, i32* %i, align 4
+  %inc = add i32 %11, 1
   store i32 %inc, i32* %i, align 4
   br label %for.cond
 
@@ -253,16 +250,16 @@ if.end:                                           ; preds = %for.end, %do.body2
 
 do.end4:                                          ; preds = %if.end
   call void @ctags_cleanup()
-  %13 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
-  %tobool5 = trunc i8 %13 to i1
+  %12 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
+  %tobool5 = trunc i8 %12 to i1
   br i1 %tobool5, label %if.then6, label %if.end10
 
 if.then6:                                         ; preds = %do.end4
-  %14 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
-  %tobool7 = trunc i8 %14 to i1
+  %13 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
+  %tobool7 = trunc i8 %13 to i1
   %conv = zext i1 %tobool7 to i32
   %cmp8 = icmp eq i32 %conv, 1
-  %15 = zext i1 %cmp8 to i64
+  %14 = zext i1 %cmp8 to i64
   %cond = select i1 %cmp8, i32 0, i32 1
   ret i32 %cond
 
@@ -285,7 +282,6 @@ entry:
   %timeStamps = alloca [3 x i64], align 8
   %resize = alloca i8, align 1
   %files = alloca i8, align 1
-  %execName = alloca i8*, align 8
   store %struct.sCookedArgs* %args, %struct.sCookedArgs** %args.addr, align 8
   store i8* %user, i8** %user.addr, align 8
   store i8 0, i8* %resize, align 1
@@ -309,7 +305,7 @@ lor.end:                                          ; preds = %lor.rhs, %lor.lhs.f
   store i8 %frombool, i8* %files, align 1
   %4 = load i8, i8* %files, align 1
   %tobool1 = trunc i8 %4 to i1
-  br i1 %tobool1, label %if.end10, label %if.then
+  br i1 %tobool1, label %if.end9, label %if.then
 
 if.then:                                          ; preds = %lor.end
   %call2 = call zeroext i1 @filesRequired()
@@ -317,191 +313,186 @@ if.then:                                          ; preds = %lor.end
 
 if.then3:                                         ; preds = %if.then
   %call4 = call i8* @getExecutableName()
-  store i8* %call4, i8** %execName, align 8
-  %5 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
-  %6 = load i8*, i8** %execName, align 8
-  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %5, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.3, i64 0, i64 0), i8* %6)
-  %7 = load i8*, i8** %execName, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.4, i64 0, i64 0), i8* %7)
-  br label %if.end9
+  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.3, i64 0, i64 0), i8* %call4)
+  br label %if.end8
 
 if.else:                                          ; preds = %if.then
-  %8 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 4), align 8
-  %tobool6 = trunc i8 %8 to i1
-  br i1 %tobool6, label %if.end, label %land.lhs.true
+  %5 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 4), align 8
+  %tobool5 = trunc i8 %5 to i1
+  br i1 %tobool5, label %if.end, label %land.lhs.true
 
 land.lhs.true:                                    ; preds = %if.else
-  %call7 = call zeroext i1 @etagsInclude()
-  br i1 %call7, label %if.end, label %if.then8
+  %call6 = call zeroext i1 @etagsInclude()
+  br i1 %call6, label %if.end, label %if.then7
 
-if.then8:                                         ; preds = %land.lhs.true
-  br label %if.end68
+if.then7:                                         ; preds = %land.lhs.true
+  br label %if.end67
 
 if.end:                                           ; preds = %land.lhs.true, %if.else
+  br label %if.end8
+
+if.end8:                                          ; preds = %if.end, %if.then3
   br label %if.end9
 
-if.end9:                                          ; preds = %if.end, %if.then3
-  br label %if.end10
+if.end9:                                          ; preds = %if.end8, %lor.end
+  %6 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 18), align 1
+  %tobool10 = trunc i8 %6 to i1
+  br i1 %tobool10, label %if.end14, label %land.lhs.true11
 
-if.end10:                                         ; preds = %if.end9, %lor.end
-  %9 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 18), align 1
-  %tobool11 = trunc i8 %9 to i1
-  br i1 %tobool11, label %if.end15, label %land.lhs.true12
+land.lhs.true11:                                  ; preds = %if.end9
+  %7 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
+  %tobool12 = trunc i8 %7 to i1
+  br i1 %tobool12, label %if.end14, label %if.then13
 
-land.lhs.true12:                                  ; preds = %if.end10
-  %10 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
-  %tobool13 = trunc i8 %10 to i1
-  br i1 %tobool13, label %if.end15, label %if.then14
-
-if.then14:                                        ; preds = %land.lhs.true12
+if.then13:                                        ; preds = %land.lhs.true11
   call void @openTagFile()
-  br label %if.end15
+  br label %if.end14
 
-if.end15:                                         ; preds = %if.then14, %land.lhs.true12, %if.end10
-  %11 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
-  %tobool16 = trunc i8 %11 to i1
-  br i1 %tobool16, label %cond.true, label %cond.false
+if.end14:                                         ; preds = %if.then13, %land.lhs.true11, %if.end9
+  %8 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
+  %tobool15 = trunc i8 %8 to i1
+  br i1 %tobool15, label %cond.true, label %cond.false
 
-cond.true:                                        ; preds = %if.end15
-  %call17 = call i64 @"\01_clock"()
+cond.true:                                        ; preds = %if.end14
+  %call16 = call i64 @"\01_clock"()
   br label %cond.end
 
-cond.false:                                       ; preds = %if.end15
+cond.false:                                       ; preds = %if.end14
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond = phi i64 [ %call17, %cond.true ], [ 0, %cond.false ]
+  %cond = phi i64 [ %call16, %cond.true ], [ 0, %cond.false ]
   %arrayidx = getelementptr inbounds [3 x i64], [3 x i64]* %timeStamps, i64 0, i64 0
   store i64 %cond, i64* %arrayidx, align 8
-  %12 = load %struct.sCookedArgs*, %struct.sCookedArgs** %args.addr, align 8
-  %call18 = call zeroext i1 @cArgOff(%struct.sCookedArgs* %12)
-  br i1 %call18, label %if.end22, label %if.then19
+  %9 = load %struct.sCookedArgs*, %struct.sCookedArgs** %args.addr, align 8
+  %call17 = call zeroext i1 @cArgOff(%struct.sCookedArgs* %9)
+  br i1 %call17, label %if.end21, label %if.then18
 
-if.then19:                                        ; preds = %cond.end
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.5, i64 0, i64 0))
-  %13 = load %struct.sCookedArgs*, %struct.sCookedArgs** %args.addr, align 8
-  %call20 = call zeroext i1 @createTagsForArgs(%struct.sCookedArgs* %13)
-  %frombool21 = zext i1 %call20 to i8
-  store i8 %frombool21, i8* %resize, align 1
-  br label %if.end22
+if.then18:                                        ; preds = %cond.end
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.4, i64 0, i64 0))
+  %10 = load %struct.sCookedArgs*, %struct.sCookedArgs** %args.addr, align 8
+  %call19 = call zeroext i1 @createTagsForArgs(%struct.sCookedArgs* %10)
+  %frombool20 = zext i1 %call19 to i8
+  store i8 %frombool20, i8* %resize, align 1
+  br label %if.end21
 
-if.end22:                                         ; preds = %if.then19, %cond.end
-  %14 = load i8*, i8** getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 9), align 8
-  %cmp23 = icmp ne i8* %14, null
-  br i1 %cmp23, label %if.then24, label %if.end30
+if.end21:                                         ; preds = %if.then18, %cond.end
+  %11 = load i8*, i8** getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 9), align 8
+  %cmp22 = icmp ne i8* %11, null
+  br i1 %cmp22, label %if.then23, label %if.end29
 
-if.then24:                                        ; preds = %if.end22
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.6, i64 0, i64 0))
-  %15 = load i8*, i8** getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 9), align 8
-  %call25 = call zeroext i1 @createTagsFromListFile(i8* %15)
-  br i1 %call25, label %lor.end28, label %lor.rhs26
+if.then23:                                        ; preds = %if.end21
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([19 x i8], [19 x i8]* @.str.5, i64 0, i64 0))
+  %12 = load i8*, i8** getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 9), align 8
+  %call24 = call zeroext i1 @createTagsFromListFile(i8* %12)
+  br i1 %call24, label %lor.end27, label %lor.rhs25
 
-lor.rhs26:                                        ; preds = %if.then24
-  %16 = load i8, i8* %resize, align 1
-  %tobool27 = trunc i8 %16 to i1
-  br label %lor.end28
+lor.rhs25:                                        ; preds = %if.then23
+  %13 = load i8, i8* %resize, align 1
+  %tobool26 = trunc i8 %13 to i1
+  br label %lor.end27
 
-lor.end28:                                        ; preds = %lor.rhs26, %if.then24
-  %17 = phi i1 [ true, %if.then24 ], [ %tobool27, %lor.rhs26 ]
-  %frombool29 = zext i1 %17 to i8
-  store i8 %frombool29, i8* %resize, align 1
-  br label %if.end30
+lor.end27:                                        ; preds = %lor.rhs25, %if.then23
+  %14 = phi i1 [ true, %if.then23 ], [ %tobool26, %lor.rhs25 ]
+  %frombool28 = zext i1 %14 to i8
+  store i8 %frombool28, i8* %resize, align 1
+  br label %if.end29
 
-if.end30:                                         ; preds = %lor.end28, %if.end22
-  %18 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 18), align 1
-  %tobool31 = trunc i8 %18 to i1
-  br i1 %tobool31, label %if.then32, label %if.end38
+if.end29:                                         ; preds = %lor.end27, %if.end21
+  %15 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 18), align 1
+  %tobool30 = trunc i8 %15 to i1
+  br i1 %tobool30, label %if.then31, label %if.end37
 
-if.then32:                                        ; preds = %if.end30
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.7, i64 0, i64 0))
-  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stdinp, align 8
-  %call33 = call zeroext i1 @createTagsFromFileInput(%struct.__sFILE* %19, i1 zeroext true)
-  br i1 %call33, label %lor.end36, label %lor.rhs34
+if.then31:                                        ; preds = %if.end29
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.6, i64 0, i64 0))
+  %16 = load %struct.__sFILE*, %struct.__sFILE** @__stdinp, align 8
+  %call32 = call zeroext i1 @createTagsFromFileInput(%struct.__sFILE* %16, i1 zeroext true)
+  br i1 %call32, label %lor.end35, label %lor.rhs33
 
-lor.rhs34:                                        ; preds = %if.then32
-  %20 = load i8, i8* %resize, align 1
-  %tobool35 = trunc i8 %20 to i1
-  br label %lor.end36
+lor.rhs33:                                        ; preds = %if.then31
+  %17 = load i8, i8* %resize, align 1
+  %tobool34 = trunc i8 %17 to i1
+  br label %lor.end35
 
-lor.end36:                                        ; preds = %lor.rhs34, %if.then32
-  %21 = phi i1 [ true, %if.then32 ], [ %tobool35, %lor.rhs34 ]
-  %frombool37 = zext i1 %21 to i8
-  store i8 %frombool37, i8* %resize, align 1
-  br label %if.end38
+lor.end35:                                        ; preds = %lor.rhs33, %if.then31
+  %18 = phi i1 [ true, %if.then31 ], [ %tobool34, %lor.rhs33 ]
+  %frombool36 = zext i1 %18 to i8
+  store i8 %frombool36, i8* %resize, align 1
+  br label %if.end37
 
-if.end38:                                         ; preds = %lor.end36, %if.end30
-  %22 = load i8, i8* %files, align 1
-  %tobool39 = trunc i8 %22 to i1
-  br i1 %tobool39, label %if.end45, label %land.lhs.true40
+if.end37:                                         ; preds = %lor.end35, %if.end29
+  %19 = load i8, i8* %files, align 1
+  %tobool38 = trunc i8 %19 to i1
+  br i1 %tobool38, label %if.end44, label %land.lhs.true39
 
-land.lhs.true40:                                  ; preds = %if.end38
-  %23 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 4), align 8
-  %tobool41 = trunc i8 %23 to i1
-  br i1 %tobool41, label %if.then42, label %if.end45
+land.lhs.true39:                                  ; preds = %if.end37
+  %20 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 4), align 8
+  %tobool40 = trunc i8 %20 to i1
+  br i1 %tobool40, label %if.then41, label %if.end44
 
-if.then42:                                        ; preds = %land.lhs.true40
-  %call43 = call zeroext i1 @recurseIntoDirectory(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.8, i64 0, i64 0))
-  %frombool44 = zext i1 %call43 to i8
-  store i8 %frombool44, i8* %resize, align 1
-  br label %if.end45
+if.then41:                                        ; preds = %land.lhs.true39
+  %call42 = call zeroext i1 @recurseIntoDirectory(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.7, i64 0, i64 0))
+  %frombool43 = zext i1 %call42 to i8
+  store i8 %frombool43, i8* %resize, align 1
+  br label %if.end44
 
-if.end45:                                         ; preds = %if.then42, %land.lhs.true40, %if.end38
-  %24 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
-  %tobool46 = trunc i8 %24 to i1
-  br i1 %tobool46, label %cond.true47, label %cond.false49
+if.end44:                                         ; preds = %if.then41, %land.lhs.true39, %if.end37
+  %21 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
+  %tobool45 = trunc i8 %21 to i1
+  br i1 %tobool45, label %cond.true46, label %cond.false48
 
-cond.true47:                                      ; preds = %if.end45
-  %call48 = call i64 @"\01_clock"()
-  br label %cond.end50
+cond.true46:                                      ; preds = %if.end44
+  %call47 = call i64 @"\01_clock"()
+  br label %cond.end49
 
-cond.false49:                                     ; preds = %if.end45
-  br label %cond.end50
+cond.false48:                                     ; preds = %if.end44
+  br label %cond.end49
 
-cond.end50:                                       ; preds = %cond.false49, %cond.true47
-  %cond51 = phi i64 [ %call48, %cond.true47 ], [ 0, %cond.false49 ]
-  %arrayidx52 = getelementptr inbounds [3 x i64], [3 x i64]* %timeStamps, i64 0, i64 1
-  store i64 %cond51, i64* %arrayidx52, align 8
-  %25 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 18), align 1
-  %tobool53 = trunc i8 %25 to i1
-  br i1 %tobool53, label %if.end58, label %land.lhs.true54
+cond.end49:                                       ; preds = %cond.false48, %cond.true46
+  %cond50 = phi i64 [ %call47, %cond.true46 ], [ 0, %cond.false48 ]
+  %arrayidx51 = getelementptr inbounds [3 x i64], [3 x i64]* %timeStamps, i64 0, i64 1
+  store i64 %cond50, i64* %arrayidx51, align 8
+  %22 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 18), align 1
+  %tobool52 = trunc i8 %22 to i1
+  br i1 %tobool52, label %if.end57, label %land.lhs.true53
 
-land.lhs.true54:                                  ; preds = %cond.end50
-  %26 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
-  %tobool55 = trunc i8 %26 to i1
-  br i1 %tobool55, label %if.end58, label %if.then56
+land.lhs.true53:                                  ; preds = %cond.end49
+  %23 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 23), align 2
+  %tobool54 = trunc i8 %23 to i1
+  br i1 %tobool54, label %if.end57, label %if.then55
 
-if.then56:                                        ; preds = %land.lhs.true54
-  %27 = load i8, i8* %resize, align 1
-  %tobool57 = trunc i8 %27 to i1
-  call void @closeTagFile(i1 zeroext %tobool57)
-  br label %if.end58
+if.then55:                                        ; preds = %land.lhs.true53
+  %24 = load i8, i8* %resize, align 1
+  %tobool56 = trunc i8 %24 to i1
+  call void @closeTagFile(i1 zeroext %tobool56)
+  br label %if.end57
 
-if.end58:                                         ; preds = %if.then56, %land.lhs.true54, %cond.end50
-  %28 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
-  %tobool59 = trunc i8 %28 to i1
-  br i1 %tobool59, label %cond.true60, label %cond.false62
+if.end57:                                         ; preds = %if.then55, %land.lhs.true53, %cond.end49
+  %25 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
+  %tobool58 = trunc i8 %25 to i1
+  br i1 %tobool58, label %cond.true59, label %cond.false61
 
-cond.true60:                                      ; preds = %if.end58
-  %call61 = call i64 @"\01_clock"()
-  br label %cond.end63
+cond.true59:                                      ; preds = %if.end57
+  %call60 = call i64 @"\01_clock"()
+  br label %cond.end62
 
-cond.false62:                                     ; preds = %if.end58
-  br label %cond.end63
+cond.false61:                                     ; preds = %if.end57
+  br label %cond.end62
 
-cond.end63:                                       ; preds = %cond.false62, %cond.true60
-  %cond64 = phi i64 [ %call61, %cond.true60 ], [ 0, %cond.false62 ]
-  %arrayidx65 = getelementptr inbounds [3 x i64], [3 x i64]* %timeStamps, i64 0, i64 2
-  store i64 %cond64, i64* %arrayidx65, align 8
-  %29 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
-  %tobool66 = trunc i8 %29 to i1
-  br i1 %tobool66, label %if.then67, label %if.end68
+cond.end62:                                       ; preds = %cond.false61, %cond.true59
+  %cond63 = phi i64 [ %call60, %cond.true59 ], [ 0, %cond.false61 ]
+  %arrayidx64 = getelementptr inbounds [3 x i64], [3 x i64]* %timeStamps, i64 0, i64 2
+  store i64 %cond63, i64* %arrayidx64, align 8
+  %26 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 21), align 4
+  %tobool65 = trunc i8 %26 to i1
+  br i1 %tobool65, label %if.then66, label %if.end67
 
-if.then67:                                        ; preds = %cond.end63
+if.then66:                                        ; preds = %cond.end62
   %arraydecay = getelementptr inbounds [3 x i64], [3 x i64]* %timeStamps, i64 0, i64 0
   call void @printTotals(i64* %arraydecay)
-  br label %if.end68
+  br label %if.end67
 
-if.end68:                                         ; preds = %if.then8, %if.then67, %cond.end63
+if.end67:                                         ; preds = %if.then7, %if.then66, %cond.end62
   ret void
 }
 
@@ -558,7 +549,7 @@ if.end6:                                          ; preds = %for.body
   %incdec.ptr = getelementptr inbounds i8, i8* %8, i32 1
   store i8* %incdec.ptr, i8** %value, align 8
   %9 = load i8*, i8** %value, align 8
-  %call7 = call i32 @strncmp(i8* %9, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.30, i64 0, i64 0), i64 4)
+  %call7 = call i32 @strncmp(i8* %9, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.29, i64 0, i64 0), i64 4)
   %tobool8 = icmp ne i32 %call7, 0
   br i1 %tobool8, label %if.end18, label %if.then9
 
@@ -580,7 +571,7 @@ if.end14:                                         ; preds = %if.then9
   %idxprom15 = sext i32 %14 to i64
   %arrayidx16 = getelementptr inbounds i8*, i8** %13, i64 %idxprom15
   %15 = load i8*, i8** %arrayidx16, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.31, i64 0, i64 0), i8* %15)
+  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.30, i64 0, i64 0), i8* %15)
   %16 = load i8*, i8** %value, align 8
   %arrayidx17 = getelementptr inbounds i8, i8* %16, i64 0
   store i8 0, i8* %arrayidx17, align 1
@@ -704,11 +695,9 @@ declare zeroext i1 @cArgOff(%struct.sCookedArgs*) #1
 
 declare zeroext i1 @filesRequired() #1
 
-declare i8* @getExecutableName() #1
-
-declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
-
 declare void @error(i32, i8*, ...) #1
+
+declare i8* @getExecutableName() #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal zeroext i1 @etagsInclude() #0 {
@@ -800,7 +789,7 @@ if.then:                                          ; preds = %do.end
 
 if.else:                                          ; preds = %do.end
   %2 = load i8*, i8** %fileName.addr, align 8
-  %call2 = call %struct.__sFILE* @"\01_fopen"(i8* %2, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.13, i64 0, i64 0))
+  %call2 = call %struct.__sFILE* @"\01_fopen"(i8* %2, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12, i64 0, i64 0))
   store %struct.__sFILE* %call2, %struct.__sFILE** %fp, align 8
   %3 = load %struct.__sFILE*, %struct.__sFILE** %fp, align 8
   %cmp3 = icmp eq %struct.__sFILE* %3, null
@@ -808,7 +797,7 @@ if.else:                                          ; preds = %do.end
 
 if.then4:                                         ; preds = %if.else
   %4 = load i8*, i8** %fileName.addr, align 8
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.14, i64 0, i64 0), i8* %4)
+  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.13, i64 0, i64 0), i8* %4)
   br label %if.end
 
 if.end:                                           ; preds = %if.then4, %if.else
@@ -921,7 +910,7 @@ entry:
 
 if.then:                                          ; preds = %entry
   %2 = load i8*, i8** %dirName.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.15, i64 0, i64 0), i8* %2)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([32 x i8], [32 x i8]* @.str.14, i64 0, i64 0), i8* %2)
   br label %if.end7
 
 if.else:                                          ; preds = %entry
@@ -931,7 +920,7 @@ if.else:                                          ; preds = %entry
 
 if.then1:                                         ; preds = %if.else
   %4 = load i8*, i8** %dirName.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.16, i64 0, i64 0), i8* %4)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([27 x i8], [27 x i8]* @.str.15, i64 0, i64 0), i8* %4)
   br label %if.end6
 
 if.else2:                                         ; preds = %if.else
@@ -944,12 +933,12 @@ if.then3:                                         ; preds = %if.else2
   %7 = load i8*, i8** %dirName.addr, align 8
   %8 = load i32, i32* @recurseIntoDirectory.recursionDepth, align 4
   %9 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 29), align 4
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.17, i64 0, i64 0), i8* %7, i32 %8, i32 %9)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([50 x i8], [50 x i8]* @.str.16, i64 0, i64 0), i8* %7, i32 %8, i32 %9)
   br label %if.end
 
 if.else4:                                         ; preds = %if.else2
   %10 = load i8*, i8** %dirName.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.18, i64 0, i64 0), i8* %10)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.17, i64 0, i64 0), i8* %10)
   %11 = load i8*, i8** %dirName.addr, align 8
   %call5 = call zeroext i1 @recurseUsingOpendir(i8* %11)
   %frombool = zext i1 %call5 to i8
@@ -990,15 +979,15 @@ entry:
   %2 = load i64, i64* getelementptr inbounds (%struct.anon, %struct.anon* @Totals, i32 0, i32 0), align 8
   %cmp = icmp eq i64 %2, 1
   %3 = zext i1 %cmp to i64
-  %cond = select i1 %cmp, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.22, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.23, i64 0, i64 0)
+  %cond = select i1 %cmp, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.21, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.22, i64 0, i64 0)
   %4 = load i64, i64* getelementptr inbounds (%struct.anon, %struct.anon* @Totals, i32 0, i32 1), align 8
   %5 = load i64, i64* getelementptr inbounds (%struct.anon, %struct.anon* @Totals, i32 0, i32 1), align 8
   %cmp2 = icmp eq i64 %5, 1
   %6 = zext i1 %cmp2 to i64
-  %cond3 = select i1 %cmp2, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.22, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.23, i64 0, i64 0)
+  %cond3 = select i1 %cmp2, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.21, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.22, i64 0, i64 0)
   %7 = load i64, i64* getelementptr inbounds (%struct.anon, %struct.anon* @Totals, i32 0, i32 2), align 8
   %div = sdiv i64 %7, 1024
-  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.21, i64 0, i64 0), i64 %1, i8* %cond, i64 %4, i8* %cond3, i64 %div)
+  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %0, i8* getelementptr inbounds ([40 x i8], [40 x i8]* @.str.20, i64 0, i64 0), i64 %1, i8* %cond, i64 %4, i8* %cond3, i64 %div)
   %8 = load i64*, i64** %timeStamps.addr, align 8
   %arrayidx = getelementptr inbounds i64, i64* %8, i64 1
   %9 = load i64, i64* %arrayidx, align 8
@@ -1011,7 +1000,7 @@ entry:
   store double %div6, double* %interval, align 8
   %12 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %13 = load double, double* %interval, align 8
-  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %12, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.24, i64 0, i64 0), double %13)
+  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %12, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.23, i64 0, i64 0), double %13)
   %14 = load double, double* %interval, align 8
   %cmp8 = fcmp une double %14, 0.000000e+00
   br i1 %cmp8, label %if.then, label %if.end
@@ -1024,7 +1013,7 @@ if.then:                                          ; preds = %entry
   %div11 = fdiv double %conv10, %17
   %conv12 = fptoui double %div11 to i64
   %div13 = udiv i64 %conv12, 1024
-  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %15, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.25, i64 0, i64 0), i64 %div13)
+  %call14 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %15, i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.24, i64 0, i64 0), i64 %div13)
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
@@ -1035,8 +1024,8 @@ if.end:                                           ; preds = %if.then, %entry
   %21 = load i64, i64* %addedTags, align 8
   %cmp16 = icmp eq i64 %21, 1
   %22 = zext i1 %cmp16 to i64
-  %cond18 = select i1 %cmp16, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.22, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.23, i64 0, i64 0)
-  %call19 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %19, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.26, i64 0, i64 0), i64 %20, i8* %cond18)
+  %cond18 = select i1 %cmp16, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.21, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.22, i64 0, i64 0)
+  %call19 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %19, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.25, i64 0, i64 0), i64 %20, i8* %cond18)
   %23 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 0), align 8
   %tobool = trunc i8 %23 to i1
   br i1 %tobool, label %if.then20, label %if.end22
@@ -1044,7 +1033,7 @@ if.end:                                           ; preds = %if.then, %entry
 if.then20:                                        ; preds = %if.end
   %24 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %25 = load i64, i64* %totalTags, align 8
-  %call21 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %24, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.27, i64 0, i64 0), i64 %25)
+  %call21 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %24, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.26, i64 0, i64 0), i64 %25)
   br label %if.end22
 
 if.end22:                                         ; preds = %if.then20, %if.end
@@ -1065,8 +1054,8 @@ if.then28:                                        ; preds = %land.lhs.true
   %31 = load i64, i64* %totalTags, align 8
   %cmp29 = icmp eq i64 %31, 1
   %32 = zext i1 %cmp29 to i64
-  %cond31 = select i1 %cmp29, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.22, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.23, i64 0, i64 0)
-  %call32 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %29, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.28, i64 0, i64 0), i64 %30, i8* %cond31)
+  %cond31 = select i1 %cmp29, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.21, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.22, i64 0, i64 0)
+  %call32 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %29, i8* getelementptr inbounds ([17 x i8], [17 x i8]* @.str.27, i64 0, i64 0), i64 %30, i8* %cond31)
   %33 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %34 = load i64*, i64** %timeStamps.addr, align 8
   %arrayidx33 = getelementptr inbounds i64, i64* %34, i64 2
@@ -1077,7 +1066,7 @@ if.then28:                                        ; preds = %land.lhs.true
   %sub35 = sub i64 %35, %37
   %conv36 = uitofp i64 %sub35 to double
   %div37 = fdiv double %conv36, 1.000000e+06
-  %call38 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %33, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.29, i64 0, i64 0), double %div37)
+  %call38 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %33, i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.28, i64 0, i64 0), double %div37)
   %38 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %call39 = call i32 @fputc(i32 10, %struct.__sFILE* %38)
   br label %if.end40
@@ -1111,7 +1100,7 @@ do.end:                                           ; preds = %do.body
 
 if.then:                                          ; preds = %do.end
   %2 = load i8*, i8** %entryName.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.9, i64 0, i64 0), i8* %2)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.8, i64 0, i64 0), i8* %2)
   br label %if.end20
 
 if.else:                                          ; preds = %do.end
@@ -1128,7 +1117,7 @@ land.lhs.true:                                    ; preds = %if.else
 
 if.then3:                                         ; preds = %land.lhs.true
   %6 = load i8*, i8** %entryName.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.10, i64 0, i64 0), i8* %6)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([31 x i8], [31 x i8]* @.str.9, i64 0, i64 0), i8* %6)
   br label %if.end19
 
 if.else4:                                         ; preds = %land.lhs.true, %if.else
@@ -1140,7 +1129,7 @@ if.else4:                                         ; preds = %land.lhs.true, %if.
 
 if.then6:                                         ; preds = %if.else4
   %9 = load i8*, i8** %entryName.addr, align 8
-  call void (i32, i8*, ...) @error(i32 6, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.11, i64 0, i64 0), i8* %9)
+  call void (i32, i8*, ...) @error(i32 6, i8* getelementptr inbounds ([28 x i8], [28 x i8]* @.str.10, i64 0, i64 0), i8* %9)
   br label %if.end18
 
 if.else7:                                         ; preds = %if.else4
@@ -1166,7 +1155,7 @@ if.else11:                                        ; preds = %if.else7
 
 if.then13:                                        ; preds = %if.else11
   %15 = load i8*, i8** %entryName.addr, align 8
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.12, i64 0, i64 0), i8* %15)
+  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([30 x i8], [30 x i8]* @.str.11, i64 0, i64 0), i8* %15)
   br label %if.end
 
 if.else14:                                        ; preds = %if.else11
@@ -1238,7 +1227,7 @@ entry:
 
 if.then:                                          ; preds = %entry
   %2 = load i8*, i8** %dirName.addr, align 8
-  call void (i32, i8*, ...) @error(i32 6, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.19, i64 0, i64 0), i8* %2)
+  call void (i32, i8*, ...) @error(i32 6, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.18, i64 0, i64 0), i8* %2)
   br label %if.end28
 
 if.else:                                          ; preds = %entry
@@ -1255,7 +1244,7 @@ while.body:                                       ; preds = %while.cond
   %4 = load %struct.dirent*, %struct.dirent** %entry1, align 8
   %d_name = getelementptr inbounds %struct.dirent, %struct.dirent* %4, i32 0, i32 5
   %arraydecay = getelementptr inbounds [1024 x i8], [1024 x i8]* %d_name, i64 0, i64 0
-  %call4 = call i32 @strcmp(i8* %arraydecay, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.8, i64 0, i64 0))
+  %call4 = call i32 @strcmp(i8* %arraydecay, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.7, i64 0, i64 0))
   %cmp5 = icmp ne i32 %call4, 0
   br i1 %cmp5, label %land.lhs.true, label %if.end26
 
@@ -1263,14 +1252,14 @@ land.lhs.true:                                    ; preds = %while.body
   %5 = load %struct.dirent*, %struct.dirent** %entry1, align 8
   %d_name6 = getelementptr inbounds %struct.dirent, %struct.dirent* %5, i32 0, i32 5
   %arraydecay7 = getelementptr inbounds [1024 x i8], [1024 x i8]* %d_name6, i64 0, i64 0
-  %call8 = call i32 @strcmp(i8* %arraydecay7, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.20, i64 0, i64 0))
+  %call8 = call i32 @strcmp(i8* %arraydecay7, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.19, i64 0, i64 0))
   %cmp9 = icmp ne i32 %call8, 0
   br i1 %cmp9, label %if.then10, label %if.end26
 
 if.then10:                                        ; preds = %land.lhs.true
   store i8 0, i8* %free_p, align 1
   %6 = load i8*, i8** %dirName.addr, align 8
-  %call11 = call i32 @strcmp(i8* %6, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.8, i64 0, i64 0))
+  %call11 = call i32 @strcmp(i8* %6, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.7, i64 0, i64 0))
   %cmp12 = icmp eq i32 %call11, 0
   br i1 %cmp12, label %if.then13, label %if.else16
 
@@ -1341,6 +1330,8 @@ declare i32 @"\01_closedir"(%struct.DIR*) #1
 declare i64 @numTagsTotal() #1
 
 declare i64 @numTagsAdded() #1
+
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
 
 declare i32 @fputc(i32, %struct.__sFILE*) #1
 
