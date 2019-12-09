@@ -3,6 +3,9 @@ source_filename = "dependency.c"
 target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "arm64-apple-ios11.0.0"
 
+%struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
+%struct.sFmtElement = type opaque
+%struct.sPtrArray = type opaque
 %struct.slaveControlBlock = type { %struct.sSlaveParser*, %struct.sSubparser*, %struct.sSubparser*, i32 }
 %struct.sSlaveParser = type { i32, i32, i8*, %struct.sSlaveParser* }
 %struct.sSubparser = type { %struct.sSlaveParser*, %struct.sSubparser*, i8, i8, i32, void (%struct.sSubparser*)*, void (%struct.sSubparser*)*, void (%struct.sSubparser*, i8*)*, void (%struct.sSubparser*, %struct.sTagEntryInfo*, i32)* }
@@ -11,7 +14,6 @@ target triple = "arm64-apple-ios11.0.0"
 %union.anon.0 = type { i64 }
 %struct.anon = type { i8*, i8*, i8*, i8*, i32, i32, i8*, i32, i8*, [2 x i8*], i32, i64 }
 %struct.sTagField = type { i32, i8*, i8 }
-%struct.sPtrArray = type opaque
 %struct.sParserDefinition = type { i8*, %struct.sKindDefinition*, i32, i8**, i8**, i8**, void (i32)*, void (i32, i1)*, void ()*, i32 (i32)*, i8* (%struct._MIO*, i32*, i32)**, i32, i8, i8, i8, i8, %struct.tagRegexTable*, i32, %struct.keywordTable*, i32, %struct.sTagXpathTableTable*, i32, i8, %struct.sFieldDefinition*, i32, %struct.sXtagDefinition*, i32, %struct.sParserDependency*, i32, %struct.sParameterHandlerTable*, i32, %struct.sXpathFileSpec*, i32, i32, i8 }
 %struct.sKindDefinition = type { i8, i8, i8*, i8*, i8, i32, %struct.sRoleDesc*, %struct.sScopeSeparator*, i32, i32, i32, %struct.sKindDefinition*, %struct.sKindDefinition* }
 %struct.sRoleDesc = type { i8, i8*, i8* }
@@ -36,6 +38,7 @@ target triple = "arm64-apple-ios11.0.0"
 %struct.__sFILEX = type opaque
 %struct.__sbuf = type { i8*, i32 }
 
+@Option = external constant %struct.sOptionValues, align 8
 @.str = private unnamed_addr constant [37 x i8] c"%s is chosen as exclusive subparser\0A\00", align 1
 @subparserDepth = internal global i32 0, align 4
 @.str.1 = private unnamed_addr constant [7 x i8] c"L:NAME\00", align 1
@@ -586,7 +589,7 @@ entry:
   %exclusiveSubparserChosenNotify = getelementptr inbounds %struct.sSubparser, %struct.sSubparser* %0, i32 0, i32 7
   %1 = load void (%struct.sSubparser*, i8*)*, void (%struct.sSubparser*, i8*)** %exclusiveSubparserChosenNotify, align 8
   %tobool = icmp ne void (%struct.sSubparser*, i8*)* %1, null
-  br i1 %tobool, label %if.then, label %if.end
+  br i1 %tobool, label %if.then, label %if.end6
 
 if.then:                                          ; preds = %entry
   %2 = load %struct.sSubparser*, %struct.sSubparser** %s.addr, align 8
@@ -600,18 +603,26 @@ if.then:                                          ; preds = %entry
   %6 = load %struct.sSubparser*, %struct.sSubparser** %s.addr, align 8
   %7 = load i8*, i8** %data.addr, align 8
   call void %5(%struct.sSubparser* %6, i8* %7)
-  %8 = load %struct.sSubparser*, %struct.sSubparser** %s.addr, align 8
-  %call = call i32 @getSubparserLanguage(%struct.sSubparser* %8)
-  %call2 = call i8* @getLanguageName(i32 %call)
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str, i64 0, i64 0), i8* %call2)
-  call void @leaveSubparser()
+  %8 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
+  %tobool2 = trunc i8 %8 to i1
+  br i1 %tobool2, label %if.then3, label %if.end
+
+if.then3:                                         ; preds = %if.then
+  %9 = load %struct.sSubparser*, %struct.sSubparser** %s.addr, align 8
+  %call = call i32 @getSubparserLanguage(%struct.sSubparser* %9)
+  %call4 = call i8* @getLanguageName(i32 %call)
+  %call5 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str, i64 0, i64 0), i8* %call4)
   br label %if.end
 
-if.end:                                           ; preds = %if.then, %entry
+if.end:                                           ; preds = %if.then3, %if.then
+  call void @leaveSubparser()
+  br label %if.end6
+
+if.end6:                                          ; preds = %if.end, %entry
   ret void
 }
 
-declare void @verbose(i8*, ...) #1
+declare i32 @printf(i8*, ...) #1
 
 declare i8* @getLanguageName(i32) #1
 

@@ -15,11 +15,11 @@ target triple = "arm64-apple-ios11.0.0"
 %struct.anon = type { i8*, i8*, i8*, i8*, i32, i32, i8*, i32, i8*, [2 x i8*], i32, i64 }
 %struct.sTagField = type { i32, i8*, i8 }
 %struct.sPtrArray = type opaque
-%struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
-%struct.sFmtElement = type opaque
 %struct.__sFILE = type { i8*, i32, i32, i16, i16, %struct.__sbuf, i32, i8*, i32 (i8*)*, i32 (i8*, i8*, i32)*, i64 (i8*, i64, i32)*, i32 (i8*, i8*, i32)*, %struct.__sbuf, %struct.__sFILEX*, i32, [3 x i8], [1 x i8], %struct.__sbuf, i32, i64 }
 %struct.__sFILEX = type opaque
 %struct.__sbuf = type { i8*, i32 }
+%struct.sOptionValues = type { i8, i8, i8, i32, i8, i32, i8, i8, %struct.sFmtElement*, i8*, i8*, %struct.sPtrArray*, %struct.sPtrArray*, i32, i8*, i8*, i32, i8, i8, i8*, i32, i8, i8, i8, i8, i8, i8, i32, i8, i32, i32 }
+%struct.sFmtElement = type opaque
 %struct.sKindDefinition = type { i8, i8, i8*, i8*, i8, i32, %struct.sRoleDesc*, %struct.sScopeSeparator*, i32, i32, i32, %struct.sKindDefinition*, %struct.sKindDefinition* }
 %struct.sRoleDesc = type { i8, i8*, i8* }
 %struct.sScopeSeparator = type { i32, i8* }
@@ -30,41 +30,45 @@ target triple = "arm64-apple-ios11.0.0"
 @TagsToStdout = internal global i8 0, align 1
 @cached_pattern = internal global %struct.sVString* null, align 8
 @cached_location = internal global %struct._MIOPos zeroinitializer, align 8
-@.str = private unnamed_addr constant [22 x i8] c"cannot write tag file\00", align 1
+@__stderrp = external global %struct.__sFILE*, align 8
+@.str = private unnamed_addr constant [7 x i8] c"%s: %s\00", align 1
+@.str.1 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str.2 = private unnamed_addr constant [22 x i8] c"cannot write tag file\00", align 1
+@.str.3 = private unnamed_addr constant [6 x i8] c" : %s\00", align 1
+@.str.4 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
 @Option = external constant %struct.sOptionValues, align 8
 @__stdoutp = external global %struct.__sFILE*, align 8
-@.str.1 = private unnamed_addr constant [12 x i8] c"/dev/stdout\00", align 1
-@.str.2 = private unnamed_addr constant [3 x i8] c"w+\00", align 1
-@.str.3 = private unnamed_addr constant [61 x i8] c"\22%s\22 doesn't look like a tag file; I refuse to overwrite it.\00", align 1
-@.str.4 = private unnamed_addr constant [4 x i8] c"a+b\00", align 1
-@.str.5 = private unnamed_addr constant [4 x i8] c"w+b\00", align 1
-@.str.6 = private unnamed_addr constant [3 x i8] c"r+\00", align 1
-@.str.7 = private unnamed_addr constant [3 x i8] c"a+\00", align 1
-@.str.8 = private unnamed_addr constant [2 x i8] c"w\00", align 1
-@.str.9 = private unnamed_addr constant [21 x i8] c"cannot open tag file\00", align 1
+@.str.5 = private unnamed_addr constant [12 x i8] c"/dev/stdout\00", align 1
+@.str.6 = private unnamed_addr constant [3 x i8] c"w+\00", align 1
+@.str.7 = private unnamed_addr constant [61 x i8] c"\22%s\22 doesn't look like a tag file; I refuse to overwrite it.\00", align 1
+@.str.8 = private unnamed_addr constant [4 x i8] c"a+b\00", align 1
+@.str.9 = private unnamed_addr constant [4 x i8] c"w+b\00", align 1
+@.str.10 = private unnamed_addr constant [3 x i8] c"r+\00", align 1
+@.str.11 = private unnamed_addr constant [3 x i8] c"a+\00", align 1
+@.str.12 = private unnamed_addr constant [2 x i8] c"w\00", align 1
+@.str.13 = private unnamed_addr constant [21 x i8] c"cannot open tag file\00", align 1
 @CurrentDirectory = external global i8*, align 8
-@.str.10 = private unnamed_addr constant [22 x i8] c"cannot close tag file\00", align 1
-@.str.11 = private unnamed_addr constant [35 x i8] c"ignoring null tag in %s(line: %lu)\00", align 1
+@.str.14 = private unnamed_addr constant [22 x i8] c"cannot close tag file\00", align 1
+@.str.15 = private unnamed_addr constant [10 x i8] c"Warning: \00", align 1
+@.str.16 = private unnamed_addr constant [35 x i8] c"ignoring null tag in %s(line: %lu)\00", align 1
 @makeQualifiedTagEntry.fqn = internal global %struct.sVString* null, align 8
-@.str.12 = private unnamed_addr constant [3 x i8] c"rb\00", align 1
-@.str.13 = private unnamed_addr constant [24 x i8] c"Cannot analyze tag file\00", align 1
-@.str.14 = private unnamed_addr constant [25 x i8] c"%[^\09]%[\09]%[^\09]%[\09]%[^\0D\0A]\00", align 1
-@.str.15 = private unnamed_addr constant [3 x i8] c"/?\00", align 1
-@.str.16 = private unnamed_addr constant [7 x i8] c"%[^;\0A]\00", align 1
-@.str.17 = private unnamed_addr constant [11 x i8] c"0123456789\00", align 1
-@.str.18 = private unnamed_addr constant [11 x i8] c"%sTAG_FILE\00", align 1
-@.str.19 = private unnamed_addr constant [3 x i8] c"!_\00", align 1
-@.str.20 = private unnamed_addr constant [7 x i8] c"%15s%c\00", align 1
-@.str.21 = private unnamed_addr constant [8 x i8] c"_SORTED\00", align 1
-@.str.22 = private unnamed_addr constant [37 x i8] c"Failed to update 'sorted' pseudo-tag\00", align 1
-@.str.23 = private unnamed_addr constant [14 x i8] c"\0C\0A%s,include\0A\00", align 1
-@__stderrp = external global %struct.__sFILE*, align 8
-@.str.24 = private unnamed_addr constant [37 x i8] c"Cannot shorten tag file: errno = %d\0A\00", align 1
-@.str.25 = private unnamed_addr constant [18 x i8] c"sorting tag file\0A\00", align 1
-@.str.26 = private unnamed_addr constant [2 x i8] c"r\00", align 1
-@.str.27 = private unnamed_addr constant [44 x i8] c"could not read tag line from %s at line %lu\00", align 1
-@.str.28 = private unnamed_addr constant [2 x i8] c"$\00", align 1
-@.str.29 = private unnamed_addr constant [1 x i8] zeroinitializer, align 1
+@.str.17 = private unnamed_addr constant [3 x i8] c"rb\00", align 1
+@.str.18 = private unnamed_addr constant [24 x i8] c"Cannot analyze tag file\00", align 1
+@.str.19 = private unnamed_addr constant [25 x i8] c"%[^\09]%[\09]%[^\09]%[\09]%[^\0D\0A]\00", align 1
+@.str.20 = private unnamed_addr constant [3 x i8] c"/?\00", align 1
+@.str.21 = private unnamed_addr constant [7 x i8] c"%[^;\0A]\00", align 1
+@.str.22 = private unnamed_addr constant [11 x i8] c"0123456789\00", align 1
+@.str.23 = private unnamed_addr constant [11 x i8] c"%sTAG_FILE\00", align 1
+@.str.24 = private unnamed_addr constant [3 x i8] c"!_\00", align 1
+@.str.25 = private unnamed_addr constant [7 x i8] c"%15s%c\00", align 1
+@.str.26 = private unnamed_addr constant [8 x i8] c"_SORTED\00", align 1
+@.str.27 = private unnamed_addr constant [37 x i8] c"Failed to update 'sorted' pseudo-tag\00", align 1
+@.str.28 = private unnamed_addr constant [14 x i8] c"\0C\0A%s,include\0A\00", align 1
+@.str.29 = private unnamed_addr constant [37 x i8] c"Cannot shorten tag file: errno = %d\0A\00", align 1
+@.str.30 = private unnamed_addr constant [18 x i8] c"sorting tag file\0A\00", align 1
+@.str.31 = private unnamed_addr constant [2 x i8] c"r\00", align 1
+@.str.32 = private unnamed_addr constant [44 x i8] c"could not read tag line from %s at line %lu\00", align 1
+@.str.33 = private unnamed_addr constant [2 x i8] c"$\00", align 1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @freeTagFileResources() #0 {
@@ -253,16 +257,42 @@ entry:
   br i1 %tobool, label %if.then, label %if.end
 
 if.then:                                          ; preds = %entry
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str, i64 0, i64 0))
-  br label %if.end
+  %1 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call1 = call i8* @getExecutableName()
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %1, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call1, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %2 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %2, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.2, i64 0, i64 0))
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call4 = call i32* @__error()
+  %4 = load i32, i32* %call4, align 4
+  %call5 = call i8* @"\01_strerror"(i32 %4)
+  %call6 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i64 0, i64 0), i8* %call5)
+  %5 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call7 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %5)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
-if.end:                                           ; preds = %if.then, %entry
+if.end:                                           ; preds = %entry
   ret void
 }
 
 declare i32 @mio_error(%struct._MIO*) #1
 
-declare void @error(i32, i8*, ...) #1
+declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
+
+declare i8* @getExecutableName() #1
+
+declare i8* @"\01_strerror"(i32) #1
+
+declare i32* @__error() #1
+
+declare i32 @"\01_fputs"(i8*, %struct.__sFILE*) #1
+
+declare void @ctags_cleanup(...) #1
+
+; Function Attrs: noreturn
+declare void @exit(i32) #2
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define void @makeFileTag(i8* %fileName) #0 {
@@ -573,7 +603,7 @@ if.end15:                                         ; preds = %if.end14, %do.end
   %18 = load i8, i8* %arrayidx, align 1
   %conv = sext i8 %18 to i32
   %cmp16 = icmp eq i32 %conv, 0
-  br i1 %cmp16, label %land.lhs.true18, label %if.end25
+  br i1 %cmp16, label %land.lhs.true18, label %if.end32
 
 land.lhs.true18:                                  ; preds = %if.end15
   %19 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
@@ -583,65 +613,81 @@ land.lhs.true18:                                  ; preds = %if.end15
   %bf.clear = and i8 %bf.lshr, 1
   %bf.cast = zext i8 %bf.clear to i32
   %tobool19 = icmp ne i32 %bf.cast, 0
-  br i1 %tobool19, label %if.end25, label %if.then20
+  br i1 %tobool19, label %if.end32, label %if.then20
 
 if.then20:                                        ; preds = %land.lhs.true18
   %call21 = call zeroext i1 @doesInputLanguageAllowNullTag()
-  br i1 %call21, label %if.end24, label %if.then22
+  br i1 %call21, label %if.end31, label %if.then22
 
 if.then22:                                        ; preds = %if.then20
-  %call23 = call i8* @getInputFileName()
-  %21 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %lineNumber = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %21, i32 0, i32 1
-  %22 = load i64, i64* %lineNumber, align 8
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.11, i64 0, i64 0), i8* %call23, i64 %22)
-  br label %if.end24
+  %21 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call23 = call i8* @getExecutableName()
+  %call24 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %21, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call23, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.15, i64 0, i64 0))
+  %22 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call25 = call i8* @getInputFileName()
+  %23 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %lineNumber = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %23, i32 0, i32 1
+  %24 = load i64, i64* %lineNumber, align 8
+  %call26 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %22, i8* getelementptr inbounds ([35 x i8], [35 x i8]* @.str.16, i64 0, i64 0), i8* %call25, i64 %24)
+  %25 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call27 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %25)
+  %26 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool28 = trunc i8 %26 to i1
+  br i1 %tobool28, label %if.then29, label %if.end30
 
-if.end24:                                         ; preds = %if.then22, %if.then20
+if.then29:                                        ; preds = %if.then22
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
+
+if.end30:                                         ; preds = %if.then22
+  br label %if.end31
+
+if.end31:                                         ; preds = %if.end30, %if.then20
   br label %out
 
-if.end25:                                         ; preds = %land.lhs.true18, %if.end15
-  %23 = load i32, i32* getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 6), align 8
-  %tobool26 = icmp ne i32 %23, 0
-  br i1 %tobool26, label %if.then27, label %if.else
+if.end32:                                         ; preds = %land.lhs.true18, %if.end15
+  %27 = load i32, i32* getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 6), align 8
+  %tobool33 = icmp ne i32 %27, 0
+  br i1 %tobool33, label %if.then34, label %if.else
 
-if.then27:                                        ; preds = %if.end25
-  %24 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %call28 = call i32 @queueTagEntry(%struct.sTagEntryInfo* %24)
-  store i32 %call28, i32* %r, align 4
-  br label %if.end29
-
-if.else:                                          ; preds = %if.end25
-  %25 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  call void @writeTagEntry(%struct.sTagEntryInfo* %25)
-  br label %if.end29
-
-if.end29:                                         ; preds = %if.else, %if.then27
-  %26 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %27 = load i32, i32* %r, align 4
-  call void @notifyMakeTagEntry(%struct.sTagEntryInfo* %26, i32 %27)
-  %call30 = call zeroext i1 @isXtagEnabled(i32 7)
-  br i1 %call30, label %if.then31, label %if.end32
-
-if.then31:                                        ; preds = %if.end29
+if.then34:                                        ; preds = %if.end32
   %28 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %29 = bitcast %struct.sTagEntryInfo* %subtag to i8*
-  %30 = bitcast %struct.sTagEntryInfo* %28 to i8*
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %29, i8* align 8 %30, i64 344, i1 false)
-  call void @makeTagEntriesForSubwords(%struct.sTagEntryInfo* %subtag)
-  br label %if.end32
+  %call35 = call i32 @queueTagEntry(%struct.sTagEntryInfo* %28)
+  store i32 %call35, i32* %r, align 4
+  br label %if.end36
 
-if.end32:                                         ; preds = %if.then31, %if.end29
+if.else:                                          ; preds = %if.end32
+  %29 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  call void @writeTagEntry(%struct.sTagEntryInfo* %29)
+  br label %if.end36
+
+if.end36:                                         ; preds = %if.else, %if.then34
+  %30 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %31 = load i32, i32* %r, align 4
+  call void @notifyMakeTagEntry(%struct.sTagEntryInfo* %30, i32 %31)
+  %call37 = call zeroext i1 @isXtagEnabled(i32 7)
+  br i1 %call37, label %if.then38, label %if.end39
+
+if.then38:                                        ; preds = %if.end36
+  %32 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %33 = bitcast %struct.sTagEntryInfo* %subtag to i8*
+  %34 = bitcast %struct.sTagEntryInfo* %32 to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 %33, i8* align 8 %34, i64 344, i1 false)
+  call void @makeTagEntriesForSubwords(%struct.sTagEntryInfo* %subtag)
+  br label %if.end39
+
+if.end39:                                         ; preds = %if.then38, %if.end36
   br label %out
 
-out:                                              ; preds = %if.end32, %if.end24
-  %31 = load i32, i32* %r, align 4
-  store i32 %31, i32* %retval, align 4
+out:                                              ; preds = %if.end39, %if.end31
+  %35 = load i32, i32* %r, align 4
+  store i32 %35, i32* %retval, align 4
   br label %return
 
 return:                                           ; preds = %out, %if.then13, %if.then3
-  %32 = load i32, i32* %retval, align 4
-  ret i32 %32
+  %36 = load i32, i32* %retval, align 4
+  ret i32 %36
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -675,12 +721,12 @@ if.then4:                                         ; preds = %if.then2
   %3 = load %struct.__sFILE*, %struct.__sFILE** @__stdoutp, align 8
   %call5 = call %struct._MIO* @mio_new_fp(%struct.__sFILE* %3, i32 (%struct.__sFILE*)* null)
   store %struct._MIO* %call5, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call6 = call i8* @eStrdup(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.1, i64 0, i64 0))
+  %call6 = call i8* @eStrdup(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str.5, i64 0, i64 0))
   store i8* %call6, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
   br label %if.end8
 
 if.else:                                          ; preds = %if.then2
-  %call7 = call %struct._MIO* @tempFile(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.2, i64 0, i64 0), i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0))
+  %call7 = call %struct._MIO* @tempFile(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.6, i64 0, i64 0), i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0))
   store %struct._MIO* %call7, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
   br label %if.end8
 
@@ -693,7 +739,7 @@ if.then10:                                        ; preds = %if.end8
   br label %if.end11
 
 if.end11:                                         ; preds = %if.then10, %if.end8
-  br label %if.end54
+  br label %if.end65
 
 if.else12:                                        ; preds = %if.end
   %4 = load i8*, i8** getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 10), align 8
@@ -705,140 +751,161 @@ if.else12:                                        ; preds = %if.end
   store i8 %frombool15, i8* %fileExists, align 1
   %6 = load i8, i8* %fileExists, align 1
   %tobool16 = trunc i8 %6 to i1
-  br i1 %tobool16, label %land.lhs.true, label %if.end19
+  br i1 %tobool16, label %land.lhs.true, label %if.end23
 
 land.lhs.true:                                    ; preds = %if.else12
   %7 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
   %call17 = call zeroext i1 @isTagFile(i8* %7)
-  br i1 %call17, label %if.end19, label %if.then18
+  br i1 %call17, label %if.end23, label %if.then18
 
 if.then18:                                        ; preds = %land.lhs.true
-  %8 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.3, i64 0, i64 0), i8* %8)
-  br label %if.end19
+  %8 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call19 = call i8* @getExecutableName()
+  %call20 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %8, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call19, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %9 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %10 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  %call21 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %9, i8* getelementptr inbounds ([61 x i8], [61 x i8]* @.str.7, i64 0, i64 0), i8* %10)
+  %11 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call22 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %11)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
-if.end19:                                         ; preds = %if.then18, %land.lhs.true, %if.else12
-  %9 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 2), align 2
-  %tobool20 = trunc i8 %9 to i1
-  br i1 %tobool20, label %if.then21, label %if.else30
+if.end23:                                         ; preds = %land.lhs.true, %if.else12
+  %12 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 2), align 2
+  %tobool24 = trunc i8 %12 to i1
+  br i1 %tobool24, label %if.then25, label %if.else34
 
-if.then21:                                        ; preds = %if.end19
-  %10 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 0), align 8
-  %tobool22 = trunc i8 %10 to i1
-  br i1 %tobool22, label %land.lhs.true23, label %if.else27
+if.then25:                                        ; preds = %if.end23
+  %13 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 0), align 8
+  %tobool26 = trunc i8 %13 to i1
+  br i1 %tobool26, label %land.lhs.true27, label %if.else31
 
-land.lhs.true23:                                  ; preds = %if.then21
-  %11 = load i8, i8* %fileExists, align 1
-  %tobool24 = trunc i8 %11 to i1
-  br i1 %tobool24, label %if.then25, label %if.else27
+land.lhs.true27:                                  ; preds = %if.then25
+  %14 = load i8, i8* %fileExists, align 1
+  %tobool28 = trunc i8 %14 to i1
+  br i1 %tobool28, label %if.then29, label %if.else31
 
-if.then25:                                        ; preds = %land.lhs.true23
-  %12 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  %call26 = call %struct._MIO* @mio_new_file(i8* %12, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i64 0, i64 0))
-  store %struct._MIO* %call26, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  br label %if.end29
+if.then29:                                        ; preds = %land.lhs.true27
+  %15 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  %call30 = call %struct._MIO* @mio_new_file(i8* %15, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.8, i64 0, i64 0))
+  store %struct._MIO* %call30, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  br label %if.end33
 
-if.else27:                                        ; preds = %land.lhs.true23, %if.then21
-  %13 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  %call28 = call %struct._MIO* @mio_new_file(i8* %13, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i64 0, i64 0))
-  store %struct._MIO* %call28, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  br label %if.end29
-
-if.end29:                                         ; preds = %if.else27, %if.then25
-  br label %if.end50
-
-if.else30:                                        ; preds = %if.end19
-  %14 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 0), align 8
-  %tobool31 = trunc i8 %14 to i1
-  br i1 %tobool31, label %land.lhs.true32, label %if.else42
-
-land.lhs.true32:                                  ; preds = %if.else30
-  %15 = load i8, i8* %fileExists, align 1
-  %tobool33 = trunc i8 %15 to i1
-  br i1 %tobool33, label %if.then34, label %if.else42
-
-if.then34:                                        ; preds = %land.lhs.true32
+if.else31:                                        ; preds = %land.lhs.true27, %if.then25
   %16 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  %call35 = call %struct._MIO* @mio_new_file(i8* %16, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.6, i64 0, i64 0))
-  store %struct._MIO* %call35, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %17 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %cmp36 = icmp ne %struct._MIO* %17, null
-  br i1 %cmp36, label %if.then37, label %if.end41
+  %call32 = call %struct._MIO* @mio_new_file(i8* %16, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.9, i64 0, i64 0))
+  store %struct._MIO* %call32, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  br label %if.end33
 
-if.then37:                                        ; preds = %if.then34
-  %18 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call38 = call i64 @updatePseudoTags(%struct._MIO* %18)
-  store i64 %call38, i64* getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 3, i32 1), align 8
-  %19 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call39 = call i32 @mio_free(%struct._MIO* %19)
-  %20 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  %call40 = call %struct._MIO* @mio_new_file(i8* %20, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.7, i64 0, i64 0))
-  store %struct._MIO* %call40, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  br label %if.end41
-
-if.end41:                                         ; preds = %if.then37, %if.then34
-  br label %if.end49
-
-if.else42:                                        ; preds = %land.lhs.true32, %if.else30
-  %21 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  %call43 = call %struct._MIO* @mio_new_file(i8* %21, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.8, i64 0, i64 0))
-  store %struct._MIO* %call43, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %22 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %cmp44 = icmp ne %struct._MIO* %22, null
-  br i1 %cmp44, label %land.lhs.true45, label %if.end48
-
-land.lhs.true45:                                  ; preds = %if.else42
-  %call46 = call zeroext i1 @isXtagEnabled(i32 2)
-  br i1 %call46, label %if.then47, label %if.end48
-
-if.then47:                                        ; preds = %land.lhs.true45
-  call void @addCommonPseudoTags()
-  br label %if.end48
-
-if.end48:                                         ; preds = %if.then47, %land.lhs.true45, %if.else42
-  br label %if.end49
-
-if.end49:                                         ; preds = %if.end48, %if.end41
-  br label %if.end50
-
-if.end50:                                         ; preds = %if.end49, %if.end29
-  %23 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %cmp51 = icmp eq %struct._MIO* %23, null
-  br i1 %cmp51, label %if.then52, label %if.end53
-
-if.then52:                                        ; preds = %if.end50
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.9, i64 0, i64 0))
-  br label %if.end53
-
-if.end53:                                         ; preds = %if.then52, %if.end50
+if.end33:                                         ; preds = %if.else31, %if.then29
   br label %if.end54
 
-if.end54:                                         ; preds = %if.end53, %if.end11
-  %24 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 1), align 8
-  %cmp55 = icmp eq i8* %24, null
-  br i1 %cmp55, label %if.then56, label %if.end63
+if.else34:                                        ; preds = %if.end23
+  %17 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 0), align 8
+  %tobool35 = trunc i8 %17 to i1
+  br i1 %tobool35, label %land.lhs.true36, label %if.else46
+
+land.lhs.true36:                                  ; preds = %if.else34
+  %18 = load i8, i8* %fileExists, align 1
+  %tobool37 = trunc i8 %18 to i1
+  br i1 %tobool37, label %if.then38, label %if.else46
+
+if.then38:                                        ; preds = %land.lhs.true36
+  %19 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  %call39 = call %struct._MIO* @mio_new_file(i8* %19, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.10, i64 0, i64 0))
+  store %struct._MIO* %call39, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %20 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %cmp40 = icmp ne %struct._MIO* %20, null
+  br i1 %cmp40, label %if.then41, label %if.end45
+
+if.then41:                                        ; preds = %if.then38
+  %21 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call42 = call i64 @updatePseudoTags(%struct._MIO* %21)
+  store i64 %call42, i64* getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 3, i32 1), align 8
+  %22 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call43 = call i32 @mio_free(%struct._MIO* %22)
+  %23 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  %call44 = call %struct._MIO* @mio_new_file(i8* %23, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.11, i64 0, i64 0))
+  store %struct._MIO* %call44, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  br label %if.end45
+
+if.end45:                                         ; preds = %if.then41, %if.then38
+  br label %if.end53
+
+if.else46:                                        ; preds = %land.lhs.true36, %if.else34
+  %24 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  %call47 = call %struct._MIO* @mio_new_file(i8* %24, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.12, i64 0, i64 0))
+  store %struct._MIO* %call47, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %25 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %cmp48 = icmp ne %struct._MIO* %25, null
+  br i1 %cmp48, label %land.lhs.true49, label %if.end52
+
+land.lhs.true49:                                  ; preds = %if.else46
+  %call50 = call zeroext i1 @isXtagEnabled(i32 2)
+  br i1 %call50, label %if.then51, label %if.end52
+
+if.then51:                                        ; preds = %land.lhs.true49
+  call void @addCommonPseudoTags()
+  br label %if.end52
+
+if.end52:                                         ; preds = %if.then51, %land.lhs.true49, %if.else46
+  br label %if.end53
+
+if.end53:                                         ; preds = %if.end52, %if.end45
+  br label %if.end54
+
+if.end54:                                         ; preds = %if.end53, %if.end33
+  %26 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %cmp55 = icmp eq %struct._MIO* %26, null
+  br i1 %cmp55, label %if.then56, label %if.end64
 
 if.then56:                                        ; preds = %if.end54
-  %25 = load i8, i8* @TagsToStdout, align 1
-  %tobool57 = trunc i8 %25 to i1
-  br i1 %tobool57, label %if.then58, label %if.else60
+  %27 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call57 = call i8* @getExecutableName()
+  %call58 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %27, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call57, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %28 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call59 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %28, i8* getelementptr inbounds ([21 x i8], [21 x i8]* @.str.13, i64 0, i64 0))
+  %29 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call60 = call i32* @__error()
+  %30 = load i32, i32* %call60, align 4
+  %call61 = call i8* @"\01_strerror"(i32 %30)
+  %call62 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %29, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i64 0, i64 0), i8* %call61)
+  %31 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call63 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %31)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
-if.then58:                                        ; preds = %if.then56
-  %26 = load i8*, i8** @CurrentDirectory, align 8
-  %call59 = call i8* @eStrdup(i8* %26)
-  store i8* %call59, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 1), align 8
-  br label %if.end62
+if.end64:                                         ; preds = %if.end54
+  br label %if.end65
 
-if.else60:                                        ; preds = %if.then56
-  %27 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  %call61 = call i8* @absoluteDirname(i8* %27)
-  store i8* %call61, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 1), align 8
-  br label %if.end62
+if.end65:                                         ; preds = %if.end64, %if.end11
+  %32 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 1), align 8
+  %cmp66 = icmp eq i8* %32, null
+  br i1 %cmp66, label %if.then67, label %if.end74
 
-if.end62:                                         ; preds = %if.else60, %if.then58
-  br label %if.end63
+if.then67:                                        ; preds = %if.end65
+  %33 = load i8, i8* @TagsToStdout, align 1
+  %tobool68 = trunc i8 %33 to i1
+  br i1 %tobool68, label %if.then69, label %if.else71
 
-if.end63:                                         ; preds = %if.end62, %if.end54
+if.then69:                                        ; preds = %if.then67
+  %34 = load i8*, i8** @CurrentDirectory, align 8
+  %call70 = call i8* @eStrdup(i8* %34)
+  store i8* %call70, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 1), align 8
+  br label %if.end73
+
+if.else71:                                        ; preds = %if.then67
+  %35 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  %call72 = call i8* @absoluteDirname(i8* %35)
+  store i8* %call72, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 1), align 8
+  br label %if.end73
+
+if.end73:                                         ; preds = %if.else71, %if.then69
+  br label %if.end74
+
+if.end74:                                         ; preds = %if.end73, %if.end65
   ret void
 }
 
@@ -901,7 +968,7 @@ entry:
   store i8* %filename, i8** %filename.addr, align 8
   store i8 0, i8* %ok, align 1
   %0 = load i8*, i8** %filename.addr, align 8
-  %call = call %struct._MIO* @mio_new_file(i8* %0, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.12, i64 0, i64 0))
+  %call = call %struct._MIO* @mio_new_file(i8* %0, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.17, i64 0, i64 0))
   store %struct._MIO* %call, %struct._MIO** %mio, align 8
   %1 = load %struct._MIO*, %struct._MIO** %mio, align 8
   %cmp = icmp eq %struct._MIO* %1, null
@@ -981,7 +1048,7 @@ entry:
   store %struct._MIO* %mio, %struct._MIO** %mio.addr, align 8
   store i64 0, i64* %linesRead, align 8
   %arraydecay = getelementptr inbounds [21 x i8], [21 x i8]* %entry1, i64 0, i64 0
-  %call = call i32 (i8*, i8*, ...) @sprintf(i8* %arraydecay, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.18, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.19, i64 0, i64 0))
+  %call = call i32 (i8*, i8*, ...) @sprintf(i8* %arraydecay, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.23, i64 0, i64 0), i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.24, i64 0, i64 0))
   %arraydecay2 = getelementptr inbounds [21 x i8], [21 x i8]* %entry1, i64 0, i64 0
   %call3 = call i64 @strlen(i8* %arraydecay2)
   store i64 %call3, i64* %entryLength, align 8
@@ -1035,7 +1102,7 @@ if.then:                                          ; preds = %while.body
   %12 = load i64, i64* %entryLength, align 8
   %add.ptr = getelementptr inbounds i8, i8* %11, i64 %12
   %arraydecay14 = getelementptr inbounds [16 x i8], [16 x i8]* %classType, i64 0, i64 0
-  %call15 = call i32 (i8*, i8*, ...) @sscanf(i8* %add.ptr, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.20, i64 0, i64 0), i8* %arraydecay14, i8* %tab)
+  %call15 = call i32 (i8*, i8*, ...) @sscanf(i8* %add.ptr, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.25, i64 0, i64 0), i8* %arraydecay14, i8* %tab)
   %cmp16 = icmp eq i32 %call15, 2
   br i1 %cmp16, label %land.lhs.true, label %if.end27
 
@@ -1047,7 +1114,7 @@ land.lhs.true:                                    ; preds = %if.then
 
 if.then21:                                        ; preds = %land.lhs.true
   %arraydecay22 = getelementptr inbounds [16 x i8], [16 x i8]* %classType, i64 0, i64 0
-  %call23 = call i32 @strcmp(i8* %arraydecay22, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.21, i64 0, i64 0))
+  %call23 = call i32 @strcmp(i8* %arraydecay22, i8* getelementptr inbounds ([8 x i8], [8 x i8]* @.str.26, i64 0, i64 0))
   %cmp24 = icmp eq i32 %call23, 0
   br i1 %cmp24, label %if.then26, label %if.end
 
@@ -1123,97 +1190,136 @@ if.end:                                           ; preds = %if.then, %entry
   %call = call i32 @mio_flush(%struct._MIO* %2)
   %3 = load i8, i8* @TagsToStdout, align 1
   %tobool1 = trunc i8 %3 to i1
-  br i1 %tobool1, label %land.lhs.true, label %if.end7
+  br i1 %tobool1, label %land.lhs.true, label %if.end14
 
 land.lhs.true:                                    ; preds = %if.end
   %4 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
   %cmp = icmp eq i32 %4, 0
-  br i1 %cmp, label %if.then2, label %if.end7
+  br i1 %cmp, label %if.then2, label %if.end14
 
 if.then2:                                         ; preds = %land.lhs.true
   %5 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
   %call3 = call i32 @mio_free(%struct._MIO* %5)
   %cmp4 = icmp ne i32 %call3, 0
-  br i1 %cmp4, label %if.then5, label %if.end6
+  br i1 %cmp4, label %if.then5, label %if.end13
 
 if.then5:                                         ; preds = %if.then2
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.10, i64 0, i64 0))
-  br label %if.end6
+  %6 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call6 = call i8* @getExecutableName()
+  %call7 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %6, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call6, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %7 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call8 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %7, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.14, i64 0, i64 0))
+  %8 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call9 = call i32* @__error()
+  %9 = load i32, i32* %call9, align 4
+  %call10 = call i8* @"\01_strerror"(i32 %9)
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %8, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i64 0, i64 0), i8* %call10)
+  %10 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call12 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %10)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
-if.end6:                                          ; preds = %if.then5, %if.then2
+if.end13:                                         ; preds = %if.then2
   br label %out
 
-if.end7:                                          ; preds = %land.lhs.true, %if.end
-  %6 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  call void @abort_if_ferror(%struct._MIO* %6)
-  %7 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call8 = call i64 @mio_tell(%struct._MIO* %7)
-  store i64 %call8, i64* %desiredSize, align 8
-  %8 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call9 = call i32 @mio_seek(%struct._MIO* %8, i64 0, i32 2)
-  %9 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call10 = call i64 @mio_tell(%struct._MIO* %9)
-  store i64 %call10, i64* %size, align 8
-  %10 = load i8, i8* @TagsToStdout, align 1
-  %tobool11 = trunc i8 %10 to i1
-  br i1 %tobool11, label %if.end17, label %if.then12
-
-if.then12:                                        ; preds = %if.end7
+if.end14:                                         ; preds = %land.lhs.true, %if.end
   %11 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call13 = call i32 @mio_free(%struct._MIO* %11)
-  %cmp14 = icmp ne i32 %call13, 0
-  br i1 %cmp14, label %if.then15, label %if.end16
+  call void @abort_if_ferror(%struct._MIO* %11)
+  %12 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call15 = call i64 @mio_tell(%struct._MIO* %12)
+  store i64 %call15, i64* %desiredSize, align 8
+  %13 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call16 = call i32 @mio_seek(%struct._MIO* %13, i64 0, i32 2)
+  %14 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call17 = call i64 @mio_tell(%struct._MIO* %14)
+  store i64 %call17, i64* %size, align 8
+  %15 = load i8, i8* @TagsToStdout, align 1
+  %tobool18 = trunc i8 %15 to i1
+  br i1 %tobool18, label %if.end31, label %if.then19
 
-if.then15:                                        ; preds = %if.then12
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.10, i64 0, i64 0))
-  br label %if.end16
+if.then19:                                        ; preds = %if.end14
+  %16 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call20 = call i32 @mio_free(%struct._MIO* %16)
+  %cmp21 = icmp ne i32 %call20, 0
+  br i1 %cmp21, label %if.then22, label %if.end30
 
-if.end16:                                         ; preds = %if.then15, %if.then12
-  br label %if.end17
+if.then22:                                        ; preds = %if.then19
+  %17 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call23 = call i8* @getExecutableName()
+  %call24 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %17, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call23, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %18 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call25 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %18, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.14, i64 0, i64 0))
+  %19 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call26 = call i32* @__error()
+  %20 = load i32, i32* %call26, align 4
+  %call27 = call i8* @"\01_strerror"(i32 %20)
+  %call28 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %19, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i64 0, i64 0), i8* %call27)
+  %21 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call29 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %21)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
-if.end17:                                         ; preds = %if.end16, %if.end7
-  %12 = load i8, i8* %resize.addr, align 1
-  %tobool18 = trunc i8 %12 to i1
-  br i1 %tobool18, label %land.lhs.true19, label %if.end22
-
-land.lhs.true19:                                  ; preds = %if.end17
-  %13 = load i64, i64* %desiredSize, align 8
-  %14 = load i64, i64* %size, align 8
-  %cmp20 = icmp slt i64 %13, %14
-  br i1 %cmp20, label %if.then21, label %if.end22
-
-if.then21:                                        ; preds = %land.lhs.true19
-  %15 = load i64, i64* %desiredSize, align 8
-  call void @resizeTagFile(i64 %15)
-  br label %if.end22
-
-if.end22:                                         ; preds = %if.then21, %land.lhs.true19, %if.end17
-  call void @sortTagFile()
-  %16 = load i8, i8* @TagsToStdout, align 1
-  %tobool23 = trunc i8 %16 to i1
-  br i1 %tobool23, label %if.then24, label %if.end31
-
-if.then24:                                        ; preds = %if.end22
-  %17 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  %call25 = call i32 @mio_free(%struct._MIO* %17)
-  %cmp26 = icmp ne i32 %call25, 0
-  br i1 %cmp26, label %if.then27, label %if.end28
-
-if.then27:                                        ; preds = %if.then24
-  call void (i32, i8*, ...) @error(i32 5, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.10, i64 0, i64 0))
-  br label %if.end28
-
-if.end28:                                         ; preds = %if.then27, %if.then24
-  %call29 = call i8* @tagFileName()
-  %call30 = call i32 @remove(i8* %call29)
+if.end30:                                         ; preds = %if.then19
   br label %if.end31
 
-if.end31:                                         ; preds = %if.end28, %if.end22
+if.end31:                                         ; preds = %if.end30, %if.end14
+  %22 = load i8, i8* %resize.addr, align 1
+  %tobool32 = trunc i8 %22 to i1
+  br i1 %tobool32, label %land.lhs.true33, label %if.end36
+
+land.lhs.true33:                                  ; preds = %if.end31
+  %23 = load i64, i64* %desiredSize, align 8
+  %24 = load i64, i64* %size, align 8
+  %cmp34 = icmp slt i64 %23, %24
+  br i1 %cmp34, label %if.then35, label %if.end36
+
+if.then35:                                        ; preds = %land.lhs.true33
+  %25 = load i64, i64* %desiredSize, align 8
+  call void @resizeTagFile(i64 %25)
+  br label %if.end36
+
+if.end36:                                         ; preds = %if.then35, %land.lhs.true33, %if.end31
+  call void @sortTagFile()
+  %26 = load i8, i8* @TagsToStdout, align 1
+  %tobool37 = trunc i8 %26 to i1
+  br i1 %tobool37, label %if.then38, label %if.end52
+
+if.then38:                                        ; preds = %if.end36
+  %27 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  %call39 = call i32 @mio_free(%struct._MIO* %27)
+  %cmp40 = icmp ne i32 %call39, 0
+  br i1 %cmp40, label %if.then41, label %if.end49
+
+if.then41:                                        ; preds = %if.then38
+  %28 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call42 = call i8* @getExecutableName()
+  %call43 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %28, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call42, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %29 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call44 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %29, i8* getelementptr inbounds ([22 x i8], [22 x i8]* @.str.14, i64 0, i64 0))
+  %30 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call45 = call i32* @__error()
+  %31 = load i32, i32* %call45, align 4
+  %call46 = call i8* @"\01_strerror"(i32 %31)
+  %call47 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %30, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i64 0, i64 0), i8* %call46)
+  %32 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call48 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %32)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
+
+if.end49:                                         ; preds = %if.then38
+  %call50 = call i8* @tagFileName()
+  %call51 = call i32 @remove(i8* %call50)
+  br label %if.end52
+
+if.end52:                                         ; preds = %if.end49, %if.end36
   br label %out
 
-out:                                              ; preds = %if.end31, %if.end6
-  %18 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
-  call void @eFree(i8* %18)
+out:                                              ; preds = %if.end52, %if.end13
+  %33 = load i8*, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
+  call void @eFree(i8* %33)
   store i8* null, i8** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 0), align 8
   ret void
 }
@@ -1246,10 +1352,11 @@ for.body:                                         ; preds = %for.cond
   %call1 = call %struct.sVString* @stringListItem(%struct.sPtrArray* %3, i32 %4)
   store %struct.sVString* %call1, %struct.sVString** %item, align 8
   %5 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %call2 = call %struct.__sFILE* @mio_file_get_fp(%struct._MIO* %5)
   %6 = load %struct.sVString*, %struct.sVString** %item, align 8
   %buffer = getelementptr inbounds %struct.sVString, %struct.sVString* %6, i32 0, i32 2
   %7 = load i8*, i8** %buffer, align 8
-  %call2 = call i32 (%struct._MIO*, i8*, ...) @mio_printf(%struct._MIO* %5, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.23, i64 0, i64 0), i8* %7)
+  %call3 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %call2, i8* getelementptr inbounds ([14 x i8], [14 x i8]* @.str.28, i64 0, i64 0), i8* %7)
   br label %for.inc
 
 for.inc:                                          ; preds = %for.body
@@ -1289,7 +1396,7 @@ if.then:                                          ; preds = %entry
   %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
   %call1 = call i32* @__error()
   %4 = load i32, i32* %call1, align 4
-  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.24, i64 0, i64 0), i32 %4)
+  %call2 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.29, i64 0, i64 0), i32 %4)
   br label %if.end
 
 if.end:                                           ; preds = %if.then, %entry
@@ -1301,7 +1408,7 @@ define internal void @sortTagFile() #0 {
 entry:
   %0 = load i64, i64* getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 3, i32 0), align 8
   %cmp = icmp ugt i64 %0, 0
-  br i1 %cmp, label %if.then, label %if.end5
+  br i1 %cmp, label %if.then, label %if.end8
 
 if.then:                                          ; preds = %entry
   %1 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
@@ -1309,27 +1416,35 @@ if.then:                                          ; preds = %entry
   br i1 %cmp1, label %if.then2, label %if.else
 
 if.then2:                                         ; preds = %if.then
-  call void (i8*, ...) @verbose(i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.25, i64 0, i64 0))
-  call void @internalSortTagFile()
-  br label %if.end4
-
-if.else:                                          ; preds = %if.then
-  %2 = load i8, i8* @TagsToStdout, align 1
+  %2 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 6), align 8
   %tobool = trunc i8 %2 to i1
   br i1 %tobool, label %if.then3, label %if.end
 
-if.then3:                                         ; preds = %if.else
-  %3 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
-  call void @catFile(%struct._MIO* %3)
+if.then3:                                         ; preds = %if.then2
+  %call = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.30, i64 0, i64 0))
   br label %if.end
 
-if.end:                                           ; preds = %if.then3, %if.else
-  br label %if.end4
+if.end:                                           ; preds = %if.then3, %if.then2
+  call void @internalSortTagFile()
+  br label %if.end7
 
-if.end4:                                          ; preds = %if.end, %if.then2
-  br label %if.end5
+if.else:                                          ; preds = %if.then
+  %3 = load i8, i8* @TagsToStdout, align 1
+  %tobool4 = trunc i8 %3 to i1
+  br i1 %tobool4, label %if.then5, label %if.end6
 
-if.end5:                                          ; preds = %if.end4, %entry
+if.then5:                                         ; preds = %if.else
+  %4 = load %struct._MIO*, %struct._MIO** getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 2), align 8
+  call void @catFile(%struct._MIO* %4)
+  br label %if.end6
+
+if.end6:                                          ; preds = %if.then5, %if.else
+  br label %if.end7
+
+if.end7:                                          ; preds = %if.end6, %if.end
+  br label %if.end8
+
+if.end8:                                          ; preds = %if.end7, %entry
   ret void
 }
 
@@ -1915,166 +2030,174 @@ if.end:                                           ; preds = %land.lhs.true2, %la
   store i8* %call5, i8** %line, align 8
   %13 = load i8*, i8** %line, align 8
   %cmp6 = icmp eq i8* %13, null
-  br i1 %cmp6, label %if.then7, label %if.end9
+  br i1 %cmp6, label %if.then7, label %if.end13
 
 if.then7:                                         ; preds = %if.end
-  %call8 = call i8* @getInputFileName()
-  %14 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %lineNumber = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %14, i32 0, i32 1
-  %15 = load i64, i64* %lineNumber, align 8
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.27, i64 0, i64 0), i8* %call8, i64 %15)
-  br label %if.end9
-
-if.end9:                                          ; preds = %if.then7, %if.end
+  %14 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call8 = call i8* @getExecutableName()
+  %call9 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %14, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call8, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call10 = call i8* @getInputFileName()
   %16 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %17 = bitcast %struct.sTagEntryInfo* %16 to i8*
-  %bf.load10 = load i8, i8* %17, align 8
-  %bf.lshr11 = lshr i8 %bf.load10, 3
-  %bf.clear12 = and i8 %bf.lshr11, 1
-  %bf.cast13 = zext i8 %bf.clear12 to i32
-  %tobool14 = icmp ne i32 %bf.cast13, 0
-  br i1 %tobool14, label %if.then15, label %if.end16
+  %lineNumber = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %16, i32 0, i32 1
+  %17 = load i64, i64* %lineNumber, align 8
+  %call11 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %15, i8* getelementptr inbounds ([44 x i8], [44 x i8]* @.str.32, i64 0, i64 0), i8* %call10, i64 %17)
+  %18 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call12 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %18)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
-if.then15:                                        ; preds = %if.end9
-  %18 = load i8*, i8** %line, align 8
+if.end13:                                         ; preds = %if.end
   %19 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %name = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %19, i32 0, i32 7
-  %20 = load i8*, i8** %name, align 8
-  call void @truncateTagLineAfterTag(i8* %18, i8* %20, i1 zeroext false)
-  br label %if.end16
+  %20 = bitcast %struct.sTagEntryInfo* %19 to i8*
+  %bf.load14 = load i8, i8* %20, align 8
+  %bf.lshr15 = lshr i8 %bf.load14, 3
+  %bf.clear16 = and i8 %bf.lshr15, 1
+  %bf.cast17 = zext i8 %bf.clear16 to i32
+  %tobool18 = icmp ne i32 %bf.cast17, 0
+  br i1 %tobool18, label %if.then19, label %if.end20
 
-if.end16:                                         ; preds = %if.then15, %if.end9
+if.then19:                                        ; preds = %if.end13
   %21 = load i8*, i8** %line, align 8
-  %call17 = call i64 @strlen(i8* %21)
-  store i64 %call17, i64* %line_len, align 8
-  %22 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 1), align 1
-  %tobool18 = trunc i8 %22 to i1
-  %23 = zext i1 %tobool18 to i64
-  %cond = select i1 %tobool18, i32 63, i32 47
-  store i32 %cond, i32* %searchChar, align 4
-  %24 = load i8*, i8** %line, align 8
-  %25 = load i64, i64* %line_len, align 8
-  %sub = sub i64 %25, 1
-  %arrayidx = getelementptr inbounds i8, i8* %24, i64 %sub
-  %26 = load i8, i8* %arrayidx, align 1
-  %conv = sext i8 %26 to i32
-  %cmp19 = icmp eq i32 %conv, 10
-  %27 = zext i1 %cmp19 to i64
-  %cond22 = select i1 %cmp19, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.28, i64 0, i64 0), i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.29, i64 0, i64 0)
-  store i8* %cond22, i8** %terminator, align 8
-  %28 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %29 = bitcast %struct.sTagEntryInfo* %28 to i8*
-  %bf.load23 = load i8, i8* %29, align 8
-  %bf.lshr24 = lshr i8 %bf.load23, 3
-  %bf.clear25 = and i8 %bf.lshr24, 1
-  %bf.cast26 = zext i8 %bf.clear25 to i32
-  %tobool27 = icmp ne i32 %bf.cast26, 0
-  br i1 %tobool27, label %if.end30, label %if.then28
+  %22 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %name = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %22, i32 0, i32 7
+  %23 = load i8*, i8** %name, align 8
+  call void @truncateTagLineAfterTag(i8* %21, i8* %23, i1 zeroext false)
+  br label %if.end20
 
-if.then28:                                        ; preds = %if.end16
+if.end20:                                         ; preds = %if.then19, %if.end13
+  %24 = load i8*, i8** %line, align 8
+  %call21 = call i64 @strlen(i8* %24)
+  store i64 %call21, i64* %line_len, align 8
+  %25 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 1), align 1
+  %tobool22 = trunc i8 %25 to i1
+  %26 = zext i1 %tobool22 to i64
+  %cond = select i1 %tobool22, i32 63, i32 47
+  store i32 %cond, i32* %searchChar, align 4
+  %27 = load i8*, i8** %line, align 8
+  %28 = load i64, i64* %line_len, align 8
+  %sub = sub i64 %28, 1
+  %arrayidx = getelementptr inbounds i8, i8* %27, i64 %sub
+  %29 = load i8, i8* %arrayidx, align 1
+  %conv = sext i8 %29 to i32
+  %cmp23 = icmp eq i32 %conv, 10
+  %30 = zext i1 %cmp23 to i64
+  %cond26 = select i1 %cmp23, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.33, i64 0, i64 0), i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0)
+  store i8* %cond26, i8** %terminator, align 8
+  %31 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %32 = bitcast %struct.sTagEntryInfo* %31 to i8*
+  %bf.load27 = load i8, i8* %32, align 8
+  %bf.lshr28 = lshr i8 %bf.load27, 3
+  %bf.clear29 = and i8 %bf.lshr28, 1
+  %bf.cast30 = zext i8 %bf.clear29 to i32
+  %tobool31 = icmp ne i32 %bf.cast30, 0
+  br i1 %tobool31, label %if.end34, label %if.then32
+
+if.then32:                                        ; preds = %if.end20
   store i8 1, i8* %making_cache, align 1
-  %30 = load %struct.sVString*, %struct.sVString** @cached_pattern, align 8
-  %call29 = call %struct.sVString* @vStringNewOrClearWithAutoRelease(%struct.sVString* %30)
-  store %struct.sVString* %call29, %struct.sVString** @cached_pattern, align 8
-  %31 = load i32 (i8*, i8*)*, i32 (i8*, i8*)** %puts_func.addr, align 8
-  store i32 (i8*, i8*)* %31, i32 (i8*, i8*)** %puts_o_func, align 8
-  %32 = load i8*, i8** %output.addr, align 8
-  store i8* %32, i8** %o_output, align 8
+  %33 = load %struct.sVString*, %struct.sVString** @cached_pattern, align 8
+  %call33 = call %struct.sVString* @vStringNewOrClearWithAutoRelease(%struct.sVString* %33)
+  store %struct.sVString* %call33, %struct.sVString** @cached_pattern, align 8
+  %34 = load i32 (i8*, i8*)*, i32 (i8*, i8*)** %puts_func.addr, align 8
+  store i32 (i8*, i8*)* %34, i32 (i8*, i8*)** %puts_o_func, align 8
+  %35 = load i8*, i8** %output.addr, align 8
+  store i8* %35, i8** %o_output, align 8
   store i32 (i8, i8*)* @vstring_putc, i32 (i8, i8*)** %putc_func.addr, align 8
   store i32 (i8*, i8*)* @vstring_puts, i32 (i8*, i8*)** %puts_func.addr, align 8
-  %33 = load %struct.sVString*, %struct.sVString** @cached_pattern, align 8
-  %34 = bitcast %struct.sVString* %33 to i8*
-  store i8* %34, i8** %output.addr, align 8
-  br label %if.end30
+  %36 = load %struct.sVString*, %struct.sVString** @cached_pattern, align 8
+  %37 = bitcast %struct.sVString* %36 to i8*
+  store i8* %37, i8** %output.addr, align 8
+  br label %if.end34
 
-if.end30:                                         ; preds = %if.then28, %if.end16
-  %35 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
-  %36 = load i32, i32* %searchChar, align 4
-  %conv31 = trunc i32 %36 to i8
-  %37 = load i8*, i8** %output.addr, align 8
-  %call32 = call i32 %35(i8 signext %conv31, i8* %37)
-  %38 = load i32, i32* %length, align 4
-  %add = add nsw i32 %38, %call32
+if.end34:                                         ; preds = %if.then32, %if.end20
+  %38 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
+  %39 = load i32, i32* %searchChar, align 4
+  %conv35 = trunc i32 %39 to i8
+  %40 = load i8*, i8** %output.addr, align 8
+  %call36 = call i32 %38(i8 signext %conv35, i8* %40)
+  %41 = load i32, i32* %length, align 4
+  %add = add nsw i32 %41, %call36
   store i32 %add, i32* %length, align 4
-  %39 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %boundaryInfo = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %39, i32 0, i32 3
-  %40 = load i32, i32* %boundaryInfo, align 8
-  %and = and i32 %40, 1
-  %cmp33 = icmp eq i32 %and, 0
-  br i1 %cmp33, label %if.then35, label %if.end38
+  %42 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %boundaryInfo = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %42, i32 0, i32 3
+  %43 = load i32, i32* %boundaryInfo, align 8
+  %and = and i32 %43, 1
+  %cmp37 = icmp eq i32 %and, 0
+  br i1 %cmp37, label %if.then39, label %if.end42
 
-if.then35:                                        ; preds = %if.end30
-  %41 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
-  %42 = load i8*, i8** %output.addr, align 8
-  %call36 = call i32 %41(i8 signext 94, i8* %42)
-  %43 = load i32, i32* %length, align 4
-  %add37 = add nsw i32 %43, %call36
-  store i32 %add37, i32* %length, align 4
-  br label %if.end38
-
-if.end38:                                         ; preds = %if.then35, %if.end30
+if.then39:                                        ; preds = %if.end34
   %44 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
-  %45 = load i8*, i8** %line, align 8
-  %46 = load i8*, i8** %output.addr, align 8
-  %call39 = call i64 @appendInputLine(i32 (i8, i8*)* %44, i8* %45, i8* %46, i8* %omitted)
-  %47 = load i32, i32* %length, align 4
-  %conv40 = sext i32 %47 to i64
-  %add41 = add i64 %conv40, %call39
-  %conv42 = trunc i64 %add41 to i32
-  store i32 %conv42, i32* %length, align 4
-  %48 = load i32 (i8*, i8*)*, i32 (i8*, i8*)** %puts_func.addr, align 8
-  %49 = load i8, i8* %omitted, align 1
-  %tobool43 = trunc i8 %49 to i1
-  br i1 %tobool43, label %cond.true, label %cond.false
+  %45 = load i8*, i8** %output.addr, align 8
+  %call40 = call i32 %44(i8 signext 94, i8* %45)
+  %46 = load i32, i32* %length, align 4
+  %add41 = add nsw i32 %46, %call40
+  store i32 %add41, i32* %length, align 4
+  br label %if.end42
 
-cond.true:                                        ; preds = %if.end38
+if.end42:                                         ; preds = %if.then39, %if.end34
+  %47 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
+  %48 = load i8*, i8** %line, align 8
+  %49 = load i8*, i8** %output.addr, align 8
+  %call43 = call i64 @appendInputLine(i32 (i8, i8*)* %47, i8* %48, i8* %49, i8* %omitted)
+  %50 = load i32, i32* %length, align 4
+  %conv44 = sext i32 %50 to i64
+  %add45 = add i64 %conv44, %call43
+  %conv46 = trunc i64 %add45 to i32
+  store i32 %conv46, i32* %length, align 4
+  %51 = load i32 (i8*, i8*)*, i32 (i8*, i8*)** %puts_func.addr, align 8
+  %52 = load i8, i8* %omitted, align 1
+  %tobool47 = trunc i8 %52 to i1
+  br i1 %tobool47, label %cond.true, label %cond.false
+
+cond.true:                                        ; preds = %if.end42
   br label %cond.end
 
-cond.false:                                       ; preds = %if.end38
-  %50 = load i8*, i8** %terminator, align 8
+cond.false:                                       ; preds = %if.end42
+  %53 = load i8*, i8** %terminator, align 8
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond45 = phi i8* [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.29, i64 0, i64 0), %cond.true ], [ %50, %cond.false ]
-  %51 = load i8*, i8** %output.addr, align 8
-  %call46 = call i32 %48(i8* %cond45, i8* %51)
-  %52 = load i32, i32* %length, align 4
-  %add47 = add nsw i32 %52, %call46
-  store i32 %add47, i32* %length, align 4
-  %53 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
-  %54 = load i32, i32* %searchChar, align 4
-  %conv48 = trunc i32 %54 to i8
-  %55 = load i8*, i8** %output.addr, align 8
-  %call49 = call i32 %53(i8 signext %conv48, i8* %55)
-  %56 = load i32, i32* %length, align 4
-  %add50 = add nsw i32 %56, %call49
-  store i32 %add50, i32* %length, align 4
-  %57 = load i8, i8* %making_cache, align 1
-  %tobool51 = trunc i8 %57 to i1
-  br i1 %tobool51, label %if.then52, label %if.end56
+  %cond49 = phi i8* [ getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0), %cond.true ], [ %53, %cond.false ]
+  %54 = load i8*, i8** %output.addr, align 8
+  %call50 = call i32 %51(i8* %cond49, i8* %54)
+  %55 = load i32, i32* %length, align 4
+  %add51 = add nsw i32 %55, %call50
+  store i32 %add51, i32* %length, align 4
+  %56 = load i32 (i8, i8*)*, i32 (i8, i8*)** %putc_func.addr, align 8
+  %57 = load i32, i32* %searchChar, align 4
+  %conv52 = trunc i32 %57 to i8
+  %58 = load i8*, i8** %output.addr, align 8
+  %call53 = call i32 %56(i8 signext %conv52, i8* %58)
+  %59 = load i32, i32* %length, align 4
+  %add54 = add nsw i32 %59, %call53
+  store i32 %add54, i32* %length, align 4
+  %60 = load i8, i8* %making_cache, align 1
+  %tobool55 = trunc i8 %60 to i1
+  br i1 %tobool55, label %if.then56, label %if.end60
 
-if.then52:                                        ; preds = %cond.end
-  %58 = load i32 (i8*, i8*)*, i32 (i8*, i8*)** %puts_o_func, align 8
-  %59 = load %struct.sVString*, %struct.sVString** @cached_pattern, align 8
-  %buffer53 = getelementptr inbounds %struct.sVString, %struct.sVString* %59, i32 0, i32 2
-  %60 = load i8*, i8** %buffer53, align 8
-  %61 = load i8*, i8** %o_output, align 8
-  %call54 = call i32 %58(i8* %60, i8* %61)
-  %62 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
-  %filePosition55 = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %62, i32 0, i32 4
-  %63 = bitcast %struct._MIOPos* %filePosition55 to i8*
-  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 bitcast (%struct._MIOPos* @cached_location to i8*), i8* align 8 %63, i64 16, i1 false)
+if.then56:                                        ; preds = %cond.end
+  %61 = load i32 (i8*, i8*)*, i32 (i8*, i8*)** %puts_o_func, align 8
+  %62 = load %struct.sVString*, %struct.sVString** @cached_pattern, align 8
+  %buffer57 = getelementptr inbounds %struct.sVString, %struct.sVString* %62, i32 0, i32 2
+  %63 = load i8*, i8** %buffer57, align 8
+  %64 = load i8*, i8** %o_output, align 8
+  %call58 = call i32 %61(i8* %63, i8* %64)
+  %65 = load %struct.sTagEntryInfo*, %struct.sTagEntryInfo** %tag.addr, align 8
+  %filePosition59 = getelementptr inbounds %struct.sTagEntryInfo, %struct.sTagEntryInfo* %65, i32 0, i32 4
+  %66 = bitcast %struct._MIOPos* %filePosition59 to i8*
+  call void @llvm.memcpy.p0i8.p0i8.i64(i8* align 8 bitcast (%struct._MIOPos* @cached_location to i8*), i8* align 8 %66, i64 16, i1 false)
   store i8 1, i8* getelementptr inbounds (%struct.eTagFile, %struct.eTagFile* @TagFile, i32 0, i32 8), align 8
-  br label %if.end56
+  br label %if.end60
 
-if.end56:                                         ; preds = %if.then52, %cond.end
-  %64 = load i32, i32* %length, align 4
-  store i32 %64, i32* %retval, align 4
+if.end60:                                         ; preds = %if.then56, %cond.end
+  %67 = load i32, i32* %length, align 4
+  store i32 %67, i32* %retval, align 4
   br label %return
 
-return:                                           ; preds = %if.end56, %if.then
-  %65 = load i32, i32* %retval, align 4
-  ret i32 %65
+return:                                           ; preds = %if.end60, %if.then
+  %68 = load i32, i32* %retval, align 4
+  ret i32 %68
 }
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -2489,7 +2612,7 @@ if.end:                                           ; preds = %if.then, %entry
 declare i8* @eMalloc(i64) #1
 
 ; Function Attrs: argmemonly nounwind willreturn
-declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #2
+declare void @llvm.memset.p0i8.i64(i8* nocapture writeonly, i8, i64, i1 immarg) #3
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @writeTagEntry(%struct.sTagEntryInfo* %tag) #0 {
@@ -3029,7 +3152,7 @@ if.end4:                                          ; preds = %if.end, %entry
 declare void @notifyMakeTagEntry(%struct.sTagEntryInfo*, i32) #1
 
 ; Function Attrs: argmemonly nounwind willreturn
-declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #2
+declare void @llvm.memcpy.p0i8.p0i8.i64(i8* noalias nocapture writeonly, i8* noalias nocapture readonly, i64, i1 immarg) #3
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @makeTagEntriesForSubwords(%struct.sTagEntryInfo* %subtag) #0 {
@@ -3527,8 +3650,6 @@ declare zeroext i1 @isPtagCommonInParsers(i32) #1
 
 declare zeroext i1 @makePtagIfEnabled(i32, i8*) #1
 
-declare i32* @__error() #1
-
 declare i8* @readLineRaw(%struct.sVString*, %struct._MIO*) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
@@ -3555,103 +3676,111 @@ entry:
   br i1 %cmp, label %if.then, label %if.else
 
 if.then:                                          ; preds = %entry
-  call void (i32, i8*, ...) @error(i32 1, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.13, i64 0, i64 0))
-  br label %if.end44
+  %3 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call3 = call i8* @getExecutableName()
+  %call4 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call3, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.1, i64 0, i64 0))
+  %4 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call5 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %4, i8* getelementptr inbounds ([24 x i8], [24 x i8]* @.str.18, i64 0, i64 0))
+  %5 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call6 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %5)
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
 
 if.else:                                          ; preds = %entry
-  %3 = load i8*, i8** %line.addr, align 8
-  %4 = load i8*, i8** %fields, align 8
-  %5 = load i64, i64* %fieldLength, align 8
-  %mul3 = mul i64 0, %5
-  %add.ptr = getelementptr inbounds i8, i8* %4, i64 %mul3
-  %6 = load i8*, i8** %fields, align 8
-  %7 = load i64, i64* %fieldLength, align 8
-  %mul4 = mul i64 1, %7
-  %add.ptr5 = getelementptr inbounds i8, i8* %6, i64 %mul4
-  %8 = load i8*, i8** %fields, align 8
-  %9 = load i64, i64* %fieldLength, align 8
-  %mul6 = mul i64 2, %9
-  %add.ptr7 = getelementptr inbounds i8, i8* %8, i64 %mul6
-  %10 = load i8*, i8** %fields, align 8
-  %11 = load i64, i64* %fieldLength, align 8
-  %mul8 = mul i64 3, %11
-  %add.ptr9 = getelementptr inbounds i8, i8* %10, i64 %mul8
-  %12 = load i8*, i8** %fields, align 8
-  %13 = load i64, i64* %fieldLength, align 8
-  %mul10 = mul i64 4, %13
-  %add.ptr11 = getelementptr inbounds i8, i8* %12, i64 %mul10
-  %call12 = call i32 (i8*, i8*, ...) @sscanf(i8* %3, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.14, i64 0, i64 0), i8* %add.ptr, i8* %add.ptr5, i8* %add.ptr7, i8* %add.ptr9, i8* %add.ptr11)
-  store i32 %call12, i32* %numFields, align 4
-  %14 = load i32, i32* %numFields, align 4
-  %cmp13 = icmp eq i32 %14, 5
-  br i1 %cmp13, label %land.lhs.true, label %if.end
-
-land.lhs.true:                                    ; preds = %if.else
+  %6 = load i8*, i8** %line.addr, align 8
+  %7 = load i8*, i8** %fields, align 8
+  %8 = load i64, i64* %fieldLength, align 8
+  %mul7 = mul i64 0, %8
+  %add.ptr = getelementptr inbounds i8, i8* %7, i64 %mul7
+  %9 = load i8*, i8** %fields, align 8
+  %10 = load i64, i64* %fieldLength, align 8
+  %mul8 = mul i64 1, %10
+  %add.ptr9 = getelementptr inbounds i8, i8* %9, i64 %mul8
+  %11 = load i8*, i8** %fields, align 8
+  %12 = load i64, i64* %fieldLength, align 8
+  %mul10 = mul i64 2, %12
+  %add.ptr11 = getelementptr inbounds i8, i8* %11, i64 %mul10
+  %13 = load i8*, i8** %fields, align 8
+  %14 = load i64, i64* %fieldLength, align 8
+  %mul12 = mul i64 3, %14
+  %add.ptr13 = getelementptr inbounds i8, i8* %13, i64 %mul12
   %15 = load i8*, i8** %fields, align 8
   %16 = load i64, i64* %fieldLength, align 8
-  %mul14 = mul i64 1, %16
+  %mul14 = mul i64 4, %16
   %add.ptr15 = getelementptr inbounds i8, i8* %15, i64 %mul14
-  %call16 = call i64 @strlen(i8* %add.ptr15)
-  %cmp17 = icmp eq i64 %call16, 1
-  br i1 %cmp17, label %land.lhs.true18, label %if.end
+  %call16 = call i32 (i8*, i8*, ...) @sscanf(i8* %6, i8* getelementptr inbounds ([25 x i8], [25 x i8]* @.str.19, i64 0, i64 0), i8* %add.ptr, i8* %add.ptr9, i8* %add.ptr11, i8* %add.ptr13, i8* %add.ptr15)
+  store i32 %call16, i32* %numFields, align 4
+  %17 = load i32, i32* %numFields, align 4
+  %cmp17 = icmp eq i32 %17, 5
+  br i1 %cmp17, label %land.lhs.true, label %if.end
 
-land.lhs.true18:                                  ; preds = %land.lhs.true
-  %17 = load i8*, i8** %fields, align 8
-  %18 = load i64, i64* %fieldLength, align 8
-  %mul19 = mul i64 3, %18
-  %add.ptr20 = getelementptr inbounds i8, i8* %17, i64 %mul19
-  %call21 = call i64 @strlen(i8* %add.ptr20)
-  %cmp22 = icmp eq i64 %call21, 1
-  br i1 %cmp22, label %land.lhs.true23, label %if.end
+land.lhs.true:                                    ; preds = %if.else
+  %18 = load i8*, i8** %fields, align 8
+  %19 = load i64, i64* %fieldLength, align 8
+  %mul18 = mul i64 1, %19
+  %add.ptr19 = getelementptr inbounds i8, i8* %18, i64 %mul18
+  %call20 = call i64 @strlen(i8* %add.ptr19)
+  %cmp21 = icmp eq i64 %call20, 1
+  br i1 %cmp21, label %land.lhs.true22, label %if.end
 
-land.lhs.true23:                                  ; preds = %land.lhs.true18
-  %19 = load i8*, i8** %fields, align 8
-  %20 = load i64, i64* %fieldLength, align 8
-  %mul24 = mul i64 0, %20
-  %add.ptr25 = getelementptr inbounds i8, i8* %19, i64 %mul24
-  %arrayidx = getelementptr inbounds i8, i8* %add.ptr25, i64 0
-  %21 = load i8, i8* %arrayidx, align 1
-  %conv = sext i8 %21 to i32
-  %cmp26 = icmp ne i32 %conv, 35
-  br i1 %cmp26, label %land.lhs.true28, label %if.end
+land.lhs.true22:                                  ; preds = %land.lhs.true
+  %20 = load i8*, i8** %fields, align 8
+  %21 = load i64, i64* %fieldLength, align 8
+  %mul23 = mul i64 3, %21
+  %add.ptr24 = getelementptr inbounds i8, i8* %20, i64 %mul23
+  %call25 = call i64 @strlen(i8* %add.ptr24)
+  %cmp26 = icmp eq i64 %call25, 1
+  br i1 %cmp26, label %land.lhs.true27, label %if.end
 
-land.lhs.true28:                                  ; preds = %land.lhs.true23
+land.lhs.true27:                                  ; preds = %land.lhs.true22
   %22 = load i8*, i8** %fields, align 8
   %23 = load i64, i64* %fieldLength, align 8
-  %mul29 = mul i64 2, %23
-  %add.ptr30 = getelementptr inbounds i8, i8* %22, i64 %mul29
-  %24 = load i8*, i8** %fields, align 8
-  %25 = load i64, i64* %fieldLength, align 8
-  %mul31 = mul i64 2, %25
-  %add.ptr32 = getelementptr inbounds i8, i8* %24, i64 %mul31
-  %call33 = call i64 @strlen(i8* %add.ptr32)
-  %sub = sub i64 %call33, 1
-  %arrayidx34 = getelementptr inbounds i8, i8* %add.ptr30, i64 %sub
-  %26 = load i8, i8* %arrayidx34, align 1
-  %conv35 = sext i8 %26 to i32
-  %cmp36 = icmp ne i32 %conv35, 59
-  br i1 %cmp36, label %land.lhs.true38, label %if.end
+  %mul28 = mul i64 0, %23
+  %add.ptr29 = getelementptr inbounds i8, i8* %22, i64 %mul28
+  %arrayidx = getelementptr inbounds i8, i8* %add.ptr29, i64 0
+  %24 = load i8, i8* %arrayidx, align 1
+  %conv = sext i8 %24 to i32
+  %cmp30 = icmp ne i32 %conv, 35
+  br i1 %cmp30, label %land.lhs.true32, label %if.end
 
-land.lhs.true38:                                  ; preds = %land.lhs.true28
+land.lhs.true32:                                  ; preds = %land.lhs.true27
+  %25 = load i8*, i8** %fields, align 8
+  %26 = load i64, i64* %fieldLength, align 8
+  %mul33 = mul i64 2, %26
+  %add.ptr34 = getelementptr inbounds i8, i8* %25, i64 %mul33
   %27 = load i8*, i8** %fields, align 8
   %28 = load i64, i64* %fieldLength, align 8
-  %mul39 = mul i64 4, %28
-  %add.ptr40 = getelementptr inbounds i8, i8* %27, i64 %mul39
-  %call41 = call zeroext i1 @isValidTagAddress(i8* %add.ptr40)
-  br i1 %call41, label %if.then43, label %if.end
+  %mul35 = mul i64 2, %28
+  %add.ptr36 = getelementptr inbounds i8, i8* %27, i64 %mul35
+  %call37 = call i64 @strlen(i8* %add.ptr36)
+  %sub = sub i64 %call37, 1
+  %arrayidx38 = getelementptr inbounds i8, i8* %add.ptr34, i64 %sub
+  %29 = load i8, i8* %arrayidx38, align 1
+  %conv39 = sext i8 %29 to i32
+  %cmp40 = icmp ne i32 %conv39, 59
+  br i1 %cmp40, label %land.lhs.true42, label %if.end
 
-if.then43:                                        ; preds = %land.lhs.true38
+land.lhs.true42:                                  ; preds = %land.lhs.true32
+  %30 = load i8*, i8** %fields, align 8
+  %31 = load i64, i64* %fieldLength, align 8
+  %mul43 = mul i64 4, %31
+  %add.ptr44 = getelementptr inbounds i8, i8* %30, i64 %mul43
+  %call45 = call zeroext i1 @isValidTagAddress(i8* %add.ptr44)
+  br i1 %call45, label %if.then47, label %if.end
+
+if.then47:                                        ; preds = %land.lhs.true42
   store i8 1, i8* %ok, align 1
   br label %if.end
 
-if.end:                                           ; preds = %if.then43, %land.lhs.true38, %land.lhs.true28, %land.lhs.true23, %land.lhs.true18, %land.lhs.true, %if.else
-  %29 = load i8*, i8** %fields, align 8
-  call void @eFree(i8* %29)
-  br label %if.end44
+if.end:                                           ; preds = %if.then47, %land.lhs.true42, %land.lhs.true32, %land.lhs.true27, %land.lhs.true22, %land.lhs.true, %if.else
+  %32 = load i8*, i8** %fields, align 8
+  call void @eFree(i8* %32)
+  br label %if.end48
 
-if.end44:                                         ; preds = %if.end, %if.then
-  %30 = load i8, i8* %ok, align 1
-  %tobool = trunc i8 %30 to i1
+if.end48:                                         ; preds = %if.end
+  %33 = load i8, i8* %ok, align 1
+  %tobool = trunc i8 %33 to i1
   ret i1 %tobool
 }
 
@@ -3711,7 +3840,7 @@ entry:
   %arrayidx = getelementptr inbounds i8, i8* %0, i64 0
   %1 = load i8, i8* %arrayidx, align 1
   %conv = sext i8 %1 to i32
-  %call = call i8* @strchr(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.15, i64 0, i64 0), i32 %conv)
+  %call = call i8* @strchr(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.20, i64 0, i64 0), i32 %conv)
   %cmp = icmp ne i8* %call, null
   br i1 %cmp, label %if.then, label %if.else
 
@@ -3728,13 +3857,13 @@ if.else:                                          ; preds = %entry
   store i8* %call3, i8** %address, align 8
   %3 = load i8*, i8** %excmd.addr, align 8
   %4 = load i8*, i8** %address, align 8
-  %call4 = call i32 (i8*, i8*, ...) @sscanf(i8* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.16, i64 0, i64 0), i8* %4)
+  %call4 = call i32 (i8*, i8*, ...) @sscanf(i8* %3, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.21, i64 0, i64 0), i8* %4)
   %cmp5 = icmp eq i32 %call4, 1
   br i1 %cmp5, label %land.lhs.true, label %if.end
 
 land.lhs.true:                                    ; preds = %if.else
   %5 = load i8*, i8** %address, align 8
-  %call7 = call i64 @strspn(i8* %5, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.17, i64 0, i64 0))
+  %call7 = call i64 @strspn(i8* %5, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.22, i64 0, i64 0))
   %6 = load i8*, i8** %address, align 8
   %call8 = call i64 @strlen(i8* %6)
   %cmp9 = icmp eq i64 %call7, %call8
@@ -3774,6 +3903,7 @@ entry:
   %tab = alloca i8*, align 8
   %boolOffset = alloca i64, align 8
   %nextLine = alloca %struct._MIOPos, align 8
+  %shouldExit = alloca i32, align 4
   %flagLocation = alloca %struct._MIOPos, align 8
   %c = alloca i32, align 4
   %d = alloca i32, align 4
@@ -3786,7 +3916,7 @@ entry:
   store i8* %call, i8** %tab, align 8
   %2 = load i8*, i8** %tab, align 8
   %cmp = icmp ne i8* %2, null
-  br i1 %cmp, label %if.then, label %if.end44
+  br i1 %cmp, label %if.then, label %if.end53
 
 if.then:                                          ; preds = %entry
   %3 = load i8*, i8** %tab, align 8
@@ -3811,7 +3941,7 @@ lor.lhs.false:                                    ; preds = %if.then
   %10 = load i8, i8* %arrayidx3, align 1
   %conv4 = sext i8 %10 to i32
   %cmp5 = icmp eq i32 %conv4, 49
-  br i1 %cmp5, label %if.then7, label %if.end43
+  br i1 %cmp5, label %if.then7, label %if.end52
 
 if.then7:                                         ; preds = %lor.lhs.false, %if.then
   %11 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
@@ -3826,93 +3956,114 @@ lor.lhs.false11:                                  ; preds = %if.then7
   br i1 %cmp13, label %if.then15, label %if.else
 
 if.then15:                                        ; preds = %lor.lhs.false11, %if.then7
-  call void (i32, i8*, ...) @error(i32 2, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.22, i64 0, i64 0))
-  br label %if.end42
+  %13 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call16 = call i8* @getExecutableName()
+  %call17 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %13, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str, i64 0, i64 0), i8* %call16, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.15, i64 0, i64 0))
+  %14 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call18 = call i32 (%struct.__sFILE*, i8*, ...) @fprintf(%struct.__sFILE* %14, i8* getelementptr inbounds ([37 x i8], [37 x i8]* @.str.27, i64 0, i64 0))
+  %15 = load %struct.__sFILE*, %struct.__sFILE** @__stderrp, align 8
+  %call19 = call i32 @"\01_fputs"(i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.4, i64 0, i64 0), %struct.__sFILE* %15)
+  %16 = load i8, i8* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 26), align 1
+  %tobool = trunc i8 %16 to i1
+  %17 = zext i1 %tobool to i64
+  %cond = select i1 %tobool, i32 1, i32 0
+  store i32 %cond, i32* %shouldExit, align 4
+  %18 = load i32, i32* %shouldExit, align 4
+  %tobool21 = icmp ne i32 %18, 0
+  br i1 %tobool21, label %if.then22, label %if.end
+
+if.then22:                                        ; preds = %if.then15
+  call void bitcast (void (...)* @ctags_cleanup to void ()*)()
+  call void @exit(i32 1) #4
+  unreachable
+
+if.end:                                           ; preds = %if.then15
+  br label %if.end51
 
 if.else:                                          ; preds = %lor.lhs.false11
   br label %do.body
 
 do.body:                                          ; preds = %land.end, %if.else
-  %13 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
-  %call16 = call i32 @mio_getc(%struct._MIO* %13)
-  store i32 %call16, i32* %c, align 4
+  %19 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %call23 = call i32 @mio_getc(%struct._MIO* %19)
+  store i32 %call23, i32* %c, align 4
   br label %do.cond
 
 do.cond:                                          ; preds = %do.body
-  %14 = load i32, i32* %c, align 4
-  %cmp17 = icmp ne i32 %14, 9
-  br i1 %cmp17, label %land.rhs, label %land.end
+  %20 = load i32, i32* %c, align 4
+  %cmp24 = icmp ne i32 %20, 9
+  br i1 %cmp24, label %land.rhs, label %land.end
 
 land.rhs:                                         ; preds = %do.cond
-  %15 = load i32, i32* %c, align 4
-  %cmp19 = icmp ne i32 %15, 10
+  %21 = load i32, i32* %c, align 4
+  %cmp26 = icmp ne i32 %21, 10
   br label %land.end
 
 land.end:                                         ; preds = %land.rhs, %do.cond
-  %16 = phi i1 [ false, %do.cond ], [ %cmp19, %land.rhs ]
-  br i1 %16, label %do.body, label %do.end
+  %22 = phi i1 [ false, %do.cond ], [ %cmp26, %land.rhs ]
+  br i1 %22, label %do.body, label %do.end
 
 do.end:                                           ; preds = %land.end
-  %17 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
-  %call21 = call i32 @mio_getpos(%struct._MIO* %17, %struct._MIOPos* %flagLocation)
-  %18 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
-  %call22 = call i32 @mio_getc(%struct._MIO* %18)
-  store i32 %call22, i32* %d, align 4
-  %19 = load i32, i32* %c, align 4
-  %cmp23 = icmp eq i32 %19, 9
-  br i1 %cmp23, label %land.lhs.true, label %if.end
+  %23 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %call28 = call i32 @mio_getpos(%struct._MIO* %23, %struct._MIOPos* %flagLocation)
+  %24 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %call29 = call i32 @mio_getc(%struct._MIO* %24)
+  store i32 %call29, i32* %d, align 4
+  %25 = load i32, i32* %c, align 4
+  %cmp30 = icmp eq i32 %25, 9
+  br i1 %cmp30, label %land.lhs.true, label %if.end49
 
 land.lhs.true:                                    ; preds = %do.end
-  %20 = load i32, i32* %d, align 4
-  %cmp25 = icmp eq i32 %20, 48
-  br i1 %cmp25, label %land.lhs.true30, label %lor.lhs.false27
+  %26 = load i32, i32* %d, align 4
+  %cmp32 = icmp eq i32 %26, 48
+  br i1 %cmp32, label %land.lhs.true37, label %lor.lhs.false34
 
-lor.lhs.false27:                                  ; preds = %land.lhs.true
-  %21 = load i32, i32* %d, align 4
-  %cmp28 = icmp eq i32 %21, 49
-  br i1 %cmp28, label %land.lhs.true30, label %if.end
+lor.lhs.false34:                                  ; preds = %land.lhs.true
+  %27 = load i32, i32* %d, align 4
+  %cmp35 = icmp eq i32 %27, 49
+  br i1 %cmp35, label %land.lhs.true37, label %if.end49
 
-land.lhs.true30:                                  ; preds = %lor.lhs.false27, %land.lhs.true
-  %22 = load i32, i32* %d, align 4
-  %23 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
-  %cmp31 = icmp ne i32 %22, %23
-  br i1 %cmp31, label %if.then33, label %if.end
+land.lhs.true37:                                  ; preds = %lor.lhs.false34, %land.lhs.true
+  %28 = load i32, i32* %d, align 4
+  %29 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
+  %cmp38 = icmp ne i32 %28, %29
+  br i1 %cmp38, label %if.then40, label %if.end49
 
-if.then33:                                        ; preds = %land.lhs.true30
-  %24 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
-  %call34 = call i32 @mio_setpos(%struct._MIO* %24, %struct._MIOPos* %flagLocation)
-  %25 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
-  %26 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
-  %cmp35 = icmp eq i32 %26, 2
-  br i1 %cmp35, label %cond.true, label %cond.false
+if.then40:                                        ; preds = %land.lhs.true37
+  %30 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %call41 = call i32 @mio_setpos(%struct._MIO* %30, %struct._MIOPos* %flagLocation)
+  %31 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %32 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
+  %cmp42 = icmp eq i32 %32, 2
+  br i1 %cmp42, label %cond.true, label %cond.false
 
-cond.true:                                        ; preds = %if.then33
+cond.true:                                        ; preds = %if.then40
   br label %cond.end
 
-cond.false:                                       ; preds = %if.then33
-  %27 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
-  %cmp37 = icmp eq i32 %27, 1
-  %28 = zext i1 %cmp37 to i64
-  %cond = select i1 %cmp37, i32 49, i32 48
+cond.false:                                       ; preds = %if.then40
+  %33 = load i32, i32* getelementptr inbounds (%struct.sOptionValues, %struct.sOptionValues* @Option, i32 0, i32 5), align 4
+  %cmp44 = icmp eq i32 %33, 1
+  %34 = zext i1 %cmp44 to i64
+  %cond46 = select i1 %cmp44, i32 49, i32 48
   br label %cond.end
 
 cond.end:                                         ; preds = %cond.false, %cond.true
-  %cond39 = phi i32 [ 50, %cond.true ], [ %cond, %cond.false ]
-  %call40 = call i32 @mio_putc(%struct._MIO* %25, i32 %cond39)
-  br label %if.end
+  %cond47 = phi i32 [ 50, %cond.true ], [ %cond46, %cond.false ]
+  %call48 = call i32 @mio_putc(%struct._MIO* %31, i32 %cond47)
+  br label %if.end49
 
-if.end:                                           ; preds = %cond.end, %land.lhs.true30, %lor.lhs.false27, %do.end
-  %29 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
-  %call41 = call i32 @mio_setpos(%struct._MIO* %29, %struct._MIOPos* %nextLine)
-  br label %if.end42
+if.end49:                                         ; preds = %cond.end, %land.lhs.true37, %lor.lhs.false34, %do.end
+  %35 = load %struct._MIO*, %struct._MIO** %mio.addr, align 8
+  %call50 = call i32 @mio_setpos(%struct._MIO* %35, %struct._MIOPos* %nextLine)
+  br label %if.end51
 
-if.end42:                                         ; preds = %if.end, %if.then15
-  br label %if.end43
+if.end51:                                         ; preds = %if.end49, %if.end
+  br label %if.end52
 
-if.end43:                                         ; preds = %if.end42, %lor.lhs.false
-  br label %if.end44
+if.end52:                                         ; preds = %if.end51, %lor.lhs.false
+  br label %if.end53
 
-if.end44:                                         ; preds = %if.end43, %entry
+if.end53:                                         ; preds = %if.end52, %entry
   ret void
 }
 
@@ -3924,13 +4075,11 @@ declare i32 @stringListCount(%struct.sPtrArray*) #1
 
 declare %struct.sVString* @stringListItem(%struct.sPtrArray*, i32) #1
 
-declare i32 @mio_printf(%struct._MIO*, i8*, ...) #1
+declare %struct.__sFILE* @mio_file_get_fp(%struct._MIO*) #1
 
 declare i32 @truncate(i8*, i64) #1
 
-declare i32 @fprintf(%struct.__sFILE*, i8*, ...) #1
-
-declare void @verbose(i8*, ...) #1
+declare i32 @printf(i8*, ...) #1
 
 ; Function Attrs: noinline nounwind optnone ssp uwtable
 define internal void @internalSortTagFile() #0 {
@@ -3949,7 +4098,7 @@ if.then:                                          ; preds = %entry
 
 if.else:                                          ; preds = %entry
   %call1 = call i8* @tagFileName()
-  %call2 = call %struct._MIO* @mio_new_file(i8* %call1, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.26, i64 0, i64 0))
+  %call2 = call %struct._MIO* @mio_new_file(i8* %call1, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.31, i64 0, i64 0))
   store %struct._MIO* %call2, %struct._MIO** %mio, align 8
   %3 = load %struct._MIO*, %struct._MIO** %mio, align 8
   %cmp = icmp eq %struct._MIO* %3, null
@@ -4730,7 +4879,9 @@ declare %struct.sPtrArray* @stringListNewBySplittingWordIntoSubwords(i8*) #1
 
 attributes #0 = { noinline nounwind optnone ssp uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "min-legal-vector-width"="0" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
 attributes #1 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
-attributes #2 = { argmemonly nounwind willreturn }
+attributes #2 = { noreturn "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "frame-pointer"="all" "less-precise-fpmad"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="cyclone" "target-features"="+aes,+crypto,+fp-armv8,+neon,+sha2,+zcm,+zcz" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { argmemonly nounwind willreturn }
+attributes #4 = { noreturn }
 
 !llvm.module.flags = !{!0, !1}
 !llvm.ident = !{!2}
